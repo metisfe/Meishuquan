@@ -1,4 +1,4 @@
-package com.metis.meishuquan.widget.delegate;
+package com.metis.base.widget.delegate;
 
 /**
  * Created by gaoyunfei on 15/6/15.

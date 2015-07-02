@@ -1,4 +1,4 @@
-package com.metis.meishuquan.widget.holder;
+package com.metis.base.widget.holder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
