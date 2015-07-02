@@ -1,6 +1,7 @@
 package com.metis.meishuquan.activity;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements DockBar.OnDockIte
 
     private CourseTabFragment mCourseFragment = CourseTabFragment.getInstance();
 
+    private Fragment mCurrentFragment = null;
+
     @InjectView(R.id.main_dock_bar)
     DockBar mMainDockBar = null;
 
@@ -36,17 +39,37 @@ public class MainActivity extends AppCompatActivity implements DockBar.OnDockIte
         mMainDockBar.addDock(mCourseFragment.getDock(this));
 
         mMainDockBar.setOnDockItemClickListener(this);
+        mMainDockBar.selectDock(mCourseFragment.getDock(this));
     }
 
     @Override
     public void onDockClick(View view, DockBar.Dock dock) {
-
+        hideFragment(mCurrentFragment);
+        showFragment(dock.target);
     }
 
     private void showFragment (Fragment fragment) {
         if (fragment == null) {
             return;
         }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (fragment.isAdded()) {
+            ft.show(fragment);
+        } else {
+            ft.add(R.id.main_fragment_container, fragment);
+        }
+        ft.commit();
+        mCurrentFragment = fragment;
+    }
+
+    private void hideFragment (Fragment fragment) {
+        if (fragment == null) {
+            return;
+        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(fragment);
+        ft.commit();
+        mCurrentFragment = null;
     }
 
     @Override
