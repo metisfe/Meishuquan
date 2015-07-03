@@ -80,7 +80,7 @@ public class NetProxy {
         });
     }
 
-    public void postRequest (String request, Map<String, String> map, final OnResponseListener listener){
+    public void doPostRequest (String request, Map<String, String> map, final OnResponseListener listener){
         if (mClient == null) {
             return;
         }
