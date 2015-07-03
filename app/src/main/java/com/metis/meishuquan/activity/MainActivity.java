@@ -2,15 +2,14 @@ package com.metis.meishuquan.activity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.beak.courselib.fragment.CourseTabFragment;
 import com.metis.base.widget.dock.DockBar;
+import com.metis.coursepart.fragment.CourseTabFragment;
 import com.metis.meishuquan.R;
 
 import butterknife.ButterKnife;
