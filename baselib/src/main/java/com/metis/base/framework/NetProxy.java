@@ -3,13 +3,9 @@ package com.metis.base.framework;
 import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.metis.base.Debug;
 import com.metis.msnetworklib.contract.ReturnInfo;
-import com.metis.msnetworklib.framework.network.HttpMethod;
 import com.microsoft.windowsazure.mobileservices.ApiOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;

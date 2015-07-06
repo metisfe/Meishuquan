@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="std_padding">5dp</dimen>
+    <dimen name="std_padding_horizontal">5dp</dimen>
+    <dimen name="std_padding_vertical">5dp</dimen>
+    <dimen name="std_margin_horizontal">5dp</dimen>
+    <dimen name="std_margin_vertical">5dp</dimen>
+
+    <dimen name="title_bar_btn_size">32dp</dimen>
+</resources>

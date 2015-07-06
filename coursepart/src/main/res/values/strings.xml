@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CoursePart</string>
+    <string name="tab_video">Videos</string>
+    <string name="tab_gallery">Gallery</string>
 </resources>
