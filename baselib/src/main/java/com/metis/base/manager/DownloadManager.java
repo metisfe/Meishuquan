@@ -87,7 +87,17 @@ public class DownloadManager extends AbsManager {
                     wrapper.setState(state);
                 }
                 switch (state) {
-
+                    case STATE_IDLE:
+                        break;
+                    case STATE_RUNNING:
+                        break;
+                    case STATE_FAILED:
+                    case STATE_SUCCESS:
+                        TaskWrapper firstIdleWrapper = getFirstIdleTaskWrapper();
+                        if (firstIdleWrapper != null) {
+                            startTask(firstIdleWrapper);
+                        }
+                        break;
                 }
             } else if (action.equals(ACTION_DOWNLOAD_PROGRESS_CHANGE)) {
                 long current = intent.getLongExtra(KEY_CURRENT, 0);
@@ -180,7 +190,9 @@ public class DownloadManager extends AbsManager {
         }
         wrapper.setTargetPath(downloadPath);
         mTaskWrapperList.add(wrapper);
-        excuteService(ACTION_START, wrapper);
+        if (getRunningTaskCount() <= 0) {
+            excuteService(ACTION_START, wrapper);
+        }
     }
 
     public synchronized void removeTask (Task task) {
@@ -220,6 +232,29 @@ public class DownloadManager extends AbsManager {
         return mTaskWrapperList;
     }
 
+    public int getRunningTaskCount () {
+        final int length = mTaskWrapperList.size();
+        int count = 0;
+        for (int i = 0; i < length; i++) {
+            TaskWrapper wrapper = mTaskWrapperList.get(i);
+            if (wrapper.getState() == STATE_RUNNING) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+
+    public TaskWrapper getFirstIdleTaskWrapper () {
+        final int length = mTaskWrapperList.size();
+        for (int i = 0; i < length; i++) {
+            TaskWrapper wrapper = mTaskWrapperList.get (i);
+            if (wrapper.getState() == STATE_IDLE) {
+                return wrapper;
+            }
+        }
+        return null;
+    }
+
     public void recycle () {
         mBroadcastManager.unregisterReceiver(mChangeReceiver);
         this.getContext().unregisterReceiver(mNetReceiver);
@@ -227,7 +262,7 @@ public class DownloadManager extends AbsManager {
 
     public static class TaskWrapper implements Serializable {
 
-        private int state;
+        private int state = STATE_IDLE;
         private long current;
         private long total;
         private Task task;

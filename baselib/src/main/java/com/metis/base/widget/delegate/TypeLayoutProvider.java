@@ -2,6 +2,7 @@ package com.metis.base.widget.delegate;
 
 import android.content.res.Resources;
 import android.support.annotation.LayoutRes;
+import android.util.Log;
 import android.util.SparseIntArray;
 
 import com.metis.base.Debug;
@@ -15,8 +16,7 @@ import java.util.Map;
  */
 public class TypeLayoutProvider {
 
-    public static final int TYPE_NONE = 0;
-    public static final int LAYOUT_TYPE_NONE = R.layout.layout_base_type_none;
+    private static final String TAG = TypeLayoutProvider.class.getSimpleName();
 
     /**
      * key type
@@ -24,14 +24,11 @@ public class TypeLayoutProvider {
      */
     private static SparseIntArray sTypeLayoutIdArray = new SparseIntArray();
 
-    static {
-        put(TYPE_NONE, LAYOUT_TYPE_NONE);
-    }
-
     private TypeLayoutProvider () {
     }
 
-    private static boolean put (int type, @LayoutRes int layoutId) {
+    public static boolean put (int type, @LayoutRes int layoutId) {
+        Log.v(TAG, "put type=" + type + " layoutId=" + layoutId);
         if (sTypeLayoutIdArray.indexOfKey(type) >= 0) {
             if (sTypeLayoutIdArray.get(type) == layoutId) {
                 return true;
@@ -54,6 +51,6 @@ public class TypeLayoutProvider {
         if (Debug.DEBUG) {
             throw new Resources.NotFoundException("can not found layout resource for type:" + type);
         }
-        return LAYOUT_TYPE_NONE;
+        return DelegateType.TYPE_NONE.getLayoutResId();
     }
 }

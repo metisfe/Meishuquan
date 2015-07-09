@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">CoursePart</string>
-    <string name="tab_video">Videos</string>
-    <string name="tab_gallery">Gallery</string>
+    <string name="tab_video">视频</string>
+    <string name="tab_gallery">图库</string>
+    <string name="tab_detail">详情</string>
+    <string name="tab_chapter">章节</string>
+
+    <string name="gallery_tags">标签:%1$s</string>
+    <string name="gallery_read_count">阅读数:%1$d</string>
+    
+    <string name="title_activity_course_video_detail">CourseVideoDetailActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_gallery_item_detail">GalleryItemDetailActivity</string>
 </resources>

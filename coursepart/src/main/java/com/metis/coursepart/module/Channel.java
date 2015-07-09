@@ -1,4 +1,4 @@
-package com.metis.coursepart.modules;
+package com.metis.coursepart.module;
 
 import java.io.Serializable;
 

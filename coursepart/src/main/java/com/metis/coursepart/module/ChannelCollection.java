@@ -1,7 +1,6 @@
-package com.metis.coursepart.modules;
+package com.metis.coursepart.module;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
