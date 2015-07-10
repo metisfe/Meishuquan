@@ -13,9 +13,19 @@ public class CourseAlbum {
     public String title;
     public Author author;
     public StudioInfo studio;
-    public Date date;
+    /*public Date createTime;
+    public Date publishTime;*/
     public int viewCount;
     public String desc;
     public int commentCount;
     public UserMark userMark;
+    private String channel;
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
 }

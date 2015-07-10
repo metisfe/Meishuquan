@@ -79,7 +79,7 @@ public class CourseTabFragment extends DockFragment {
         ((RadioButton)view.findViewById(R.id.tab_video)).setChecked(true);
         //FragmentUtils.showFragment(getFragmentManager(), mVideoFragment, R.id.course_fragment_container);
         //switchView.check(R.id.tab_video);
-        CourseManager.getInstance(getActivity()).getCourseChannelList(null);
+        //CourseManager.getInstance(getActivity()).getCourseChannelList(null);
     }
 
     @Override

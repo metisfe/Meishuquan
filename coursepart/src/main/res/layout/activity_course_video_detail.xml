@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tab_detail"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             />
         <Button
             android:id="@+id/video_detail_chapter_btn"
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tab_chapter"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             />
     </LinearLayout>
     <android.support.v4.view.ViewPager

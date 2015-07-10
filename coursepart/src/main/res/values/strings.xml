@@ -10,6 +10,10 @@
 
     <string name="title_more">更多</string>
     
+    <string name="course_recommend">推荐课程</string>
+    <string name="course_new">最新课程</string>
+    <string name="course_hot">最热课程</string>
+    
     <string name="title_activity_course_video_detail">CourseVideoDetailActivity</string>
 
     <string name="hello_world">Hello world!</string>

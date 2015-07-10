@@ -11,7 +11,9 @@ import com.metis.coursepart.R;
 public enum CourseDelegateType {
 
     TYPE_GALLERY_ITEM (ID.ID_GALLERY_ITEM, R.layout.layout_gallery_item),
-    TYPE_VIDEO_ITEM (ID.ID_VIDEO_ITEM, R.layout.layout_video_item_container);
+    TYPE_VIDEO_ITEM (ID.ID_VIDEO_ITEM, R.layout.layout_video_item_container),
+    TYPE_VIDEO_ITEM_SMALL (ID.ID_VIDEO_ITEM_SMALL, R.layout.layout_video_item),
+    TYPE_VIDEO_ITEM_SMALL_TITLE (ID.ID_VIDEO_ITEM_SMALL_TITLE, R.layout.layout_video_item_title);
 
     static {
         for (CourseDelegateType courseDelegateType : values()) {
