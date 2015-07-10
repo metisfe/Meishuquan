@@ -17,6 +17,7 @@ import com.metis.base.utils.FragmentUtils;
 import com.metis.base.widget.TitleBar;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.coursepart.R;
+import com.metis.coursepart.manager.CourseManager;
 
 import java.util.regex.Pattern;
 
@@ -78,6 +79,7 @@ public class CourseTabFragment extends DockFragment {
         ((RadioButton)view.findViewById(R.id.tab_video)).setChecked(true);
         //FragmentUtils.showFragment(getFragmentManager(), mVideoFragment, R.id.course_fragment_container);
         //switchView.check(R.id.tab_video);
+        CourseManager.getInstance(getActivity()).getCourseChannelList(null);
     }
 
     @Override

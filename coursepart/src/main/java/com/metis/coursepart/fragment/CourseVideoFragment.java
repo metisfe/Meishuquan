@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.VideoAdapter;
+import com.metis.coursepart.manager.CourseManager;
 
 /**
  * Created by Beak on 2015/7/6.
@@ -45,5 +46,11 @@ public class CourseVideoFragment extends Fragment {
 
         mAdapter = new VideoAdapter(getActivity());
         mVideoRv.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        CourseManager.getInstance(getActivity()).getMainCourseList(null);
     }
 }

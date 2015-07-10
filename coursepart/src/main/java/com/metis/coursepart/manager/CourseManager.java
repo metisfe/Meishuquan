@@ -16,13 +16,21 @@ import com.metis.msnetworklib.contract.ReturnInfo;
  */
 public class CourseManager extends AbsManager {
 
-    private static final String REQUEST_ROOT = "v1.1/Channel/";
+    private static final String REQUEST_ROOT = "v1.1/";
+
+    private static CourseManager sManager = null;
+    public synchronized static CourseManager getInstance (Context context) {
+        if (sManager == null) {
+            sManager = new CourseManager(context.getApplicationContext());
+        }
+        return sManager;
+    }
 
     private static final String
-    COURSE_CHANNEL_LIST = "CourseChannelList",
-    MAIN_COURSE_LIST = "MainCourseList";
+    COURSE_CHANNEL_LIST = "Channel/CourseChannelList",
+    MAIN_COURSE_LIST = "Course/MainCourseList";
 
-    public CourseManager(Context context) {
+    private CourseManager(Context context) {
         super(context);
     }
 

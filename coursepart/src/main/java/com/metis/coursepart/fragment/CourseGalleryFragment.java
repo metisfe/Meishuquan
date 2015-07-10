@@ -19,7 +19,7 @@ import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.decoration.GalleryItemDecoration;
 import com.metis.coursepart.module.GalleryItem;
 import com.metis.coursepart.adapter.GalleryAdapter;
-import com.metis.coursepart.module.delegate.GalleryItemDelegate;
+import com.metis.coursepart.adapter.delegate.GalleryItemDelegate;
 
 import java.util.ArrayList;
 import java.util.List;

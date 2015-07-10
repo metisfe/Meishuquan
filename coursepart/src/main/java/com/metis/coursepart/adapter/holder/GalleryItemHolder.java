@@ -12,7 +12,7 @@ import com.metis.base.widget.holder.AbsViewHolder;
 import com.metis.coursepart.R;
 import com.metis.coursepart.activity.GalleryItemDetailActivity;
 import com.metis.coursepart.module.GalleryItem;
-import com.metis.coursepart.module.delegate.GalleryItemDelegate;
+import com.metis.coursepart.adapter.delegate.GalleryItemDelegate;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;

@@ -1,4 +1,4 @@
-package com.metis.coursepart.module.delegate;
+package com.metis.coursepart.adapter.delegate;
 
 import android.content.Context;
 

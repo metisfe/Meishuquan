@@ -12,7 +12,7 @@
         android:scaleType="centerCrop"
         />
     <TextView
-        android:id="@+id/item_title"
+        android:id="@+id/item_big_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
@@ -20,7 +20,7 @@
         android:layout_toLeftOf="@+id/item_btn_more"
         />
     <ImageView
-        android:id="@+id/item_author_profile"
+        android:id="@+id/item_big_author_profile"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:scaleType="centerCrop"
@@ -31,12 +31,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:layout_toRightOf="@+id/item_author_profile"
+        android:layout_toRightOf="@+id/item_big_author_profile"
         android:layout_below="@+id/item_title"
         android:layout_toLeftOf="@+id/item_btn_more"
         />
     <ImageView
-        android:id="@+id/item_btn_more"
+        android:id="@+id/item_big_btn_more"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_below="@+id/item_big_thumb"

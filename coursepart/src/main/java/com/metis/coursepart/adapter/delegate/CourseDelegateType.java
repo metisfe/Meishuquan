@@ -1,4 +1,4 @@
-package com.metis.coursepart.module.delegate;
+package com.metis.coursepart.adapter.delegate;
 
 import android.support.annotation.LayoutRes;
 
@@ -10,7 +10,8 @@ import com.metis.coursepart.R;
  */
 public enum CourseDelegateType {
 
-    TYPE_GALLERY_ITEM (ID.ID_GALLERY_ITEM, R.layout.layout_gallery_item);
+    TYPE_GALLERY_ITEM (ID.ID_GALLERY_ITEM, R.layout.layout_gallery_item),
+    TYPE_VIDEO_ITEM (ID.ID_VIDEO_ITEM, R.layout.layout_video_item_container);
 
     static {
         for (CourseDelegateType courseDelegateType : values()) {
@@ -35,6 +36,9 @@ public enum CourseDelegateType {
 
     public static final class ID {
         public static final int
-                ID_GALLERY_ITEM = 100;
+                ID_GALLERY_ITEM = 100,
+                ID_VIDEO_ITEM = 104,
+                ID_VIDEO_ITEM_SMALL = 108,
+                ID_VIDEO_ITEM_SMALL_TITLE = 112;
     }
 }

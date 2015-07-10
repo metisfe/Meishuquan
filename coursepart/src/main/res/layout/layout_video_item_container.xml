@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/item_container_big"
+        layout="@layout/layout_video_item_big"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_container_recycler_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_below="@+id/item_container_big"
+        />
+</RelativeLayout>

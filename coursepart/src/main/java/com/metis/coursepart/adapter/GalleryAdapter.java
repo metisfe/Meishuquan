@@ -8,7 +8,7 @@ import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.delegate.DelegateType;
 import com.metis.base.widget.holder.AbsViewHolder;
 import com.metis.base.widget.holder.FooterHolder;
-import com.metis.coursepart.module.delegate.CourseDelegateType;
+import com.metis.coursepart.adapter.delegate.CourseDelegateType;
 import com.metis.coursepart.adapter.holder.GalleryItemHolder;
 
 /**
