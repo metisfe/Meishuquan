@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.metis.base.module.Footer;
 import com.metis.base.widget.callback.OnScrollBottomListener;
-import com.metis.base.widget.delegate.FooterDelegate;
-import com.metis.base.widget.delegate.TypeLayoutProvider;
+import com.metis.base.widget.adapter.delegate.FooterDelegate;
+import com.metis.base.widget.adapter.delegate.TypeLayoutProvider;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.decoration.GalleryItemDecoration;
 import com.metis.coursepart.module.GalleryItem;

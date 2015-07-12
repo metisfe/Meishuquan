@@ -6,10 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.metis.base.widget.delegate.AbsDelegate;
-import com.metis.base.widget.delegate.BaseDelegate;
-import com.metis.base.widget.delegate.TypeLayoutProvider;
-import com.metis.base.widget.holder.AbsViewHolder;
+import com.metis.base.widget.adapter.delegate.AbsDelegate;
+import com.metis.base.widget.adapter.delegate.BaseDelegate;
+import com.metis.base.widget.adapter.delegate.TypeLayoutProvider;
+import com.metis.base.widget.adapter.holder.AbsViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +42,7 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
 
     @Override
     public void onBindViewHolder(AbsViewHolder holder, int position) {
-        holder.bindData(mContext, getDataItem(position));
+        holder.bindData(mContext, getDataItem(position), this, position);
     }
 
     public List<BaseDelegate> getDataList () {

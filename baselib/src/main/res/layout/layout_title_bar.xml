@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#2c2c3f"
+    >
     <FrameLayout
         android:id="@+id/title_bar_left_btn"
         android:layout_width="@dimen/title_bar_btn_size"
@@ -10,6 +12,19 @@
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
         >
+        <TextView
+            android:id="@+id/title_bar_left_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            />
+        <ImageView
+            android:id="@+id/title_bar_left_img"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
     </FrameLayout>
     <FrameLayout
         android:id="@+id/title_bar_center"

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/author_info_header"
+        layout="@layout/layout_item_title"
+        />
+    <ImageView
+        android:id="@+id/author_profile"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/author_info_header"
+        />
+    <TextView
+        android:id="@+id/author_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_alignTop="@+id/author_profile"
+        android:layout_toRightOf="@+id/author_profile"
+        />
+    <TextView
+        android:id="@+id/author_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/author_name"
+        android:layout_toRightOf="@+id/author_profile"
+        />
+</RelativeLayout>

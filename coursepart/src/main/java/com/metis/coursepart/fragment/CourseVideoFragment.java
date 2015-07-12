@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 
 import com.metis.base.manager.RequestCallback;
 import com.metis.coursepart.R;
-import com.metis.coursepart.adapter.VideoAdapter;
+import com.metis.coursepart.adapter.AlbumContainerAdapter;
 import com.metis.coursepart.adapter.decoration.VideoItemDecoration;
-import com.metis.coursepart.adapter.delegate.VideoItemDelegate;
+import com.metis.coursepart.adapter.delegate.AlbumContainerDelegate;
 import com.metis.coursepart.manager.CourseManager;
 import com.metis.coursepart.module.CourseAlbum;
 import com.metis.coursepart.module.MainCourseList;
@@ -40,7 +40,7 @@ public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.
     private SwipeRefreshLayout mVideoSrl = null;
     private RecyclerView mVideoRv = null;
 
-    private VideoAdapter mAdapter = null;
+    private AlbumContainerAdapter mAdapter = null;
 
     private MainCourseList mCourseList = null;
 
@@ -69,7 +69,7 @@ public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.
         mVideoRv.setLayoutManager(linearLayoutManager);
         mVideoRv.addItemDecoration(new VideoItemDecoration());
 
-        mAdapter = new VideoAdapter(getActivity());
+        mAdapter = new AlbumContainerAdapter(getActivity());
         mVideoRv.setAdapter(mAdapter);
     }
 
@@ -96,29 +96,29 @@ public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.
                     if (returnInfo.isSuccess()) {
                         mCourseList = returnInfo.getData();
                         parseCourseList(mCourseList);
-                        mVideoSrl.setRefreshing(false);
                     }
+                    mVideoSrl.setRefreshing(false);
                 }
             });
         //}
     }
 
     private void parseCourseList (MainCourseList mainCourseList) {
-        List<VideoItemDelegate> delegateList = new ArrayList<VideoItemDelegate>();
+        List<AlbumContainerDelegate> delegateList = new ArrayList<AlbumContainerDelegate>();
         List<CourseAlbum> hotList = mainCourseList.hottestCourse;
         if (hotList != null && !hotList.isEmpty()) {
             hotList.get(0).setChannel(getString(R.string.course_hot));
-            delegateList.add(new VideoItemDelegate(hotList));
+            delegateList.add(new AlbumContainerDelegate(hotList));
         }
         List<CourseAlbum> newList = mainCourseList.newestCourse;
         if (newList != null && !newList.isEmpty()) {
             newList.get(0).setChannel(getString(R.string.course_new));
-            delegateList.add(new VideoItemDelegate(newList));
+            delegateList.add(new AlbumContainerDelegate(newList));
         }
         List<CourseAlbum> recommentedList = mainCourseList.recommendCourse;
         if (recommentedList != null && !recommentedList.isEmpty()) {
             recommentedList.get(0).setChannel(getString(R.string.course_recommend));
-            delegateList.add(new VideoItemDelegate(recommentedList));
+            delegateList.add(new AlbumContainerDelegate(recommentedList));
         }
         mAdapter.clearDataList();
         mAdapter.addDataList(delegateList);

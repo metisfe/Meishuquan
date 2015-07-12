@@ -5,9 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.widget.adapter.DelegateAdapter;
-import com.metis.base.widget.delegate.DelegateType;
-import com.metis.base.widget.holder.AbsViewHolder;
-import com.metis.base.widget.holder.FooterHolder;
+import com.metis.base.widget.adapter.delegate.DelegateType;
+import com.metis.base.widget.adapter.holder.AbsViewHolder;
+import com.metis.base.widget.adapter.holder.FooterHolder;
 import com.metis.coursepart.adapter.delegate.CourseDelegateType;
 import com.metis.coursepart.adapter.holder.GalleryItemHolder;
 

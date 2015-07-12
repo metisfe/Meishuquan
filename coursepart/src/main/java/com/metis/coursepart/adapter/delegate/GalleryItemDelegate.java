@@ -2,7 +2,7 @@ package com.metis.coursepart.adapter.delegate;
 
 import android.content.Context;
 
-import com.metis.base.widget.delegate.BaseDelegate;
+import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.coursepart.module.GalleryItem;
 
 /**

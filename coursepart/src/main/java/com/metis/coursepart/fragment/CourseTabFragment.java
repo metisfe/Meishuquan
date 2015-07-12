@@ -1,6 +1,7 @@
 package com.metis.coursepart.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import com.metis.base.utils.FragmentUtils;
 import com.metis.base.widget.TitleBar;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.coursepart.R;
+import com.metis.coursepart.activity.FilterActivity;
 import com.metis.coursepart.manager.CourseManager;
 
 import java.util.regex.Pattern;
@@ -80,6 +82,15 @@ public class CourseTabFragment extends DockFragment {
         //FragmentUtils.showFragment(getFragmentManager(), mVideoFragment, R.id.course_fragment_container);
         //switchView.check(R.id.tab_video);
         //CourseManager.getInstance(getActivity()).getCourseChannelList(null);
+
+        mTitleBar.setTitleLeft(R.string.title_filter);
+        mTitleBar.setOnLeftBtnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(getActivity(), FilterActivity.class);
+                startActivity(it);
+            }
+        });
     }
 
     @Override

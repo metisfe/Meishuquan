@@ -1,6 +1,7 @@
 package com.metis.base.widget;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ public class TitleBar extends RelativeLayout{
 
     private FrameLayout mLeftFrameLayout = null, mRightFrameLayout = null;
     private FrameLayout mCenterFrameLayout = null;
-    private TextView mCenterTitleTv = null;
+    private TextView mCenterTitleTv = null, mLeftTitleTv;
 
     public TitleBar(Context context) {
         this(context, null);
@@ -40,6 +41,7 @@ public class TitleBar extends RelativeLayout{
         mRightFrameLayout = (FrameLayout)findViewById(R.id.title_bar_right_btn);
         mCenterFrameLayout = (FrameLayout)findViewById(R.id.title_bar_center);
         mCenterTitleTv = (TextView)findViewById(R.id.title_bar_center_text);
+        mLeftTitleTv = (TextView)findViewById(R.id.title_bar_left_text);
     }
 
     public void setCenterView (View view) {
@@ -47,5 +49,17 @@ public class TitleBar extends RelativeLayout{
         params.gravity = Gravity.CENTER;
         mCenterFrameLayout.removeAllViews();
         mCenterFrameLayout.addView(view, params);
+    }
+
+    public void setTitleLeft (CharSequence charSequence) {
+        mLeftTitleTv.setText(charSequence);
+    }
+
+    public void setTitleLeft (@StringRes int stringRes) {
+        mLeftTitleTv.setText(stringRes);
+    }
+
+    public void setOnLeftBtnClickListener (OnClickListener listener) {
+        mLeftFrameLayout.setOnClickListener(listener);
     }
 }

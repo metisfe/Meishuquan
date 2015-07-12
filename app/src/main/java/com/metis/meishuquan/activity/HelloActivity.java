@@ -21,6 +21,7 @@ public class HelloActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(HelloActivity.this, MainActivity.class));
+                finish();
             }
         }, 1000);
     }

@@ -37,7 +37,7 @@ public class VideoItemSmallDecoration extends RecyclerView.ItemDecoration {
                 continue;
             }
             int type = adapter.getItemViewType(position);
-            if (type == CourseDelegateType.ID.ID_VIDEO_ITEM_SMALL) {
+            if (type == CourseDelegateType.ID.ID_ALBUM_ITEM_SMALL) {
                 final int left = child.getLeft() + deviderPading;
                 final int y = child.getBottom();
                 final int right = child.getRight() - deviderPading;

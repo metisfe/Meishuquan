@@ -12,8 +12,11 @@
         <activity
             android:name=".activity.GalleryItemDetailActivity"
             android:label="@string/title_activity_gallery_item_detail"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name=".activity.FilterActivity"
+            android:label="@string/title_activity_filter" >
         </activity>
     </application>
 

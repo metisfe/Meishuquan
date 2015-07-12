@@ -24,10 +24,16 @@ public abstract class TitleBarActivity extends AppCompatActivity {
 
         mTitleBar = (TitleBar)findViewById(R.id.title_bar);
         mContentViewContainer = (FrameLayout)findViewById(R.id.content_view_container);
+
+        mTitleBar.setTitleLeft(getTitleLeft());
     }
 
     public TitleBar getTitleBar () {
         return mTitleBar;
+    }
+
+    public CharSequence getTitleLeft () {
+        return null;
     }
 
     @Override

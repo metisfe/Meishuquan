@@ -27,7 +27,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class CourseVideoDetailActivity extends AppCompatActivity implements View.OnClickListener{
+public class CourseVideoDetailActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
 
     private Button mDetailBtn, mChapterBtn;
     private ViewPager mViewPager = null;
@@ -56,6 +56,8 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
 
         mTabAdapter = new TabAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mTabAdapter);
+        mViewPager.addOnPageChangeListener(this);
+        mDetailBtn.setSelected(true);
     }
 
     @Override
@@ -75,12 +77,44 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mViewPager.removeOnPageChangeListener(this);
+    }
+
+    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.video_detail_detail_btn) {
             mViewPager.setCurrentItem(0, true);
         } else if (v.getId() == R.id.video_detail_chapter_btn) {
             mViewPager.setCurrentItem(1, true);
         }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position) {
+            case 0:
+                mDetailBtn.setSelected(true);
+                mChapterBtn.setSelected(false);
+                break;
+            case 1:
+                mDetailBtn.setSelected(false);
+                mChapterBtn.setSelected(true);
+                break;
+            case 2:
+                break;
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     private class TabAdapter extends FragmentStatePagerAdapter {

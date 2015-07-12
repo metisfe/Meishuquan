@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.coursepart.R;
-import com.metis.coursepart.adapter.VideoSubAdapter;
-import com.metis.coursepart.adapter.delegate.VideoAlbumDelegate;
-import com.metis.coursepart.adapter.delegate.VideoItemDelegate;
+import com.metis.coursepart.adapter.AlbumAdapter;
+import com.metis.coursepart.adapter.decoration.VideoItemDetailDecoration;
+import com.metis.coursepart.adapter.decoration.VideoItemSmallDecoration;
+import com.metis.coursepart.adapter.delegate.AlbumSmallDelegate;
+import com.metis.coursepart.adapter.delegate.ItemTitleDelegate;
 import com.metis.coursepart.module.CourseAlbum;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class CourseVideoDetailFragment extends Fragment {
 
     private RecyclerView mDetailRv = null;
 
-    private VideoSubAdapter mAdapter = null;
+    private AlbumAdapter mAdapter = null;
 
     private List<CourseAlbum> mRelatedCourseList = null;
 
@@ -47,8 +49,10 @@ public class CourseVideoDetailFragment extends Fragment {
         mDetailRv = (RecyclerView)view.findViewById(R.id.detail_recycler_view);
         mDetailRv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new VideoSubAdapter(getActivity());
+        mAdapter = new AlbumAdapter(getActivity());
         mDetailRv.setAdapter(mAdapter);
+        mDetailRv.addItemDecoration(new VideoItemDetailDecoration());
+        mDetailRv.addItemDecoration(new VideoItemSmallDecoration());
     }
 
     public void setRelatedCourses (List<CourseAlbum> albumList) {
@@ -57,11 +61,12 @@ public class CourseVideoDetailFragment extends Fragment {
         }
         if (mRelatedCourseList == null) {
             mRelatedCourseList = albumList;
-            List<VideoAlbumDelegate> delegates = new ArrayList<VideoAlbumDelegate>();
+            List<AlbumSmallDelegate> delegates = new ArrayList<AlbumSmallDelegate>();
             final int length = albumList.size();
             for (int i = 0; i < length; i++) {
-                delegates.add(new VideoAlbumDelegate(albumList.get(i)));
+                delegates.add(new AlbumSmallDelegate(albumList.get(i)));
             }
+            mAdapter.addDataItem(new ItemTitleDelegate(getString(R.string.course_related)));
             mAdapter.addDataList(delegates);
             mAdapter.notifyDataSetChanged();
         }

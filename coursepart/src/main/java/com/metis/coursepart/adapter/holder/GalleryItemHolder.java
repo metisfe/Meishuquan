@@ -3,12 +3,13 @@ package com.metis.coursepart.adapter.holder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.metis.base.widget.holder.AbsViewHolder;
+import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.coursepart.R;
 import com.metis.coursepart.activity.GalleryItemDetailActivity;
 import com.metis.coursepart.module.GalleryItem;
@@ -35,7 +36,7 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
     }
 
     @Override
-    public void bindData(final Context context, final GalleryItemDelegate galleryItemDelegate) {
+    public void bindData(final Context context, final GalleryItemDelegate galleryItemDelegate, RecyclerView.Adapter adapter, int position) {
         if (!ImageLoader.getInstance().isInited()) {
             ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
         }

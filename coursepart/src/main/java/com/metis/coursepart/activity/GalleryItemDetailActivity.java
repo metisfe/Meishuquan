@@ -1,5 +1,6 @@
 package com.metis.coursepart.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -35,6 +36,11 @@ public class GalleryItemDetailActivity extends TitleBarActivity {
         mPhotoVp.setAdapter(new GalleryAdapter(getSupportFragmentManager()));
 
         Log.v(TAG, "onCreate " + mGalleryItems.size());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     private class GalleryAdapter extends FragmentStatePagerAdapter {
