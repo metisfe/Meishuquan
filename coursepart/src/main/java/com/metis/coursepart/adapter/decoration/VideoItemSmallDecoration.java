@@ -26,11 +26,14 @@ public class VideoItemSmallDecoration extends RecyclerView.ItemDecoration {
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
         RecyclerView.Adapter adapter = parent.getAdapter();
+        if (adapter == null) {
+            return;
+        }
         final int childCount = parent.getChildCount();
         final int itemCount = parent.getAdapter().getItemCount();
         final int deviderPading = parent.getContext().getResources().getDimensionPixelSize(R.dimen.video_divider_padding);
 
-        for (int i = 0; i < childCount; i++) {
+        for (int i = 0; i < childCount - 1; i++) {
             View child = parent.getChildAt(i);
             int position = parent.getChildAdapterPosition(child);
             if (position == itemCount - 1) {

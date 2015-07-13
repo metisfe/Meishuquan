@@ -1,10 +1,10 @@
 package com.metis.base.framework;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Pair;
 
 import com.metis.base.Debug;
+import com.metis.base.utils.Log;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.microsoft.windowsazure.mobileservices.ApiOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
@@ -56,9 +56,7 @@ public class NetProxy {
             return;
         }
         final String requestUUID = UUID.randomUUID().toString();
-        if (Debug.DEBUG && listener != null) {
-            Log.v(TAG, "request_get(" + requestUUID + ")=" + request);
-        }
+        Log.v(TAG, "request_get(" + requestUUID + ")=" + request);
         mClient.invokeApi(request, HttpGet.METHOD_NAME, null, (Class<ReturnInfo<String>>) new ReturnInfo<String>().getClass(), new ApiOperationCallback<ReturnInfo<String>>() {
             @Override
             public void onCompleted(ReturnInfo<String> returnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
@@ -66,9 +64,7 @@ public class NetProxy {
                     return;
                 }
                 final String responseString = serviceFilterResponse.getContent();
-                if (Debug.DEBUG) {
-                    Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
-                }
+                Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
                 if (listener != null) {
                     listener.onResponse(responseString);
                 }
@@ -89,9 +85,7 @@ public class NetProxy {
             }
         }
         final String requestUUID = UUID.randomUUID().toString();
-        if (Debug.DEBUG && listener != null) {
-            Log.v(TAG, "request_get(" + requestUUID + ")=" + request);
-        }
+        Log.v(TAG, "request_get(" + requestUUID + ")=" + request);
         mClient.invokeApi(request, HttpPost.METHOD_NAME, params, (Class<ReturnInfo<String>>) new ReturnInfo<String>().getClass(), new ApiOperationCallback<ReturnInfo<String>>() {
             @Override
             public void onCompleted(ReturnInfo<String> returnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
@@ -99,9 +93,7 @@ public class NetProxy {
                     return;
                 }
                 final String responseString = serviceFilterResponse.getContent();
-                if (Debug.DEBUG) {
-                    Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
-                }
+                Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
                 if (listener != null) {
                     listener.onResponse(responseString);
                 }

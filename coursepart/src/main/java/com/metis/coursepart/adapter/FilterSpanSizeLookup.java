@@ -9,9 +9,9 @@ public class FilterSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
     @Override
     public int getSpanSize(int position) {
         if (position == 0) {
-            return 1;
+            return 2;
         }
-        return 2;
+        return 1;
     }
 
 }

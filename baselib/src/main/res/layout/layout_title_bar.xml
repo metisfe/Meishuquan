@@ -49,5 +49,18 @@
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
         >
+        <TextView
+            android:id="@+id/title_bar_right_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            />
+        <ImageView
+            android:id="@+id/title_bar_right_img"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
     </FrameLayout>
 </RelativeLayout>

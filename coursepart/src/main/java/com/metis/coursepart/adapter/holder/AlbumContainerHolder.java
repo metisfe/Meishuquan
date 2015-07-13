@@ -33,6 +33,8 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
     private static final String TAG = AlbumContainerHolder.class.getSimpleName();
 
     private static final int MARGIN_BOTTOM_IN_DP = 8;
+    private static final int MAX_FOLLOW_ITEM_COUNT = 3;
+    //private static final boolean SHOW_ALL = false;
 
     public View itemBigView;
     public ImageView itemBigThumbIv, itemBigAuthorProfileIv, itemBigMoreBtn;
@@ -60,9 +62,12 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
             final CourseAlbum firstOne = albumList.get(0);
             StudioInfo studioInfo = firstOne.studio;
             DisplayManager.getInstance(context).display(firstOne.coursePic, itemBigThumbIv);
-            DisplayManager.getInstance(context).display(studioInfo.avatar, itemBigAuthorProfileIv);
             itemBigTitleTv.setText(firstOne.title);
-            itemBigAuthorNameTv.setText(studioInfo.name);
+            if (studioInfo != null) {
+                DisplayManager.getInstance(context).display(studioInfo.avatar, itemBigAuthorProfileIv);
+                itemBigAuthorNameTv.setText(studioInfo.name);
+            }
+
             itemBigView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +94,7 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
                     final int itemHeight = resources.getDimensionPixelSize(R.dimen.video_item_small_height);
                     final int titleHeight = resources.getDimensionPixelSize(R.dimen.video_item_title_height);
                     final int bottom_margin = (int)(resources.getDisplayMetrics().density * MARGIN_BOTTOM_IN_DP);
-                    final int maxHeight = 3 * itemHeight + titleHeight + bottom_margin;
+                    final int maxHeight = MAX_FOLLOW_ITEM_COUNT * itemHeight + titleHeight + bottom_margin;
                     final int measureHeight = length * itemHeight + titleHeight + bottom_margin;
                     rvHeight = Math.min(maxHeight, measureHeight);
                     videoItemDelegate.setSubRecyclerViewHeight(rvHeight);

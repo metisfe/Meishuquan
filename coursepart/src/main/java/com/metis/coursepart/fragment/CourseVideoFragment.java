@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumContainerAdapter;
 import com.metis.coursepart.adapter.decoration.VideoItemDecoration;
@@ -27,6 +28,8 @@ import java.util.List;
  * Created by Beak on 2015/7/6.
  */
 public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+
+    private static final String TAG = CourseVideoFragment.class.getSimpleName();
 
     private static CourseVideoFragment sFragment = null;
 
@@ -105,6 +108,12 @@ public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.
 
     private void parseCourseList (MainCourseList mainCourseList) {
         List<AlbumContainerDelegate> delegateList = new ArrayList<AlbumContainerDelegate>();
+        List<CourseAlbum> topList = mainCourseList.topCourse;
+        Log.v(TAG, "topList=" + topList.size());
+        if (topList != null && !topList.isEmpty()) {
+            topList.get(0).setChannel(getString(R.string.course_top));
+            delegateList.add(new AlbumContainerDelegate(topList));
+        }
         List<CourseAlbum> hotList = mainCourseList.hottestCourse;
         if (hotList != null && !hotList.isEmpty()) {
             hotList.get(0).setChannel(getString(R.string.course_hot));
