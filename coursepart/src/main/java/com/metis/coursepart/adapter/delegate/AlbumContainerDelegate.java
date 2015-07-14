@@ -20,7 +20,7 @@ public class AlbumContainerDelegate extends BaseDelegate<List<CourseAlbum>> {
 
     @Override
     public int getDelegateType() {
-        return CourseDelegateType.TYPE_VIDEO_ITEM.getType();
+        return CourseDelegateType.TYPE_ALBUM_ITEM.getType();
     }
 
     public AlbumAdapter getSubAdapter() {

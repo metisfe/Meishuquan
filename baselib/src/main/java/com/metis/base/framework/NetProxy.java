@@ -51,9 +51,9 @@ public class NetProxy {
         return client;
     }
 
-    public <T> void doGetRequest(String request, final OnResponseListener listener) {
+    public <T> String doGetRequest(String request, final OnResponseListener listener) {
         if (mClient == null) {
-            return;
+            return "mClient is null";
         }
         final String requestUUID = UUID.randomUUID().toString();
         Log.v(TAG, "request_get(" + requestUUID + ")=" + request);
@@ -66,15 +66,16 @@ public class NetProxy {
                 final String responseString = serviceFilterResponse.getContent();
                 Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
                 if (listener != null) {
-                    listener.onResponse(responseString);
+                    listener.onResponse(responseString, requestUUID);
                 }
             }
         });
+        return requestUUID;
     }
 
-    public void doPostRequest (String request, Map<String, String> map, final OnResponseListener listener){
+    public String doPostRequest (String request, Map<String, String> map, final OnResponseListener listener){
         if (mClient == null) {
-            return;
+            return "mClient is null";
         }
         List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
         if (map != null && !map.isEmpty()) {
@@ -95,14 +96,15 @@ public class NetProxy {
                 final String responseString = serviceFilterResponse.getContent();
                 Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
                 if (listener != null) {
-                    listener.onResponse(responseString);
+                    listener.onResponse(responseString, requestUUID);
                 }
             }
         });
+        return requestUUID;
         //mClient.invokeApi();
     }
 
     public static interface OnResponseListener {
-        public void onResponse (String result);
+        public void onResponse (String result, String requestId);
     }
 }

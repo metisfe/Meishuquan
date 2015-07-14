@@ -13,6 +13,6 @@ public class ItemTitleDelegate extends BaseDelegate<String> {
 
     @Override
     public int getDelegateType() {
-        return CourseDelegateType.TYPE_VIDEO_ITEM_SMALL_TITLE.getType();
+        return CourseDelegateType.TYPE_ALBUM_ITEM_SMALL_TITLE.getType();
     }
 }

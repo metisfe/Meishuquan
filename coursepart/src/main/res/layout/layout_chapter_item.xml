@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    >
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:id="@+id/item_state_icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:layout_centerVertical="true"
+        android:src="@drawable/ic_play_pause_circle"
         />
     <TextView
         android:id="@+id/item_title"
@@ -13,6 +20,10 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_centerVertical="true"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/item_state_icon"
         />
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -20,23 +31,32 @@
         android:layout_toRightOf="@+id/item_title"
         android:layout_toLeftOf="@+id/item_download_btn"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
         >
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_timer"
+            android:layout_centerVertical="true"
+            />
         <TextView
+            android:id="@+id/item_duration"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:layout_toRightOf="@+id/icon"
+            android:layout_marginLeft="@dimen/std_margin_horizontal"
+            android:layout_centerVertical="true"
             />
     </RelativeLayout>
     <ImageView
         android:id="@+id/item_download_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:src="@drawable/ic_download"
+        android:visibility="gone"
         />
 </RelativeLayout>

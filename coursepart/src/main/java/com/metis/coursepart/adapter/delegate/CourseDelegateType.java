@@ -11,9 +11,14 @@ import com.metis.coursepart.R;
 public enum CourseDelegateType {
 
     TYPE_GALLERY_ITEM (ID.ID_GALLERY_ITEM, R.layout.layout_gallery_item),
-    TYPE_VIDEO_ITEM (ID.ID_ALBUM_CONTAINER, R.layout.layout_album_item_container),
-    TYPE_VIDEO_ITEM_SMALL (ID.ID_ALBUM_ITEM_SMALL, R.layout.layout_album_item_small),
-    TYPE_VIDEO_ITEM_SMALL_TITLE (ID.ID_ITEM_TITLE, R.layout.layout_item_title);
+    TYPE_ALBUM_ITEM(ID.ID_ALBUM_CONTAINER, R.layout.layout_album_item_container),
+    TYPE_ALBUM_ITEM_SMALL(ID.ID_ALBUM_ITEM_SMALL, R.layout.layout_album_item_small),
+    TYPE_ALBUM_ITEM_SMALL_TITLE(ID.ID_ITEM_TITLE, R.layout.layout_item_title),
+    TYPE_COURSE_ITEM (ID.ID_COURSE_ITEM, R.layout.layout_chapter_item),
+    TYPE_COURSE_TITLE (ID.ID_COURSE_TITLE, R.layout.layout_chapter_title_item),
+    TYPE_FILTER (ID.ID_FILTER, R.layout.layout_filter_item),
+    TYPE_FILTER_COURSE_TYPE (ID.ID_FILTER_COURSE_TYPE, R.layout.layout_filter_item),
+    TYPE_FILTER_STUDIO (ID.ID_FILTER_STUDIO, R.layout.layout_filter_item);
 
     static {
         for (CourseDelegateType courseDelegateType : values()) {
@@ -41,6 +46,11 @@ public enum CourseDelegateType {
                 ID_GALLERY_ITEM = 100,
                 ID_ALBUM_CONTAINER = 104,
                 ID_ALBUM_ITEM_SMALL = 108,
-                ID_ITEM_TITLE = 112;
+                ID_ITEM_TITLE = 112,
+                ID_COURSE_ITEM = 116,
+                ID_COURSE_TITLE = 120,
+                ID_FILTER = 124,
+                ID_FILTER_COURSE_TYPE = 128,
+                ID_FILTER_STUDIO = 132;
     }
 }

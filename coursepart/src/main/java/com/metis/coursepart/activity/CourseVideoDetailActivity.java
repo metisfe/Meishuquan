@@ -1,20 +1,15 @@
 package com.metis.coursepart.activity;
 
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +23,7 @@ import com.metis.coursepart.R;
 import com.metis.coursepart.fragment.CourseVideoChapterFragment;
 import com.metis.coursepart.fragment.CourseVideoDetailFragment;
 import com.metis.coursepart.manager.CourseManager;
+import com.metis.coursepart.module.Course;
 import com.metis.coursepart.module.CourseAlbum;
 import com.metis.coursepart.module.CourseSubList;
 import com.metis.msnetworklib.contract.ReturnInfo;
@@ -35,9 +31,6 @@ import com.metis.playerlib.PlayerFragment;
 
 import java.io.File;
 import java.util.List;
-
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 
 public class CourseVideoDetailActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
@@ -91,12 +84,16 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
         if (mCourseId != 0) {
             CourseManager.getInstance(this).getCourseSubList(mCourseId, new RequestCallback<CourseSubList>() {
                 @Override
-                public void callback(ReturnInfo<CourseSubList> returnInfo) {
+                public void callback(ReturnInfo<CourseSubList> returnInfo, String callbackId) {
                     if (returnInfo.isSuccess()) {
                         CourseSubList courseSubList = returnInfo.getData();
                         List<CourseAlbum> relatedCourse = courseSubList.relatedCourse;
+                        List<Course> subList = courseSubList.courseSubList;
                         if (relatedCourse != null && !relatedCourse.isEmpty()) {
                             mDetailFragment.setRelatedCourses(relatedCourse);
+                        }
+                        if (subList != null && !subList.isEmpty()) {
+                            mChapterFragment.setSubCourseList(subList);
                         }
                     }
                 }

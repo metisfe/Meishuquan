@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="@dimen/video_item_title_height"
+    android:paddingLeft="@dimen/std_padding_horizontal"
+    android:paddingRight="@dimen/std_padding_horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    >
     <TextView
         android:id="@+id/item_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
         />
 </RelativeLayout>

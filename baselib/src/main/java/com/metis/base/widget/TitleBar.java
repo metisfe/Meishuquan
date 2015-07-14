@@ -1,6 +1,9 @@
 package com.metis.base.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +25,7 @@ public class TitleBar extends RelativeLayout{
     private FrameLayout mLeftFrameLayout = null, mRightFrameLayout = null;
     private FrameLayout mCenterFrameLayout = null;
     private TextView mCenterTitleTv = null, mLeftTitleTv;
+    private ImageView mLeftIv;
 
     public TitleBar(Context context) {
         this(context, null);
@@ -42,6 +47,8 @@ public class TitleBar extends RelativeLayout{
         mCenterFrameLayout = (FrameLayout)findViewById(R.id.title_bar_center);
         mCenterTitleTv = (TextView)findViewById(R.id.title_bar_center_text);
         mLeftTitleTv = (TextView)findViewById(R.id.title_bar_left_text);
+
+        mLeftIv = (ImageView)findViewById(R.id.title_bar_left_img);
     }
 
     public void setCenterView (View view) {
@@ -51,12 +58,32 @@ public class TitleBar extends RelativeLayout{
         mCenterFrameLayout.addView(view, params);
     }
 
+    public void setTitleCenter (CharSequence charSequence) {
+        mCenterTitleTv.setText(charSequence);
+    }
+
+    public void setTitleCenter (@StringRes int stringRes) {
+        mCenterTitleTv.setText(stringRes);
+    }
+
     public void setTitleLeft (CharSequence charSequence) {
         mLeftTitleTv.setText(charSequence);
     }
 
     public void setTitleLeft (@StringRes int stringRes) {
         mLeftTitleTv.setText(stringRes);
+    }
+
+    public void setDrawableLeft (Drawable drawableLeft) {
+        mLeftIv.setImageDrawable(drawableLeft);
+    }
+
+    public void setDrawableResourceLeft (@DrawableRes int drawableResourceLeft) {
+        mLeftIv.setImageResource(drawableResourceLeft);
+    }
+
+    public void setBitmapLeft (Bitmap bmp) {
+        mLeftIv.setImageBitmap(bmp);
     }
 
     public void setOnLeftBtnClickListener (OnClickListener listener) {

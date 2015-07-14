@@ -95,7 +95,7 @@ public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.
         //if (mCourseList == null) {
             CourseManager.getInstance(getActivity()).getMainCourseList(new RequestCallback<MainCourseList>() {
                 @Override
-                public void callback(ReturnInfo<MainCourseList> returnInfo) {
+                public void callback(ReturnInfo<MainCourseList> returnInfo, String callbackId) {
                     if (returnInfo.isSuccess()) {
                         mCourseList = returnInfo.getData();
                         parseCourseList(mCourseList);

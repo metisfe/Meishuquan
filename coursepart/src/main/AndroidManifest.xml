@@ -13,6 +13,7 @@
         </activity>
         <activity
             android:name=".activity.GalleryItemDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:label="@string/title_activity_gallery_item_detail"
             android:launchMode="singleTask" >
         </activity>

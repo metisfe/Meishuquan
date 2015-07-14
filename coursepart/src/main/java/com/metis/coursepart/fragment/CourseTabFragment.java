@@ -72,8 +72,10 @@ public class CourseTabFragment extends DockFragment {
                 }
                 if (checkedId == R.id.tab_video) {
                     mCurrentFragment = mVideoFragment;
+                    mTitleBar.setTitleLeft(R.string.title_filter);
                 } else if (checkedId == R.id.tab_gallery) {
                     mCurrentFragment = mGalleryFragment;
+                    mTitleBar.setTitleLeft("");
                 }
                 FragmentUtils.showFragment(getFragmentManager(), mCurrentFragment, R.id.course_fragment_container);
             }
@@ -83,12 +85,13 @@ public class CourseTabFragment extends DockFragment {
         //switchView.check(R.id.tab_video);
         //CourseManager.getInstance(getActivity()).getCourseChannelList(null);
 
-        mTitleBar.setTitleLeft(R.string.title_filter);
         mTitleBar.setOnLeftBtnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(getActivity(), FilterActivity.class);
-                startActivity(it);
+                if (mCurrentFragment == mVideoFragment) {
+                    Intent it = new Intent(getActivity(), FilterActivity.class);
+                    startActivity(it);
+                }
             }
         });
     }

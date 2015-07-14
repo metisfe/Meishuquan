@@ -18,5 +18,5 @@ public class Course {
     public String videoPic;
     public String videoUrl;
     public long videoSize;
-    public long videoTime;
+    public String videoTime;
 }

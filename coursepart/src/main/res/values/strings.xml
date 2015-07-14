@@ -11,13 +11,21 @@
     <string name="title_more">更多</string>
     <string name="title_filter">筛选</string>
 
-    <string name="course_top">置顶课程\</string>
+    <string name="course_top">置顶课程</string>
     <string name="course_recommend">推荐课程</string>
     <string name="course_new">最新课程</string>
     <string name="course_hot">最热课程</string>
     <string name="course_related">相关推荐</string>
     <string name="course_play_count">播放:%1$d次</string>
-    
+    <string name="course_related_count">相关章节(%1$d)</string>
+
+    <string name="filter_all">全部</string>
+    <string name="filter_recommend">推荐</string>
+    <string name="filter_new">最新</string>
+    <string name="filter_hot">最热</string>
+    <string name="filter_free">免费</string>
+    <string name="filter_charge">收费</string>
+
     <string name="title_activity_course_video_detail">CourseVideoDetailActivity</string>
 
     <string name="hello_world">Hello world!</string>

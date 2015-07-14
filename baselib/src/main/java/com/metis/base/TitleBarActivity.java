@@ -26,6 +26,20 @@ public abstract class TitleBarActivity extends AppCompatActivity {
         mContentViewContainer = (FrameLayout)findViewById(R.id.content_view_container);
 
         mTitleBar.setTitleLeft(getTitleLeft());
+        mTitleBar.setTitleCenter(getTitleCenter());
+        if (showAsUpEnable()) {
+            mTitleBar.setDrawableResourceLeft(R.drawable.ic_title_back);
+            mTitleBar.setOnLeftBtnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+    }
+
+    public CharSequence getTitleCenter () {
+        return null;
     }
 
     public TitleBar getTitleBar () {
@@ -34,6 +48,10 @@ public abstract class TitleBarActivity extends AppCompatActivity {
 
     public CharSequence getTitleLeft () {
         return null;
+    }
+
+    public boolean showAsUpEnable () {
+        return false;
     }
 
     @Override

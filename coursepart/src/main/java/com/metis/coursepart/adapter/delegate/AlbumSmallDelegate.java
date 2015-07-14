@@ -14,6 +14,6 @@ public class AlbumSmallDelegate extends BaseDelegate<CourseAlbum> {
 
     @Override
     public int getDelegateType() {
-        return CourseDelegateType.TYPE_VIDEO_ITEM_SMALL.getType();
+        return CourseDelegateType.TYPE_ALBUM_ITEM_SMALL.getType();
     }
 }
