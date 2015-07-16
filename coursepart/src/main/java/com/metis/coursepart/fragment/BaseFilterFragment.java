@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 
 import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.DelegateAdapter;
+import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
 
@@ -44,7 +45,12 @@ public abstract class BaseFilterFragment extends Fragment {
         mDataRv = (RecyclerView)view.findViewById(R.id.filter_recycler_view);
         mDataRv.setLayoutManager(getLayoutManager());
         mDataRv.setAdapter(getAdapter());
-
+        mDataRv.addOnScrollListener(new OnScrollBottomListener() {
+            @Override
+            public void onScrollBottom(RecyclerView recyclerView, int newState) {
+                BaseFilterFragment.this.onScrollBottom();
+            }
+        });
         mDataRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             private int mHeight = 0;
@@ -65,8 +71,9 @@ public abstract class BaseFilterFragment extends Fragment {
                             animator.cancel();
                         }
                         break;
-                    case RecyclerView.SCROLL_STATE_IDLE:
                     case RecyclerView.SCROLL_STATE_SETTLING:
+                        break;
+                    case RecyclerView.SCROLL_STATE_IDLE:
                         final float transY = mFragmentContainer.getTranslationY();
                         if (transY == 0 || transY == -mHeight) {
                             return;
@@ -86,6 +93,7 @@ public abstract class BaseFilterFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                mTotalDy += dy;
                 final float transY = mFragmentContainer.getTranslationY();
                 if (transY == 0 && dy < 0) {
                     return;
@@ -107,7 +115,6 @@ public abstract class BaseFilterFragment extends Fragment {
                     }
                 }
                 mLastDy = dy;
-                mTotalDy += dy;
                 //Log.v(TAG, "mTotalDy=" + mTotalDy + " " + recyclerView.getSc);
             }
 
@@ -135,6 +142,10 @@ public abstract class BaseFilterFragment extends Fragment {
 
     public RecyclerView getRecyclerView () {
         return mDataRv;
+    }
+
+    public void onScrollBottom () {
+
     }
 
     public abstract RecyclerView.LayoutManager getLayoutManager ();

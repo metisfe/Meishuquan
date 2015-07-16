@@ -10,6 +10,7 @@ import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.coursepart.adapter.delegate.CourseDelegateType;
 import com.metis.coursepart.adapter.holder.AlbumItemSmallHolder;
 import com.metis.coursepart.adapter.holder.ItemTitleHolder;
+import com.metis.coursepart.adapter.holder.UserInDetailHolder;
 
 /**
  * Created by Beak on 2015/7/10.
@@ -27,6 +28,8 @@ public class AlbumAdapter extends DelegateAdapter {
                 return new AlbumItemSmallHolder(view);
             case CourseDelegateType.ID.ID_ITEM_TITLE:
                 return new ItemTitleHolder(view);
+            case CourseDelegateType.ID.ID_USER_IN_DETAIL:
+                return new UserInDetailHolder(view);
         }
         throw new Resources.NotFoundException("no AbsViewHolder for viewType=" + viewType);
     }

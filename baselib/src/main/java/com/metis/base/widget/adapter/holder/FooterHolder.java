@@ -20,7 +20,6 @@ public class FooterHolder extends AbsViewHolder<FooterDelegate> {
     @Override
     public void bindData(Context context, FooterDelegate footerDelegate, RecyclerView.Adapter adapter, int position) {
         if (footerDelegate.isInStaggeredGrid()) {
-
             StaggeredGridLayoutManager.LayoutParams params
                     = (StaggeredGridLayoutManager.LayoutParams)itemView.getLayoutParams();
             if (params == null) {

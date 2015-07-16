@@ -2,14 +2,12 @@ package com.metis.coursepart.activity;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.utils.Log;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.fragment.CourseVideoChapterFragment;
@@ -29,7 +28,6 @@ import com.metis.coursepart.module.CourseSubList;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.metis.playerlib.PlayerFragment;
 
-import java.io.File;
 import java.util.List;
 
 
@@ -45,7 +43,8 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
 
     private TabAdapter mTabAdapter = null;
 
-    private long mCourseId = 0;
+    private CourseAlbum mCourseAlbum = null;
+    //private long mCourseId = 0;
 
     private CourseVideoDetailFragment mDetailFragment = new CourseVideoDetailFragment();
     private CourseVideoChapterFragment mChapterFragment = new CourseVideoChapterFragment();
@@ -72,17 +71,16 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
         mViewPager.setAdapter(mTabAdapter);
         mViewPager.addOnPageChangeListener(this);
         mDetailBtn.setSelected(true);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Movies" + File.separator + "TR.mp4");
-        mPlayerFragment.setDataSource(file.getAbsolutePath());
-        mPlayerFragment.setTitle(file.getName());
+
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mCourseId = getIntent().getLongExtra(ActivityDispatcher.KEY_ALBUM_ID, 0);
-        if (mCourseId != 0) {
-            CourseManager.getInstance(this).getCourseSubList(mCourseId, new RequestCallback<CourseSubList>() {
+        mCourseAlbum = (CourseAlbum)getIntent().getSerializableExtra(ActivityDispatcher.KEY_COURSE_ALBUM);
+        mDetailFragment.setCourseAlbum(mCourseAlbum);
+        if (mCourseAlbum != null) {
+            CourseManager.getInstance(this).getCourseSubList(mCourseAlbum.courseId, new RequestCallback<CourseSubList>() {
                 @Override
                 public void callback(ReturnInfo<CourseSubList> returnInfo, String callbackId) {
                     if (returnInfo.isSuccess()) {
@@ -94,11 +92,30 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
                         }
                         if (subList != null && !subList.isEmpty()) {
                             mChapterFragment.setSubCourseList(subList);
+                            loadSubCourseDetail(subList.get(0).subCourseId);
+
+                            //File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Movies" + File.separator + "TR.mp4");
+                            mPlayerFragment.setDataSource(subList.get(0).videoUrl);
+                            mPlayerFragment.setTitle(subList.get(0).subCourseName);
+
                         }
                     }
                 }
             });
         }
+
+    }
+
+    private void loadSubCourseDetail (long subCourseId) {
+        CourseManager.getInstance(CourseVideoDetailActivity.this).getSubCourseDetail(subCourseId, new RequestCallback<Course>() {
+            @Override
+            public void callback(ReturnInfo<Course> returnInfo, String callbackId) {
+                Log.v(TAG, "loadSubCourseDetail " + returnInfo.isSuccess());
+                if (returnInfo.isSuccess()) {
+                    mDetailFragment.setCourse(returnInfo.getData());
+                }
+            }
+        });
     }
 
     @Override

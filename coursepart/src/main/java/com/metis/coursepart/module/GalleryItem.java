@@ -10,11 +10,32 @@ import java.util.List;
  * Created by Beak on 2015/7/8.
  */
 public class GalleryItem implements Parcelable{
-    public String url = null;
+    /*public String url = null;
     public int width, height;
     public List<String> tags = null;
     public String source;
-    public int count;
+    public int count;*/
+
+    public long picId;
+    public long galleryId;
+    public String picName;
+    public String descripiton;
+    public String thumbnailUrl;
+    public int width;
+    public int height;
+    public String originalUrl;
+    public String hdUrl;
+    public int viewCount;
+    public int commentCount;
+    public int shareCount;
+    public boolean userState;
+    public StudioInfo studio;
+    public long studioId;
+    public boolean display;
+    public int picType;
+    public String publishTime;
+    public String picKeyWordList;
+    public List<KeyWord> keyWordList;
 
     @Override
     public int describeContents() {
@@ -23,12 +44,12 @@ public class GalleryItem implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(url);
+        /*dest.writeString(url);
         dest.writeString(source);
         dest.writeInt(width);
         dest.writeInt(height);
         dest.writeInt(count);
-        dest.writeStringList(tags);
+        dest.writeStringList(tags);*/
     }
 
     public static final Parcelable.Creator<GalleryItem> CREATOR = new Parcelable.Creator<GalleryItem>()
@@ -45,7 +66,7 @@ public class GalleryItem implements Parcelable{
     };
 
     private GalleryItem (Parcel in) {
-        url = in.readString();
+        /*url = in.readString();
         source = in.readString();
         width = in.readInt();
         height = in.readInt();
@@ -53,7 +74,7 @@ public class GalleryItem implements Parcelable{
         if (tags == null) {
             tags = new ArrayList<String>();
         }
-        in.readStringList(tags);
+        in.readStringList(tags);*/
     }
 
     public GalleryItem () {}

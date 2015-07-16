@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
-import com.metis.coursepart.adapter.decoration.VideoItemDetailDecoration;
+import com.metis.coursepart.adapter.decoration.UserInDetailDecoration;
 import com.metis.coursepart.adapter.decoration.VideoItemSmallDecoration;
 import com.metis.coursepart.adapter.delegate.AlbumSmallDelegate;
 import com.metis.coursepart.adapter.delegate.ItemTitleDelegate;
+import com.metis.coursepart.adapter.delegate.UserInDetailDelegate;
+import com.metis.coursepart.module.Course;
 import com.metis.coursepart.module.CourseAlbum;
 
 import java.util.ArrayList;
@@ -24,6 +27,8 @@ import java.util.List;
  * Created by Beak on 2015/7/8.
  */
 public class CourseVideoDetailFragment extends Fragment {
+
+    private static final String TAG = CourseVideoDetailFragment.class.getSimpleName();
 
     private static CourseVideoDetailFragment sFragment = new CourseVideoDetailFragment();
 
@@ -36,6 +41,10 @@ public class CourseVideoDetailFragment extends Fragment {
     private AlbumAdapter mAdapter = null;
 
     private List<CourseAlbum> mRelatedCourseList = null;
+
+    private CourseAlbum mCourseAlbum = null;
+    private UserInDetailDelegate mUserDelegate = null;
+    private Course mCurrentCourse = null;
 
     @Nullable
     @Override
@@ -51,8 +60,11 @@ public class CourseVideoDetailFragment extends Fragment {
 
         mAdapter = new AlbumAdapter(getActivity());
         mDetailRv.setAdapter(mAdapter);
-        mDetailRv.addItemDecoration(new VideoItemDetailDecoration());
+        mDetailRv.addItemDecoration(new UserInDetailDecoration());
         mDetailRv.addItemDecoration(new VideoItemSmallDecoration());
+
+        setCourseAlbum(mCourseAlbum);
+        setCourse(mCurrentCourse);
     }
 
     public void setRelatedCourses (List<CourseAlbum> albumList) {
@@ -71,4 +83,24 @@ public class CourseVideoDetailFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         }
     }
+
+    public void setCourseAlbum(CourseAlbum album) {
+        mCourseAlbum = album;
+        if (mAdapter != null && mUserDelegate == null) {
+            mUserDelegate = new UserInDetailDelegate(mCourseAlbum);
+            mAdapter.addDataItem(0, mUserDelegate);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void setCourse(Course course) {
+        mCurrentCourse = course;
+        Log.v(TAG, "mUserDelegate != null -- " + (mUserDelegate != null) + " course=" + course);
+        if (mUserDelegate != null && course != null) {
+            mUserDelegate.setWebContent(course.webContent);
+            mUserDelegate.setContentItemList(course.getContentItemList());
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
 }

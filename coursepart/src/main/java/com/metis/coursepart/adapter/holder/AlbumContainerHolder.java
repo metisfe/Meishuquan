@@ -71,7 +71,7 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
             itemBigView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ActivityDispatcher.videoDetailActivity(context, firstOne.courseId);
+                    ActivityDispatcher.videoDetailActivity(context, firstOne);
                 }
             });
 

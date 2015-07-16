@@ -28,6 +28,7 @@ public class VideoFilterFragment extends BaseFilterFragment implements FilterPan
     private AlbumAdapter mAdapter = null;
 
     private String mCurrentRequestId = null;
+    private int mIndex = 1;
 
     @Override
     public RecyclerView.LayoutManager getLayoutManager() {
@@ -48,6 +49,7 @@ public class VideoFilterFragment extends BaseFilterFragment implements FilterPan
         getFilterPanelFragment().setOnFilterChangeListener(this);
         getRecyclerView().addItemDecoration(new MarginDecoration((int)(getResources().getDisplayMetrics().density * 240)));
         getRecyclerView().addItemDecoration(new VideoItemSmallDecoration());
+
     }
 
     @Override
@@ -57,12 +59,28 @@ public class VideoFilterFragment extends BaseFilterFragment implements FilterPan
     }
 
     @Override
+    public void onScrollBottom() {
+        super.onScrollBottom();
+        mIndex++;
+        loadData(
+                getFilterPanelFragment().getCurrentState(),
+                getFilterPanelFragment().getCurrentCategory(),
+                getFilterPanelFragment().getCurrentStudio(),
+                getFilterPanelFragment().getCurrentCharge());
+    }
+
+    @Override
     public void onFilterChanged(long state, long category, long studio, long charge) {
+        mIndex = 0;
+        loadData(state, category, studio, charge);
+    }
+
+    public void loadData (long state, long category, long studio, long charge) {
         mCurrentRequestId = CourseManager.getInstance(getActivity()).getCourseList(
                 category,
                 state,
                 "",
-                1,
+                mIndex,
                 studio,
                 charge,
                 new RequestCallback<List<CourseAlbum>>() {
@@ -76,6 +94,9 @@ public class VideoFilterFragment extends BaseFilterFragment implements FilterPan
                         final int length = albumList.size();
                         for (int i = 0; i < length; i++) {
                             delegates.add(new AlbumSmallDelegate(albumList.get(i)));
+                        }
+                        if (mIndex == 1) {
+                            mAdapter.clearDataList();
                         }
                         mAdapter.addDataList(delegates);
                         mAdapter.notifyDataSetChanged();

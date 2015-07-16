@@ -1,56 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/std_color_B"
+    >
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/item_detail_photo"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="fill_parent"
         android:layout_centerInParent="true"
         android:scaleType="fitCenter"
         />
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/item_detail_photo"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="#aa000000"
+        android:gravity="bottom"
         >
-        <TextView
-            android:id="@+id/item_detail_tag_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <GridLayout
-            android:id="@+id/item_detail_tag_container"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/item_detail_tag_title"
-            />
+            android:layout_above="@+id/item_detail_scroller"
+            android:padding="2dp"
+            >
+            <TextView
+                android:id="@+id/item_detail_tag_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gallery_tag_title"
+                android:textColor="@android:color/white"
+                android:textSize="12dp"
+                android:layout_margin="4dp"
+                />
+            <GridLayout
+                android:id="@+id/item_detail_tag_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/item_detail_tag_title"
+                />
+        </RelativeLayout>
         <ScrollView
+            android:id="@+id/item_detail_scroller"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/item_detail_tag_container"
-            android:layout_above="@+id/item_detail_save_btn"
+            android:layout_height="150dp"
             >
             <TextView
                 android:id="@+id/item_detail_info"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="14dp"
+                android:padding="@dimen/std_padding"
+                />
         </ScrollView>
-        <Button
-            android:id="@+id/item_detail_save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            />
-        <TextView
-            android:id="@+id/item_detail_read_count"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/item_detail_save_btn"
-            />
-    </RelativeLayout>
-
+            >
+            <TextView
+                android:id="@+id/item_detail_save_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gallery_save"
+                android:background="@drawable/gallery_save_btn"
+                android:padding="@dimen/std_padding"
+                android:textSize="12dp"
+                android:textColor="@android:color/white"
+                />
+            <TextView
+                android:id="@+id/item_detail_read_count"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:gravity="right"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/item_detail_save_btn"
+                android:textColor="@android:color/white"
+                android:layout_centerVertical="true"
+                android:textSize="12dp"
+                android:paddingLeft="@dimen/std_padding_horizontal"
+                android:paddingRight="@dimen/std_padding_horizontal"
+                />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

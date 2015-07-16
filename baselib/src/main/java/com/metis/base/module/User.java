@@ -1,9 +1,11 @@
 package com.metis.base.module;
 
+import java.io.Serializable;
+
 /**
  * Created by Beak on 2015/7/9.
  */
-public class User {
+public class User implements Serializable{
     public int userId;
     public String name;
     public String remarkName;

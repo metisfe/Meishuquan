@@ -177,6 +177,22 @@ public class FilterPanelFragment extends Fragment {
         });
     }
 
+    public long getCurrentState() {
+        return mCurrentState;
+    }
+
+    public long getCurrentCategory() {
+        return mCurrentCategory;
+    }
+
+    public long getCurrentStudio() {
+        return mCurrentStudio;
+    }
+
+    public long getCurrentCharge() {
+        return mCurrentCharge;
+    }
+
     private void onChange () {
         if (mFilterChangeListener != null) {
             mFilterChangeListener.onFilterChanged(mCurrentState, mCurrentCategory, mCurrentStudio, mCurrentCharge);

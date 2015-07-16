@@ -7,6 +7,8 @@
 
     <string name="gallery_tags">标签:%1$s</string>
     <string name="gallery_read_count">阅读数:%1$d</string>
+    <string name="gallery_tag_title">标签:</string>
+    <string name="gallery_save">保存</string>
 
     <string name="title_more">更多</string>
     <string name="title_filter">筛选</string>
@@ -18,6 +20,7 @@
     <string name="course_related">相关推荐</string>
     <string name="course_play_count">播放:%1$d次</string>
     <string name="course_related_count">相关章节(%1$d)</string>
+    <string name="course_play_count_history">历史播放次数:%1$d次</string>
 
     <string name="filter_all">全部</string>
     <string name="filter_recommend">推荐</string>

@@ -9,17 +9,21 @@
             android:name=".activity.CourseVideoDetailActivity"
             android:label="@string/title_activity_course_video_detail"
             android:configChanges="orientation|screenSize"
+            android:theme="@style/BaseTheme"
             >
         </activity>
         <activity
             android:name=".activity.GalleryItemDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:label="@string/title_activity_gallery_item_detail"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:theme="@style/BaseTheme"
+            >
         </activity>
         <activity
             android:name=".activity.FilterActivity"
-            android:label="@string/title_activity_filter" >
+            android:label="@string/title_activity_filter"
+            android:theme="@style/BaseTheme"
+            >
         </activity>
     </application>
 </manifest>

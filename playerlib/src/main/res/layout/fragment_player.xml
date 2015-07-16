@@ -63,6 +63,7 @@
                 android:layout_toRightOf="@id/player_current"
                 android:layout_toLeftOf="@+id/player_duration"
                 android:layout_centerVertical="true"
+                android:duplicateParentState="false"
                 />
             <TextView
                 android:id="@+id/player_duration"

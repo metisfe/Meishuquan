@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#2c2c3f"
+    android:background="@color/std_color_B"
     >
     <FrameLayout
         android:id="@+id/title_bar_left_btn"

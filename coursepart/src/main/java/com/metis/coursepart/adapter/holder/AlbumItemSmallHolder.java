@@ -49,7 +49,7 @@ public class AlbumItemSmallHolder extends AbsViewHolder<AlbumSmallDelegate> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityDispatcher.videoDetailActivity(context, album.courseId);
+                ActivityDispatcher.videoDetailActivity(context, album);
             }
         });
         if (position == 0) {

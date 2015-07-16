@@ -266,6 +266,14 @@ public class PlayerFragment extends Fragment
     @Override
     public void onCompletion() {
         isStarted = false;
+        mBvv.post(new Runnable() {
+            @Override
+            public void run() {
+                setFullScreen(false);
+                stopPlay();
+            }
+        });
+
     }
 
     @Override
@@ -339,6 +347,9 @@ public class PlayerFragment extends Fragment
     }
 
     private void hideController () {
+        if (isAdded()) {
+            return;
+        }
         if (isControllerShowing) {
             Animation topAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.hide_top);
             Animation bottomAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.hide_bottom);
@@ -350,6 +361,9 @@ public class PlayerFragment extends Fragment
     }
 
     private void showController () {
+        if (!isAdded()) {
+            return;
+        }
         if (!isControllerShowing) {
             Animation topAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.show_top);
             Animation bottomAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.show_bottom);

@@ -2,12 +2,13 @@ package com.metis.coursepart.module;
 
 import com.metis.base.module.UserMark;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Beak on 2015/7/9.
  */
-public class CourseAlbum {
+public class CourseAlbum implements Serializable{
     public String coursePic;
     public int courseId;
     public String title;

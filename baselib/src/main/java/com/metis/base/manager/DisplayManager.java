@@ -93,4 +93,8 @@ public class DisplayManager extends AbsManager {
             }
         });
     }
+
+    public DisplayImageOptions getDefaultOptions () {
+        return mDefaultOptions;
+    }
 }

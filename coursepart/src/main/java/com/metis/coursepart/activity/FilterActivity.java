@@ -9,6 +9,7 @@ import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.FragmentUtils;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
+import com.metis.coursepart.fragment.FilterPanelFragment;
 import com.metis.coursepart.fragment.VideoFilterFragment;
 import com.metis.coursepart.manager.CourseManager;
 import com.metis.coursepart.module.CourseChannelList;
@@ -43,8 +44,14 @@ public class FilterActivity extends TitleBarActivity {
                     CourseChannelList channelList = returnInfo.getData();
                     List<StudioInfo> studioList = channelList.coursestuido;
                     List<CourseType> courseTypeList =  channelList.courseType;
-                    mVideoFilterFragment.getFilterPanelFragment().setCourseTypeList(courseTypeList);
-                    mVideoFilterFragment.getFilterPanelFragment().setStudioList(studioList);
+                    FilterPanelFragment panelFragment = mVideoFilterFragment.getFilterPanelFragment();
+                    panelFragment.setCourseTypeList(courseTypeList);
+                    panelFragment.setStudioList(studioList);
+                    mVideoFilterFragment.loadData(
+                            panelFragment.getCurrentState(),
+                            panelFragment.getCurrentCategory(),
+                            panelFragment.getCurrentStudio(),
+                            panelFragment.getCurrentCharge());
                 }
             }
         });

@@ -15,8 +15,18 @@ public class VideoItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
+        RecyclerView.Adapter adapter = parent.getAdapter();
+        if (adapter == null) {
+            return;
+        }
         Context context = view.getContext();
         final int size = context.getResources().getDimensionPixelSize(R.dimen.video_decoration_size);
+        int position = parent.getChildAdapterPosition(view);
+
+        if (position == adapter.getItemCount() - 1) {
+            outRect.set(size, size * 4, size, size * 4);
+            return;
+        }
         outRect.set(size, size * 4, size, 0);
         /*RecyclerView.Adapter adapter = parent.getAdapter();
         final int count = adapter.getItemCount();
