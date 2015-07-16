@@ -60,12 +60,24 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
         List<CourseAlbum> albumList = videoItemDelegate.getSource();
         if (!albumList.isEmpty()) {
             final CourseAlbum firstOne = albumList.get(0);
-            StudioInfo studioInfo = firstOne.studio;
+            final StudioInfo studioInfo = firstOne.studio;
             DisplayManager.getInstance(context).display(firstOne.coursePic, itemBigThumbIv);
             itemBigTitleTv.setText(firstOne.title);
             if (studioInfo != null) {
                 DisplayManager.getInstance(context).display(studioInfo.avatar, itemBigAuthorProfileIv);
                 itemBigAuthorNameTv.setText(studioInfo.name);
+                View.OnClickListener listener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        com.metis.base.ActivityDispatcher.userActivity(context, studioInfo.userId);
+                    }
+                };
+                itemBigAuthorProfileIv.setOnClickListener(listener);
+                itemBigAuthorNameTv.setOnClickListener(listener);
+            } else {
+                itemBigAuthorNameTv.setText("");
+                itemBigAuthorProfileIv.setOnClickListener(null);
+                itemBigAuthorNameTv.setOnClickListener(null);
             }
 
             itemBigView.setOnClickListener(new View.OnClickListener() {

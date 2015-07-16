@@ -115,6 +115,7 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
 
     @Override
     public void onCourseClick(CourseDelegate delegate) {
+        final Course course = delegate.getSource();
         if (delegate.equals(mCurrentCourse)) {
             if (delegate.isSelected()) {
                 //TODO pause
@@ -123,6 +124,22 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
             }
             delegate.setSelected(!delegate.isSelected());
         } else {
+            if (mPlayerFragment.isStarted()) {
+                mPlayerFragment.stopPlay(new PlayerFragment.OnStopCompleteListener() {
+                    @Override
+                    public void onStopped() {
+                        mPlayerFragment.setTitle(course.subCourseName);
+                        mPlayerFragment.setDataSource(course.videoUrl);
+                        mPlayerFragment.startPlay();
+                    }
+                });
+            } else {
+                mPlayerFragment.setTitle(course.subCourseName);
+                mPlayerFragment.setDataSource(course.videoUrl);
+                mPlayerFragment.startPlay();
+            }
+
+
             //TODO perform new video playing
             if (mCurrentCourse != null) {
                 mCurrentCourse.setSelected(false);
@@ -131,6 +148,7 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
         }
         mCurrentCourse = delegate;
         mChapterFragment.notifyDataSetChanged();
+
         Toast.makeText(this, delegate.getSource().subCourseName, Toast.LENGTH_SHORT).show();
     }
 

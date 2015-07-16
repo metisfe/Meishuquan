@@ -45,6 +45,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             />
         <TextView
             android:id="@+id/item_author_name"
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/item_author_profile"
+            android:textColor="@color/colorSubTitle"
             />
         <TextView
             android:id="@+id/item_play_count"

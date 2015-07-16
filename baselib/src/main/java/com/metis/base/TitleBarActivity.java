@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.metis.base.widget.TitleBar;
 
@@ -36,6 +37,10 @@ public abstract class TitleBarActivity extends AppCompatActivity {
                 }
             });
         }
+        if (!isTitleBarOverlay()) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mTitleBar.getLayoutParams();
+            params.addRule(RelativeLayout.BELOW, R.id.title_bar);
+        }
     }
 
     public CharSequence getTitleCenter () {
@@ -48,6 +53,10 @@ public abstract class TitleBarActivity extends AppCompatActivity {
 
     public CharSequence getTitleLeft () {
         return null;
+    }
+
+    public boolean isTitleBarOverlay () {
+        return false;
     }
 
     public boolean showAsUpEnable () {

@@ -76,6 +76,7 @@
                 android:padding="@dimen/std_padding"
                 android:textSize="12dp"
                 android:textColor="@android:color/white"
+                android:layout_margin="@dimen/std_margin"
                 />
             <TextView
                 android:id="@+id/item_detail_read_count"

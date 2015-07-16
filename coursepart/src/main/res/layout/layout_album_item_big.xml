@@ -35,6 +35,8 @@
             android:layout_height="15dp"
             android:scaleType="centerCrop"
             android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:visibility="gone"
             />
         <TextView
             android:id="@+id/item_big_author_name"
@@ -43,9 +45,8 @@
             android:singleLine="true"
             android:layout_toRightOf="@+id/item_big_author_profile"
             android:textSize="15sp"
-            android:textColor="#8f8f8f"
+            android:textColor="@color/colorSubTitle"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
             />
     </RelativeLayout>
 

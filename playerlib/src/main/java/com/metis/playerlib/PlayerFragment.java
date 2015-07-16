@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.cyberplayer.core.BVideoView;
 import com.baidu.cyberplayer.utils.VersionManager;
@@ -209,7 +210,7 @@ public class PlayerFragment extends Fragment
         }
     }
 
-    private void startPlay () {
+    public void startPlay () {
         if (mDataSource == null) {
             return;
         }
@@ -228,7 +229,7 @@ public class PlayerFragment extends Fragment
         isStarted = true;
     }
 
-    private void pausePlay () {
+    public void pausePlay () {
         mBvv.pause();
         mBvv.removeCallbacks(mProgressUpdateRunnable);
         mBvv.setKeepScreenOn(false);
@@ -238,7 +239,7 @@ public class PlayerFragment extends Fragment
         releaseAudioFocus();
     }
 
-    private void resumePlay () {
+    public void resumePlay () {
         mBvv.resume();
         mBvv.post(mProgressUpdateRunnable);
         mBvv.setKeepScreenOn(true);
@@ -248,13 +249,19 @@ public class PlayerFragment extends Fragment
         requestAudioFocus();
     }
 
-    private void stopPlay () {
+    private OnStopCompleteListener mStopListener = null;
+    public void stopPlay (OnStopCompleteListener listener) {
+        mStopListener = listener;
         mBvv.stopPlayback();
         mBvv.setKeepScreenOn(false);
         if (mPlayPauseBox.isChecked()) {
             mPlayPauseBox.setChecked(false);
         }
         releaseAudioFocus();
+    }
+
+    public void stopPlay () {
+        stopPlay(null);
     }
 
     private void requestAudioFocus () {
@@ -272,6 +279,10 @@ public class PlayerFragment extends Fragment
         }
     }
 
+    public boolean isStarted () {
+        return isStarted;
+    }
+
     @Override
     public void onCompletion() {
         isStarted = false;
@@ -279,7 +290,16 @@ public class PlayerFragment extends Fragment
             @Override
             public void run() {
                 setFullScreen(false);
-                stopPlay();
+                mBvv.setKeepScreenOn(false);
+                if (mPlayPauseBox.isChecked()) {
+                    mPlayPauseBox.setChecked(false);
+                }
+                releaseAudioFocus();
+                if (mStopListener != null) {
+                    mStopListener.onStopped();
+                    mStopListener = null;
+                }
+                Toast.makeText(getActivity(), "onCompletion", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -426,6 +446,10 @@ public class PlayerFragment extends Fragment
         isSeekBarDragging = false;
         mBvv.seekTo(mBvv.getDuration() * seekBar.getProgress() / 100);
         showController();
+    }
+
+    public static interface OnStopCompleteListener {
+        public void onStopped ();
     }
 
 }

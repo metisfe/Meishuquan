@@ -58,9 +58,18 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
         } else {
             tagTv.setText("");
         }
-        User user = item.studio;
+        final User user = item.studio;
         if (user != null) {
             sourceTv.setText(user.name);
+            sourceTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    com.metis.base.ActivityDispatcher.userActivity(context, user.userId);
+                }
+            });
+        } else {
+            sourceTv.setText("");
+            sourceTv.setOnClickListener(null);
         }
         countTv.setText(context.getString(R.string.gallery_read_count, item.viewCount));
         if (galleryItemDelegate.delegateWidth >= 0 && galleryItemDelegate.delegateHeight >= 0) {

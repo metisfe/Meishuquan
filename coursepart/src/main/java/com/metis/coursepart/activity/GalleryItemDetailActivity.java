@@ -64,6 +64,11 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
     }
 
     @Override
+    public boolean isTitleBarOverlay() {
+        return true;
+    }
+
+    @Override
     public boolean showAsUpEnable() {
         return true;
     }

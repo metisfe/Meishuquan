@@ -2,6 +2,7 @@ package com.metis.coursepart.adapter.holder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -54,12 +55,14 @@ public class UserInDetailHolder extends AbsViewHolder<UserInDetailDelegate>{
         contentContainer.removeAllViews();
         if (items != null && !items.isEmpty()) {
             final int length = items.size();
+            LayoutInflater inflater = LayoutInflater.from(context);
             for (int i = 0; i < length; i++) {
                 ContentItem item = items.get(i);
                 if (item.isTxt()) {
-                    TextView tv = new TextView(context);
+                    View child = inflater.inflate(R.layout.layout_course_txt_item, null);
+                    TextView tv = (TextView)child.findViewById(R.id.txt_item_content);
                     tv.setText(item.data.Content);
-                    contentContainer.addView(tv);
+                    contentContainer.addView(child);
                 } else {
                     ImageView iv = new ImageView(context);
                     DisplayManager.getInstance(context).display(item.data.ThumbnailsURL, iv);

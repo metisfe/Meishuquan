@@ -17,6 +17,7 @@ public class ActivityDispatcher {
         try {
             Intent it = new Intent(ACTION_USER);
             it.putExtra(KEY_USER_ID, userId);
+            it.addCategory(Intent.CATEGORY_DEFAULT);
             context.startActivity(it);
             Toast.makeText(context, "userActivity " + userId, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {

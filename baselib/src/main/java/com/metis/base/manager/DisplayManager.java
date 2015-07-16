@@ -61,7 +61,9 @@ public class DisplayManager extends AbsManager {
 
                 @Override
                 public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                    view.setBackground (null);
+                    if (bitmap != null) {
+                        view.setBackground (null);
+                    }
                 }
 
                 @Override

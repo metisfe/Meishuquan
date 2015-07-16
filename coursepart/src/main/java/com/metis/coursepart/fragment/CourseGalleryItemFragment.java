@@ -92,7 +92,11 @@ public class CourseGalleryItemFragment extends Fragment implements View.OnClickL
     private void hideDetail () {
         TitleBarActivity activity = (TitleBarActivity)getActivity();
         TitleBar titleBar = activity.getTitleBar();
-        titleBar.setVisibility(View.GONE);
+        if (titleBar.getTranslationY() == 0) {
+            ObjectAnimator titleBarAnimator = ObjectAnimator.ofFloat(titleBar, "translationY", 0, -titleBar.getHeight());
+            titleBarAnimator.start();
+        }
+
         ObjectAnimator animator = ObjectAnimator.ofFloat(mDetailLayout, "translationY", 0, mDetailLayout.getHeight());
         animator.start();
         isDetailVisible = false;
@@ -101,7 +105,12 @@ public class CourseGalleryItemFragment extends Fragment implements View.OnClickL
     private void showDetail () {
         TitleBarActivity activity = (TitleBarActivity)getActivity();
         TitleBar titleBar = activity.getTitleBar();
-        titleBar.setVisibility(View.VISIBLE);
+
+        if (titleBar.getTranslationY() == -titleBar.getHeight()) {
+            ObjectAnimator titleBarAnimator = ObjectAnimator.ofFloat(titleBar, "translationY", -titleBar.getHeight(), 0);
+            titleBarAnimator.start();
+        }
+
         ObjectAnimator animator = ObjectAnimator.ofFloat(mDetailLayout, "translationY", mDetailLayout.getHeight(), 0);
         animator.start();
         isDetailVisible = true;

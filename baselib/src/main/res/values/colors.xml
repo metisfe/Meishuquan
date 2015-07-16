@@ -3,4 +3,7 @@
     <color name="std_color_A">#fb6d6d</color>
     <color name="std_color_B">#2c2c3f</color>
     <color name="std_color_C">#ecebeb</color>
+    <color name="std_color_D">#8f8f8f</color>
+
+    <color name="colorSubTitle">@color/std_color_D</color>
 </resources>

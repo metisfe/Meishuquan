@@ -36,12 +36,23 @@ public class AlbumItemSmallHolder extends AbsViewHolder<AlbumSmallDelegate> {
     @Override
     public void bindData(final Context context, AlbumSmallDelegate videoAlbumDelegate, RecyclerView.Adapter adapter, int position) {
         final CourseAlbum album = videoAlbumDelegate.getSource();
-        StudioInfo studioInfo = album.studio;
+        final StudioInfo studioInfo = album.studio;
         DisplayManager.getInstance(context).display(album.coursePic, itemThumbIv);
         itemTitleTv.setText(album.title);
         if (studioInfo != null) {
             DisplayManager.getInstance(context).display(studioInfo.avatar, itemAuthorProfileIv);
             itemAuthorNameTv.setText(studioInfo.name);
+            View.OnClickListener userListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    com.metis.base.ActivityDispatcher.userActivity(context, studioInfo.userId);
+                }
+            };
+            itemAuthorProfileIv.setOnClickListener(userListener);
+            itemAuthorNameTv.setOnClickListener(userListener);
+        } else {
+            itemAuthorProfileIv.setOnClickListener(null);
+            itemAuthorNameTv.setOnClickListener(null);
         }
 
         itemPlayCountTv.setText(context.getString(R.string.course_play_count, album.viewCount));

@@ -131,6 +131,7 @@ public class CourseGalleryFragment extends Fragment implements SwipeRefreshLayou
                     GalleryCacheManager.getInstance(getActivity()).addAll(galleryItems);
 
                     mAdapter.notifyDataSetChanged();
+                    mIndex = index;
                 }
                 mGallerySrl.setRefreshing(false);
                 isLoading = false;
