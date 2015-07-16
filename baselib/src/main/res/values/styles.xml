@@ -4,5 +4,6 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/std_color_C</item>
     </style>
 </resources>

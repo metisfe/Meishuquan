@@ -48,6 +48,27 @@ public class DisplayManager extends AbsManager {
                     .threadPoolSize(5)
                     .diskCacheFileCount(100)
                     .build();
+            mImageLoader.setDefaultLoadingListener(new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String s, View view) {
+                    view.setBackgroundColor(getContext().getResources().getColor(android.R.color.darker_gray));
+                }
+
+                @Override
+                public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+                }
+
+                @Override
+                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                    view.setBackground (null);
+                }
+
+                @Override
+                public void onLoadingCancelled(String s, View view) {
+
+                }
+            });
             mImageLoader.init(mConfiguration);
         }
     }
@@ -71,27 +92,7 @@ public class DisplayManager extends AbsManager {
     }
 
     public void display (String uri, ImageView iv) {
-        mImageLoader.displayImage(uri, iv, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
-                view.setBackgroundColor(getContext().getResources().getColor(android.R.color.darker_gray));
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                view.setBackground (null);
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-
-            }
-        });
+        mImageLoader.displayImage(uri, iv);
     }
 
     public DisplayImageOptions getDefaultOptions () {

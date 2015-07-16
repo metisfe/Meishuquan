@@ -9,6 +9,8 @@
     <string name="gallery_read_count">阅读数:%1$d</string>
     <string name="gallery_tag_title">标签:</string>
     <string name="gallery_save">保存</string>
+    <string name="gallery_save_to">保存到:%1$s</string>
+    <string name="gallery_save_failed">保存失败</string>
 
     <string name="title_more">更多</string>
     <string name="title_filter">筛选</string>

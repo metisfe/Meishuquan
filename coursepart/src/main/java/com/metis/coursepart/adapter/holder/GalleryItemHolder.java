@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.module.User;
+import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
@@ -29,6 +30,8 @@ import java.util.List;
  * Created by Beak on 2015/7/8.
  */
 public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
+
+    private static final String TAG = GalleryItemHolder.class.getSimpleName();
 
     public ImageView thumbIv;
     public TextView tagTv, sourceTv, countTv;
@@ -49,7 +52,7 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
             final int length = keyWordList.size();
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < length; i++) {
-                builder.append(keyWordList.get(i).keyWordName);
+                builder.append(keyWordList.get(i).keyWordName + " ");
             }
             tagTv.setText(builder);
         } else {
@@ -84,7 +87,11 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
 
                             @Override
                             public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                galleryItemDelegate.autoComputeByScreen(context, bitmap.getWidth(), bitmap.getHeight());
+                                if (bitmap != null) {
+                                    galleryItemDelegate.autoComputeByScreen(context, bitmap.getWidth(), bitmap.getHeight());
+                                } else {
+
+                                }
                             }
 
                             @Override

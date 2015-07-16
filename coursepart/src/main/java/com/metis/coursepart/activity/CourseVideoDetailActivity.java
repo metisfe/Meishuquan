@@ -14,11 +14,14 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.Log;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
+import com.metis.coursepart.adapter.CourseAdapter;
+import com.metis.coursepart.adapter.delegate.CourseDelegate;
 import com.metis.coursepart.fragment.CourseVideoChapterFragment;
 import com.metis.coursepart.fragment.CourseVideoDetailFragment;
 import com.metis.coursepart.manager.CourseManager;
@@ -31,7 +34,7 @@ import com.metis.playerlib.PlayerFragment;
 import java.util.List;
 
 
-public class CourseVideoDetailActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
+public class CourseVideoDetailActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, CourseAdapter.OnCourseClickListener{
 
     private static final String TAG = CourseVideoDetailActivity.class.getSimpleName();
 
@@ -51,6 +54,8 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
     private Fragment[] mFragmentArray = {
             mDetailFragment, mChapterFragment
     };
+
+    private CourseDelegate mCurrentCourse = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +109,29 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
             });
         }
 
+        mChapterFragment.setOnCourseClickListener(this);
+
+    }
+
+    @Override
+    public void onCourseClick(CourseDelegate delegate) {
+        if (delegate.equals(mCurrentCourse)) {
+            if (delegate.isSelected()) {
+                //TODO pause
+            } else {
+                //TODO resume
+            }
+            delegate.setSelected(!delegate.isSelected());
+        } else {
+            //TODO perform new video playing
+            if (mCurrentCourse != null) {
+                mCurrentCourse.setSelected(false);
+            }
+            delegate.setSelected(true);
+        }
+        mCurrentCourse = delegate;
+        mChapterFragment.notifyDataSetChanged();
+        Toast.makeText(this, delegate.getSource().subCourseName, Toast.LENGTH_SHORT).show();
     }
 
     private void loadSubCourseDetail (long subCourseId) {

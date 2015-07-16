@@ -61,7 +61,12 @@ public class FroyoGestureDetector extends EclairGestureDetector {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        mDetector.onTouchEvent(ev);
+        try {
+            mDetector.onTouchEvent(ev);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return super.onTouchEvent(ev);
     }
 

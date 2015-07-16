@@ -40,5 +40,6 @@ public class CourseHolder extends AbsViewHolder<CourseDelegate> {
         } else {
             itemView.setBackgroundResource(R.drawable.video_item_bg_small_sel);
         }
+        itemView.setSelected(courseDelegate.isSelected());
     }
 }

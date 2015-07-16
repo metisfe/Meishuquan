@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -32,7 +33,7 @@ import java.util.Random;
 /**
  * Created by Beak on 2015/7/6.
  */
-public class CourseGalleryFragment extends Fragment {
+public class CourseGalleryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private static final String TAG = CourseGalleryFragment.class.getSimpleName();
 
@@ -45,17 +46,16 @@ public class CourseGalleryFragment extends Fragment {
         return sFragment;
     }
 
-    static {
-        TypeLayoutProvider.put(1, R.layout.layout_load_more_footer);
-        TypeLayoutProvider.put(2, R.layout.layout_gallery_item);
-    }
-
+    private SwipeRefreshLayout mGallerySrl = null;
     private RecyclerView mGalleryRv = null;
     private GalleryAdapter mAdapter = null;
 
     private GalleryItemDecoration mDecoration = new GalleryItemDecoration();
 
     private FooterDelegate mFooterDelegate = null;
+
+    private int mIndex = 1;
+    private boolean isLoading = false;
 
     @Nullable
     @Override
@@ -67,6 +67,7 @@ public class CourseGalleryFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mGallerySrl = (SwipeRefreshLayout)view.findViewById(R.id.gallery_swipe_refresh_layout);
         mGalleryRv = (RecyclerView)view.findViewById(R.id.gallery_recycler_view);
         final int spanCount = getResources().getInteger(R.integer.gallery_span_count);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
@@ -75,7 +76,9 @@ public class CourseGalleryFragment extends Fragment {
         mGalleryRv.addOnScrollListener(new OnScrollBottomListener() {
             @Override
             public void onScrollBottom(RecyclerView recyclerView, int newState) {
-
+                if (!isLoading) {
+                    loadData(mIndex + 1);
+                }
             }
         });
 
@@ -85,10 +88,25 @@ public class CourseGalleryFragment extends Fragment {
         mGalleryRv.setAdapter(mAdapter);
         mFooterDelegate = new FooterDelegate(new Footer(Footer.STATE_WAITTING));
         mFooterDelegate.setIsInStaggeredGrid(true);
+        mGallerySrl.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_purple
+        );
+        mGallerySrl.setOnRefreshListener(this);
+        mGallerySrl.post(new Runnable() {
+            @Override
+            public void run() {
+                mGallerySrl.setRefreshing(true);
+            }
+        });
         loadData(1);
     }
 
     private void loadData (final int index) {
+        isLoading = true;
         CourseManager.getInstance(getActivity()).getGalleryPicList(0, "", 0, 0, 0, index, new RequestCallback<List<GalleryItem>>() {
             @Override
             public void callback(ReturnInfo<List<GalleryItem>> returnInfo, String callbackId) {
@@ -106,15 +124,22 @@ public class CourseGalleryFragment extends Fragment {
                     }
                     if (index == 1) {
                         mAdapter.clearDataList();
+                        mAdapter.addDataItem(mFooterDelegate);
                         GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList();
                     }
-                    mAdapter.addDataList(delegates);
+                    mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
                     GalleryCacheManager.getInstance(getActivity()).addAll(galleryItems);
-                    mAdapter.addDataItem(mFooterDelegate);
+
                     mAdapter.notifyDataSetChanged();
                 }
+                mGallerySrl.setRefreshing(false);
+                isLoading = false;
             }
         });
     }
 
+    @Override
+    public void onRefresh() {
+        loadData(1);
+    }
 }

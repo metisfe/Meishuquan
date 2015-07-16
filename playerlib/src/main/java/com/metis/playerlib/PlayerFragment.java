@@ -65,6 +65,8 @@ public class PlayerFragment extends Fragment
     private boolean isSeekBarDragging = false;
     private boolean isControllerShowing = true;
 
+    private boolean isFragmentAlive = false;
+
     private AudioManager mAudioManager = null;
 
     private Runnable mSystemUiRunnable = new Runnable() {
@@ -108,6 +110,12 @@ public class PlayerFragment extends Fragment
             pausePlay();
         }
     };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isFragmentAlive = true;
+    }
 
     @Nullable
     @Override
@@ -187,6 +195,7 @@ public class PlayerFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         stopPlay();
+        isFragmentAlive = false;
     }
 
     public void setDataSource (String uri) {
@@ -226,7 +235,7 @@ public class PlayerFragment extends Fragment
         if (mPlayPauseBox.isChecked()) {
             mPlayPauseBox.setChecked(false);
         }
-        releaseAudioFocus ();
+        releaseAudioFocus();
     }
 
     private void resumePlay () {
@@ -245,7 +254,7 @@ public class PlayerFragment extends Fragment
         if (mPlayPauseBox.isChecked()) {
             mPlayPauseBox.setChecked(false);
         }
-        releaseAudioFocus ();
+        releaseAudioFocus();
     }
 
     private void requestAudioFocus () {
@@ -347,7 +356,7 @@ public class PlayerFragment extends Fragment
     }
 
     private void hideController () {
-        if (isAdded()) {
+        if (!isFragmentAlive) {
             return;
         }
         if (isControllerShowing) {
@@ -361,7 +370,7 @@ public class PlayerFragment extends Fragment
     }
 
     private void showController () {
-        if (!isAdded()) {
+        if (!isFragmentAlive) {
             return;
         }
         if (!isControllerShowing) {

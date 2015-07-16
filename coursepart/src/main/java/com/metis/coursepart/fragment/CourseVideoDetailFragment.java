@@ -8,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
+import com.metis.coursepart.adapter.CourseAdapter;
 import com.metis.coursepart.adapter.decoration.UserInDetailDecoration;
 import com.metis.coursepart.adapter.decoration.VideoItemSmallDecoration;
 import com.metis.coursepart.adapter.delegate.AlbumSmallDelegate;
@@ -59,6 +61,7 @@ public class CourseVideoDetailFragment extends Fragment {
         mDetailRv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new AlbumAdapter(getActivity());
+
         mDetailRv.setAdapter(mAdapter);
         mDetailRv.addItemDecoration(new UserInDetailDecoration());
         mDetailRv.addItemDecoration(new VideoItemSmallDecoration());

@@ -11,14 +11,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.metis.base.TitleBarActivity;
+import com.metis.base.widget.ProfileNameView;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.fragment.CourseGalleryFragment;
 import com.metis.coursepart.fragment.CourseGalleryItemFragment;
 import com.metis.coursepart.manager.GalleryCacheManager;
 import com.metis.coursepart.module.GalleryItem;
+import com.metis.coursepart.module.StudioInfo;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
     private static final String TAG = GalleryItemDetailActivity.class.getSimpleName();
 
     private ViewPager mPhotoVp = null;
+    private ProfileNameView mProfileNameView = null;
 
     private GalleryAdapter mAdapter = null;
 
@@ -35,20 +39,22 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_item_detail);
 
+        mProfileNameView = new ProfileNameView(this);
+        getTitleBar().setCenterView(mProfileNameView);
+
         mPhotoVp = (ViewPager)findViewById(R.id.item_detail_view_pager);
         mAdapter = new GalleryAdapter(this, getSupportFragmentManager());
         mPhotoVp.setAdapter(mAdapter);
 
         long picId = getIntent().getLongExtra(ActivityDispatcher.KEY_GALLERY_ITEM_ID, 0);
-        Log.v(TAG, "imageDetailActivity get out id=" + picId);
         int index = GalleryCacheManager.getInstance(this).getIndexById(picId);
-        Log.v(TAG, "imageDetailActivity get out inext=" + index);
         if (index < 0) {
             index = 0;
         }
         mPhotoVp.addOnPageChangeListener(this);
         mPhotoVp.setCurrentItem(index);
 
+        onPageSelected(index);
     }
 
     @Override
@@ -74,7 +80,24 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
 
     @Override
     public void onPageSelected(int position) {
-        ((CourseGalleryItemFragment)mAdapter.getItem(position)).setGalleryItem(GalleryCacheManager.getInstance(this).getGalleryItem(position));
+        GalleryItem galleryItem = GalleryCacheManager.getInstance(this).getGalleryItem(position);
+        ((CourseGalleryItemFragment) mAdapter.getItem(position)).setGalleryItem(galleryItem);
+
+        final StudioInfo studioInfo = galleryItem.studio;
+        if (studioInfo != null) {
+            mProfileNameView.setName(studioInfo.name);
+            mProfileNameView.setProfile(studioInfo.avatar);
+            mProfileNameView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    com.metis.base.ActivityDispatcher.userActivity(GalleryItemDetailActivity.this, studioInfo.userId);
+                }
+            });
+        } else {
+            mProfileNameView.setName(null);
+            mProfileNameView.setProfile(null);
+            mProfileNameView.setOnClickListener(null);
+        }
     }
 
     @Override

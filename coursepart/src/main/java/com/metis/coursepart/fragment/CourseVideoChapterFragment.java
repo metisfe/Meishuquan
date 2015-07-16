@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.CourseAdapter;
@@ -37,6 +38,8 @@ public class CourseVideoChapterFragment extends Fragment {
 
     private CourseAdapter mAdapter = null;
 
+    private CourseAdapter.OnCourseClickListener mCourseClickListener = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +55,8 @@ public class CourseVideoChapterFragment extends Fragment {
         mChapterRv.addItemDecoration(new VideoItemDetailDecoration());
         mAdapter = new CourseAdapter(getActivity());
         mChapterRv.setAdapter(mAdapter);
+
+        setOnCourseClickListener(mCourseClickListener);
     }
 
     public void setSubCourseList(List<Course> courseList) {
@@ -70,4 +75,18 @@ public class CourseVideoChapterFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         }
     }
+
+    public void setOnCourseClickListener (CourseAdapter.OnCourseClickListener listener) {
+        mCourseClickListener = listener;
+        if (mAdapter != null) {
+            mAdapter.setOnCourseClickListener(mCourseClickListener);
+        }
+    }
+
+    public void notifyDataSetChanged () {
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
 }

@@ -12,6 +12,7 @@
         android:scaleType="fitCenter"
         />
     <LinearLayout
+        android:id="@+id/item_detail_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -34,12 +35,19 @@
                 android:textSize="12dp"
                 android:layout_margin="4dp"
                 />
-            <GridLayout
-                android:id="@+id/item_detail_tag_container"
+            <HorizontalScrollView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/item_detail_tag_title"
-                />
+                android:layout_alignBottom="@+id/item_detail_tag_title"
+                >
+                <LinearLayout
+                    android:id="@+id/item_detail_tag_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    />
+            </HorizontalScrollView>
         </RelativeLayout>
         <ScrollView
             android:id="@+id/item_detail_scroller"
