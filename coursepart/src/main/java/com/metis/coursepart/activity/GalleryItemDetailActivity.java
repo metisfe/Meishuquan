@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.metis.base.TitleBarActivity;
+import com.metis.base.manager.DisplayManager;
 import com.metis.base.widget.ProfileNameView;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
@@ -91,7 +92,8 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
         final StudioInfo studioInfo = galleryItem.studio;
         if (studioInfo != null) {
             mProfileNameView.setName(studioInfo.name);
-            mProfileNameView.setProfile(studioInfo.avatar);
+            mProfileNameView.setProfile(studioInfo.avatar,
+                    DisplayManager.getInstance(this).makeRoundDisplayImageOptions(getResources().getDimensionPixelSize(R.dimen.gallery_title_profile_size)));
             mProfileNameView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

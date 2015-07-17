@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.metis.base.R;
+import com.metis.base.widget.displayer.SquareRoundDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -95,6 +96,14 @@ public class DisplayManager extends AbsManager {
 
     public void display (String uri, ImageView iv) {
         mImageLoader.displayImage(uri, iv);
+    }
+
+    public DisplayImageOptions makeRoundDisplayImageOptions (int size) {
+        DisplayImageOptions mOptions = new DisplayImageOptions.Builder()
+                .cloneFrom(mDefaultOptions)
+                .displayer(new SquareRoundDisplayer(size))
+                .build();
+        return mOptions;
     }
 
     public DisplayImageOptions getDefaultOptions () {

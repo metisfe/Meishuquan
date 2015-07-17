@@ -55,7 +55,7 @@ public class ProfileNameView extends RelativeLayout {
                 .display(uri, mProfileIv);
     }
 
-    public void setProfileIv (String uri, DisplayImageOptions options) {
+    public void setProfile (String uri, DisplayImageOptions options) {
         if (uri == null) {
             mProfileIv.setImageDrawable(null);
         }
