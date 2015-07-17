@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
+import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.delegate.ItemTitleDelegate;
 
@@ -23,7 +24,7 @@ public class ItemTitleHolder extends AbsViewHolder<ItemTitleDelegate> {
     }
 
     @Override
-    public void bindData(Context context, ItemTitleDelegate videoItemTitleDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, final ItemTitleDelegate videoItemTitleDelegate, RecyclerView.Adapter adapter, int position) {
         channelTv.setText(videoItemTitleDelegate.getSource());
         if (position == 0) {
             itemView.setBackgroundResource(R.drawable.video_item_bg_nor_top);
@@ -31,6 +32,14 @@ public class ItemTitleHolder extends AbsViewHolder<ItemTitleDelegate> {
             itemView.setBackgroundResource(R.drawable.video_item_bg_nor_bottom);
         } else {
             itemView.setBackgroundResource(R.drawable.video_item_bg_nor);
+        }
+        if (videoItemTitleDelegate.isClickable()) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityDispatcher.filterActivityWithState(context, videoItemTitleDelegate.getFilterId());
+                }
+            });
         }
     }
 }

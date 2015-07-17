@@ -119,10 +119,14 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
                     params.height = rvHeight;
                 }
                 itemRv.setLayoutParams(params);
-                subAdapter.addDataItem(new ItemTitleDelegate(firstOne.getChannel()));
+                ItemTitleDelegate titleDelegate = new ItemTitleDelegate(firstOne.getChannel());
+                titleDelegate.setClickable(true);
+                titleDelegate.setFilterId(videoItemDelegate.getFilterId());
+                subAdapter.addDataItem(titleDelegate);
                 subAdapter.addDataList(albumDelegates);
                 subAdapter.notifyDataSetChanged();
             }
         }
     }
+
 }

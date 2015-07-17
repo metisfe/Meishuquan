@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.metis.base.utils.Log;
 import com.metis.coursepart.activity.CourseVideoDetailActivity;
+import com.metis.coursepart.activity.FilterActivity;
 import com.metis.coursepart.activity.GalleryItemDetailActivity;
 import com.metis.coursepart.module.CourseAlbum;
 import com.metis.coursepart.module.GalleryItem;
@@ -21,7 +22,8 @@ public class ActivityDispatcher {
     public static final String
             KEY_COURSE_ALBUM = "course_album",
             KEY_ALBUM_ID = "album_id",
-            KEY_GALLERY_ITEM_ID = "gallery_item_id";
+            KEY_GALLERY_ITEM_ID = "gallery_item_id",
+            KEY_STATE_FILTER_ID = "state_filter_id";
 
     public static void videoDetailActivity (Context context, CourseAlbum album) {
         Intent it = new Intent(context, CourseVideoDetailActivity.class);
@@ -33,6 +35,12 @@ public class ActivityDispatcher {
         Intent it = new Intent(context, GalleryItemDetailActivity.class);
         Log.v(TAG, "imageDetailActivity id=" + id);
         it.putExtra(KEY_GALLERY_ITEM_ID, id);
+        context.startActivity(it);
+    }
+
+    public static void filterActivityWithState (Context context, long state) {
+        Intent it = new Intent(context, FilterActivity.class);
+        it.putExtra(KEY_STATE_FILTER_ID, state);
         context.startActivity(it);
     }
 }

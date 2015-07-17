@@ -57,6 +57,8 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
 
     private CourseDelegate mCurrentCourse = null;
 
+    private String mRequestId = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,18 +149,21 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
             delegate.setSelected(true);
         }
         mCurrentCourse = delegate;
+        loadSubCourseDetail(mCurrentCourse.getSource().subCourseId);
         mChapterFragment.notifyDataSetChanged();
 
         Toast.makeText(this, delegate.getSource().subCourseName, Toast.LENGTH_SHORT).show();
     }
 
     private void loadSubCourseDetail (long subCourseId) {
-        CourseManager.getInstance(CourseVideoDetailActivity.this).getSubCourseDetail(subCourseId, new RequestCallback<Course>() {
+        mRequestId = CourseManager.getInstance(CourseVideoDetailActivity.this).getSubCourseDetail(subCourseId, new RequestCallback<Course>() {
             @Override
             public void callback(ReturnInfo<Course> returnInfo, String callbackId) {
                 Log.v(TAG, "loadSubCourseDetail " + returnInfo.isSuccess());
                 if (returnInfo.isSuccess()) {
-                    mDetailFragment.setCourse(returnInfo.getData());
+                    if (callbackId.equals(mRequestId)) {
+                        mDetailFragment.setCurrentCourse(returnInfo.getData());
+                    }
                 }
             }
         });

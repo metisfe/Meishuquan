@@ -37,12 +37,12 @@ public class FilterPanelFragment extends Fragment {
 
     private OnFilterChangeListener mFilterChangeListener = null;
 
-    private long mCurrentState, mCurrentCategory, mCurrentStudio, mCurrentCharge;
+    private long mCurrentState = -1, mCurrentCategory, mCurrentStudio, mCurrentCharge;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_panel_filter, null, true);
+        return inflater.inflate(R.layout.fragment_panel_filter, null, false);
     }
 
     @Override
@@ -63,6 +63,7 @@ public class FilterPanelFragment extends Fragment {
         mCategoryFilterRv.setLayoutManager(categoryGlm);
         mStudioFilterRv.setLayoutManager(studioGlm);
         mChargeRuleFilterRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
     }
 
     @Override
@@ -72,7 +73,12 @@ public class FilterPanelFragment extends Fragment {
         initChargeRv();
     }
 
+    public void setCurrentState (long state) {
+        mCurrentState = state;
+    }
+
     private void initStateRv () {
+
         mStateAdapter = new FilterAdapter(getActivity());
         List<FilterDelegate> stateDelegates = new ArrayList<FilterDelegate>();
         final int stateLength = mStateFilterArray.length;
@@ -83,6 +89,9 @@ public class FilterPanelFragment extends Fragment {
         }
         mStateAdapter.addDataList(stateDelegates);
         mStateFilterRv.setAdapter(mStateAdapter);
+        if (mCurrentState >= 0) {
+            mStateAdapter.setSelectedFilterId(mCurrentState);
+        }
         mCurrentState = mStateAdapter.getSelectedFilterId();
         mStateAdapter.setOnFilterSelectedListener(new FilterAdapter.OnFilterSelectedListener() {
             @Override

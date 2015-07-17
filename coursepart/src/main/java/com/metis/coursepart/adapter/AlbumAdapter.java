@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.widget.adapter.DelegateAdapter;
+import com.metis.base.widget.adapter.delegate.DelegateType;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
+import com.metis.base.widget.adapter.holder.FooterHolder;
 import com.metis.coursepart.adapter.delegate.CourseDelegateType;
 import com.metis.coursepart.adapter.holder.AlbumItemSmallHolder;
 import com.metis.coursepart.adapter.holder.ItemTitleHolder;
@@ -30,6 +32,8 @@ public class AlbumAdapter extends DelegateAdapter {
                 return new ItemTitleHolder(view);
             case CourseDelegateType.ID.ID_USER_IN_DETAIL:
                 return new UserInDetailHolder(view);
+            case DelegateType.ID.ID_FOOTER:
+                return new FooterHolder(view);
         }
         throw new Resources.NotFoundException("no AbsViewHolder for viewType=" + viewType);
     }

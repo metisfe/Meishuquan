@@ -8,12 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
-import com.metis.coursepart.adapter.CourseAdapter;
 import com.metis.coursepart.adapter.decoration.UserInDetailDecoration;
 import com.metis.coursepart.adapter.decoration.VideoItemSmallDecoration;
 import com.metis.coursepart.adapter.delegate.AlbumSmallDelegate;
@@ -67,7 +65,7 @@ public class CourseVideoDetailFragment extends Fragment {
         mDetailRv.addItemDecoration(new VideoItemSmallDecoration());
 
         setCourseAlbum(mCourseAlbum);
-        setCourse(mCurrentCourse);
+        setCurrentCourse(mCurrentCourse);
     }
 
     public void setRelatedCourses (List<CourseAlbum> albumList) {
@@ -96,7 +94,7 @@ public class CourseVideoDetailFragment extends Fragment {
         }
     }
 
-    public void setCourse(Course course) {
+    public void setCurrentCourse(Course course) {
         mCurrentCourse = course;
         Log.v(TAG, "mUserDelegate != null -- " + (mUserDelegate != null) + " course=" + course);
         if (mUserDelegate != null && course != null) {

@@ -10,6 +10,7 @@ import com.metis.base.widget.adapter.delegate.AbsDelegate;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.coursepart.adapter.delegate.CourseDelegateType;
+import com.metis.coursepart.adapter.delegate.FilterDelegate;
 import com.metis.coursepart.adapter.holder.CourseTypeFilterHolder;
 import com.metis.coursepart.adapter.holder.FilterHolder;
 import com.metis.coursepart.adapter.holder.StudioFilterHolder;
@@ -85,6 +86,24 @@ public class FilterAdapter extends DelegateAdapter {
             }
         }
         return -1;
+    }
+
+    public void setSelectedFilterId (long id) {
+        final int length = getItemCount();
+        AbsDelegate selectedDelegate = getDataItem(mSelectedPosition);
+        if (selectedDelegate != null && selectedDelegate instanceof FilterSelectable) {
+            ((FilterSelectable) selectedDelegate).setSelected(false);
+        }
+        for (int i = 0; i < length; i++) {
+            AbsDelegate delegate = getDataItem(i);
+            if (delegate instanceof FilterSelectable) {
+                if (((FilterSelectable) delegate).getFilterId() == id) {
+                    mSelectedPosition = i;
+                    ((FilterSelectable) delegate).setSelected(true);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public long getSelectedFilterId () {

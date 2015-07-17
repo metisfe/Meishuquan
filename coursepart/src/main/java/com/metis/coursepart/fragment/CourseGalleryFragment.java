@@ -52,6 +52,7 @@ public class CourseGalleryFragment extends Fragment implements SwipeRefreshLayou
 
     private GalleryItemDecoration mDecoration = new GalleryItemDecoration();
 
+    private Footer mFooter = null;
     private FooterDelegate mFooterDelegate = null;
 
     private int mIndex = 1;
@@ -86,7 +87,8 @@ public class CourseGalleryFragment extends Fragment implements SwipeRefreshLayou
 
         mGalleryRv.addItemDecoration(mDecoration);
         mGalleryRv.setAdapter(mAdapter);
-        mFooterDelegate = new FooterDelegate(new Footer(Footer.STATE_WAITTING));
+        mFooter = new Footer(Footer.STATE_WAITTING);
+        mFooterDelegate = new FooterDelegate(mFooter);
         mFooterDelegate.setIsInStaggeredGrid(true);
         mGallerySrl.setColorSchemeResources(
                 android.R.color.holo_blue_light,
@@ -107,6 +109,10 @@ public class CourseGalleryFragment extends Fragment implements SwipeRefreshLayou
 
     private void loadData (final int index) {
         isLoading = true;
+        if (index > 1) {
+            mFooter.setState(Footer.STATE_WAITTING);
+            mAdapter.notifyDataSetChanged();
+        }
         CourseManager.getInstance(getActivity()).getGalleryPicList(0, "", 0, 0, 0, index, new RequestCallback<List<GalleryItem>>() {
             @Override
             public void callback(ReturnInfo<List<GalleryItem>> returnInfo, String callbackId) {
@@ -130,9 +136,15 @@ public class CourseGalleryFragment extends Fragment implements SwipeRefreshLayou
                     mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
                     GalleryCacheManager.getInstance(getActivity()).addAll(galleryItems);
 
-                    mAdapter.notifyDataSetChanged();
+                    mFooter.setState(galleryItems.isEmpty() ? Footer.STATE_NO_MORE : Footer.STATE_SUCCESS);
                     mIndex = index;
+                } else {
+                    mFooter.setState(Footer.STATE_FAILED);
+                    if (mAdapter.getDataList().contains(mFooterDelegate)) {
+                        mAdapter.addDataItem(mFooterDelegate);
+                    }
                 }
+                mAdapter.notifyDataSetChanged();
                 mGallerySrl.setRefreshing(false);
                 isLoading = false;
             }

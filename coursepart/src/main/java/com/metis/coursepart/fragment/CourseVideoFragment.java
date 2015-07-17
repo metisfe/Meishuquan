@@ -108,27 +108,34 @@ public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.
 
     private void parseCourseList (MainCourseList mainCourseList) {
         List<AlbumContainerDelegate> delegateList = new ArrayList<AlbumContainerDelegate>();
-        List<CourseAlbum> topList = mainCourseList.topCourse;
-        Log.v(TAG, "topList=" + topList.size());
-        if (topList != null && !topList.isEmpty()) {
-            topList.get(0).setChannel(getString(R.string.course_top));
-            delegateList.add(new AlbumContainerDelegate(topList));
-        }
-        List<CourseAlbum> hotList = mainCourseList.hottestCourse;
-        if (hotList != null && !hotList.isEmpty()) {
-            hotList.get(0).setChannel(getString(R.string.course_hot));
-            delegateList.add(new AlbumContainerDelegate(hotList));
+        //TODO
+//        List<CourseAlbum> topList = mainCourseList.topCourse;
+//        Log.v(TAG, "topList=" + topList.size());
+//        if (topList != null && !topList.isEmpty()) {
+//            topList.get(0).setChannel(getString(R.string.course_top));
+//            delegateList.add(new AlbumContainerDelegate(topList));
+//        }
+        List<CourseAlbum> recommentedList = mainCourseList.recommendCourse;
+        if (recommentedList != null && !recommentedList.isEmpty()) {
+            recommentedList.get(0).setChannel(getString(R.string.course_recommend));
+            AlbumContainerDelegate delegate = new AlbumContainerDelegate(recommentedList);
+            delegate.setFilterId(1);
+            delegateList.add(delegate);
         }
         List<CourseAlbum> newList = mainCourseList.newestCourse;
         if (newList != null && !newList.isEmpty()) {
             newList.get(0).setChannel(getString(R.string.course_new));
-            delegateList.add(new AlbumContainerDelegate(newList));
+            AlbumContainerDelegate delegate = new AlbumContainerDelegate(newList);
+            delegate.setFilterId(2);
+            delegateList.add(delegate);
         }
-        List<CourseAlbum> recommentedList = mainCourseList.recommendCourse;
-        if (recommentedList != null && !recommentedList.isEmpty()) {
-            recommentedList.get(0).setChannel(getString(R.string.course_recommend));
-            delegateList.add(new AlbumContainerDelegate(recommentedList));
+        List<CourseAlbum> hotList = mainCourseList.hottestCourse;
+        if (hotList != null && !hotList.isEmpty()) {
+            hotList.get(0).setChannel(getString(R.string.course_hot));
+            AlbumContainerDelegate delegate = new AlbumContainerDelegate(hotList);
+            delegateList.add(delegate);
         }
+
         mAdapter.clearDataList();
         mAdapter.addDataList(delegateList);
         mAdapter.notifyDataSetChanged();

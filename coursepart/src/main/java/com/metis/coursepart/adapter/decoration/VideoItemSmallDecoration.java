@@ -36,11 +36,10 @@ public class VideoItemSmallDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount - 1; i++) {
             View child = parent.getChildAt(i);
             int position = parent.getChildAdapterPosition(child);
-            if (position == itemCount - 1) {
-                continue;
-            }
+
             int type = adapter.getItemViewType(position);
-            if (type == CourseDelegateType.ID.ID_ALBUM_ITEM_SMALL) {
+            int nextType = adapter.getItemViewType(position + 1);
+            if (type == CourseDelegateType.ID.ID_ALBUM_ITEM_SMALL && nextType == CourseDelegateType.ID.ID_ALBUM_ITEM_SMALL) {
                 final int left = child.getLeft() + deviderPading;
                 final int y = child.getBottom();
                 final int right = child.getRight() - deviderPading;

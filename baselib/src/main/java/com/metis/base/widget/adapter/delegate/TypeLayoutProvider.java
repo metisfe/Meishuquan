@@ -2,10 +2,10 @@ package com.metis.base.widget.adapter.delegate;
 
 import android.content.res.Resources;
 import android.support.annotation.LayoutRes;
-import android.util.Log;
 import android.util.SparseIntArray;
 
 import com.metis.base.Debug;
+import com.metis.base.utils.Log;
 
 /**
  * Created by Beak on 2015/7/2.

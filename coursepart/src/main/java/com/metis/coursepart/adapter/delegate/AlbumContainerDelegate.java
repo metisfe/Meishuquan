@@ -14,6 +14,8 @@ public class AlbumContainerDelegate extends BaseDelegate<List<CourseAlbum>> {
     private AlbumAdapter mSubAdapter = null;
     private int mSubRvHeight = -1;
 
+    private long mFilterId = 0l;
+
     public AlbumContainerDelegate(List<CourseAlbum> courseAlbums) {
         super(courseAlbums);
     }
@@ -37,5 +39,13 @@ public class AlbumContainerDelegate extends BaseDelegate<List<CourseAlbum>> {
 
     public void setSubRecyclerViewHeight(int mSubRvHeight) {
         this.mSubRvHeight = mSubRvHeight;
+    }
+
+    public void setFilterId (long id) {
+        mFilterId = id;
+    }
+
+    public long getFilterId () {
+        return mFilterId;
     }
 }

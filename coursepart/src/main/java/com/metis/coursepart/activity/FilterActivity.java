@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import com.metis.base.TitleBarActivity;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.FragmentUtils;
+import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
 import com.metis.coursepart.fragment.FilterPanelFragment;
@@ -23,6 +24,8 @@ public class FilterActivity extends TitleBarActivity {
 
     private VideoFilterFragment mVideoFilterFragment = new VideoFilterFragment();
 
+    private long mState = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +35,14 @@ public class FilterActivity extends TitleBarActivity {
         getTitleBar().setCenterView(switchView);*/
 
         FragmentUtils.showFragment(getSupportFragmentManager(), mVideoFilterFragment, R.id.filter_fragment_container);
+
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        mState = getIntent().getLongExtra(ActivityDispatcher.KEY_STATE_FILTER_ID, -1);
+        mVideoFilterFragment.getFilterPanelFragment().setCurrentState(mState);
         CourseManager.getInstance(this).getCourseChannelList(new RequestCallback<CourseChannelList>() {
             @Override
             public void callback(ReturnInfo<CourseChannelList> returnInfo, String callbackId) {

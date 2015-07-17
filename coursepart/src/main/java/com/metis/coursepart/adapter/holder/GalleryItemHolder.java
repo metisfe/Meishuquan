@@ -52,7 +52,11 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
             final int length = keyWordList.size();
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < length; i++) {
-                builder.append(keyWordList.get(i).keyWordName + " ");
+                KeyWord word = keyWordList.get(i);
+                if (word == null) {
+                    continue;
+                }
+                builder.append(word.keyWordName + " ");
             }
             tagTv.setText(builder);
         } else {

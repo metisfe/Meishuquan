@@ -38,8 +38,9 @@ public abstract class TitleBarActivity extends AppCompatActivity {
             });
         }
         if (!isTitleBarOverlay()) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mTitleBar.getLayoutParams();
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mContentViewContainer.getLayoutParams();
             params.addRule(RelativeLayout.BELOW, R.id.title_bar);
+            mContentViewContainer.setLayoutParams(params);
         }
     }
 
