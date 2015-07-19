@@ -3,4 +3,8 @@
     <string name="footer_no_more">没有更多</string>
     <string name="footer_failed">加载失败</string>
     <string name="footer_success">加载完成</string>
+    <string name="title_activity_debug">DebugActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

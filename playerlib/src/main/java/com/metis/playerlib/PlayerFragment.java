@@ -32,6 +32,10 @@ import com.baidu.cyberplayer.utils.VersionManager;
 /**
  * Created by gaoyunfei on 15/7/11.
  */
+@Deprecated
+/**
+ * PlayerFragment is deprecated, please use {@link VideoWrapperFragment} instead.
+ */
 public class PlayerFragment extends Fragment
         implements BVideoView.OnPreparedListener,BVideoView.OnCompletionListener,
         BVideoView.OnErrorListener, BVideoView.OnInfoListener, BVideoView.OnPlayingBufferCacheListener,
@@ -108,6 +112,7 @@ public class PlayerFragment extends Fragment
     private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Toast.makeText(getActivity(), "become noisy", Toast.LENGTH_SHORT).show();
             pausePlay();
         }
     };

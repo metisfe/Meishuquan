@@ -6,25 +6,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
-import com.metis.base.TitleBarActivity;
+import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.widget.ProfileNameView;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
-import com.metis.coursepart.fragment.CourseGalleryFragment;
 import com.metis.coursepart.fragment.CourseGalleryItemFragment;
 import com.metis.coursepart.manager.GalleryCacheManager;
 import com.metis.coursepart.module.GalleryItem;
 import com.metis.coursepart.module.StudioInfo;
-
-import java.util.List;
 
 public class GalleryItemDetailActivity extends TitleBarActivity implements ViewPager.OnPageChangeListener{
 

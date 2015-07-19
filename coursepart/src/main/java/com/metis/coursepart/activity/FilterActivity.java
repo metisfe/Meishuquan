@@ -1,15 +1,12 @@
 package com.metis.coursepart.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
-import com.metis.base.TitleBarActivity;
+import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.FragmentUtils;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
-import com.metis.coursepart.adapter.AlbumAdapter;
 import com.metis.coursepart.fragment.FilterPanelFragment;
 import com.metis.coursepart.fragment.VideoFilterFragment;
 import com.metis.coursepart.manager.CourseManager;

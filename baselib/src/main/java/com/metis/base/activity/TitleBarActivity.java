@@ -1,4 +1,4 @@
-package com.metis.base;
+package com.metis.base.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.metis.base.R;
 import com.metis.base.widget.TitleBar;
 
 /**

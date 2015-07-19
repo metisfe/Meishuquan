@@ -1,6 +1,5 @@
 package com.metis.coursepart.fragment;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -12,8 +11,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +19,7 @@ import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
-import com.metis.base.TitleBarActivity;
+import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.CacheDirManager;
 import com.metis.base.utils.FileUtils;
 import com.metis.base.utils.Log;
