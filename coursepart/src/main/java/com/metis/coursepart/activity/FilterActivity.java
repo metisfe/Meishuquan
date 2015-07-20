@@ -41,7 +41,7 @@ public class FilterActivity extends TitleBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mState = getIntent().getLongExtra(ActivityDispatcher.KEY_STATE_FILTER_ID, -1);
+        mState = getIntent().getLongExtra(ActivityDispatcher.KEY_STATE_FILTER_ID, 1);
         mVideoFilterFragment.getFilterPanelFragment().setCurrentState(mState);
         CourseManager.getInstance(this).getCourseChannelList(new RequestCallback<CourseChannelList>() {
             @Override

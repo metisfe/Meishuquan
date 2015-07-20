@@ -37,7 +37,7 @@ public class FilterPanelFragment extends Fragment {
 
     private OnFilterChangeListener mFilterChangeListener = null;
 
-    private long mCurrentState = -1, mCurrentCategory, mCurrentStudio, mCurrentCharge;
+    private long mCurrentState = 1, mCurrentCategory, mCurrentStudio, mCurrentCharge;
 
     @Nullable
     @Override
@@ -91,7 +91,7 @@ public class FilterPanelFragment extends Fragment {
         }
         mStateAdapter.addDataList(stateDelegates);
         mStateFilterRv.setAdapter(mStateAdapter);
-        //setCurrentState(mCurrentState);
+        setCurrentState(mCurrentState);
         mCurrentState = mStateAdapter.getSelectedFilterId();
         mStateAdapter.setOnFilterSelectedListener(new FilterAdapter.OnFilterSelectedListener() {
             @Override

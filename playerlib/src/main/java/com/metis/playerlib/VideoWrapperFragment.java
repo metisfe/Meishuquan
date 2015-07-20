@@ -32,7 +32,7 @@ public class VideoWrapperFragment extends Fragment implements
 
     private VideoFragment.OnPositionListener mPositionListener = null;
 
-    private ImageView mBackIv, mStartIv, mFullScreenIv;
+    private ImageView mBackIv, mStartIv, mFullScreenIv, mPreviewImageIv;
     private TextView mPositionTv, mDurationTv;
     private SeekBar mSeekBar = null;
 
@@ -49,9 +49,10 @@ public class VideoWrapperFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         mVideoFragment = (VideoFragment)getChildFragmentManager().findFragmentById(R.id.video_wrapper_fragment);
 
-        mBackIv = (ImageView)view.findViewById(R.id.player_back_btn);
-        mStartIv = (ImageView)view.findViewById(R.id.player_play_btn);
-        mFullScreenIv = (ImageView)view.findViewById(R.id.player_full_screen);
+        mBackIv = (ImageView)view.findViewById(R.id.player_wrapper_back_btn);
+        mStartIv = (ImageView)view.findViewById(R.id.player_wrapper_play_btn);
+        mFullScreenIv = (ImageView)view.findViewById(R.id.player_wrapper_full_screen);
+        mPreviewImageIv = (ImageView)view.findViewById(R.id.player_wrapper_preview_image);
         mPositionTv = (TextView)view.findViewById(R.id.player_current);
         mDurationTv = (TextView)view.findViewById(R.id.player_duration);
         mSeekBar = (SeekBar)view.findViewById(R.id.player_seek_bar);

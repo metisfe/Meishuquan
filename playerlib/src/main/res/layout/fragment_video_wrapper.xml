@@ -12,6 +12,12 @@
         android:id="@+id/player_controller"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+        <ImageView
+            android:id="@+id/player_wrapper_preview_image"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
+            />
         <RelativeLayout
             android:id="@+id/player_controller_top_bar"
             android:layout_width="fill_parent"
@@ -19,7 +25,7 @@
             android:background="#88000000"
             >
             <ImageView
-                android:id="@+id/player_back_btn"
+                android:id="@+id/player_wrapper_back_btn"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/ic_back"
@@ -42,7 +48,7 @@
             android:background="#88000000"
             >
             <ImageView
-                android:id="@+id/player_play_btn"
+                android:id="@+id/player_wrapper_play_btn"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/ic_play_pause_sel"
@@ -75,7 +81,7 @@
                 android:layout_centerVertical="true"
                 />
             <ImageView
-                android:id="@+id/player_full_screen"
+                android:id="@+id/player_wrapper_full_screen"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_alignParentRight="true"
