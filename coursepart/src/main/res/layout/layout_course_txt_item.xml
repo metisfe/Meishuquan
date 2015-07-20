@@ -10,5 +10,6 @@
         android:layout_height="wrap_content"
         android:textSize="12dp"
         android:textColor="#8f8f8f"
+        android:textIsSelectable="true"
         />
 </FrameLayout>
