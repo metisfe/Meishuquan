@@ -133,6 +133,7 @@ public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.
         if (hotList != null && !hotList.isEmpty()) {
             hotList.get(0).setChannel(getString(R.string.course_hot));
             AlbumContainerDelegate delegate = new AlbumContainerDelegate(hotList);
+            delegate.setFilterId(3);
             delegateList.add(delegate);
         }
 

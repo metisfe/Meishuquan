@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.adapter.delegate.AbsDelegate;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
@@ -19,6 +20,8 @@ import com.metis.coursepart.adapter.holder.StudioFilterHolder;
  * Created by Beak on 2015/7/14.
  */
 public class FilterAdapter extends DelegateAdapter {
+
+    private static final String TAG = FilterAdapter.class.getSimpleName();
 
     private int mSelectedPosition = -1;
 
@@ -90,7 +93,11 @@ public class FilterAdapter extends DelegateAdapter {
 
     public void setSelectedFilterId (long id) {
         final int length = getItemCount();
-        AbsDelegate selectedDelegate = getDataItem(mSelectedPosition);
+        mSelectedPosition = findCurrentSelectedOne();
+        AbsDelegate selectedDelegate = null;
+        if (mSelectedPosition >= 0 && mSelectedPosition < length) {
+            selectedDelegate = getDataItem(mSelectedPosition);
+        }
         if (selectedDelegate != null && selectedDelegate instanceof FilterSelectable) {
             ((FilterSelectable) selectedDelegate).setSelected(false);
         }

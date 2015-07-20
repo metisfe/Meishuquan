@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.FragmentUtils;
+import com.metis.base.utils.Log;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.fragment.FilterPanelFragment;
@@ -18,6 +19,8 @@ import com.metis.msnetworklib.contract.ReturnInfo;
 import java.util.List;
 
 public class FilterActivity extends TitleBarActivity {
+
+    private static final String TAG = FilterActivity.class.getSimpleName();
 
     private VideoFilterFragment mVideoFilterFragment = new VideoFilterFragment();
 

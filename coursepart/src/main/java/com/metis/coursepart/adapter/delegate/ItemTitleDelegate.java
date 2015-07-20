@@ -40,7 +40,7 @@ public class ItemTitleDelegate extends BaseDelegate<String> implements FilterAda
 
     @Override
     public long getFilterId() {
-        return 0;
+        return mFilterId;
     }
 
     public void setFilterId (long id) {

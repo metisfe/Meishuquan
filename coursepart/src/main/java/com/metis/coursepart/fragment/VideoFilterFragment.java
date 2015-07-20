@@ -61,9 +61,10 @@ public class VideoFilterFragment extends BaseFilterFragment implements FilterPan
         getRecyclerView().addItemDecoration(new MarginDecoration((int) (getResources().getDisplayMetrics().density * 240)));
         getRecyclerView().addItemDecoration(new VideoItemSmallDecoration());
 
-        mFooter = new Footer();
+        mFooter = new Footer(Footer.STATE_WAITTING);
         mFooterDelegate = new FooterDelegate(mFooter);
-
+        mAdapter.addDataItem(mFooterDelegate);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
