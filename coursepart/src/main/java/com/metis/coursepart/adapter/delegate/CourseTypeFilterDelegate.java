@@ -27,7 +27,7 @@ public class CourseTypeFilterDelegate extends BaseDelegate<CourseType> implement
 
     @Override
     public long getFilterId() {
-        return getSource().channelid;
+        return getSource().channelId;
     }
 
     @Override

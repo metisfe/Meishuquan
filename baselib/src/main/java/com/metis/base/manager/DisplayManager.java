@@ -90,6 +90,10 @@ public class DisplayManager extends AbsManager {
         mImageLoader.displayImage(uri, iv, options, loadingListener);
     }
 
+    public void display (String uri, ImageView iv, ImageLoadingListener listener) {
+        mImageLoader.displayImage(uri, iv, listener);
+    }
+
     public void display (String uri, ImageView iv, DisplayImageOptions options) {
         mImageLoader.displayImage(uri, iv, options);
     }

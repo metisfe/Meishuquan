@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.FilterAdapter;
 import com.metis.coursepart.adapter.FilterSpanSizeLookup;
@@ -27,6 +28,8 @@ import java.util.List;
  * Created by gaoyunfei on 15/7/12.
  */
 public class FilterPanelFragment extends Fragment {
+
+    private static final String TAG = FilterPanelFragment.class.getSimpleName();
 
     private Filter[] mStateFilterArray = {new Filter(1, R.string.filter_recommend), new Filter(2, R.string.filter_new), new Filter(3, R.string.filter_hot)};
     private Filter[] mChargeFilterArray = {Filter.ALL, new Filter(1, R.string.filter_free), new Filter(2, R.string.filter_charge)};
@@ -149,6 +152,7 @@ public class FilterPanelFragment extends Fragment {
         mCategoryAdapter.setOnFilterSelectedListener(new FilterAdapter.OnFilterSelectedListener() {
             @Override
             public void onSelected(int position, long id) {
+                //Log.v(TAG, "");
                 if (id != mCurrentCategory) {
                     mCurrentCategory = id;
                     onChange();

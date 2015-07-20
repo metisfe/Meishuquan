@@ -1,9 +1,11 @@
 package com.metis.base.activity;
 
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -43,6 +45,8 @@ public abstract class TitleBarActivity extends AppCompatActivity {
             params.addRule(RelativeLayout.BELOW, R.id.title_bar);
             mContentViewContainer.setLayoutParams(params);
         }
+
+        mTitleBar.setVisibility(getTitleVisibility());
     }
 
     public CharSequence getTitleCenter () {
@@ -63,6 +67,21 @@ public abstract class TitleBarActivity extends AppCompatActivity {
 
     public boolean showAsUpEnable () {
         return false;
+    }
+
+    /**
+     *
+     * @return  One of {@link View#VISIBLE}, {@link View#INVISIBLE}, or {@link View#GONE}.
+     * @attr ref android.R.styleable#View_visibility
+     */
+    @ViewDebug.ExportedProperty(mapping = {
+            @ViewDebug.IntToString(from = View.VISIBLE,   to = "VISIBLE"),
+            @ViewDebug.IntToString(from = View.INVISIBLE, to = "INVISIBLE"),
+            @ViewDebug.IntToString(from = View.GONE,      to = "GONE")
+    })
+    /*@View.Visibility*/
+    public int getTitleVisibility () {
+        return View.VISIBLE;
     }
 
     @Override

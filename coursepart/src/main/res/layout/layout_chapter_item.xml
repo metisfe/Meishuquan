@@ -24,6 +24,7 @@
         android:textColor="@android:color/black"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/item_state_icon"
+        android:ellipsize="end"
         />
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -32,6 +33,7 @@
         android:layout_toLeftOf="@+id/item_download_btn"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:minWidth="60dp"
         >
         <ImageView
             android:id="@+id/icon"

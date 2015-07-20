@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.metis.base.ActivityDispatcher;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.module.User;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
@@ -42,11 +43,11 @@ public class UserInDetailHolder extends AbsViewHolder<UserInDetailDelegate>{
     }
 
     @Override
-    public void bindData(Context context, UserInDetailDelegate userInDetailDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, UserInDetailDelegate userInDetailDelegate, RecyclerView.Adapter adapter, int position) {
         CourseAlbum album = userInDetailDelegate.getSource();
         titleTv.setText(album.title);
         subTitleTv.setText(context.getString(R.string.course_play_count_history, album.viewCount));
-        User user = album.studio;
+        User user = album.author;
         if (user != null) {
             DisplayManager.getInstance(context).display(user.avatar, profileIv);
             nameTv.setText(user.name);
@@ -57,16 +58,23 @@ public class UserInDetailHolder extends AbsViewHolder<UserInDetailDelegate>{
             final int length = items.size();
             LayoutInflater inflater = LayoutInflater.from(context);
             for (int i = 0; i < length; i++) {
-                ContentItem item = items.get(i);
+                final ContentItem item = items.get(i);
                 if (item.isTxt()) {
                     View child = inflater.inflate(R.layout.layout_course_txt_item, null);
                     TextView tv = (TextView)child.findViewById(R.id.txt_item_content);
                     tv.setText(item.data.Content);
                     contentContainer.addView(child);
                 } else {
-                    ImageView iv = new ImageView(context);
+                    View child = inflater.inflate(R.layout.layout_course_img_item, null);
+                    ImageView iv = (ImageView)child.findViewById(R.id.img_item_content);
                     DisplayManager.getInstance(context).display(item.data.ThumbnailsURL, iv);
-                    contentContainer.addView(iv);
+                    contentContainer.addView(child);
+                    child.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ActivityDispatcher.imagePreviewActivity(context, item.data);
+                        }
+                    });
                 }
             }
         }

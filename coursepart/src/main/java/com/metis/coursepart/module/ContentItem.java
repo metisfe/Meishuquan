@@ -11,14 +11,4 @@ public class ContentItem {
         return type.equals("TXT");
     }
 
-    public class ContentInnerItem {
-        public String Content;
-        public String ContentType;
-
-        public String URL;
-        public String ThumbnailsURL;
-        public int Width;
-        public int Height;
-        public String Desc;
-    }
 }

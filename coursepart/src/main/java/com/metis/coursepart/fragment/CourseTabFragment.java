@@ -39,8 +39,8 @@ public class CourseTabFragment extends DockFragment {
     private DockBar.Dock mDock = null;
     private TitleBar mTitleBar = null;
 
-    private CourseVideoFragment mVideoFragment = CourseVideoFragment.getInstance();
-    private CourseGalleryFragment mGalleryFragment = CourseGalleryFragment.getInstance();
+    private CourseVideoFragment mVideoFragment = new CourseVideoFragment();
+    private CourseGalleryFragment mGalleryFragment = new CourseGalleryFragment();
     private Fragment mCurrentFragment = null;
 
     @Override

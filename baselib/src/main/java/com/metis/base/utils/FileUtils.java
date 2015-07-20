@@ -26,4 +26,12 @@ public class FileUtils {
         fileInputStream.close();
         return to.exists();
     }
+
+    public static String getNameFromUrl (String url) {
+        final int index = url.lastIndexOf("/");
+        if (index >= 0 && url.length() > 1) {
+            return url.substring(index + 1, url.length());
+        }
+        return url;
+    }
 }

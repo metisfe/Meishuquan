@@ -28,6 +28,16 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_debug" >
         </activity>
+        <activity
+            android:name=".activity.ImagePreviewActivity"
+            android:label="@string/title_activity_image_preview"
+            android:theme="@style/BaseTheme"
+            >
+            <intent-filter>
+                <action android:name="com.metis.meishuquan.action.image_preview"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
