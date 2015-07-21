@@ -147,7 +147,7 @@ public class VideoFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if (mPausePosition > 0) {
+        if (mPausePosition > 0/* && mState == State.PAUSED*/) {
             startPlay();
         }
         /*Log.v(TAG, "onResume " + mState);

@@ -185,6 +185,7 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mViewPager.removeOnPageChangeListener(this);
+        mPlayerFragment = null;
     }
 
     @Override
