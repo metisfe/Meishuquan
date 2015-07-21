@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Footer;
@@ -13,8 +12,7 @@ import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.coursepart.adapter.AlbumAdapter;
-import com.metis.coursepart.adapter.decoration.MarginDecoration;
-import com.metis.coursepart.adapter.decoration.VideoItemDetailDecoration;
+import com.metis.coursepart.adapter.decoration.VideoFilterMarginDecoration;
 import com.metis.coursepart.adapter.decoration.VideoItemSmallDecoration;
 import com.metis.coursepart.adapter.delegate.AlbumSmallDelegate;
 import com.metis.coursepart.manager.CourseManager;
@@ -58,13 +56,23 @@ public class VideoFilterFragment extends BaseFilterFragment implements FilterPan
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getFilterPanelFragment().setOnFilterChangeListener(this);
-        getRecyclerView().addItemDecoration(new MarginDecoration((int) (getResources().getDisplayMetrics().density * 240)));
+        getRecyclerView().addItemDecoration(new VideoFilterMarginDecoration((int) (getResources().getDisplayMetrics().density * 240)));
         getRecyclerView().addItemDecoration(new VideoItemSmallDecoration());
 
         mFooter = new Footer(Footer.STATE_WAITTING);
         mFooterDelegate = new FooterDelegate(mFooter);
         mAdapter.addDataItem(mFooterDelegate);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadData(
+                getCurrentState(),
+                getFilterPanelFragment().getCurrentCategory(),
+                getFilterPanelFragment().getCurrentStudio(),
+                getFilterPanelFragment().getCurrentCharge());
     }
 
     @Override

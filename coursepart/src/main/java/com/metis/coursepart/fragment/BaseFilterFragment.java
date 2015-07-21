@@ -17,6 +17,10 @@ import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
+import com.metis.coursepart.module.CourseType;
+import com.metis.coursepart.module.StudioInfo;
+
+import java.util.List;
 
 /**
  * Created by Beak on 2015/7/14.
@@ -28,6 +32,11 @@ public abstract class BaseFilterFragment extends Fragment {
     private FilterPanelFragment mFilterPanelFragment = null;
     private RecyclerView mDataRv = null;
     private FrameLayout mFragmentContainer = null;
+
+    private List<CourseType> mCourseTypeList = null;
+    private List<StudioInfo> mStudioList = null;
+
+    private long mState = 1;
 
     private AlbumAdapter mAdapter = null;
 
@@ -121,6 +130,9 @@ public abstract class BaseFilterFragment extends Fragment {
             }
         });
         mDataRv.addOnScrollListener(mScrollListener);
+
+        setCourseTypeList(mCourseTypeList);
+        setStudioList(mStudioList);
     }
 
     private ObjectAnimator animateTranslationY(float from, float to) {
@@ -145,6 +157,31 @@ public abstract class BaseFilterFragment extends Fragment {
 
     public void onScrollBottom () {
 
+    }
+
+    public void setCourseTypeList (List<CourseType> courseTypeList) {
+        mCourseTypeList = courseTypeList;
+        if (getFilterPanelFragment() != null && courseTypeList != null) {
+            getFilterPanelFragment().setCourseTypeList(courseTypeList);
+        }
+    }
+
+    public void setStudioList (List<StudioInfo> studioList) {
+        mStudioList = studioList;
+        if (getFilterPanelFragment() != null && studioList != null) {
+            getFilterPanelFragment().setStudioList(studioList);
+        }
+    }
+
+    public void setCurrentState (long state) {
+        mState = state;
+        if (getFilterPanelFragment() != null) {
+            getFilterPanelFragment().setCurrentState(state);
+        }
+    }
+
+    public long getCurrentState () {
+        return mState;
     }
 
     public abstract RecyclerView.LayoutManager getLayoutManager ();

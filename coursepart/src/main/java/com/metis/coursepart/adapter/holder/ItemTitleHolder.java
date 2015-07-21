@@ -34,10 +34,10 @@ public class ItemTitleHolder extends AbsViewHolder<ItemTitleDelegate> {
             itemView.setBackgroundResource(R.drawable.video_item_bg_nor);
         }
         if (videoItemTitleDelegate.isClickable()) {
-            itemView.setOnClickListener(new View.OnClickListener() {
+            moreBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ActivityDispatcher.filterActivityWithState(context, videoItemTitleDelegate.getFilterId());
+                    ActivityDispatcher.filterActivityForVideoWithState(context, videoItemTitleDelegate.getFilterId());
                 }
             });
         }

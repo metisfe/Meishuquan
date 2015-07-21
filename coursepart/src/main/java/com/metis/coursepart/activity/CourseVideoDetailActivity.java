@@ -165,7 +165,6 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements
         loadSubCourseDetail(mCurrentCourse.getSource().subCourseId);
         mChapterFragment.notifyDataSetChanged();
 
-        Toast.makeText(this, delegate.getSource().subCourseName, Toast.LENGTH_SHORT).show();
     }
 
     private void loadSubCourseDetail (long subCourseId) {
@@ -299,8 +298,9 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onError(BVideoView bVideoView) {
-
+    public boolean onError(BVideoView bVideoView, int what, int extra) {
+        Toast.makeText(this, R.string.course_play_error, Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     private class TabAdapter extends FragmentStatePagerAdapter {

@@ -3,6 +3,7 @@ package com.metis.coursepart.adapter.delegate;
 import com.metis.base.module.User;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.coursepart.module.ContentItem;
+import com.metis.coursepart.module.Course;
 import com.metis.coursepart.module.CourseAlbum;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public class UserInDetailDelegate extends BaseDelegate<CourseAlbum> {
     private String mWebContent = null;
 
     private List<ContentItem> mContentItemList = null;
+
+    private Course mCurrentCourse = null;
 
     public UserInDetailDelegate(CourseAlbum album) {
         super(album);
@@ -34,6 +37,14 @@ public class UserInDetailDelegate extends BaseDelegate<CourseAlbum> {
 
     public void setContentItemList(List<ContentItem> mContentItemList) {
         this.mContentItemList = mContentItemList;
+    }
+
+    public void setCurrentCourse (Course course) {
+        mCurrentCourse = course;
+    }
+
+    public Course getCurrentCourse () {
+        return mCurrentCourse;
     }
 
     @Override

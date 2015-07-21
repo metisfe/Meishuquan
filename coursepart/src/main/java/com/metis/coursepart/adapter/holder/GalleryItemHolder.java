@@ -62,7 +62,8 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
         } else {
             tagTv.setText("");
         }
-        final User user = item.studio;
+        sourceTv.setText(item.source);
+        /*final User user = item.studio;
         if (user != null) {
             sourceTv.setText(user.name);
             sourceTv.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +75,7 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
         } else {
             sourceTv.setText("");
             sourceTv.setOnClickListener(null);
-        }
+        }*/
         countTv.setText(context.getString(R.string.gallery_read_count, item.viewCount));
         if (galleryItemDelegate.delegateWidth >= 0 && galleryItemDelegate.delegateHeight >= 0) {
             manageLayoutParams(context, galleryItemDelegate);

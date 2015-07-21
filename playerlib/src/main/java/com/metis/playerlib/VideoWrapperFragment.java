@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.cyberplayer.core.BVideoView;
 
@@ -160,6 +162,9 @@ public class VideoWrapperFragment extends Fragment implements
     }
 
     public void hideControllerViews () {
+        if (!isFullScreen()) {
+            return;
+        }
         if (isControllerShowing) {
             mControllerLayout.removeCallbacks(mAutoHideRunnable);
             ObjectAnimator topAnimator = ObjectAnimator.ofFloat(mTopControllerLayout, "translationY", 0, -mTopControllerLayout.getHeight());
@@ -172,6 +177,9 @@ public class VideoWrapperFragment extends Fragment implements
     }
 
     public void showControllerViews (boolean autoHide) {
+        if (!isFullScreen()) {
+            return;
+        }
         if (!isControllerShowing) {
             mControllerLayout.removeCallbacks(mAutoHideRunnable);
             ObjectAnimator topAnimator = ObjectAnimator.ofFloat(mTopControllerLayout, "translationY", -mTopControllerLayout.getHeight(), 0);
@@ -193,7 +201,7 @@ public class VideoWrapperFragment extends Fragment implements
     @Override
     public void onFullScreen(boolean isFullScreen) {
         mFullScreenIv.setSelected(isFullScreen);
-        showControllerViews(true);
+        showControllerViews(isFullScreen);
         if (mFullScreenListener != null) {
             mFullScreenListener.onFullScreen(isFullScreen);
         }
@@ -249,12 +257,19 @@ public class VideoWrapperFragment extends Fragment implements
     }
 
     @Override
-    public void onError(BVideoView bVideoView) {
-        mStartIv.setSelected(false);
-        mPreviewImageIv.setVisibility(View.VISIBLE);
+    public boolean onError(BVideoView bVideoView, int what, int extra) {
+        bVideoView.post(new Runnable() {
+            @Override
+            public void run() {
+                mStartIv.setSelected(false);
+                mPreviewImageIv.setVisibility(View.VISIBLE);
+            }
+        });
+
         if (mPlayCallback != null) {
-            mPlayCallback.onError(bVideoView);
+            return mPlayCallback.onError(bVideoView, what, extra);
         }
+        return false;
     }
 
     @Override
@@ -268,6 +283,10 @@ public class VideoWrapperFragment extends Fragment implements
                 getActivity().finish();
             }
         } else if (id == mStartIv.getId()) {
+            if (mVideoFragment == null || TextUtils.isEmpty(mVideoFragment.getSource())) {
+                Toast.makeText(getActivity(), R.string.video_source_not_set, Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (mVideoFragment.isPlaying()) {
                 Log.v(TAG, "pause Btn cause pausePlay");
                 mVideoFragment.pausePlay();

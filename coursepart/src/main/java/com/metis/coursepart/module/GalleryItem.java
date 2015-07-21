@@ -35,6 +35,7 @@ public class GalleryItem implements Parcelable{
     public int picType;
     public String publishTime;
     public String picKeyWordList;
+    public String source;
     public List<KeyWord> keyWordList;
 
     @Override

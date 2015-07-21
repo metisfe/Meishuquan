@@ -23,6 +23,7 @@
     <string name="course_play_count">播放:%1$d次</string>
     <string name="course_related_count">相关章节(%1$d)</string>
     <string name="course_play_count_history">历史播放次数:%1$d次</string>
+    <string name="course_play_error">播放发生错误</string>
 
     <string name="filter_all">全部</string>
     <string name="filter_recommend">推荐</string>

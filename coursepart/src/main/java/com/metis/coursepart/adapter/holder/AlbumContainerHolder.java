@@ -38,7 +38,7 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
 
     public View itemBigView;
     public ImageView itemBigThumbIv, itemBigAuthorProfileIv, itemBigMoreBtn;
-    public TextView itemBigTitleTv, itemBigAuthorNameTv;
+    public TextView itemBigTitleTv, itemBigAuthorNameTv, itemBigCountTv;
     public RecyclerView itemRv;
 
     public AlbumContainerHolder(View itemView) {
@@ -49,6 +49,7 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
         itemBigMoreBtn = (ImageView)itemView.findViewById(R.id.item_big_btn_more);
         itemBigTitleTv = (TextView)itemView.findViewById(R.id.item_big_title);
         itemBigAuthorNameTv = (TextView)itemView.findViewById(R.id.item_big_author_name);
+        itemBigCountTv = (TextView)itemView.findViewById(R.id.item_big_play_count);
 
         itemRv = (RecyclerView)itemView.findViewById(R.id.item_container_recycler_view);
         itemRv.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
@@ -63,6 +64,7 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
             final StudioInfo studioInfo = firstOne.studio;
             DisplayManager.getInstance(context).display(firstOne.coursePic, itemBigThumbIv);
             itemBigTitleTv.setText(firstOne.title);
+            itemBigCountTv.setText(context.getString(R.string.course_play_count, firstOne.viewCount));
             if (studioInfo != null) {
                 DisplayManager.getInstance(context).display(studioInfo.avatar, itemBigAuthorProfileIv);
                 itemBigAuthorNameTv.setText(studioInfo.name);

@@ -40,13 +40,22 @@
             />
         <TextView
             android:id="@+id/item_big_author_name"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:layout_toRightOf="@+id/item_big_author_profile"
+            android:layout_toLeftOf="@+id/item_big_play_count"
             android:textSize="15sp"
             android:textColor="@color/colorSubTitle"
             android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/item_big_play_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
             />
     </RelativeLayout>
 

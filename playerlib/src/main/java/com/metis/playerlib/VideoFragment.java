@@ -176,6 +176,10 @@ public class VideoFragment extends Fragment implements
         mSource = source;
     }
 
+    public String getSource () {
+        return mSource;
+    }
+
     /**
      *
      * @param bufferSize cache buffer size in byte, default is {@link #BUFFER_SIZE_DEFAULT}
@@ -227,6 +231,7 @@ public class VideoFragment extends Fragment implements
     private void doStart () {
         mBvv.setVideoPath(Uri.parse(mSource).toString());
         mBvv.setCacheBufferSize(mBufferSize);
+        mBvv.showCacheInfo(true);
         if (mPausePosition > 0) {
             mBvv.seekTo(mPausePosition);
         }
@@ -248,7 +253,6 @@ public class VideoFragment extends Fragment implements
     }
 
     public int pausePlay () {
-
         if (!isPlaying()) {
             return -1;
         }
@@ -350,6 +354,9 @@ public class VideoFragment extends Fragment implements
 
     @Override
     public boolean onError(int i, int i1) {
+        if (mPlayCallback != null) {
+            return mPlayCallback.onError(mBvv, i, i1);
+        }
         return false;
     }
 

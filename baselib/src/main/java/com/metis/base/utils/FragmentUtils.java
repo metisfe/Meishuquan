@@ -24,4 +24,10 @@ public class FragmentUtils {
         ft.hide(fragment);
         ft.commit();
     }
+
+    public static void removeFragment (FragmentManager manager, Fragment fragment) {
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.remove(fragment);
+        ft.commit();
+    }
 }

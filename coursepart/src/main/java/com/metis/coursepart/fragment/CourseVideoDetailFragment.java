@@ -99,6 +99,7 @@ public class CourseVideoDetailFragment extends Fragment {
         Log.v(TAG, "mUserDelegate != null -- " + (mUserDelegate != null) + " course=" + course);
         if (mUserDelegate != null && course != null) {
             mUserDelegate.setWebContent(course.webContent);
+            mUserDelegate.setCurrentCourse(course);
             mUserDelegate.setContentItemList(course.getContentItemList());
             mAdapter.notifyDataSetChanged();
         }

@@ -9,19 +9,14 @@ import com.metis.coursepart.R;
 /**
  * Created by Beak on 2015/7/14.
  */
-public class MarginDecoration extends RecyclerView.ItemDecoration {
+public class VideoFilterMarginDecoration extends RecyclerView.ItemDecoration {
 
     private int mFirstItemTop = 0;
     //private int mLastItemBottom = 0;
 
-    public MarginDecoration (int first) {
+    public VideoFilterMarginDecoration(int first) {
         mFirstItemTop = first;
     }
-
-    /*public MarginDecoration (int first, int last) {
-        mFirstItemTop = first;
-        mLastItemBottom = last;
-    }*/
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

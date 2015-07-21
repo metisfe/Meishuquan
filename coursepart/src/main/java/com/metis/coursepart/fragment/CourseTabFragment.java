@@ -17,6 +17,7 @@ import com.metis.base.fragment.DockFragment;
 import com.metis.base.utils.FragmentUtils;
 import com.metis.base.widget.TitleBar;
 import com.metis.base.widget.dock.DockBar;
+import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.activity.FilterActivity;
 import com.metis.coursepart.manager.CourseManager;
@@ -62,22 +63,22 @@ public class CourseTabFragment extends DockFragment {
 
         RadioGroup switchView = (RadioGroup)LayoutInflater.from(getActivity()).inflate(R.layout.layout_tab_switch, null);
         mTitleBar.setCenterView(switchView);
-
+        mTitleBar.setTitleLeft(R.string.title_filter);
         switchView.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (mCurrentFragment != null) {
-                    FragmentUtils.hideFragment(getFragmentManager(), mCurrentFragment);
+                    FragmentUtils.hideFragment(getChildFragmentManager(), mCurrentFragment);
                     mCurrentFragment = null;
                 }
                 if (checkedId == R.id.tab_video) {
                     mCurrentFragment = mVideoFragment;
-                    mTitleBar.setTitleLeft(R.string.title_filter);
+                    //mTitleBar.setTitleLeft(R.string.title_filter);
                 } else if (checkedId == R.id.tab_gallery) {
                     mCurrentFragment = mGalleryFragment;
-                    mTitleBar.setTitleLeft("");
+                    //mTitleBar.setTitleLeft("");
                 }
-                FragmentUtils.showFragment(getFragmentManager(), mCurrentFragment, R.id.course_fragment_container);
+                FragmentUtils.showFragment(getChildFragmentManager(), mCurrentFragment, R.id.course_fragment_container);
             }
         });
         ((RadioButton)view.findViewById(R.id.tab_video)).setChecked(true);
@@ -89,11 +90,20 @@ public class CourseTabFragment extends DockFragment {
             @Override
             public void onClick(View v) {
                 if (mCurrentFragment == mVideoFragment) {
-                    Intent it = new Intent(getActivity(), FilterActivity.class);
-                    startActivity(it);
+                    ActivityDispatcher.filterActivityForVideo(getActivity());
+                } else if (mCurrentFragment == mGalleryFragment) {
+                    ActivityDispatcher.filterActivityForGallery(getActivity());
                 }
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        /*if (mCurrentFragment != null) {
+            FragmentUtils.removeFragment(getChildFragmentManager(), mCurrentFragment);
+        }*/
     }
 
     @Override

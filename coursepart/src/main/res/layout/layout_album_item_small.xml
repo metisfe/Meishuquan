@@ -48,20 +48,21 @@
             android:visibility="gone"
             />
         <TextView
-            android:id="@+id/item_author_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/item_author_profile"
-            android:textColor="@color/colorSubTitle"
-            />
-        <TextView
             android:id="@+id/item_play_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/item_author_name"
+            android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:id="@+id/item_author_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/item_author_profile"
+            android:layout_toLeftOf="@+id/item_play_count"
+            android:textColor="@color/colorSubTitle"
             />
     </RelativeLayout>
 

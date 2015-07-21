@@ -20,6 +20,10 @@ public class ActivityDispatcher {
     private static final String TAG = ActivityDispatcher.class.getSimpleName();
 
     public static final String
+            ACTION_VIDEO_FILTER = "com.metis.coursepart.action_video_filter",
+            ACTION_GALLERY_FILTER = "com.metis.coursepart.action_gallery_filter";
+
+    public static final String
             KEY_COURSE_ALBUM = "course_album",
             KEY_ALBUM_ID = "album_id",
             KEY_GALLERY_ITEM_ID = "gallery_item_id",
@@ -38,8 +42,24 @@ public class ActivityDispatcher {
         context.startActivity(it);
     }
 
-    public static void filterActivityWithState (Context context, long state) {
+    public static void filterActivityForVideo (Context context) {
+        filterActivityForVideoWithState(context, 1);
+    }
+
+    public static void filterActivityForVideoWithState(Context context, long state) {
         Intent it = new Intent(context, FilterActivity.class);
+        it.setAction(ACTION_VIDEO_FILTER);
+        it.putExtra(KEY_STATE_FILTER_ID, state);
+        context.startActivity(it);
+    }
+
+    public static void filterActivityForGallery (Context context) {
+        filterActivityForGalleryWithState(context, 1);
+    }
+
+    public static void filterActivityForGalleryWithState(Context context, long state) {
+        Intent it = new Intent(context, FilterActivity.class);
+        it.setAction(ACTION_GALLERY_FILTER);
         it.putExtra(KEY_STATE_FILTER_ID, state);
         context.startActivity(it);
     }

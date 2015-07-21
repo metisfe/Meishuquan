@@ -136,7 +136,7 @@ public class CourseManager extends AbsManager {
     }
 
     /*"Gallery/MainCourseList?pictype={pictype}&tags={tags}&orderType={orderType}&index={index}&studioid={studioid}&chargetype={chargetype}"*/
-    public String getGalleryPicList (int picType, String tags, long orderType, long studioId, long chargeType, int index, final RequestCallback<List<GalleryItem>> callback) {
+    public String getGalleryPicList (long picType, String tags, long orderType, long studioId, long chargeType, int index, final RequestCallback<List<GalleryItem>> callback) {
         String request = GET_GALLERY_PIC_LIST
                 .replace("{pictype}", picType + "")
                 .replace("{tags}", tags + "")

@@ -7,5 +7,5 @@ public interface PlayCallback {
         public void onPaused (BVideoView bVideoView);
         public void onResumed (BVideoView bVideoView);
         public void onCompleted (BVideoView bVideoView);
-        public void onError (BVideoView bVideoView);
+        public boolean onError (BVideoView bVideoView, int what, int extra);
 }
