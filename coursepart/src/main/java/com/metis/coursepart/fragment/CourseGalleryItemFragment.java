@@ -148,8 +148,11 @@ public class CourseGalleryItemFragment extends Fragment implements View.OnClickL
             for (int i = 0; i < length; i++) {
                 View child = LayoutInflater.from(getActivity()).inflate(R.layout.layout_tag_item, null);
                 TextView tagTv = (TextView)child.findViewById(R.id.tag_name);
-                tagTv.setText(keyWordList.get(i).keyWordName);
-                mTagsLayout.addView(child);
+                KeyWord keyWord = keyWordList.get(i);
+                if (keyWord != null) {
+                    tagTv.setText(keyWord.keyWordName);
+                    mTagsLayout.addView(child);
+                }
             }
         }
     }

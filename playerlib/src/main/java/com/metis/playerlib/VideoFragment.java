@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,13 @@ public class VideoFragment extends Fragment implements
         BVideoView.OnPlayingBufferCacheListener{
 
     private static final String TAG = VideoFragment.class.getSimpleName();
+
+    private static final int FULL_SCREEN_UI_OPTIONS = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ? View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_IMMERSIVE
+            | View.SYSTEM_UI_FLAG_FULLSCREEN : View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN;
+
+    private View mDecorView = null;
 
     public static final long BUFFER_SIZE_DEFAULT = 1024 * 1024 * 2;
 
@@ -98,6 +106,7 @@ public class VideoFragment extends Fragment implements
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mAudioManager = (AudioManager)activity.getSystemService(Context.AUDIO_SERVICE);
+        mDecorView = activity.getWindow().getDecorView();
     }
 
     @Override
@@ -286,6 +295,7 @@ public class VideoFragment extends Fragment implements
     public void setFullScreen (boolean fullScreen) {
         isFullScreen = fullScreen;
         getActivity().setRequestedOrientation(fullScreen ? MODE_FULL_SCREEN : MODE_NORMAL);
+        mDecorView.setSystemUiVisibility(fullScreen ? FULL_SCREEN_UI_OPTIONS : 0);
     }
 
     public boolean isFullScreen () {

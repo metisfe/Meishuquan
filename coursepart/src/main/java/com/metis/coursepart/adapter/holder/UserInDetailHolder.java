@@ -47,10 +47,19 @@ public class UserInDetailHolder extends AbsViewHolder<UserInDetailDelegate>{
         CourseAlbum album = userInDetailDelegate.getSource();
         titleTv.setText(album.title);
         subTitleTv.setText(context.getString(R.string.course_play_count_history, album.viewCount));
-        User user = album.author;
+        final User user = album.author != null ? album.author : album.studio;
+
         if (user != null) {
             DisplayManager.getInstance(context).display(user.avatar, profileIv);
             nameTv.setText(user.name);
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityDispatcher.userActivity(context, user.userId);
+                }
+            };
+            profileIv.setOnClickListener(listener);
+            nameTv.setOnClickListener(listener);
         }
         List<ContentItem> items = userInDetailDelegate.getContentItemList();
         contentContainer.removeAllViews();

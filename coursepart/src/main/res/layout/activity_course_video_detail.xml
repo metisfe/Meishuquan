@@ -9,7 +9,7 @@
         android:layout_height="@dimen/video_player_vertical_height">
         <fragment
             android:id="@+id/video_detail_player_fragment"
-            android:name="com.metis.playerlib.PlayerFragment"
+            android:name="com.metis.playerlib.VideoWrapperFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             />

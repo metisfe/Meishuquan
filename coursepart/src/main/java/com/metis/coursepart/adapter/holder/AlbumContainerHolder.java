@@ -66,14 +66,14 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
             if (studioInfo != null) {
                 DisplayManager.getInstance(context).display(studioInfo.avatar, itemBigAuthorProfileIv);
                 itemBigAuthorNameTv.setText(studioInfo.name);
-                View.OnClickListener listener = new View.OnClickListener() {
+                /*View.OnClickListener listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         com.metis.base.ActivityDispatcher.userActivity(context, studioInfo.userId);
                     }
                 };
                 itemBigAuthorProfileIv.setOnClickListener(listener);
-                itemBigAuthorNameTv.setOnClickListener(listener);
+                itemBigAuthorNameTv.setOnClickListener(listener);*/
             } else {
                 itemBigAuthorNameTv.setText("");
                 itemBigAuthorProfileIv.setOnClickListener(null);

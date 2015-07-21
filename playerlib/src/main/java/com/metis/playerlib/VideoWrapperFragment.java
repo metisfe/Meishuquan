@@ -1,5 +1,6 @@
 package com.metis.playerlib;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ public class VideoWrapperFragment extends Fragment implements
     private VideoFragment mVideoFragment = null;
 
     private String mSource = null;
+    private String mTitle = null;
 
     private PlayCallback mPlayCallback = null;
 
@@ -32,11 +35,26 @@ public class VideoWrapperFragment extends Fragment implements
 
     private VideoFragment.OnPositionListener mPositionListener = null;
 
+    private RelativeLayout mControllerLayout, mTopControllerLayout, mBottomControllerLayout;
     private ImageView mBackIv, mStartIv, mFullScreenIv, mPreviewImageIv;
-    private TextView mPositionTv, mDurationTv;
+    private TextView mPositionTv, mDurationTv, mTitleTv;
     private SeekBar mSeekBar = null;
 
     private boolean isSeeking = false;
+    private boolean isControllerShowing = true;
+
+    private Runnable mAutoHideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isSeeking) {
+                mControllerLayout.postDelayed(this, 5000);
+            } else {
+                if (isControllerShowing) {
+                    hideControllerViews();
+                }
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -49,14 +67,19 @@ public class VideoWrapperFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         mVideoFragment = (VideoFragment)getChildFragmentManager().findFragmentById(R.id.video_wrapper_fragment);
 
+        mControllerLayout = (RelativeLayout)view.findViewById(R.id.player_controller);
+        mTopControllerLayout = (RelativeLayout)view.findViewById(R.id.player_controller_top_bar);
+        mBottomControllerLayout = (RelativeLayout)view.findViewById(R.id.player_controller_bottom_bar);
         mBackIv = (ImageView)view.findViewById(R.id.player_wrapper_back_btn);
         mStartIv = (ImageView)view.findViewById(R.id.player_wrapper_play_btn);
         mFullScreenIv = (ImageView)view.findViewById(R.id.player_wrapper_full_screen);
         mPreviewImageIv = (ImageView)view.findViewById(R.id.player_wrapper_preview_image);
         mPositionTv = (TextView)view.findViewById(R.id.player_current);
         mDurationTv = (TextView)view.findViewById(R.id.player_duration);
+        mTitleTv = (TextView)view.findViewById(R.id.player_sub_title);
         mSeekBar = (SeekBar)view.findViewById(R.id.player_seek_bar);
 
+        mControllerLayout.setOnClickListener(this);
         mBackIv.setOnClickListener(this);
         mStartIv.setOnClickListener(this);
         mFullScreenIv.setOnClickListener(this);
@@ -69,10 +92,61 @@ public class VideoWrapperFragment extends Fragment implements
         mVideoFragment.setOnPositionListener(this);
     }
 
+    public ImageView getPreviewImageView () {
+        return mPreviewImageIv;
+    }
+
     public void setSource (String source) {
         mSource = source;
         if (mVideoFragment != null) {
             mVideoFragment.setSource(source);
+        }
+    }
+
+    public void setTitle (String title) {
+        mTitle = title;
+        if (mTitleTv != null) {
+            mTitleTv.setText(title);
+        }
+    }
+
+    public boolean isStarted () {
+        return mVideoFragment != null
+                && (mVideoFragment.getState() == VideoFragment.State.PAUSED
+                || mVideoFragment.getState() == VideoFragment.State.PLAYING);
+    }
+
+    public void startPlay () {
+        if (mVideoFragment != null) {
+            mVideoFragment.startPlay();
+        }
+    }
+
+    public void pausePlay () {
+        if (mVideoFragment != null) {
+            mVideoFragment.pausePlay();
+        }
+    }
+
+    public void resumePlay () {
+        if (mVideoFragment != null) {
+            mVideoFragment.resumePlay();
+        }
+    }
+
+    public void stopPlay (VideoFragment.OnStopCallback stopCallback) {
+        if (mVideoFragment != null) {
+            mVideoFragment.stopPlay(stopCallback);
+        }
+    }
+
+    public boolean isFullScreen () {
+        return mVideoFragment != null && mVideoFragment.isFullScreen();
+    }
+
+    public void setFullScreen (boolean isFullScreen) {
+        if (mVideoFragment != null) {
+            mVideoFragment.setFullScreen(isFullScreen);
         }
     }
 
@@ -83,6 +157,32 @@ public class VideoWrapperFragment extends Fragment implements
 
     public void setOnFullScreenListener (VideoFragment.OnFullScreenListener listener) {
         mFullScreenListener = listener;
+    }
+
+    public void hideControllerViews () {
+        if (isControllerShowing) {
+            mControllerLayout.removeCallbacks(mAutoHideRunnable);
+            ObjectAnimator topAnimator = ObjectAnimator.ofFloat(mTopControllerLayout, "translationY", 0, -mTopControllerLayout.getHeight());
+            topAnimator.start();
+            ObjectAnimator bottomAnimator = ObjectAnimator.ofFloat(mBottomControllerLayout, "translationY", 0, mTopControllerLayout.getHeight());
+            bottomAnimator.start();
+            isControllerShowing = false;
+        }
+
+    }
+
+    public void showControllerViews (boolean autoHide) {
+        if (!isControllerShowing) {
+            mControllerLayout.removeCallbacks(mAutoHideRunnable);
+            ObjectAnimator topAnimator = ObjectAnimator.ofFloat(mTopControllerLayout, "translationY", -mTopControllerLayout.getHeight(), 0);
+            topAnimator.start();
+            ObjectAnimator bottomAnimator = ObjectAnimator.ofFloat(mBottomControllerLayout, "translationY", mTopControllerLayout.getHeight(), 0);
+            bottomAnimator.start();
+            isControllerShowing = true;
+            if (autoHide) {
+                mControllerLayout.postDelayed(mAutoHideRunnable, 5000);
+            }
+        }
 
     }
 
@@ -93,6 +193,7 @@ public class VideoWrapperFragment extends Fragment implements
     @Override
     public void onFullScreen(boolean isFullScreen) {
         mFullScreenIv.setSelected(isFullScreen);
+        showControllerViews(true);
         if (mFullScreenListener != null) {
             mFullScreenListener.onFullScreen(isFullScreen);
         }
@@ -115,6 +216,7 @@ public class VideoWrapperFragment extends Fragment implements
     @Override
     public void onStarted(BVideoView bVideoView) {
         mStartIv.setSelected(true);
+        mPreviewImageIv.setVisibility(View.GONE);
         if (mPlayCallback != null) {
             mPlayCallback.onStarted(bVideoView);
         }
@@ -139,6 +241,8 @@ public class VideoWrapperFragment extends Fragment implements
     @Override
     public void onCompleted(BVideoView bVideoView) {
         mStartIv.setSelected(false);
+        mPreviewImageIv.setVisibility(View.VISIBLE);
+        showControllerViews(false);
         if (mPlayCallback != null) {
             mPlayCallback.onCompleted(bVideoView);
         }
@@ -147,6 +251,7 @@ public class VideoWrapperFragment extends Fragment implements
     @Override
     public void onError(BVideoView bVideoView) {
         mStartIv.setSelected(false);
+        mPreviewImageIv.setVisibility(View.VISIBLE);
         if (mPlayCallback != null) {
             mPlayCallback.onError(bVideoView);
         }
@@ -171,6 +276,12 @@ public class VideoWrapperFragment extends Fragment implements
             }
         } else if (id == mFullScreenIv.getId()) {
             mVideoFragment.setFullScreen(!mVideoFragment.isFullScreen());
+        } else if (id == mControllerLayout.getId()) {
+            if (isControllerShowing) {
+                hideControllerViews();
+            } else {
+                showControllerViews(true);
+            }
         }
     }
 

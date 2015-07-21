@@ -1,12 +1,7 @@
 package com.metis.base.activity;
 
-import android.opengl.Visibility;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.metis.base.ActivityDispatcher;
@@ -17,14 +12,14 @@ import com.metis.base.widget.ImagePreviewable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePreviewActivity extends TitleBarActivity {
+public class ImageViewerActivity extends TitleBarActivity {
 
     private MultiImagePreviewFragment mPreviewFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_preview);
+        setContentView(R.layout.activity_image_viewer);
 
         mPreviewFragment = (MultiImagePreviewFragment)getSupportFragmentManager().findFragmentById(R.id.preview_fragment);
     }

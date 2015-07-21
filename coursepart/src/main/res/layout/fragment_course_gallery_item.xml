@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/item_detail_scroller"
             android:padding="2dp"
+            android:visibility="gone"
             >
             <TextView
                 android:id="@+id/item_detail_tag_title"
@@ -52,7 +53,8 @@
         <ScrollView
             android:id="@+id/item_detail_scroller"
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
+            android:visibility="gone"
             >
             <TextView
                 android:id="@+id/item_detail_info"

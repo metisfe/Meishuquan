@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.baidu.cyberplayer.core.BVideoView;
+import com.metis.base.manager.DisplayManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.Log;
 import com.metis.coursepart.ActivityDispatcher;
@@ -29,17 +31,22 @@ import com.metis.coursepart.module.Course;
 import com.metis.coursepart.module.CourseAlbum;
 import com.metis.coursepart.module.CourseSubList;
 import com.metis.msnetworklib.contract.ReturnInfo;
+import com.metis.playerlib.PlayCallback;
 import com.metis.playerlib.PlayerFragment;
+import com.metis.playerlib.VideoFragment;
+import com.metis.playerlib.VideoWrapperFragment;
 
 import java.util.List;
 
 
-public class CourseVideoDetailActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, CourseAdapter.OnCourseClickListener{
+public class CourseVideoDetailActivity extends AppCompatActivity implements
+        View.OnClickListener, ViewPager.OnPageChangeListener, CourseAdapter.OnCourseClickListener,
+        VideoFragment.OnFullScreenListener, PlayCallback{
 
     private static final String TAG = CourseVideoDetailActivity.class.getSimpleName();
 
     private FrameLayout mPlayerContainer = null;
-    private PlayerFragment mPlayerFragment = null;
+    private VideoWrapperFragment mPlayerFragment = null;
     private Button mDetailBtn, mChapterBtn;
     private LinearLayout mCtrlContainer = null;
     private ViewPager mViewPager = null;
@@ -65,7 +72,7 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
         setContentView(R.layout.activity_course_video_detail);
 
         mPlayerContainer = (FrameLayout)findViewById(R.id.video_detail_player_fragment_container);
-        mPlayerFragment = (PlayerFragment)getSupportFragmentManager().findFragmentById(R.id.video_detail_player_fragment);
+        mPlayerFragment = (VideoWrapperFragment)getSupportFragmentManager().findFragmentById(R.id.video_detail_player_fragment);
         mCtrlContainer = (LinearLayout)findViewById(R.id.video_detail_btn_container);
         mDetailBtn = (Button)findViewById(R.id.video_detail_detail_btn);
         mChapterBtn = (Button)findViewById(R.id.video_detail_chapter_btn);
@@ -79,14 +86,17 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
         mViewPager.addOnPageChangeListener(this);
         mDetailBtn.setSelected(true);
 
+        mPlayerFragment.setOnFullScreenListener(this);
+        mPlayerFragment.setPlayCallback(this);
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mCourseAlbum = (CourseAlbum)getIntent().getSerializableExtra(ActivityDispatcher.KEY_COURSE_ALBUM);
-        mDetailFragment.setCourseAlbum(mCourseAlbum);
         if (mCourseAlbum != null) {
+            mDetailFragment.setCourseAlbum(mCourseAlbum);
+            DisplayManager.getInstance(this).display(mCourseAlbum.coursePic, mPlayerFragment.getPreviewImageView());
             CourseManager.getInstance(this).getCourseSubList(mCourseAlbum.courseId, new RequestCallback<CourseSubList>() {
                 @Override
                 public void callback(ReturnInfo<CourseSubList> returnInfo, String callbackId) {
@@ -102,7 +112,8 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
                             loadSubCourseDetail(subList.get(0).subCourseId);
 
                             //File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Movies" + File.separator + "TR.mp4");
-                            mPlayerFragment.setDataSource(subList.get(0).videoUrl);
+                            mPlayerFragment.setSource(subList.get(0).videoUrl);
+                            //mPlayerFragment.setDataSource(subList.get(0).videoUrl);
                             mPlayerFragment.setTitle(subList.get(0).subCourseName);
 
                         }
@@ -120,24 +131,26 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
         final Course course = delegate.getSource();
         if (delegate.equals(mCurrentCourse)) {
             if (delegate.isSelected()) {
+                mPlayerFragment.pausePlay();
                 //TODO pause
             } else {
+                mPlayerFragment.startPlay();
                 //TODO resume
             }
             delegate.setSelected(!delegate.isSelected());
         } else {
             if (mPlayerFragment.isStarted()) {
-                mPlayerFragment.stopPlay(new PlayerFragment.OnStopCompleteListener() {
+                mPlayerFragment.stopPlay(new VideoFragment.OnStopCallback() {
                     @Override
                     public void onStopped() {
                         mPlayerFragment.setTitle(course.subCourseName);
-                        mPlayerFragment.setDataSource(course.videoUrl);
+                        mPlayerFragment.setSource(course.videoUrl);
                         mPlayerFragment.startPlay();
                     }
                 });
             } else {
                 mPlayerFragment.setTitle(course.subCourseName);
-                mPlayerFragment.setDataSource(course.videoUrl);
+                mPlayerFragment.setSource(course.videoUrl);
                 mPlayerFragment.startPlay();
             }
 
@@ -184,7 +197,7 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
         super.onBackPressed();
     }
 
-    @Override
+    /*@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mPlayerContainer.getLayoutParams();
@@ -206,7 +219,7 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
             mPlayerContainer.setLayoutParams(params);
         }
         Log.v(TAG, TAG + " onConfigurationChanged " + newConfig.orientation);
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -240,6 +253,53 @@ public class CourseVideoDetailActivity extends AppCompatActivity implements View
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onFullScreen(boolean isFullScreen) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mPlayerContainer.getLayoutParams();
+        if (params == null) {
+            params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+        }
+        if (isFullScreen) {
+            mCtrlContainer.setVisibility(View.GONE);
+            mViewPager.setVisibility(View.GONE);
+            Log.v(TAG, TAG + " onConfigurationChanged SCREEN_ORIENTATION_LANDSCAPE");
+            params.width = ViewGroup.LayoutParams.FILL_PARENT;
+            params.height = ViewGroup.LayoutParams.FILL_PARENT;
+            mPlayerContainer.setLayoutParams(params);
+        } else {
+            mCtrlContainer.setVisibility(View.VISIBLE);
+            mViewPager.setVisibility(View.VISIBLE);
+            params.width = ViewGroup.LayoutParams.FILL_PARENT;
+            params.height = getResources().getDimensionPixelSize(R.dimen.video_player_vertical_height);
+            mPlayerContainer.setLayoutParams(params);
+        }
+    }
+
+    @Override
+    public void onStarted(BVideoView bVideoView) {
+
+    }
+
+    @Override
+    public void onPaused(BVideoView bVideoView) {
+
+    }
+
+    @Override
+    public void onResumed(BVideoView bVideoView) {
+
+    }
+
+    @Override
+    public void onCompleted(BVideoView bVideoView) {
+        mPlayerFragment.setFullScreen(false);
+    }
+
+    @Override
+    public void onError(BVideoView bVideoView) {
 
     }
 
