@@ -14,27 +14,25 @@
         android:layout_centerVertical="true"
         android:src="@drawable/ic_play_pause_circle"
         />
-    <TextView
-        android:id="@+id/item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
+    <ImageView
+        android:id="@+id/item_download_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textSize="15dp"
-        android:textColor="@android:color/black"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/item_state_icon"
-        android:ellipsize="end"
+        android:src="@drawable/ic_download"
+        android:visibility="gone"
         />
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:id="@+id/time_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/item_title"
-        android:layout_toLeftOf="@+id/item_download_btn"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:minWidth="60dp"
         >
+        <!--android:layout_toLeftOf="@+id/item_download_btn"-->
         <ImageView
             android:id="@+id/icon"
             android:layout_width="18dp"
@@ -44,7 +42,7 @@
             />
         <TextView
             android:id="@+id/item_duration"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:layout_toRightOf="@+id/icon"
@@ -52,13 +50,17 @@
             android:layout_centerVertical="true"
             />
     </RelativeLayout>
-    <ImageView
-        android:id="@+id/item_download_btn"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentRight="true"
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_download"
-        android:visibility="gone"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/item_state_icon"
+        android:layout_toLeftOf="@+id/time_container"
+        android:ellipsize="end"
         />
 </RelativeLayout>

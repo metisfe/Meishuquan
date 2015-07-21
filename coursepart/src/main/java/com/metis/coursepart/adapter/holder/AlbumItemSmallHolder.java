@@ -51,8 +51,8 @@ public class AlbumItemSmallHolder extends AbsViewHolder<AlbumSmallDelegate> {
             itemAuthorProfileIv.setOnClickListener(userListener);
             itemAuthorNameTv.setOnClickListener(userListener);*/
         } else {
-            itemAuthorProfileIv.setOnClickListener(null);
-            itemAuthorNameTv.setOnClickListener(null);
+            /*itemAuthorProfileIv.setOnClickListener(null);
+            itemAuthorNameTv.setOnClickListener(null);*/
         }
 
         itemPlayCountTv.setText(context.getString(R.string.course_play_count, album.viewCount));
