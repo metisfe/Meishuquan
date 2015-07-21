@@ -114,7 +114,9 @@ public class VideoFragment extends Fragment implements
                     mDecorView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            hideSystemUi();
+                            if (isFullScreen) {
+                                hideSystemUi();
+                            }
                         }
                     }, 5000);
                 }
