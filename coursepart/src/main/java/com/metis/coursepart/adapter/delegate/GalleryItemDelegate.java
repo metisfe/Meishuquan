@@ -12,6 +12,8 @@ public class GalleryItemDelegate extends BaseDelegate<GalleryItem> {
 
     public int delegateWidth = -1, delegateHeight = -1;
 
+    public String mTag = null;
+
     public GalleryItemDelegate(GalleryItem galleryItem) {
         this(null, galleryItem);
     }
@@ -21,6 +23,14 @@ public class GalleryItemDelegate extends BaseDelegate<GalleryItem> {
         if (context != null && galleryItem.width > 0 && galleryItem.height > 0) {
             autoComputeByScreen(context);
         }
+    }
+
+    public void setTag (String tag) {
+        mTag = tag;
+    }
+
+    public String getTag () {
+        return mTag;
     }
 
     @Override

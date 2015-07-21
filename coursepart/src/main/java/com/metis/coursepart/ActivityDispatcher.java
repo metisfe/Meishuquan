@@ -26,6 +26,7 @@ public class ActivityDispatcher {
     public static final String
             KEY_COURSE_ALBUM = "course_album",
             KEY_ALBUM_ID = "album_id",
+            KEY_TAG = "tag",
             KEY_GALLERY_ITEM_ID = "gallery_item_id",
             KEY_STATE_FILTER_ID = "state_filter_id";
 
@@ -35,9 +36,10 @@ public class ActivityDispatcher {
         context.startActivity(it);
     }
 
-    public static void imageDetailActivity (Context context, long id) {
+    public static void imageDetailActivity (Context context, String tag, long id) {
         Intent it = new Intent(context, GalleryItemDetailActivity.class);
         Log.v(TAG, "imageDetailActivity id=" + id);
+        it.putExtra(KEY_TAG, tag);
         it.putExtra(KEY_GALLERY_ITEM_ID, id);
         context.startActivity(it);
     }

@@ -119,7 +119,7 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityDispatcher.imageDetailActivity(context, item.picId);
+                ActivityDispatcher.imageDetailActivity(context, galleryItemDelegate.getTag(), item.picId);
             }
         });
 

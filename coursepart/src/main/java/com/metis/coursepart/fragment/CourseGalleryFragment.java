@@ -126,15 +126,17 @@ public class CourseGalleryFragment extends Fragment implements SwipeRefreshLayou
                     List<GalleryItemDelegate> delegates = new ArrayList<GalleryItemDelegate>();
                     final int length = galleryItems.size();
                     for (int i = 0; i < length; i++) {
-                        delegates.add(new GalleryItemDelegate(galleryItems.get(i)));
+                        GalleryItemDelegate delegate = new GalleryItemDelegate(galleryItems.get(i));
+                        delegate.setTag(TAG);
+                        delegates.add(delegate);
                     }
                     if (index == 1) {
                         mAdapter.clearDataList();
                         mAdapter.addDataItem(mFooterDelegate);
-                        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList();
+                        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
                     }
                     mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
-                    GalleryCacheManager.getInstance(getActivity()).addAll(galleryItems);
+                    GalleryCacheManager.getInstance(getActivity()).addAll(TAG, galleryItems);
 
                     mFooter.setState(galleryItems.isEmpty() ? Footer.STATE_NO_MORE : Footer.STATE_SUCCESS);
                     mIndex = index;

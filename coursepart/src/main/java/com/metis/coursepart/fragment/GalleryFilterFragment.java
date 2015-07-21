@@ -17,6 +17,7 @@ import com.metis.coursepart.adapter.decoration.GalleryItemDecoration;
 import com.metis.coursepart.adapter.decoration.VideoFilterMarginDecoration;
 import com.metis.coursepart.adapter.delegate.GalleryItemDelegate;
 import com.metis.coursepart.manager.CourseManager;
+import com.metis.coursepart.manager.GalleryCacheManager;
 import com.metis.coursepart.module.GalleryItem;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
@@ -27,6 +28,8 @@ import java.util.List;
  * Created by Beak on 2015/7/21.
  */
 public class GalleryFilterFragment extends BaseFilterFragment implements FilterPanelFragment.OnFilterChangeListener{
+
+    private static final String TAG = GalleryFilterFragment.class.getSimpleName();
 
     private GalleryAdapter mAdapter = null;
 
@@ -82,6 +85,7 @@ public class GalleryFilterFragment extends BaseFilterFragment implements FilterP
     public void onDestroy() {
         super.onDestroy();
         getFilterPanelFragment().setOnFilterChangeListener(null);
+        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
     }
 
     @Override
@@ -114,14 +118,17 @@ public class GalleryFilterFragment extends BaseFilterFragment implements FilterP
                     final int length = galleryItemList.size();
                     for (int i = 0; i < length; i++) {
                         GalleryItemDelegate delegate = new GalleryItemDelegate(galleryItemList.get(i));
+                        delegate.setTag(TAG);
                         delegates.add(delegate);
                     }
                     if (index == 1) {
                         mAdapter.clearDataList();
                         mAdapter.addDataItem(mFooterDelegate);
+                        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
                     }
                     mFooter.setState(length == 0 ? Footer.STATE_NO_MORE : Footer.STATE_SUCCESS);
                     mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
+                    GalleryCacheManager.getInstance(getActivity()).addAll(TAG, galleryItemList);
                     mIndex = index;
                 } else {
                     mFooter.setState(Footer.STATE_FAILED);

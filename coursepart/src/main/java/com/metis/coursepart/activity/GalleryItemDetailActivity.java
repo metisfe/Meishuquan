@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.utils.Log;
 import com.metis.base.widget.ProfileNameView;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
@@ -28,6 +29,8 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
 
     private GalleryAdapter mAdapter = null;
 
+    private String mTag = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +39,15 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
         mProfileNameView = new ProfileNameView(this);
         getTitleBar().setCenterView(mProfileNameView);
 
+        long picId = getIntent().getLongExtra(ActivityDispatcher.KEY_GALLERY_ITEM_ID, 0);
+        mTag = getIntent().getStringExtra(ActivityDispatcher.KEY_TAG);
+
         mPhotoVp = (ViewPager)findViewById(R.id.item_detail_view_pager);
         mAdapter = new GalleryAdapter(this, getSupportFragmentManager());
         mPhotoVp.setAdapter(mAdapter);
 
-        long picId = getIntent().getLongExtra(ActivityDispatcher.KEY_GALLERY_ITEM_ID, 0);
-        int index = GalleryCacheManager.getInstance(this).getIndexById(picId);
+
+        int index = GalleryCacheManager.getInstance(this).getIndexById(mTag, picId);
         if (index < 0) {
             index = 0;
         }
@@ -79,7 +85,7 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
 
     @Override
     public void onPageSelected(int position) {
-        GalleryItem galleryItem = GalleryCacheManager.getInstance(this).getGalleryItem(position);
+        GalleryItem galleryItem = GalleryCacheManager.getInstance(this).getGalleryItem(mTag, position);
         ((CourseGalleryItemFragment) mAdapter.getItem(position)).setGalleryItem(galleryItem);
 
         final StudioInfo studioInfo = galleryItem.studio;
@@ -111,7 +117,8 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
         public GalleryAdapter(Context context, FragmentManager fm) {
             super(fm);
             mManager = GalleryCacheManager.getInstance(context);
-            mFragmentArray = new CourseGalleryItemFragment[mManager.size()];
+            final int length = mManager.size(mTag);
+            mFragmentArray = new CourseGalleryItemFragment[length];
         }
 
         @Override
@@ -125,7 +132,7 @@ public class GalleryItemDetailActivity extends TitleBarActivity implements ViewP
 
         @Override
         public int getCount() {
-            return mManager.size();
+            return mManager.size(mTag);
         }
     }
 

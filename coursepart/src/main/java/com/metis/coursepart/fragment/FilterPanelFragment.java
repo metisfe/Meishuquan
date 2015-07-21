@@ -152,7 +152,6 @@ public class FilterPanelFragment extends Fragment {
         mCategoryAdapter.setOnFilterSelectedListener(new FilterAdapter.OnFilterSelectedListener() {
             @Override
             public void onSelected(int position, long id) {
-                //Log.v(TAG, "");
                 if (id != mCurrentCategory) {
                     mCurrentCategory = id;
                     onChange();
