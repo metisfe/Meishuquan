@@ -201,7 +201,8 @@ public class VideoWrapperFragment extends Fragment implements
     @Override
     public void onFullScreen(boolean isFullScreen) {
         mFullScreenIv.setSelected(isFullScreen);
-        showControllerViews(isFullScreen);
+        if (isFullScreen)
+        hideControllerViews();
         if (mFullScreenListener != null) {
             mFullScreenListener.onFullScreen(isFullScreen);
         }

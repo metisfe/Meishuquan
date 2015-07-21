@@ -17,7 +17,7 @@ import butterknife.InjectView;
 
 public class MainActivity extends AppCompatActivity implements DockBar.OnDockItemClickListener{
 
-    private CourseTabFragment mCourseFragment = CourseTabFragment.getInstance();
+    private CourseTabFragment mCourseFragment = new CourseTabFragment();
 
     private Fragment mCurrentFragment = null;
 

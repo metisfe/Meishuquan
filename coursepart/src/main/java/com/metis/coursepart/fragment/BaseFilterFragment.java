@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 
+import com.metis.base.fragment.BaseFragment;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.callback.OnScrollBottomListener;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/7/14.
  */
-public abstract class BaseFilterFragment extends Fragment {
+public abstract class BaseFilterFragment extends BaseFragment {
 
     private static final String TAG = BaseFilterFragment.class.getSimpleName();
 
@@ -182,6 +183,14 @@ public abstract class BaseFilterFragment extends Fragment {
 
     public long getCurrentState () {
         return mState;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (getAdapter() != null) {
+            getAdapter().clearDataList();
+        }
     }
 
     public abstract RecyclerView.LayoutManager getLayoutManager ();

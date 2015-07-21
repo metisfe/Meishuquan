@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.metis.base.fragment.BaseFragment;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/7/6.
  */
-public class CourseVideoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private static final String TAG = CourseVideoFragment.class.getSimpleName();
 

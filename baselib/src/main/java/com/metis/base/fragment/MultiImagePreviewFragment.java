@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/7/20.
  */
-public class MultiImagePreviewFragment extends Fragment implements ViewPager.OnPageChangeListener{
+public class MultiImagePreviewFragment extends BaseFragment implements ViewPager.OnPageChangeListener{
 
     private ViewPager mViewPager = null;
     private SingleImagePreviewFragment[] mFragmentArray = null;

@@ -29,7 +29,7 @@ import uk.co.senab.photoview.PhotoView;
 /**
  * Created by Beak on 2015/7/20.
  */
-public class SingleImagePreviewFragment extends Fragment {
+public class SingleImagePreviewFragment extends BaseFragment {
 
     private PhotoView mPhotoView = null;
     private ProgressBar mProgressBar = null;

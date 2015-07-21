@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.metis.base.fragment.BaseFragment;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.CourseAdapter;
 import com.metis.coursepart.adapter.decoration.VideoItemDetailDecoration;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/7/8.
  */
-public class CourseVideoChapterFragment extends Fragment {
+public class CourseVideoChapterFragment extends BaseFragment {
 
     private static CourseVideoChapterFragment sFragment = new CourseVideoChapterFragment();
 
@@ -89,4 +90,12 @@ public class CourseVideoChapterFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mAdapter != null) {
+            mAdapter.clearDataList();
+            mAdapter = null;
+        }
+    }
 }

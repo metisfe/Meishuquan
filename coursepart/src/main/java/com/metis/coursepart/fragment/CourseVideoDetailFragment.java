@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.metis.base.fragment.BaseFragment;
 import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/7/8.
  */
-public class CourseVideoDetailFragment extends Fragment {
+public class CourseVideoDetailFragment extends BaseFragment {
 
     private static final String TAG = CourseVideoDetailFragment.class.getSimpleName();
 
@@ -87,6 +88,9 @@ public class CourseVideoDetailFragment extends Fragment {
 
     public void setCourseAlbum(CourseAlbum album) {
         mCourseAlbum = album;
+        if (!isAlive()) {
+            return;
+        }
         if (mAdapter != null && mUserDelegate == null) {
             mUserDelegate = new UserInDetailDelegate(mCourseAlbum);
             mAdapter.addDataItem(0, mUserDelegate);
@@ -96,6 +100,9 @@ public class CourseVideoDetailFragment extends Fragment {
 
     public void setCurrentCourse(Course course) {
         mCurrentCourse = course;
+        if (!isAlive()) {
+            return;
+        }
         Log.v(TAG, "mUserDelegate != null -- " + (mUserDelegate != null) + " course=" + course);
         if (mUserDelegate != null && course != null) {
             mUserDelegate.setWebContent(course.webContent);
@@ -105,4 +112,12 @@ public class CourseVideoDetailFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mAdapter != null) {
+            mAdapter.clearDataList();
+            mAdapter = null;
+        }
+    }
 }

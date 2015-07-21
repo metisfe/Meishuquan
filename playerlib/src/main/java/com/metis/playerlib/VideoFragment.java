@@ -107,6 +107,19 @@ public class VideoFragment extends Fragment implements
         super.onAttach(activity);
         mAudioManager = (AudioManager)activity.getSystemService(Context.AUDIO_SERVICE);
         mDecorView = activity.getWindow().getDecorView();
+        mDecorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0) {
+                    mDecorView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideSystemUi();
+                        }
+                    }, 5000);
+                }
+            }
+        });
     }
 
     @Override
@@ -299,7 +312,19 @@ public class VideoFragment extends Fragment implements
     public void setFullScreen (boolean fullScreen) {
         isFullScreen = fullScreen;
         getActivity().setRequestedOrientation(fullScreen ? MODE_FULL_SCREEN : MODE_NORMAL);
-        mDecorView.setSystemUiVisibility(fullScreen ? FULL_SCREEN_UI_OPTIONS : 0);
+        if (fullScreen) {
+            hideSystemUi();
+        } else {
+            showSystemUi();
+        }
+    }
+
+    private void showSystemUi () {
+        mDecorView.setSystemUiVisibility (0);
+    }
+
+    private void hideSystemUi () {
+        mDecorView.setSystemUiVisibility (FULL_SCREEN_UI_OPTIONS);
     }
 
     public boolean isFullScreen () {

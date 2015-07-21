@@ -20,6 +20,7 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.metis.base.activity.TitleBarActivity;
+import com.metis.base.fragment.BaseFragment;
 import com.metis.base.manager.CacheDirManager;
 import com.metis.base.utils.FileUtils;
 import com.metis.base.utils.Log;
@@ -38,7 +39,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 /**
  * Created by Beak on 2015/7/9.
  */
-public class CourseGalleryItemFragment extends Fragment implements View.OnClickListener{
+public class CourseGalleryItemFragment extends BaseFragment implements View.OnClickListener{
 
     private static final String TAG = CourseGalleryItemFragment.class.getSimpleName();
 

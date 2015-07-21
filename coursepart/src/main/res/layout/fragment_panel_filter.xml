@@ -19,7 +19,7 @@
         android:id="@+id/filter_category_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
-        android:visibility="visible"
+        android:visibility="gone"
         />
     <View
         android:layout_width="fill_parent"
@@ -30,7 +30,7 @@
         android:id="@+id/filter_studio_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
-        android:visibility="visible"
+        android:visibility="gone"
         />
     <View
         android:layout_width="fill_parent"
