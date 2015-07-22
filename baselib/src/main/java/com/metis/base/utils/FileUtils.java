@@ -34,4 +34,24 @@ public class FileUtils {
         }
         return url;
     }
+
+    public static int deleteFile (File file) {
+        if (file == null || !file.exists()) {
+            return 0;
+        }
+        int count = 0;
+        if (file.isFile()) {
+            boolean isDeleted = file.delete();
+            if (isDeleted) {
+                count++;
+            }
+        } else if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            final int length = files.length;
+            for (int i = 0; i < length; i++) {
+                count += deleteFile(files[i]);
+            }
+        }
+        return count;
+    }
 }

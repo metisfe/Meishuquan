@@ -141,6 +141,7 @@ public class GalleryFilterFragment extends BaseFilterFragment implements FilterP
     @Override
     public void onFilterChanged(long state, long category, long studio, long charge) {
         mAdapter.clearDataList();
+        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
         mFooter.setState(Footer.STATE_WAITTING);
         mAdapter.addDataItem(mFooterDelegate);
         mAdapter.notifyDataSetChanged();
