@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">PlayerLib</string>
-    <string name="video_source_not_set">网络不给力</string>
+    <string name="video_source_not_set">无网络或网络错误</string>
 </resources>
