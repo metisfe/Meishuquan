@@ -2,7 +2,6 @@ package com.metis.base.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -35,7 +34,7 @@ public class FileUtils {
         return url;
     }
 
-    public static int deleteFile (File file) {
+    public static int clearFile(File file) {
         if (file == null || !file.exists()) {
             return 0;
         }
@@ -49,9 +48,26 @@ public class FileUtils {
             File[] files = file.listFiles();
             final int length = files.length;
             for (int i = 0; i < length; i++) {
-                count += deleteFile(files[i]);
+                count += clearFile(files[i]);
             }
         }
         return count;
+    }
+
+    public static long getDirectorySpace(File file) {
+        if (file == null || !file.exists()) {
+            return 0;
+        }
+        long length = 0;
+        if (file.isFile()) {
+            length += file.length();
+        } else if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            final int size = files.length;
+            for (int i = 0; i < size; i++) {
+                length += getDirectorySpace(files[i]);
+            }
+        }
+        return length;
     }
 }
