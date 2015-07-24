@@ -16,7 +16,8 @@ public class ActivityDispatcher {
 
     public static final String
     KEY_USER_ID = "user_id",
-    KEY_IMAGES = "images";
+    KEY_IMAGES = "images",
+    KEY_INDEX = "index";
 
     public static void userActivity (Context context, long userId) {
         try {
@@ -30,16 +31,21 @@ public class ActivityDispatcher {
         }
     }
 
-    public static void imagePreviewActivity (Context context, ImagePreviewable[] imagePreviewables) {
+    public static void imagePreviewActivity (Context context, ImagePreviewable[] imagePreviewables, int index) {
         try {
             Intent it = new Intent(ACTION_IMAGE_PREVIEW);
             it.putExtra(KEY_IMAGES, imagePreviewables);
+            it.putExtra(KEY_INDEX, index);
             it.addCategory(Intent.CATEGORY_DEFAULT);
             context.startActivity(it);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, "imagePreviewActivity exception", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void imagePreviewActivity (Context context, ImagePreviewable[] imagePreviewables) {
+        imagePreviewActivity(context, imagePreviewables, 0);
     }
 
     public static void imagePreviewActivity (Context context, ImagePreviewable imagePreviewables) {

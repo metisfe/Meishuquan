@@ -21,7 +21,6 @@ import com.metis.base.widget.adapter.delegate.TypeLayoutProvider;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.decoration.GalleryItemDecoration;
 import com.metis.coursepart.manager.CourseManager;
-import com.metis.coursepart.manager.GalleryCacheManager;
 import com.metis.coursepart.module.GalleryItem;
 import com.metis.coursepart.adapter.GalleryAdapter;
 import com.metis.coursepart.adapter.delegate.GalleryItemDelegate;
@@ -134,10 +133,8 @@ public class CourseGalleryFragment extends BaseFragment implements SwipeRefreshL
                     if (index == 1) {
                         mAdapter.clearDataList();
                         mAdapter.addDataItem(mFooterDelegate);
-                        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
                     }
                     mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
-                    GalleryCacheManager.getInstance(getActivity()).addAll(TAG, galleryItems);
 
                     mFooter.setState(galleryItems.isEmpty() ? Footer.STATE_NO_MORE : Footer.STATE_SUCCESS);
                     mIndex = index;

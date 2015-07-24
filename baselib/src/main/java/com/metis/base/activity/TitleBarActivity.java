@@ -16,7 +16,7 @@ import com.metis.base.widget.TitleBar;
 /**
  * Created by Beak on 2015/7/8.
  */
-public abstract class TitleBarActivity extends AppCompatActivity {
+public abstract class TitleBarActivity extends BaseActivity {
 
     private TitleBar mTitleBar = null;
     private FrameLayout mContentViewContainer = null;

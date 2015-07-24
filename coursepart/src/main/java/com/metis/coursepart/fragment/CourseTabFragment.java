@@ -109,7 +109,7 @@ public class CourseTabFragment extends DockFragment {
     @Override
     public DockBar.Dock getDock(Context context) {
         if (mDock == null) {
-            mDock = new DockBar.Dock(context, 1, android.R.drawable.alert_dark_frame, android.R.string.cancel, this);
+            mDock = new DockBar.Dock(context, 2, android.R.drawable.alert_dark_frame, android.R.string.cancel, this);
         }
         return mDock;
     }

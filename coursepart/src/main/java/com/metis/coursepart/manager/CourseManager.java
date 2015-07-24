@@ -44,21 +44,19 @@ public class CourseManager extends AbsManager {
     COURSE_SUB_DETAIL = REQUEST_ROOT + "Course/CourseSubDetial?id={id}",
     GET_GALLERY_PIC_LIST = REQUEST_ROOT + "Gallery/GetGalleryPicList?pictype={pictype}&tags={tags}&orderType={orderType}&index={index}&studioid={studioid}&chargetype={chargetype}";
 
-    private Gson mGson = null;
+
     private CourseManager(Context context) {
         super(context);
-        mGson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .create();
+
     }
 
     public String getCourseChannelList (final RequestCallback<CourseChannelList> callback) {
         return NetProxy.getInstance(getContext()).doGetRequest(COURSE_CHANNEL_LIST, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<CourseChannelList> returnInfo = mGson.fromJson(
+                ReturnInfo<CourseChannelList> returnInfo = getGson().fromJson(
                         result, new TypeToken<ReturnInfo<CourseChannelList>>() {
-                }.getType());
+                        }.getType());
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
                 }
@@ -70,9 +68,10 @@ public class CourseManager extends AbsManager {
         return NetProxy.getInstance(getContext()).doGetRequest(MAIN_COURSE_LIST, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<MainCourseList> returnInfo = mGson.fromJson(
+                ReturnInfo<MainCourseList> returnInfo = getGson().fromJson(
                         result,
-                        new TypeToken<ReturnInfo<MainCourseList>>(){}.getType()
+                        new TypeToken<ReturnInfo<MainCourseList>>() {
+                        }.getType()
                 );
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
@@ -86,9 +85,10 @@ public class CourseManager extends AbsManager {
         return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<CourseSubList> returnInfo = mGson.fromJson(
+                ReturnInfo<CourseSubList> returnInfo = getGson().fromJson(
                         result,
-                        new TypeToken<ReturnInfo<CourseSubList>>(){}.getType()
+                        new TypeToken<ReturnInfo<CourseSubList>>() {
+                        }.getType()
                 );
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
@@ -108,9 +108,10 @@ public class CourseManager extends AbsManager {
         return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<List<CourseAlbum>> returnInfo = mGson.fromJson(
+                ReturnInfo<List<CourseAlbum>> returnInfo = getGson().fromJson(
                         result,
-                        new TypeToken<ReturnInfo<List<CourseAlbum>>>(){}.getType()
+                        new TypeToken<ReturnInfo<List<CourseAlbum>>>() {
+                        }.getType()
                 );
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
@@ -124,9 +125,10 @@ public class CourseManager extends AbsManager {
         return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<Course> returnInfo = mGson.fromJson(
+                ReturnInfo<Course> returnInfo = getGson().fromJson(
                         result,
-                        new TypeToken<ReturnInfo<Course>>(){}.getType()
+                        new TypeToken<ReturnInfo<Course>>() {
+                        }.getType()
                 );
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
@@ -147,7 +149,7 @@ public class CourseManager extends AbsManager {
         return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<List<GalleryItem>> returnInfo = mGson.fromJson(
+                ReturnInfo<List<GalleryItem>> returnInfo = getGson().fromJson(
                         result,
                         new TypeToken<ReturnInfo<List<GalleryItem>>>(){}.getType());
                 if (callback != null) {

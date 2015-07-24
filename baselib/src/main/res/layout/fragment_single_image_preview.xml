@@ -12,7 +12,8 @@
         android:id="@+id/preview_progress_bar"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:visibility="gone"
         style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_gravity="center"
+        android:visibility="gone"
         />
 </FrameLayout>

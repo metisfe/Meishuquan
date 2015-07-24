@@ -1,5 +1,6 @@
 package com.metis.base.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -13,6 +14,8 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAllowEnterTransitionOverlap(true);
+        setAllowReturnTransitionOverlap(true);
         isAlive = true;
     }
 
@@ -20,6 +23,11 @@ public class BaseFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         isAlive = false;
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
     }
 
     public boolean isAlive () {

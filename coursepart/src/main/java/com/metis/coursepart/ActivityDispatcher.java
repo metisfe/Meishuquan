@@ -1,9 +1,12 @@
 package com.metis.coursepart;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.metis.base.utils.Log;
+import com.metis.base.widget.ImagePreviewable;
 import com.metis.coursepart.activity.CourseVideoDetailActivity;
 import com.metis.coursepart.activity.FilterActivity;
 import com.metis.coursepart.activity.GalleryItemDetailActivity;
@@ -21,7 +24,8 @@ public class ActivityDispatcher {
 
     public static final String
             ACTION_VIDEO_FILTER = "com.metis.coursepart.action_video_filter",
-            ACTION_GALLERY_FILTER = "com.metis.coursepart.action_gallery_filter";
+            ACTION_GALLERY_FILTER = "com.metis.coursepart.action_gallery_filter",
+            ACTION_GALLERY_DETAIL = "com.metis.coursepart.action_gallery_detail";
 
     public static final String
             KEY_COURSE_ALBUM = "course_album",
@@ -36,12 +40,22 @@ public class ActivityDispatcher {
         context.startActivity(it);
     }
 
-    public static void imageDetailActivity (Context context, String tag, long id) {
+    public static void imageDetailActivity (Context context, ImagePreviewable[] images, int index) {
         Intent it = new Intent(context, GalleryItemDetailActivity.class);
-        Log.v(TAG, "imageDetailActivity id=" + id);
-        it.putExtra(KEY_TAG, tag);
-        it.putExtra(KEY_GALLERY_ITEM_ID, id);
+        it.putExtra(com.metis.base.ActivityDispatcher.KEY_IMAGES, images);
+        it.putExtra(com.metis.base.ActivityDispatcher.KEY_INDEX, index);
         context.startActivity(it);
+
+    }
+
+    public static void imageDetailActivity (Context context, ImagePreviewable[] images) {
+        imageDetailActivity(context, images, 0);
+    }
+
+    public static void imageDetailActivity (Context context, ImagePreviewable image) {
+        ImagePreviewable[] array = new ImagePreviewable[1];
+        array[0] = image;
+        imageDetailActivity(context, array);
     }
 
     public static void filterActivityForVideo (Context context) {
@@ -53,6 +67,8 @@ public class ActivityDispatcher {
         it.setAction(ACTION_VIDEO_FILTER);
         it.putExtra(KEY_STATE_FILTER_ID, state);
         context.startActivity(it);
+        Log.v(TAG, context.getClass().getSimpleName() + " startActivity");
+        //((Activity)context).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     public static void filterActivityForGallery (Context context) {

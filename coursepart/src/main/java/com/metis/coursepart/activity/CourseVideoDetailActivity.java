@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.baidu.cyberplayer.core.BVideoView;
+import com.metis.base.activity.BaseActivity;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.Log;
@@ -39,7 +40,7 @@ import com.metis.playerlib.VideoWrapperFragment;
 import java.util.List;
 
 
-public class CourseVideoDetailActivity extends AppCompatActivity implements
+public class CourseVideoDetailActivity extends BaseActivity implements
         View.OnClickListener, ViewPager.OnPageChangeListener, CourseAdapter.OnCourseClickListener,
         VideoFragment.OnFullScreenListener, PlayCallback{
 

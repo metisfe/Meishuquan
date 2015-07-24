@@ -8,16 +8,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.metis.base.activity.BaseActivity;
+import com.metis.base.utils.Log;
 import com.metis.base.widget.dock.DockBar;
+import com.metis.commentpart.fragment.CommentTabFragment;
 import com.metis.coursepart.fragment.CourseTabFragment;
 import com.metis.meishuquan.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends AppCompatActivity implements DockBar.OnDockItemClickListener{
+public class MainActivity extends BaseActivity implements DockBar.OnDockItemClickListener{
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private CourseTabFragment mCourseFragment = new CourseTabFragment();
+    private CommentTabFragment mCommentFragment = new CommentTabFragment();
 
     private Fragment mCurrentFragment = null;
 
@@ -35,10 +41,12 @@ public class MainActivity extends AppCompatActivity implements DockBar.OnDockIte
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        mMainDockBar.addDock(mCommentFragment.getDock(this));
         mMainDockBar.addDock(mCourseFragment.getDock(this));
 
         mMainDockBar.setOnDockItemClickListener(this);
-        mMainDockBar.selectDock(mCourseFragment.getDock(this));
+        mMainDockBar.selectDock(mCommentFragment.getDock(this));
     }
 
     @Override

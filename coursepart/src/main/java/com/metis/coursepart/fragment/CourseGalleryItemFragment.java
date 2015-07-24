@@ -142,14 +142,14 @@ public class CourseGalleryItemFragment extends BaseFragment implements View.OnCl
     private void fillContent (GalleryItem item) {
         mDetailTv.setText(item.descripiton);
         mReadCountTv.setText(getString(R.string.gallery_read_count, item.viewCount));
-        List<KeyWord> keyWordList = item.keyWordList;
-        if (keyWordList != null && !keyWordList.isEmpty()) {
-            final int length = keyWordList.size();
+        KeyWord[] keyWordList = item.keyWordList;
+        if (keyWordList != null/* && !keyWordList.isEmpty()*/) {
+            final int length = keyWordList.length;
             mTagsLayout.removeAllViews();
             for (int i = 0; i < length; i++) {
                 View child = LayoutInflater.from(getActivity()).inflate(R.layout.layout_tag_item, null);
                 TextView tagTv = (TextView)child.findViewById(R.id.tag_name);
-                KeyWord keyWord = keyWordList.get(i);
+                KeyWord keyWord = keyWordList[i];
                 if (keyWord != null) {
                     tagTv.setText(keyWord.keyWordName);
                     mTagsLayout.addView(child);

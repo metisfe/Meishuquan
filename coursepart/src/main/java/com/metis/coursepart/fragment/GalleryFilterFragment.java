@@ -17,7 +17,6 @@ import com.metis.coursepart.adapter.decoration.GalleryItemDecoration;
 import com.metis.coursepart.adapter.decoration.VideoFilterMarginDecoration;
 import com.metis.coursepart.adapter.delegate.GalleryItemDelegate;
 import com.metis.coursepart.manager.CourseManager;
-import com.metis.coursepart.manager.GalleryCacheManager;
 import com.metis.coursepart.module.GalleryItem;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
@@ -85,7 +84,6 @@ public class GalleryFilterFragment extends BaseFilterFragment implements FilterP
     public void onDestroy() {
         super.onDestroy();
         getFilterPanelFragment().setOnFilterChangeListener(null);
-        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
     }
 
     @Override
@@ -124,11 +122,9 @@ public class GalleryFilterFragment extends BaseFilterFragment implements FilterP
                     if (index == 1) {
                         mAdapter.clearDataList();
                         mAdapter.addDataItem(mFooterDelegate);
-                        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
                     }
                     mFooter.setState(length == 0 ? Footer.STATE_NO_MORE : Footer.STATE_SUCCESS);
                     mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
-                    GalleryCacheManager.getInstance(getActivity()).addAll(TAG, galleryItemList);
                     mIndex = index;
                 } else {
                     mFooter.setState(Footer.STATE_FAILED);
@@ -141,7 +137,6 @@ public class GalleryFilterFragment extends BaseFilterFragment implements FilterP
     @Override
     public void onFilterChanged(long state, long category, long studio, long charge) {
         mAdapter.clearDataList();
-        GalleryCacheManager.getInstance(getActivity()).clearGalleryItemList(TAG);
         mFooter.setState(Footer.STATE_WAITTING);
         mAdapter.addDataItem(mFooterDelegate);
         mAdapter.notifyDataSetChanged();

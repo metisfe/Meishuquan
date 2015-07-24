@@ -9,6 +9,6 @@ public class NetProperty {
     public static final String TEST = "https://mobiletest.azure-mobile.cn/";
     public static final String TEST_KEY = "TsBWBGVGZmkrUYGvBArWkmJrhHSsnr52";
 
-    public static final String USE = FORMAL;
-    public static final String USE_KEY = FORMAL_KEY;
+    public static final String USE = TEST;
+    public static final String USE_KEY = TEST_KEY;
 }

@@ -25,16 +25,21 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.io.File;
 
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Beak on 2015/7/20.
  */
-public class SingleImagePreviewFragment extends BaseFragment {
+public class SingleImagePreviewFragment extends BaseFragment implements PhotoViewAttacher.OnViewTapListener{
 
     private PhotoView mPhotoView = null;
     private ProgressBar mProgressBar = null;
 
     private ImagePreviewable mPreviewable = null;
+
+    private OnImageTabListener mTabListener = null;
+
+    private File mImageFile = null;
 
     @Nullable
     @Override
@@ -49,14 +54,33 @@ public class SingleImagePreviewFragment extends BaseFragment {
         mProgressBar = (ProgressBar)view.findViewById(R.id.preview_progress_bar);
 
         setImagePreviewable(mPreviewable);
+        mPhotoView.setOnViewTapListener(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPhotoView.setOnViewTapListener(null);
+    }
+
+    public void setOnImageTabListener (OnImageTabListener listener) {
+        mTabListener = listener;
+    }
+
+    public ImagePreviewable getPreviewable () {
+        return mPreviewable;
+    }
+
+    public File getImageFile () {
+        return mImageFile;
     }
 
     public void setImagePreviewable (ImagePreviewable previewable) {
         mPreviewable = previewable;
         if (mPhotoView != null && previewable != null) {
-            File file = new File(CacheDirManager.getInstance(getActivity()).getCacheFolder("temp"), FileUtils.getNameFromUrl(previewable.getUrl()));
-            if (file.exists()) {
-                Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+            mImageFile = new File(CacheDirManager.getInstance(getActivity()).getCacheFolder("temp"), FileUtils.getNameFromUrl(previewable.getUrl()));
+            if (mImageFile.exists()) {
+                Bitmap bmp = BitmapFactory.decodeFile(mImageFile.getAbsolutePath());
                 mPhotoView.setImageBitmap(bmp);
             } else {
                 DisplayManager.getInstance(getActivity()).display(
@@ -64,23 +88,43 @@ public class SingleImagePreviewFragment extends BaseFragment {
                         mPhotoView);
                 HttpUtils httpUtils = new HttpUtils(1000 * 10);
                 mProgressBar.setVisibility(View.VISIBLE);
+                mPhotoView.setZoomable(false);
                 httpUtils.download(
                         previewable.getUrl(),
-                        file.getAbsolutePath(),
+                        mImageFile.getAbsolutePath(),
                         true, true, new RequestCallBack<File>() {
                             @Override
                             public void onSuccess(ResponseInfo<File> responseInfo) {
+                                if (!isAlive()) {
+                                    return;
+                                }
                                 mProgressBar.setVisibility(View.GONE);
+                                mPhotoView.setZoomable(true);
                                 Bitmap bmp = BitmapFactory.decodeFile(responseInfo.result.getAbsolutePath());
                                 mPhotoView.setImageBitmap(bmp);
                             }
 
                             @Override
                             public void onFailure(HttpException e, String s) {
+                                if (!isAlive()) {
+                                    return;
+                                }
                                 mProgressBar.setVisibility(View.GONE);
+                                mPhotoView.setImageResource(R.drawable.image_broken);
                             }
                         });
             }
         }
+    }
+
+    @Override
+    public void onViewTap(View view, float x, float y) {
+        if (mTabListener != null) {
+            mTabListener.onImageTab(mPreviewable);
+        }
+    }
+
+    public static interface OnImageTabListener {
+        public void onImageTab (ImagePreviewable previewable);
     }
 }

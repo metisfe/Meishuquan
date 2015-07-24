@@ -25,21 +25,6 @@ public class ImageViewerActivity extends TitleBarActivity {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        Parcelable[] parcelables = getIntent().getParcelableArrayExtra(ActivityDispatcher.KEY_IMAGES);
-        final int length = parcelables.length;
-        List<ImagePreviewable> imagePreviewables = new ArrayList<ImagePreviewable>();
-        for (int i = 0; i < length; i++) {
-            Parcelable parcelable = parcelables[i];
-            if (parcelable instanceof ImagePreviewable) {
-                imagePreviewables.add((ImagePreviewable)parcelable);
-            }
-        }
-        mPreviewFragment.setImages(imagePreviewables);
-    }
-
-    @Override
     public int getTitleVisibility() {
         return View.GONE;
     }

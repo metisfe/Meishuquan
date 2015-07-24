@@ -16,6 +16,7 @@ import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.activity.GalleryItemDetailActivity;
+import com.metis.coursepart.adapter.GalleryAdapter;
 import com.metis.coursepart.module.GalleryItem;
 import com.metis.coursepart.adapter.delegate.GalleryItemDelegate;
 import com.metis.coursepart.module.KeyWord;
@@ -24,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.security.Key;
 import java.util.List;
 
 /**
@@ -45,14 +47,14 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
     }
 
     @Override
-    public void bindData(final Context context, final GalleryItemDelegate galleryItemDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, final GalleryItemDelegate galleryItemDelegate, final RecyclerView.Adapter adapter, final int position) {
         final GalleryItem item = galleryItemDelegate.getSource();
-        List<KeyWord> keyWordList = item.keyWordList;
-        if (keyWordList != null && !keyWordList.isEmpty()) {
-            final int length = keyWordList.size();
+        KeyWord[] keyWordList = item.keyWordList;
+        if (keyWordList != null/* && !keyWordList.isEmpty()*/) {
+            final int length = keyWordList.length;
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < length; i++) {
-                KeyWord word = keyWordList.get(i);
+                KeyWord word = keyWordList[i];
                 if (word == null) {
                     continue;
                 }
@@ -119,7 +121,10 @@ public class GalleryItemHolder extends AbsViewHolder<GalleryItemDelegate> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityDispatcher.imageDetailActivity(context, galleryItemDelegate.getTag(), item.picId);
+                if (adapter instanceof GalleryAdapter) {
+                    //com.metis.base.ActivityDispatcher.imagePreviewActivity(context, ((GalleryAdapter) adapter).getGalleryItemArray(), position);
+                    ActivityDispatcher.imageDetailActivity(context, ((GalleryAdapter) adapter).getGalleryItemArray(), position);
+                }
             }
         });
 

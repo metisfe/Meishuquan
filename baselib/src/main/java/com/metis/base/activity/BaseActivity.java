@@ -1,13 +1,19 @@
 package com.metis.base.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.AnimRes;
 import android.support.v7.app.AppCompatActivity;
+
+import com.metis.base.utils.Log;
 
 /**
  * Created by Beak on 2015/7/21.
  */
 public class BaseActivity extends AppCompatActivity {
+
+    private static final String TAG = BaseActivity.class.getSimpleName();
 
     private boolean isAlive = false;
 
@@ -33,7 +39,27 @@ public class BaseActivity extends AppCompatActivity {
         isAlive = false;
     }
 
+    public @AnimRes int getEnterAnimation () {
+        return android.R.anim.fade_in;
+    }
+
+    public @AnimRes int getExitAnimation () {
+        return android.R.anim.fade_out;
+    }
+
     public boolean isAlive () {
         return isAlive;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(getEnterAnimation(), getExitAnimation());
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
+        super.startActivityForResult(intent, requestCode, options);
+        overridePendingTransition(getEnterAnimation(), getExitAnimation());
     }
 }

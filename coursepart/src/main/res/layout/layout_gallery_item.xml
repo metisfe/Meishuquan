@@ -22,8 +22,9 @@
             android:singleLine="true"
             android:textColor="#676767"
             android:textSize="14sp"
-            android:visibility="gone"
+
             />
+        <!--android:visibility="gone"-->
         <TextView
             android:id="@+id/gallery_item_source"
             android:layout_width="fill_parent"

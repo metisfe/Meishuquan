@@ -7,10 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.metis.base.activity.BaseActivity;
 import com.metis.meishuquan.R;
 
 
-public class HelloActivity extends AppCompatActivity {
+public class HelloActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">commentpart</string>
+    <string name="title_activity_comment_detail">CommentDetailActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>
