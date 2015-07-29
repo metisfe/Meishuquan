@@ -51,7 +51,7 @@
         <ScrollView
             android:id="@+id/item_detail_scroller"
             android:layout_width="fill_parent"
-            android:layout_height="120dp"
+            android:layout_height="90dp"
             >
             <!--android:visibility="gone"-->
             <TextView

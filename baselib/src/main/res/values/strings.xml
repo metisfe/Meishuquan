@@ -5,6 +5,9 @@
     <string name="footer_success">加载完成</string>
     <string name="title_activity_debug">DebugActivity</string>
 
+    <string name="image_choose_gallery">相册</string>
+    <string name="image_choose_camera">相机</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_image_preview">ImagePreviewActivity</string>

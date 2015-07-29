@@ -1,5 +1,6 @@
 package com.metis.coursepart.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.fragment.BaseFragment;
+import com.metis.base.manager.CacheManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Footer;
 import com.metis.base.widget.callback.OnScrollBottomListener;
@@ -57,6 +59,14 @@ public class CourseGalleryFragment extends BaseFragment implements SwipeRefreshL
 
     private int mIndex = 1;
     private boolean isLoading = false;
+
+    private CacheManager mCacheManager = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCacheManager = CacheManager.getInstance(activity);
+    }
 
     @Nullable
     @Override
@@ -105,6 +115,8 @@ public class CourseGalleryFragment extends BaseFragment implements SwipeRefreshL
             }
         });
         loadData(1);
+        List<GalleryItem> galleryItems = mCacheManager.readUserDataAtDatabase(GalleryItem.class, "galleryItems.db");
+        parseData(galleryItems, 1);
     }
 
     private void loadData (final int index) {
@@ -116,27 +128,15 @@ public class CourseGalleryFragment extends BaseFragment implements SwipeRefreshL
         CourseManager.getInstance(getActivity()).getGalleryPicList(0, "", 0, 0, 0, index, new RequestCallback<List<GalleryItem>>() {
             @Override
             public void callback(ReturnInfo<List<GalleryItem>> returnInfo, String callbackId) {
-                Log.v(TAG, "getGalleryPicList " + returnInfo.isSuccess());
-                if (!isAdded()) {
+                if (!isAlive()) {
                     return;
                 }
                 if (returnInfo.isSuccess()) {
-                    Log.v(TAG, "getGalleryPicList " + returnInfo.getData().size());
                     List<GalleryItem> galleryItems = returnInfo.getData();
-                    List<GalleryItemDelegate> delegates = new ArrayList<GalleryItemDelegate>();
-                    final int length = galleryItems.size();
-                    for (int i = 0; i < length; i++) {
-                        GalleryItemDelegate delegate = new GalleryItemDelegate(galleryItems.get(i));
-                        delegate.setTag(TAG);
-                        delegates.add(delegate);
-                    }
                     if (index == 1) {
-                        mAdapter.clearDataList();
-                        mAdapter.addDataItem(mFooterDelegate);
+                        mCacheManager.saveAllUserDataAtDatabase(galleryItems, "galleryItems.db", GalleryItem.class, true);
                     }
-                    mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
-
-                    mFooter.setState(galleryItems.isEmpty() ? Footer.STATE_NO_MORE : Footer.STATE_SUCCESS);
+                    parseData(galleryItems, index);
                     mIndex = index;
                 } else {
                     mFooter.setState(Footer.STATE_FAILED);
@@ -145,10 +145,32 @@ public class CourseGalleryFragment extends BaseFragment implements SwipeRefreshL
                     }
                 }
                 mAdapter.notifyDataSetChanged();
-                mGallerySrl.setRefreshing(false);
+                if (mGallerySrl.isRefreshing()) {
+                    mGallerySrl.setRefreshing(false);
+                }
                 isLoading = false;
             }
         });
+    }
+
+    private void parseData (List<GalleryItem> galleryItems, int index) {
+        if (galleryItems == null) {
+            return;
+        }
+        List<GalleryItemDelegate> delegates = new ArrayList<GalleryItemDelegate>();
+        final int length = galleryItems.size();
+        for (int i = 0; i < length; i++) {
+            GalleryItemDelegate delegate = new GalleryItemDelegate(galleryItems.get(i));
+            delegate.setTag(TAG);
+            delegates.add(delegate);
+        }
+        if (index == 1) {
+            mAdapter.clearDataList();
+            mAdapter.addDataItem(mFooterDelegate);
+        }
+        mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
+
+        mFooter.setState(galleryItems.isEmpty() ? Footer.STATE_NO_MORE : Footer.STATE_SUCCESS);
     }
 
     @Override

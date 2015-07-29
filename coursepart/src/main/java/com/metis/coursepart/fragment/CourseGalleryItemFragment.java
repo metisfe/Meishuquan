@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.fragment.BaseFragment;
-import com.metis.base.manager.CacheDirManager;
+import com.metis.base.manager.CacheManager;
 import com.metis.base.utils.FileUtils;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.TitleBar;
@@ -31,7 +30,6 @@ import com.metis.coursepart.module.KeyWord;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -118,7 +116,7 @@ public class CourseGalleryItemFragment extends BaseFragment implements View.OnCl
         mItem = item;
         if (mPhotoView != null && item != null) {
             fillContent(mItem);
-            mCacheFile = new File(CacheDirManager.getInstance(getActivity()).getCacheFolder("file").getAbsolutePath() + File.separator + item.picId + ".jpg");
+            mCacheFile = new File(CacheManager.getInstance(getActivity()).getCacheFolder("file").getAbsolutePath() + File.separator + item.picId + ".jpg");
             if (mCacheFile.exists()) {
                 fillImage(mCacheFile.getAbsolutePath(), item);
             } else {
@@ -128,6 +126,9 @@ public class CourseGalleryItemFragment extends BaseFragment implements View.OnCl
                         new RequestCallBack<File>() {
                             @Override
                             public void onSuccess(ResponseInfo<File> responseInfo) {
+                                if (!isAlive()) {
+                                    return;
+                                }
                                 fillImage(responseInfo.result.getAbsolutePath(), item);
                             }
 

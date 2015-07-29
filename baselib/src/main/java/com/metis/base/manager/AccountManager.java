@@ -29,7 +29,7 @@ public class AccountManager extends AbsManager {
             REGISTER = "v1.1/UserCenter/Register",//获取验证码;/*?phone={phone}&code={code}&pwd={pwd}&roleId={roleId}*/
             REQUEST_CODE = "v1.1/UserCenter/RegisterCode?phone={phone}&operation={operation}";
 
-    public User mMe = null;
+    private User mMe = null;
 
     private AccountManager(Context context) {
         super(context);

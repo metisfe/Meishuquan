@@ -7,8 +7,20 @@
         android:label="@string/app_name" >
         <activity
             android:name=".activity.CommentDetailActivity"
-            android:theme="@style/BaseTheme.Transparent"
-            android:label="@string/title_activity_comment_detail" >
+            android:label="@string/title_activity_comment_detail"
+            android:theme="@style/BaseTheme.Transparent" >
+        </activity>
+        <activity
+            android:name=".activity.FilterActivity"
+            android:label="@string/title_activity_fliter" >
+        </activity>
+        <activity
+            android:name=".activity.PublishStatusActivity"
+            android:label="@string/title_activity_publish_status" >
+        </activity>
+        <activity
+            android:name=".activity.InviteActivity"
+            android:label="@string/title_activity_invite" >
         </activity>
     </application>
 

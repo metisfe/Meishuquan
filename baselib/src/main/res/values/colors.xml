@@ -4,6 +4,7 @@
     <color name="std_color_B">#2c2c3f</color>
     <color name="std_color_C">#ecebeb</color>
     <color name="std_color_D">#8f8f8f</color>
+    <color name="std_color_E">#5c5c6f</color>
 
     <color name="colorSubTitle">@color/std_color_D</color>
 </resources>

@@ -15,6 +15,17 @@ public class CommentDetailActivity extends TitleBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_detail);
+
+        getTitleBar().setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
 
+    @Override
+    public CharSequence getTitleCenter() {
+        return getString(R.string.title_activity_comment_detail);
+    }
+
+    @Override
+    public boolean showAsUpEnable() {
+        return true;
+    }
 }

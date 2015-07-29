@@ -1,5 +1,6 @@
 package com.metis.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
@@ -52,5 +53,11 @@ public class ActivityDispatcher {
         ImagePreviewable[] array = new ImagePreviewable[1];
         array[0] = imagePreviewables;
         imagePreviewActivity(context, array);
+    }
+
+    public static void getImage (Activity context, int requestCode) {
+        Intent it = new Intent (Intent.ACTION_GET_CONTENT);
+        it.setType("image/*");
+        context.startActivityForResult(it, requestCode);
     }
 }

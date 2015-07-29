@@ -63,7 +63,8 @@ public class CourseTabFragment extends DockFragment {
 
         RadioGroup switchView = (RadioGroup)LayoutInflater.from(getActivity()).inflate(R.layout.layout_tab_switch, null);
         mTitleBar.setCenterView(switchView);
-        mTitleBar.setTitleLeft(R.string.title_filter);
+        /*mTitleBar.setTitleLeft(R.string.title_filter);*/
+        mTitleBar.setDrawableResourceLeft(R.drawable.ic_filter);
         switchView.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

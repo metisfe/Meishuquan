@@ -1,8 +1,8 @@
 package com.metis.coursepart.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.fragment.BaseFragment;
+import com.metis.base.manager.CacheManager;
 import com.metis.base.manager.RequestCallback;
-import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumContainerAdapter;
 import com.metis.coursepart.adapter.decoration.VideoItemDecoration;
@@ -47,6 +47,14 @@ public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLay
     private AlbumContainerAdapter mAdapter = null;
 
     private MainCourseList mCourseList = null;
+
+    private CacheManager mCacheManager = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCacheManager = CacheManager.getInstance(activity);
+    }
 
     @Nullable
     @Override
@@ -84,6 +92,16 @@ public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLay
             parseCourseList(mCourseList);
         }*/
         loadData();
+        List<CourseAlbum> topCourse = mCacheManager.readUserDataAtDatabase(CourseAlbum.class, "topCourse.db");
+        List<CourseAlbum> newestCourse = mCacheManager.readUserDataAtDatabase(CourseAlbum.class, "newestCourse.db");
+        List<CourseAlbum> hottestCourse = mCacheManager.readUserDataAtDatabase(CourseAlbum.class, "hottestCourse.db");
+        List<CourseAlbum> recommendCourse = mCacheManager.readUserDataAtDatabase(CourseAlbum.class, "recommendCourse.db");
+        MainCourseList cacheCourseList = new MainCourseList();
+        cacheCourseList.topCourse = topCourse;
+        cacheCourseList.newestCourse = newestCourse;
+        cacheCourseList.hottestCourse = hottestCourse;
+        cacheCourseList.recommendCourse = recommendCourse;
+        parseCourseList(cacheCourseList);
         mVideoSrl.post(new Runnable() {
             @Override
             public void run() {
@@ -93,18 +111,27 @@ public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private void loadData () {
-        //if (mCourseList == null) {
-            CourseManager.getInstance(getActivity()).getMainCourseList(new RequestCallback<MainCourseList>() {
-                @Override
-                public void callback(ReturnInfo<MainCourseList> returnInfo, String callbackId) {
-                    if (returnInfo.isSuccess()) {
-                        mCourseList = returnInfo.getData();
-                        parseCourseList(mCourseList);
-                    }
+
+        CourseManager.getInstance(getActivity()).getMainCourseList(new RequestCallback<MainCourseList>() {
+            @Override
+            public void callback(ReturnInfo<MainCourseList> returnInfo, String callbackId) {
+                if (!isAlive()) {
+                    return;
+                }
+                if (returnInfo.isSuccess()) {
+                    mCourseList = returnInfo.getData();
+
+                    mCacheManager.saveAllUserDataAtDatabase(mCourseList.topCourse, "topCourse.db", CourseAlbum.class, true);
+                    mCacheManager.saveAllUserDataAtDatabase(mCourseList.newestCourse, "newestCourse.db", CourseAlbum.class, true);
+                    mCacheManager.saveAllUserDataAtDatabase(mCourseList.hottestCourse, "hottestCourse.db", CourseAlbum.class, true);
+                    mCacheManager.saveAllUserDataAtDatabase(mCourseList.recommendCourse, "recommendCourse.db", CourseAlbum.class, true);
+                    parseCourseList(mCourseList);
+                }
+                if (mVideoSrl.isRefreshing()) {
                     mVideoSrl.setRefreshing(false);
                 }
-            });
-        //}
+            }
+        });
     }
 
     private void parseCourseList (MainCourseList mainCourseList) {

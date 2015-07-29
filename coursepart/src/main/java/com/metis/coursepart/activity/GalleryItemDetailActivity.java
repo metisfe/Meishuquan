@@ -3,13 +3,7 @@ package com.metis.coursepart.activity;
 import android.animation.ObjectAnimator;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Environment;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,25 +19,18 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.fragment.MultiImagePreviewFragment;
-import com.metis.base.manager.CacheDirManager;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.module.User;
 import com.metis.base.utils.FileUtils;
-import com.metis.base.utils.Log;
 import com.metis.base.widget.ImagePreviewable;
 import com.metis.base.widget.ProfileNameView;
 import com.metis.base.widget.TitleBar;
-import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
-import com.metis.coursepart.fragment.CourseGalleryItemFragment;
 import com.metis.coursepart.module.GalleryItem;
 import com.metis.coursepart.module.KeyWord;
-import com.metis.coursepart.module.StudioInfo;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GalleryItemDetailActivity extends TitleBarActivity
         implements MultiImagePreviewFragment.OnImageOperateListener, View.OnClickListener{
@@ -179,8 +166,6 @@ public class GalleryItemDetailActivity extends TitleBarActivity
 
         File mCacheFile = mPreviewFragment.getCurrentImageFile();
         File dest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), mCacheFile.getName());
-        /*new File(CacheDirManager.getInstance(this).getCacheFolder("file").getAbsolutePath() + File.separator + FileUtils.getNameFromUrl(item.getUrl()));*/
-        Log.v(TAG, "save mCacheFile=" + mCacheFile.getAbsolutePath());
         if (mCacheFile != null && mCacheFile.exists()) {
 
             if (dest != null) {

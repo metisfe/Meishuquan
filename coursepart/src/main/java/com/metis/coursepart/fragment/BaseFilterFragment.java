@@ -13,13 +13,13 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import com.metis.base.fragment.BaseFragment;
+import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.AlbumAdapter;
 import com.metis.coursepart.module.CourseType;
-import com.metis.coursepart.module.StudioInfo;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public abstract class BaseFilterFragment extends BaseFragment {
     private FrameLayout mFragmentContainer = null;
 
     private List<CourseType> mCourseTypeList = null;
-    private List<StudioInfo> mStudioList = null;
+    private List<User> mStudioList = null;
 
     private long mState = 1;
 
@@ -167,7 +167,7 @@ public abstract class BaseFilterFragment extends BaseFragment {
         }
     }
 
-    public void setStudioList (List<StudioInfo> studioList) {
+    public void setStudioList (List<User> studioList) {
         mStudioList = studioList;
         if (getFilterPanelFragment() != null && studioList != null) {
             getFilterPanelFragment().setStudioList(studioList);

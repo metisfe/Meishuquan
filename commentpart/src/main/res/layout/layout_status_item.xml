@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <AdapterViewFlipper
+        android:id="@+id/status_flipper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inAnimation="@animator/comment_push_up_in"
+        android:outAnimation="@animator/comment_push_up_out"
+        android:flipInterval="3000"
+        android:layout_marginTop="500dp"
+        />
+</RelativeLayout>

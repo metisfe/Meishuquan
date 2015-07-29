@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,10 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.metis.base.R;
-import com.metis.base.manager.CacheDirManager;
+import com.metis.base.manager.CacheManager;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.utils.FileUtils;
 import com.metis.base.widget.ImagePreviewable;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.io.File;
 
@@ -78,7 +75,7 @@ public class SingleImagePreviewFragment extends BaseFragment implements PhotoVie
     public void setImagePreviewable (ImagePreviewable previewable) {
         mPreviewable = previewable;
         if (mPhotoView != null && previewable != null) {
-            mImageFile = new File(CacheDirManager.getInstance(getActivity()).getCacheFolder("temp"), FileUtils.getNameFromUrl(previewable.getUrl()));
+            mImageFile = new File(CacheManager.getInstance(getActivity()).getCacheFolder("temp"), FileUtils.getNameFromUrl(previewable.getUrl()));
             if (mImageFile.exists()) {
                 Bitmap bmp = BitmapFactory.decodeFile(mImageFile.getAbsolutePath());
                 mPhotoView.setImageBitmap(bmp);

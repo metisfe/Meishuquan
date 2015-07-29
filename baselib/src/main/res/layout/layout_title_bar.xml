@@ -6,25 +6,27 @@
     >
     <FrameLayout
         android:id="@+id/title_bar_left_btn"
-        android:layout_width="@dimen/title_bar_btn_size"
-        android:layout_height="@dimen/title_bar_btn_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:background="@drawable/title_btn_bg"
         >
         <TextView
             android:id="@+id/title_bar_left_text"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/title_bar_btn_size"
             android:singleLine="true"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="16sp"
             android:textColor="@android:color/white"
             />
         <ImageView
             android:id="@+id/title_bar_left_img"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_width="@dimen/title_bar_btn_size"
+            android:layout_height="@dimen/title_bar_btn_size" />
     </FrameLayout>
     <FrameLayout
         android:id="@+id/title_bar_center"
@@ -46,24 +48,26 @@
     </FrameLayout>
     <FrameLayout
         android:id="@+id/title_bar_right_btn"
-        android:layout_width="@dimen/title_bar_btn_size"
-        android:layout_height="@dimen/title_bar_btn_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:background="@drawable/title_btn_bg"
         >
         <TextView
             android:id="@+id/title_bar_right_text"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/title_bar_btn_size"
             android:singleLine="true"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="16sp"
             android:textColor="@android:color/white"
             />
         <ImageView
             android:id="@+id/title_bar_right_img"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_width="@dimen/title_bar_btn_size"
+            android:layout_height="@dimen/title_bar_btn_size" />
     </FrameLayout>
 </RelativeLayout>

@@ -119,6 +119,9 @@ public class VideoFilterFragment extends BaseFilterFragment implements FilterPan
                     @Override
                     public void callback(ReturnInfo<List<CourseAlbum>> returnInfo, String callbackId) {
                         isLoading = false;
+                        if (!isAlive()) {
+                            return;
+                        }
                         if (!callbackId.equals(mCurrentRequestId)) {
                             return;
                         }

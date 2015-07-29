@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.fragment.BaseFragment;
+import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.FilterAdapter;
@@ -20,7 +21,6 @@ import com.metis.coursepart.adapter.delegate.FilterDelegate;
 import com.metis.coursepart.adapter.delegate.StudioFilterDelegate;
 import com.metis.coursepart.module.CourseType;
 import com.metis.coursepart.module.Filter;
-import com.metis.coursepart.module.StudioInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,7 +161,7 @@ public class FilterPanelFragment extends BaseFragment {
         });
     }
 
-    public void setStudioList (List<StudioInfo> studioList) {
+    public void setStudioList (List<User> studioList) {
         if (studioList == null || studioList.isEmpty()) {
             return;
         }

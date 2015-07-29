@@ -1,14 +1,14 @@
 package com.metis.coursepart.adapter.delegate;
 
+import com.metis.base.module.User;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
-import com.metis.coursepart.module.Author;
 
 /**
  * Created by gaoyunfei on 15/7/12.
  */
-public class AuthorDelegate extends BaseDelegate<Author> {
+public class AuthorDelegate extends BaseDelegate<User> {
 
-    public AuthorDelegate(Author author) {
+    public AuthorDelegate(User author) {
         super(author);
     }
 

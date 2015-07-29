@@ -1,17 +1,17 @@
 package com.metis.coursepart.adapter.delegate;
 
+import com.metis.base.module.User;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.coursepart.adapter.FilterAdapter;
-import com.metis.coursepart.module.StudioInfo;
 
 /**
  * Created by Beak on 2015/7/14.
  */
-public class StudioFilterDelegate extends BaseDelegate<StudioInfo> implements FilterAdapter.FilterSelectable{
+public class StudioFilterDelegate extends BaseDelegate<User> implements FilterAdapter.FilterSelectable{
 
     private boolean isSelected = false;
 
-    public StudioFilterDelegate(StudioInfo studioInfo) {
+    public StudioFilterDelegate(User studioInfo) {
         super(studioInfo);
     }
 

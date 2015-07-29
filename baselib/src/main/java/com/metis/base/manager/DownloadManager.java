@@ -184,7 +184,7 @@ public class DownloadManager extends AbsManager {
         }
         String downloadPath = null;
         if (TextUtils.isEmpty(task.targetPath)) {
-            downloadPath = CacheDirManager.getInstance(getContext()).getCacheFolder(task.taskType.name) + File.separator + task.getName();
+            downloadPath = CacheManager.getInstance(getContext()).getCacheFolder(task.taskType.name) + File.separator + task.getName();
         } else {
             downloadPath = task.targetPath;
         }

@@ -9,6 +9,7 @@ import android.widget.RadioGroup;
 
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.module.User;
 import com.metis.base.utils.FragmentUtils;
 import com.metis.base.utils.Log;
 import com.metis.coursepart.ActivityDispatcher;
@@ -19,7 +20,6 @@ import com.metis.coursepart.fragment.VideoFilterFragment;
 import com.metis.coursepart.manager.CourseManager;
 import com.metis.coursepart.module.CourseChannelList;
 import com.metis.coursepart.module.CourseType;
-import com.metis.coursepart.module.StudioInfo;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.List;
@@ -82,7 +82,7 @@ public class FilterActivity extends TitleBarActivity implements RadioGroup.OnChe
                 }
                 if (returnInfo.isSuccess()) {
                     CourseChannelList channelList = returnInfo.getData();
-                    List<StudioInfo> studioList = channelList.coursestuido;
+                    List<User> studioList = channelList.coursestuido;
                     List<CourseType> courseTypeList =  channelList.courseType;
 
                     mVideoFilterFragment.setCourseTypeList(courseTypeList);

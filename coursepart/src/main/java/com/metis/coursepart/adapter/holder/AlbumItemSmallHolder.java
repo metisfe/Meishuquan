@@ -7,12 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.module.User;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.delegate.AlbumSmallDelegate;
 import com.metis.coursepart.module.CourseAlbum;
-import com.metis.coursepart.module.StudioInfo;
 
 /**
  * Created by Beak on 2015/7/10.
@@ -36,7 +36,7 @@ public class AlbumItemSmallHolder extends AbsViewHolder<AlbumSmallDelegate> {
     @Override
     public void bindData(final Context context, AlbumSmallDelegate videoAlbumDelegate, RecyclerView.Adapter adapter, int position) {
         final CourseAlbum album = videoAlbumDelegate.getSource();
-        final StudioInfo studioInfo = album.studio;
+        final User studioInfo = album.studio;
         DisplayManager.getInstance(context).display(album.coursePic, itemThumbIv);
         itemTitleTv.setText(album.title);
         if (studioInfo != null) {

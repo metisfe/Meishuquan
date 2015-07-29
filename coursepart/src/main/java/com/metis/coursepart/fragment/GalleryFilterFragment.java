@@ -107,6 +107,9 @@ public class GalleryFilterFragment extends BaseFilterFragment implements FilterP
             @Override
             public void callback(ReturnInfo<List<GalleryItem>> returnInfo, String callbackId) {
                 isLoading = false;
+                if (!isAlive()) {
+                    return;
+                }
                 if (!callbackId.equals(mRequestId)) {
                     return;
                 }

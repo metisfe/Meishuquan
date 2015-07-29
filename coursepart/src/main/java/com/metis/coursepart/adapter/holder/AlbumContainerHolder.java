@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.module.User;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
@@ -20,7 +21,6 @@ import com.metis.coursepart.adapter.delegate.AlbumSmallDelegate;
 import com.metis.coursepart.adapter.delegate.AlbumContainerDelegate;
 import com.metis.coursepart.adapter.delegate.ItemTitleDelegate;
 import com.metis.coursepart.module.CourseAlbum;
-import com.metis.coursepart.module.StudioInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
         List<CourseAlbum> albumList = videoItemDelegate.getSource();
         if (!albumList.isEmpty()) {
             final CourseAlbum firstOne = albumList.get(0);
-            final StudioInfo studioInfo = firstOne.studio;
+            final User studioInfo = firstOne.studio;
             DisplayManager.getInstance(context).display(firstOne.coursePic, itemBigThumbIv);
             itemBigTitleTv.setText(firstOne.title);
             itemBigCountTv.setText(context.getString(R.string.course_play_count, firstOne.viewCount));

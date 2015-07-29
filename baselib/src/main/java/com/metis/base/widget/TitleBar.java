@@ -24,8 +24,8 @@ public class TitleBar extends RelativeLayout{
 
     private FrameLayout mLeftFrameLayout = null, mRightFrameLayout = null;
     private FrameLayout mCenterFrameLayout = null;
-    private TextView mCenterTitleTv = null, mLeftTitleTv;
-    private ImageView mLeftIv;
+    private TextView mCenterTitleTv = null, mLeftTitleTv, mRightTitleTv;
+    private ImageView mLeftIv, mRightIv;
 
     public TitleBar(Context context) {
         this(context, null);
@@ -47,8 +47,10 @@ public class TitleBar extends RelativeLayout{
         mCenterFrameLayout = (FrameLayout)findViewById(R.id.title_bar_center);
         mCenterTitleTv = (TextView)findViewById(R.id.title_bar_center_text);
         mLeftTitleTv = (TextView)findViewById(R.id.title_bar_left_text);
+        mRightTitleTv = (TextView)findViewById(R.id.title_bar_right_text);
 
         mLeftIv = (ImageView)findViewById(R.id.title_bar_left_img);
+        mRightIv = (ImageView)findViewById(R.id.title_bar_right_img);
     }
 
     public void setCenterView (View view) {
@@ -88,5 +90,30 @@ public class TitleBar extends RelativeLayout{
 
     public void setOnLeftBtnClickListener (OnClickListener listener) {
         mLeftFrameLayout.setOnClickListener(listener);
+    }
+
+
+    public void setTitleRight (CharSequence charSequence) {
+        mRightTitleTv.setText(charSequence);
+    }
+
+    public void setTitleRight (@StringRes int stringRes) {
+        mRightTitleTv.setText(stringRes);
+    }
+
+    public void setDrawableRight (Drawable drawableLeft) {
+        mRightIv.setImageDrawable(drawableLeft);
+    }
+
+    public void setDrawableResourceRight (@DrawableRes int drawableResourceLeft) {
+        mRightIv.setImageResource(drawableResourceLeft);
+    }
+
+    public void setBitmapRight (Bitmap bmp) {
+        mRightIv.setImageBitmap(bmp);
+    }
+
+    public void setOnRightBtnClickListener (OnClickListener listener) {
+        mRightFrameLayout.setOnClickListener(listener);
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 public class GalleryItem implements ImagePreviewable{
 
     private static final String TAG = GalleryItem.class.getSimpleName();
-
+    private long id;
     public long picId;
     public long galleryId;
     public String picName;
