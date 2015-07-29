@@ -14,9 +14,19 @@
             >
             <ImageView
                 android:id="@+id/status_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_add"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_image_add"
+                android:scaleType="centerCrop"
+                />
+            <ImageView
+                android:id="@+id/status_image_delete"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_close_circle_outline"
+                android:layout_alignTop="@+id/status_image"
+                android:layout_alignRight="@+id/status_image"
+                android:visibility="gone"
                 />
             <EditText
                 android:id="@+id/status_input"
@@ -26,6 +36,20 @@
                 android:layout_alignBottom="@+id/status_image"
                 android:layout_toRightOf="@+id/status_image"
                 android:maxEms="10"
+                android:gravity="left|top"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                android:hint="@string/publish_hint_image_discription"
+                />
+            <TextView
+                android:id="@+id/status_remain_words"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_alignBottom="@+id/status_input"
+                android:layout_alignRight="@+id/status_input"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
                 />
         </RelativeLayout>
         <RelativeLayout
@@ -43,10 +67,10 @@
                 />
             <GridLayout
                 android:id="@+id/status_category_layout"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:columnCount="4"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/status_category_btn"
                 >
                 <ImageView
@@ -123,6 +147,33 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/status_category_container"
             />
+        <GridLayout
+            android:id="@+id/status_teacher_contaner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:layout_below="@+id/status_invite_teacher_btn"
+            android:layout_centerHorizontal="true"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_send"
+                android:background="@android:color/holo_green_dark"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_send"
+                android:background="@android:color/holo_green_dark"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_send"
+                android:background="@android:color/holo_green_dark"
+                />
+        </GridLayout>
     </RelativeLayout>
 
 </ScrollView>

@@ -35,6 +35,7 @@ public enum CommentDelegateType {
 
     public static final class ID {
         public static final int
-                ID_STATUS_ITEM = 200;
+                ID_STATUS_ITEM = 200,
+                ID_TEACHER_WITH_CHECK_BOX = 204;
     }
 }

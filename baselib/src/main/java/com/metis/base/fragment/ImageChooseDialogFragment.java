@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
 
 /**
@@ -15,7 +16,11 @@ import com.metis.base.R;
  */
 public class ImageChooseDialogFragment extends DialogFragment implements View.OnClickListener{
 
-    private TextView mGalleryBtn, mCameraBtn;
+    public static final int
+            REQUEST_CODE_GET_IMAGE_GALLERY = 10010,
+            REQUEST_CODE_GET_IMAGE_CAMERA = 10086;
+
+    private View mGalleryBtn, mCameraBtn;
 
     @Nullable
     @Override
@@ -26,10 +31,10 @@ public class ImageChooseDialogFragment extends DialogFragment implements View.On
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().setTitle("选择图片");
+        getDialog().setTitle(R.string.image_choose_title);
 
-        mGalleryBtn = (TextView)view.findViewById(R.id.image_choose_gallery);
-        mCameraBtn = (TextView)view.findViewById(R.id.image_choose_camera);
+        mGalleryBtn = view.findViewById(R.id.image_choose_gallery);
+        mCameraBtn = view.findViewById(R.id.image_choose_camera);
 
         mGalleryBtn.setOnClickListener(this);
         mCameraBtn.setOnClickListener(this);
@@ -39,9 +44,10 @@ public class ImageChooseDialogFragment extends DialogFragment implements View.On
     public void onClick(View v) {
         final int id = v.getId();
         if (id == mGalleryBtn.getId()) {
-
+            ActivityDispatcher.getImage(getActivity(), REQUEST_CODE_GET_IMAGE_GALLERY);
         } else if (id == mCameraBtn.getId()) {
-
+            ActivityDispatcher.captureImage(getActivity(), REQUEST_CODE_GET_IMAGE_CAMERA);
         }
+        dismiss();
     }
 }

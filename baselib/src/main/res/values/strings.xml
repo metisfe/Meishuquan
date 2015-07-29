@@ -5,6 +5,7 @@
     <string name="footer_success">加载完成</string>
     <string name="title_activity_debug">DebugActivity</string>
 
+    <string name="image_choose_title">选择图片</string>
     <string name="image_choose_gallery">相册</string>
     <string name="image_choose_camera">相机</string>
 

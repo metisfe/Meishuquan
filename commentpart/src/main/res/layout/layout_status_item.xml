@@ -1,7 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/std_list_item_bg"
+    >
+    <RelativeLayout
+        android:id="@+id/status_info_part"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/status_profile"
+            android:layout_width="@dimen/profile_size_middle"
+            android:layout_height="@dimen/profile_size_middle"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_middle"
+            android:layout_marginRight="@dimen/margin_big"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:src="@drawable/ic_camera"
+            />
+        <TextView
+            android:id="@+id/status_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/status_profile"
+            android:layout_alignTop="@+id/status_profile"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/size_h4"
+            android:text="高玉峰"
+            />
+        <TextView
+            android:id="@+id/status_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_h6"
+            android:textColor="@color/color_c6"
+            android:layout_alignBaseline="@+id/status_name"
+            android:layout_toRightOf="@+id/status_name"
+            android:text="北京"
+            />
+        <TextView
+            android:id="@+id/status_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_h6"
+            android:textColor="@color/color_c6"
+            android:layout_alignBottom="@+id/status_profile"
+            android:layout_toRightOf="@+id/status_profile"
+            android:text="摄像"
+            />
+        <TextView
+            android:id="@+id/status_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_big"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/size_h6"
+            android:textColor="@color/color_c1"
+            android:text="已点评"
+            />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_h4"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginRight="@dimen/margin_big"
+        android:text="一只蛐蛐儿 看着 工厂倒闭,因为房租和利润总不成正比,所有男工去卖积压产品,所有的女工,都得回家休息,蛐蛐儿关心"
+        />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/status_thumb"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test"
+            />
+        <LinearLayout
+            android:id="@+id/status_thumb_up_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignBottom="@+id/status_thumb"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:layout_marginLeft="@dimen/margin_big"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/status_thumb_up_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/status_comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignBottom="@+id/status_thumb"
+            android:layout_alignRight="@+id/status_thumb"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_big"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/status_comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
     <AdapterViewFlipper
         android:id="@+id/status_flipper"
         android:layout_width="fill_parent"
@@ -9,6 +130,15 @@
         android:inAnimation="@animator/comment_push_up_in"
         android:outAnimation="@animator/comment_push_up_out"
         android:flipInterval="3000"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginBottom="@dimen/margin_middle"
         />
-</RelativeLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="@dimen/size_h6"
+        android:textColor="@color/color_c6"
+        android:hint="@string/status_item_publish_comment"
+        />
+</LinearLayout>

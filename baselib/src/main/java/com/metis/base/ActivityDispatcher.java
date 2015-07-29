@@ -3,6 +3,7 @@ package com.metis.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.metis.base.widget.ImagePreviewable;
@@ -59,5 +60,10 @@ public class ActivityDispatcher {
         Intent it = new Intent (Intent.ACTION_GET_CONTENT);
         it.setType("image/*");
         context.startActivityForResult(it, requestCode);
+    }
+
+    public static void captureImage (Activity activity, int requestCode) {
+        Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        activity.startActivityForResult(it, requestCode);
     }
 }

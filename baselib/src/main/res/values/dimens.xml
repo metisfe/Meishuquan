@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="size_h1">18dp</dimen>
+    <dimen name="size_h2">16dp</dimen>
+    <dimen name="size_h3">20dp</dimen>
+    <dimen name="size_h4">15dp</dimen>
+    <dimen name="size_h5">14dp</dimen>
+    <dimen name="size_h6">12dp</dimen>
+
+    <dimen name="profile_size_small">30dp</dimen>
+    <dimen name="profile_size_middle">45dp</dimen>
+
+    <dimen name="margin_middle">5dp</dimen>
+    <dimen name="margin_big">10dp</dimen>
+
+    <dimen name="padding_middle">5dp</dimen>
+    <dimen name="padding_big">10dp</dimen>
+
     <dimen name="std_padding">5dp</dimen>
     <dimen name="std_padding_horizontal">5dp</dimen>
     <dimen name="std_padding_vertical">5dp</dimen>

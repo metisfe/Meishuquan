@@ -1,7 +1,6 @@
 package com.metis.commentpart.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,26 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterViewFlipper;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.metis.base.fragment.DockFragment;
-import com.metis.base.manager.AccountManager;
-import com.metis.base.manager.RequestCallback;
-import com.metis.base.module.User;
 import com.metis.base.widget.TitleBar;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
-import com.metis.commentpart.activity.CommentDetailActivity;
 import com.metis.commentpart.adapter.StatusAdapter;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
 import com.metis.commentpart.widget.OnScrollViewFlipperListener;
-import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +65,7 @@ public class CommentTabFragment extends DockFragment {
 
         mTitleBar.setTitleCenter(R.string.tab_title_center);
         mTitleBar.setDrawableResourceLeft(R.drawable.ic_filter);
-        mTitleBar.setDrawableResourceRight(R.drawable.ic_camera);
+        mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
 
         mTitleBar.setOnLeftBtnClickListener(new View.OnClickListener() {
             @Override
