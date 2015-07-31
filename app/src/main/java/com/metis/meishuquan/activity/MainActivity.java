@@ -15,6 +15,8 @@ import com.metis.commentpart.fragment.CommentTabFragment;
 import com.metis.coursepart.fragment.CourseTabFragment;
 import com.metis.meishuquan.R;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -35,7 +37,15 @@ public class MainActivity extends BaseActivity implements DockBar.OnDockItemClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        if (fragmentList != null) {
+            Log.v(TAG, "fragmentList.size=" + fragmentList.size());
+        } else {
+            Log.v(TAG, "fragmentList=null");
+        }
+
         ButterKnife.inject(this);
+
     }
 
     @Override

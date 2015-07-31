@@ -9,6 +9,7 @@ import com.metis.msnetworklib.contract.ReturnInfo;
 import com.microsoft.windowsazure.mobileservices.ApiOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.ServiceFilterResponseCallback;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -26,6 +27,10 @@ import java.util.UUID;
 public class NetProxy {
 
     private static final String TAG = NetProxy.class.getSimpleName();
+
+    private static final String UPLOAD_FILE = "v1.1/File/Upload?session={session}";/*?type={type}&define={define}&session={session}*/
+
+    public static final int TYPE_IMAGE = 1, TYPE_VOICE = 2, TYPE_AMR = 3;
 
     private static NetProxy sProxy = null;
     public synchronized static NetProxy getInstance (Context context) {
@@ -102,6 +107,63 @@ public class NetProxy {
         });
         return requestUUID;
         //mClient.invokeApi();
+    }
+
+    public void upload (int type, byte[] data, String session, NetProxy.OnResponseListener listener) {
+        upload(type, new byte[][]{data}, session, listener);
+    }
+
+    public String upload (int type, byte[][] dataArray, String session, final NetProxy.OnResponseListener listener) {
+
+        int totalLength = 0;
+        final int count = dataArray.length;
+        StringBuilder subLengthSb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            byte[] data = dataArray[i];
+            totalLength += data.length;
+            subLengthSb.append("," + data.length);
+        }
+        byte[] source = new byte[totalLength];
+        int current = 0;
+        for (int i = 0; i < count; i++) {
+            byte[] data = dataArray[i];
+            for (int k = 0; k < data.length; k++) {
+                source[current] = data[k];
+                current++;
+            }
+        }
+        String request = UPLOAD_FILE.replace("{session}", session);
+        String define = totalLength + "," + count + subLengthSb;
+        List<Pair<String, String>> list = new ArrayList<Pair<String, String>>();
+        Pair<String, String> typePair = new Pair<String, String>("type", type + "");
+        Pair<String, String> definePair = new Pair<String, String>("define", define);
+        list.add(typePair);
+        list.add(definePair);
+        final String requestUUID = UUID.randomUUID().toString();
+        Log.v(TAG, "request_upload(" + requestUUID + ")=" + request);
+        NetProxy.getInstance(mContext).getClient().invokeApi(
+                request, source, HttpPost.METHOD_NAME, null, list, new ServiceFilterResponseCallback() {
+                    @Override
+                    public void onResponse(ServiceFilterResponse serviceFilterResponse, Exception e) {
+                        if (listener != null && serviceFilterResponse != null) {
+                            String responseString = serviceFilterResponse.getContent();
+                            Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                            listener.onResponse(responseString, requestUUID);
+                            return;
+                        }
+                        if (listener != null && e != null) {
+                            String responseString = e.getLocalizedMessage();
+                            Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                            listener.onResponse(responseString, requestUUID);
+                            return;
+                        }
+                    }
+                });
+        return requestUUID;
+    }
+
+    public MobileServiceClient getClient() {
+        return mClient;
     }
 
     public static interface OnResponseListener {

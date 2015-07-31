@@ -4,33 +4,35 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.metis.base.ActivityDispatcher;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.fragment.ImageChooseDialogFragment;
-import com.metis.base.manager.DisplayManager;
+import com.metis.base.manager.AccountManager;
+import com.metis.base.manager.RequestCallback;
+import com.metis.base.manager.UploadManager;
+import com.metis.base.module.Thumbnail;
 import com.metis.base.utils.Log;
 import com.metis.commentpart.R;
+import com.metis.commentpart.manager.StatusManager;
+import com.metis.commentpart.manager.TeacherManager;
+import com.metis.commentpart.module.Teacher;
+import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
-public class PublishStatusActivity extends TitleBarActivity implements View.OnClickListener{
+public class PublishStatusActivity extends TitleBarActivity implements View.OnClickListener, TeacherManager.OnTeachersListener {
 
     private static final String TAG = PublishStatusActivity.class.getSimpleName();
 
@@ -41,23 +43,31 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
     private ImageView mImageAdd = null, mImageDelIv = null;
     private EditText mInputEt = null;
     private TextView mRemainCountTv = null;
-    private Button mCategoryBtn, mInviteBtn;
+    private TextView mInviteBtn;
+    private RelativeLayout mCategoryBtn;
+    private ImageView mCategoryFlagIv;
 
     private GridLayout mCategoryLayout = null, mTeacherLayout;
 
     private Bitmap mBitmap = null;
+
+    private TeacherManager mTeacherManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_status);
 
+        mTeacherManager = TeacherManager.getInstance(this);
+        mTeacherManager.registerOnTeachersListener(this);
+
         mImageAdd = (ImageView)findViewById(R.id.status_image);
         mImageDelIv = (ImageView)findViewById(R.id.status_image_delete);
         mInputEt = (EditText)findViewById(R.id.status_input);
         mRemainCountTv = (TextView)findViewById(R.id.status_remain_words);
-        mCategoryBtn = (Button)findViewById(R.id.status_category_btn);
-        mInviteBtn = (Button)findViewById(R.id.status_invite_teacher_btn);
+        mCategoryBtn = (RelativeLayout)findViewById(R.id.status_category_btn);
+        mCategoryFlagIv = (ImageView)mCategoryBtn.findViewById(R.id.status_category_switch_flag);
+        mInviteBtn = (TextView)findViewById(R.id.status_invite_teacher_btn);
         mCategoryLayout = (GridLayout)findViewById(R.id.status_category_layout);
         mTeacherLayout = (GridLayout)findViewById(R.id.status_teacher_contaner);
 
@@ -65,6 +75,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
         mImageDelIv.setOnClickListener(this);
         mCategoryBtn.setOnClickListener(this);
         mInviteBtn.setOnClickListener(this);
+        mInviteBtn.setText(getString(R.string.publish_btn_invite, mTeacherManager.getSelectedCount() + "/" + mTeacherManager.getMaxCount()));
 
         mRemainCountTv.setText(MAX_COUNT + "");
 
@@ -91,12 +102,32 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
             @Override
             public void onClick(View v) {
                 String content = mInputEt.getText().toString();
-                if (mBitmap == null || TextUtils.isEmpty(content)) {
+                if (mBitmap == null && TextUtils.isEmpty(content)) {
                     Toast.makeText(PublishStatusActivity.this, R.string.publish_toast_empty_content, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (mBitmap != null) {
+                    UploadManager.getInstance(PublishStatusActivity.this).uploadBitmap(
+                            mBitmap,
+                            AccountManager.getInstance(PublishStatusActivity.this).getMe().getCookie(),
+                            new RequestCallback<List<Thumbnail>>() {
+                                @Override
+                                public void callback(ReturnInfo<List<Thumbnail>> returnInfo, String callbackId) {
+
+                                }
+                            });
+                }
+
             }
         });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mTeacherManager.clearSelected();
+        mTeacherManager.unregisterOnTeachersListener(this);
     }
 
     @Override
@@ -124,8 +155,10 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
             int visible = mCategoryLayout.getVisibility();
             if (visible == View.VISIBLE) {
                 mCategoryLayout.setVisibility(View.GONE);
+                mCategoryFlagIv.setImageResource(R.drawable.ic_chevron_down);
             } else {
                 mCategoryLayout.setVisibility(View.VISIBLE);
+                mCategoryFlagIv.setImageResource(R.drawable.ic_chevron_up);
             }
         } else if (id == mInviteBtn.getId()) {
             Intent it = new Intent(this, InviteActivity.class);
@@ -166,10 +199,36 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
         }
     }
 
+    private void pushContent (String content, int channelId,
+                              List<Long> teacherIds, Thumbnail thumbnail) {
+        StatusManager.getInstance(this).publishAssess(content, channelId, teacherIds, thumbnail, new RequestCallback() {
+            @Override
+            public void callback(ReturnInfo returnInfo, String callbackId) {
+
+            }
+        });
+    }
+
     private void recycleBitmap () {
         if (mBitmap != null && !mBitmap.isRecycled()) {
             mBitmap.isRecycled();
             mBitmap = null;
         }
     }
+
+    @Override
+    public void onConfirmed(List<Teacher> teachers) {
+        mInviteBtn.setText(getString(R.string.publish_btn_invite, mTeacherManager.getSelectedCount() + "/" + mTeacherManager.getMaxCount()));
+    }
+
+    @Override
+    public void onSelected(TeacherManager manager, Teacher teacher) {
+
+    }
+
+    @Override
+    public void onUnSelected(TeacherManager manager, Teacher teacher) {
+
+    }
+
 }

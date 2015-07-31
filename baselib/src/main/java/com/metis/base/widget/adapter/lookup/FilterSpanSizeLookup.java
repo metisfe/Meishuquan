@@ -1,4 +1,4 @@
-package com.metis.coursepart.adapter;
+package com.metis.base.widget.adapter.lookup;
 
 import android.support.v7.widget.GridLayoutManager;
 

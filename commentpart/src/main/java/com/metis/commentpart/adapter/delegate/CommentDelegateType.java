@@ -10,7 +10,8 @@ import com.metis.commentpart.R;
  */
 public enum CommentDelegateType {
 
-    TYPE_STATUS_ITEM (ID.ID_STATUS_ITEM, R.layout.layout_status_item);
+    TYPE_STATUS_ITEM (ID.ID_STATUS_ITEM, R.layout.layout_status_item),
+    TYPE_TEACHER_WITH_CHECK_BOX (ID.ID_TEACHER_WITH_CHECK_BOX, R.layout.layout_teacher_item_with_check);
 
     static {
         for (CommentDelegateType courseDelegateType : values()) {

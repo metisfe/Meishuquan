@@ -5,18 +5,25 @@
     <ImageView
         android:id="@+id/teacher_profile"
         android:layout_width="80dp"
-        android:layout_height="80dp" />
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:layout_marginRight="@dimen/margin_big"
+        />
     <TextView
         android:id="@+id/teacher_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/teacher_profile"
+        android:textSize="@dimen/size_h5"
+        android:textColor="@android:color/black"
         />
     <TextView
         android:id="@+id/teacher_extra_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/teacher_profile"
-        android:layout_below="@+id/teacher_name"
+        android:layout_alignBottom="@+id/teacher_profile"
+        android:textSize="@dimen/size_h6"
+        android:textColor="@color/color_c6"
         />
 </RelativeLayout>

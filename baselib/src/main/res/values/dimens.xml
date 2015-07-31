@@ -13,9 +13,11 @@
 
     <dimen name="margin_middle">5dp</dimen>
     <dimen name="margin_big">10dp</dimen>
+    <dimen name="margin_large">15dp</dimen>
 
     <dimen name="padding_middle">5dp</dimen>
     <dimen name="padding_big">10dp</dimen>
+    <dimen name="padding_large">15dp</dimen>
 
     <dimen name="std_padding">5dp</dimen>
     <dimen name="std_padding_horizontal">5dp</dimen>
@@ -23,6 +25,8 @@
     <dimen name="std_margin">5dp</dimen>
     <dimen name="std_margin_horizontal">5dp</dimen>
     <dimen name="std_margin_vertical">5dp</dimen>
+
+    <dimen name="std_list_item_bg_radius">2dp</dimen>
 
     <dimen name="title_bar_btn_size">32dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->

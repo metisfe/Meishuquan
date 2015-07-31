@@ -16,9 +16,9 @@ public enum CourseDelegateType {
     TYPE_ALBUM_ITEM_SMALL_TITLE(ID.ID_ITEM_TITLE, R.layout.layout_item_title),
     TYPE_COURSE_ITEM (ID.ID_COURSE_ITEM, R.layout.layout_chapter_item),
     TYPE_COURSE_TITLE (ID.ID_COURSE_TITLE, R.layout.layout_chapter_title_item),
-    TYPE_FILTER (ID.ID_FILTER, R.layout.layout_filter_item),
-    TYPE_FILTER_COURSE_TYPE (ID.ID_FILTER_COURSE_TYPE, R.layout.layout_filter_item),
-    TYPE_FILTER_STUDIO (ID.ID_FILTER_STUDIO, R.layout.layout_filter_item),
+    TYPE_FILTER (ID.ID_FILTER, R.layout.layout_filter_item_course),
+    TYPE_FILTER_COURSE_TYPE (ID.ID_FILTER_COURSE_TYPE, R.layout.layout_filter_item_course),
+    TYPE_FILTER_STUDIO (ID.ID_FILTER_STUDIO, R.layout.layout_filter_item_course),
     TYPE_USER_IN_DETAIL (ID.ID_USER_IN_DETAIL, R.layout.layout_user_in_detail);
 
     static {

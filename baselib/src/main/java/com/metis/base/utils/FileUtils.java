@@ -1,5 +1,8 @@
 package com.metis.base.utils;
 
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -89,5 +92,14 @@ public class FileUtils {
             }
         }
         return length;
+    }
+
+    public static byte[] bitmapToByteArray (Bitmap.CompressFormat format, Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(format, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }

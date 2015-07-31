@@ -2,7 +2,6 @@ package com.metis.coursepart.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,10 +11,9 @@ import android.view.ViewGroup;
 
 import com.metis.base.fragment.BaseFragment;
 import com.metis.base.module.User;
-import com.metis.base.utils.Log;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.FilterAdapter;
-import com.metis.coursepart.adapter.FilterSpanSizeLookup;
+import com.metis.base.widget.adapter.lookup.FilterSpanSizeLookup;
 import com.metis.coursepart.adapter.delegate.CourseTypeFilterDelegate;
 import com.metis.coursepart.adapter.delegate.FilterDelegate;
 import com.metis.coursepart.adapter.delegate.StudioFilterDelegate;

@@ -17,7 +17,6 @@
             android:layout_marginTop="@dimen/margin_middle"
             android:layout_marginRight="@dimen/margin_big"
             android:layout_marginBottom="@dimen/margin_big"
-            android:src="@drawable/ic_camera"
             />
         <TextView
             android:id="@+id/status_name"
@@ -28,7 +27,6 @@
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/size_h4"
-            android:text="高玉峰"
             />
         <TextView
             android:id="@+id/status_location"
@@ -38,7 +36,7 @@
             android:textColor="@color/color_c6"
             android:layout_alignBaseline="@+id/status_name"
             android:layout_toRightOf="@+id/status_name"
-            android:text="北京"
+            android:layout_marginLeft="@dimen/margin_big"
             />
         <TextView
             android:id="@+id/status_category"
@@ -48,7 +46,6 @@
             android:textColor="@color/color_c6"
             android:layout_alignBottom="@+id/status_profile"
             android:layout_toRightOf="@+id/status_profile"
-            android:text="摄像"
             />
         <TextView
             android:id="@+id/status_state"
@@ -70,7 +67,6 @@
         android:textColor="@android:color/black"
         android:layout_marginLeft="@dimen/margin_big"
         android:layout_marginRight="@dimen/margin_big"
-        android:text="一只蛐蛐儿 看着 工厂倒闭,因为房租和利润总不成正比,所有男工去卖积压产品,所有的女工,都得回家休息,蛐蛐儿关心"
         />
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -135,10 +131,14 @@
         />
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:singleLine="true"
+        android:gravity="center_vertical"
         android:textSize="@dimen/size_h6"
         android:textColor="@color/color_c6"
         android:hint="@string/status_item_publish_comment"
+        android:paddingLeft="@dimen/padding_middle"
+        android:layout_margin="@dimen/margin_middle"
+        android:background="@drawable/shape_edit_btn"
         />
 </LinearLayout>

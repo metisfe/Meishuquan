@@ -3,14 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.metis.commentpart.activity.PublishStatusActivity">
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_middle"
+        android:paddingRight="@dimen/padding_middle"
+        >
         <RelativeLayout
             android:id="@+id/status_content_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@drawable/std_list_item_bg_nor"
+            android:layout_marginTop="@dimen/margin_middle"
             >
             <ImageView
                 android:id="@+id/status_image"
@@ -18,12 +23,13 @@
                 android:layout_height="100dp"
                 android:src="@drawable/ic_image_add"
                 android:scaleType="centerCrop"
+                android:layout_margin="@dimen/margin_big"
                 />
             <ImageView
                 android:id="@+id/status_image_delete"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/ic_close_circle_outline"
+                android:src="@drawable/ic_close"
                 android:layout_alignTop="@+id/status_image"
                 android:layout_alignRight="@+id/status_image"
                 android:visibility="gone"
@@ -35,10 +41,9 @@
                 android:layout_alignTop="@+id/status_image"
                 android:layout_alignBottom="@+id/status_image"
                 android:layout_toRightOf="@+id/status_image"
-                android:maxEms="10"
+                android:paddingRight="@dimen/padding_big"
                 android:gravity="left|top"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
                 android:hint="@string/publish_hint_image_discription"
                 />
             <TextView
@@ -48,23 +53,43 @@
                 android:singleLine="true"
                 android:layout_alignBottom="@+id/status_input"
                 android:layout_alignRight="@+id/status_input"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginRight="@dimen/margin_big"
                 />
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/status_category_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/status_content_container"
             android:gravity="center_horizontal"
+            android:background="@drawable/std_list_item_bg_nor"
+            android:layout_marginTop="@dimen/margin_middle"
             >
-            <Button
+            <RelativeLayout
                 android:id="@+id/status_category_btn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@android:drawable/arrow_down_float"
-                />
+                android:background="@drawable/btn_bg"
+                android:padding="@dimen/padding_middle"
+                android:layout_margin="@dimen/margin_middle"
+                >
+                <TextView
+                    android:id="@+id/status_category_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/size_h4"
+                    android:textColor="@android:color/black"
+                    android:text="@string/publish_btn_choose_category"
+                    android:layout_centerHorizontal="true"
+                    />
+                <ImageView
+                    android:id="@+id/status_category_switch_flag"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_toRightOf="@+id/status_category_tip"
+                    android:src="@drawable/ic_chevron_down"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
             <GridLayout
                 android:id="@+id/status_category_layout"
                 android:layout_width="wrap_content"
@@ -115,65 +140,61 @@
                     android:src="@drawable/ic_send"
                     android:background="@android:color/holo_green_dark"
                     />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
             </GridLayout>
         </RelativeLayout>
-        <Button
-            android:id="@+id/status_invite_teacher_btn"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/status_category_container"
-            />
-        <GridLayout
-            android:id="@+id/status_teacher_contaner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:layout_below="@+id/status_invite_teacher_btn"
-            android:layout_centerHorizontal="true"
+            android:background="@drawable/std_list_item_bg_nor"
+            android:layout_marginTop="@dimen/margin_middle"
+            android:paddingTop="@dimen/padding_middle"
+            android:paddingBottom="@dimen/padding_middle"
             >
-            <ImageView
+            <TextView
+                android:id="@+id/status_invite_teacher_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg"
+                android:layout_marginTop="@dimen/margin_big"
+                android:textSize="@dimen/size_h4"
+                android:textColor="@android:color/black"
+                android:padding="@dimen/padding_middle"
+                android:layout_margin="@dimen/margin_middle"
+                android:gravity="center"
+                />
+            <GridLayout
+                android:id="@+id/status_teacher_contaner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_send"
-                android:background="@android:color/holo_green_dark"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_send"
-                android:background="@android:color/holo_green_dark"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_send"
-                android:background="@android:color/holo_green_dark"
-                />
-        </GridLayout>
-    </RelativeLayout>
+                android:columnCount="3"
+                android:layout_below="@+id/status_invite_teacher_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_big"
+                android:layout_marginBottom="@dimen/margin_big"
+                >
+                <include
+                    layout="@layout/layout_teacher_item_square"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    />
+                <include
+                    layout="@layout/layout_teacher_item_square"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    />
+                <include
+                    layout="@layout/layout_teacher_item_square"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    />
+            </GridLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </ScrollView>

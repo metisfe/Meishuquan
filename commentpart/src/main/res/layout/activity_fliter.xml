@@ -1,7 +1,48 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.metis.commentpart.activity.FilterActivity">
-
-</RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/filter_recycler_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+    <LinearLayout
+        android:id="@+id/filter_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comment_state"
+            android:layout_width="fill_parent"
+            android:layout_height="38dp"
+            android:paddingLeft="@dimen/padding_big"
+            android:paddingTop="@dimen/padding_middle"
+            android:paddingRight="@dimen/padding_big"
+            android:paddingBottom="@dimen/padding_middle"
+            android:background="@android:color/holo_green_dark"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comment_category"
+            android:layout_width="fill_parent"
+            android:layout_height="76dp"
+            android:paddingLeft="@dimen/padding_big"
+            android:paddingTop="@dimen/padding_middle"
+            android:paddingRight="@dimen/padding_big"
+            android:paddingBottom="@dimen/padding_middle"
+            android:background="@android:color/holo_green_light"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comment_area"
+            android:layout_width="fill_parent"
+            android:layout_height="76dp"
+            android:paddingLeft="@dimen/padding_big"
+            android:paddingTop="@dimen/padding_middle"
+            android:paddingRight="@dimen/padding_big"
+            android:paddingBottom="@dimen/padding_middle"
+            android:background="@android:color/holo_green_dark"
+            />
+    </LinearLayout>
+</FrameLayout>

@@ -16,6 +16,7 @@ import com.metis.base.widget.dock.DockBar;
 import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.StatusAdapter;
+import com.metis.commentpart.adapter.StatusItemDecoration;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
 import com.metis.commentpart.widget.OnScrollViewFlipperListener;
 
@@ -79,11 +80,20 @@ public class CommentTabFragment extends DockFragment {
                 ActivityDispatcher.publishStatusActivity(getActivity());
             }
         });
+        mTitleBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStatusRv.smoothScrollToPosition(0);
+            }
+        });
 
         mStatusRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mStatusRv.addOnScrollListener(new OnScrollViewFlipperListener());
+        mStatusRv.addItemDecoration(new StatusItemDecoration());
         mAdapter = new StatusAdapter(getActivity());
         mStatusRv.setAdapter(mAdapter);
+
+
 
         mSrl.setColorSchemeResources(
                 android.R.color.holo_blue_light,

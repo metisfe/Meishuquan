@@ -4,7 +4,7 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/std_color_C</item>
+        <item name="android:windowBackground">@color/color_c3</item>
     </style>
     <style name="BaseTheme.Transparent" parent="BaseTheme">
         <item name="android:windowIsTranslucent">true</item>

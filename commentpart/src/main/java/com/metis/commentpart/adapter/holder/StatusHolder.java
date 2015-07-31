@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterViewFlipper;
 
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
+import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.FlipperAdapter;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
@@ -24,10 +25,17 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
     }
 
     @Override
-    public void bindData(Context context, StatusDelegate statusDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, StatusDelegate statusDelegate, RecyclerView.Adapter adapter, int position) {
         String[] strings = statusDelegate.getSource();
         adapterViewFlipper.setAdapter(new FlipperAdapter(context, strings));
         adapterViewFlipper.startFlipping();
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityDispatcher.statusDetail(context);
+            }
+        });
     }
 
     @Override

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/divider_title"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:textSize="@dimen/size_h6"
+        android:textColor="@color/color_c2"
+        android:background="@color/color_c3"
+        android:paddingLeft="@dimen/padding_big"
+        android:paddingRight="@dimen/padding_big"
+        android:gravity="center_vertical"
+        />
+</FrameLayout>

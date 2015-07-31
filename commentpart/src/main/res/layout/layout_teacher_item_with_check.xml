@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/padding_big"
+    android:paddingRight="@dimen/padding_big"
+    android:paddingTop="@dimen/padding_large"
+    android:paddingBottom="@dimen/padding_large"
+    android:background="@android:color/white"
+    >
     <include
         android:id="@+id/item_teacher_part"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/item_check_flag"
+        layout="@layout/layout_teacher_item"
         />
     <ImageView
         android:id="@+id/item_check_flag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/teacher_check_flag"
+        android:layout_marginRight="25dp"
         />
 </RelativeLayout>

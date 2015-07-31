@@ -6,9 +6,8 @@
         android:allowBackup="true"
         android:label="@string/app_name" >
         <activity
-            android:name=".activity.CommentDetailActivity"
-            android:label="@string/title_activity_comment_detail"
-            android:theme="@style/BaseTheme.Transparent" >
+            android:name=".activity.StatusDetailActivity"
+            android:label="@string/title_activity_comment_detail" >
         </activity>
         <activity
             android:name=".activity.FilterActivity"
@@ -21,6 +20,10 @@
         <activity
             android:name=".activity.InviteActivity"
             android:label="@string/title_activity_invite" >
+        </activity>
+        <activity
+            android:name=".activity.ReplyActivity"
+            android:label="@string/title_activity_reply" >
         </activity>
     </application>
 

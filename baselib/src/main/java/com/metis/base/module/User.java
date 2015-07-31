@@ -9,6 +9,7 @@ import java.io.Serializable;
  * Created by Beak on 2015/7/9.
  */
 public class User implements Serializable, Parcelable{
+    private long id;
     public long userId;
     public String name;
     public String remarkName;
@@ -22,6 +23,7 @@ public class User implements Serializable, Parcelable{
     public int userRole;
     public String message;
     public String requestInfo;
+    private String cookie;
 
     public User () {}
 
@@ -70,5 +72,17 @@ public class User implements Serializable, Parcelable{
         userRole = in.readInt();
         message = in.readString();
         requestInfo = in.readString();
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof User)) {
+            return false;
+        }
+        return userId == ((User) o).userId;
     }
 }
