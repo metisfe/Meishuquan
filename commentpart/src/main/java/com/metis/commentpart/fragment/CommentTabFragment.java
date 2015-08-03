@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.fragment.DockFragment;
+import com.metis.base.manager.AccountManager;
+import com.metis.base.manager.RequestCallback;
+import com.metis.base.module.User;
+import com.metis.base.utils.Log;
 import com.metis.base.widget.TitleBar;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.commentpart.ActivityDispatcher;
@@ -18,7 +22,11 @@ import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.StatusAdapter;
 import com.metis.commentpart.adapter.StatusItemDecoration;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
+import com.metis.commentpart.manager.StatusManager;
+import com.metis.commentpart.module.Status;
+import com.metis.commentpart.module.StatusList;
 import com.metis.commentpart.widget.OnScrollViewFlipperListener;
+import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,19 +35,15 @@ import java.util.Random;
 /**
  * Created by Beak on 2015/7/24.
  */
-public class CommentTabFragment extends DockFragment {
+public class CommentTabFragment extends DockFragment implements SwipeRefreshLayout.OnRefreshListener{
+
+    private static final String TAG = CommentTabFragment.class.getSimpleName();
 
     private DockBar.Dock mDock = null;
 
     private TitleBar mTitleBar = null;
     private RecyclerView mStatusRv = null;
     private SwipeRefreshLayout mSrl = null;
-
-    private String[] mTotalData = {
-            "AMA (Ask Me Anything) ", "session with ", "Google Design", "(see in your timezone)",
-            "Ask questions", " to Mike Denny, ", "Design Advocate at Google Design ", "about Creating & Developing ",
-            "the Material Design ", "language this ", "Wednesday July 29 ", "at 9am PST ",
-    };
 
     private StatusAdapter mAdapter = null;
 
@@ -102,32 +106,49 @@ public class CommentTabFragment extends DockFragment {
                 android.R.color.holo_red_light,
                 android.R.color.holo_purple
         );
+        mSrl.setOnRefreshListener(this);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        List<StatusDelegate> list = new ArrayList<StatusDelegate>();
-        List<String[]> data = makeFakeData(20);
-        final int length = data.size();
-        for (int i = 0; i < length; i++) {
-            list.add(new StatusDelegate(data.get(i)));
-        }
-        mAdapter.addDataList(list);
+
+        loadData(1);
+
     }
 
-    private List<String[]> makeFakeData (int count) {
-        List<String[]> list = new ArrayList<String[]>();
-        Random random = new Random();
-        for (int i = 0; i < count; i++) {
-            int length = random.nextInt(5) + 3;
-            String[] strings = new String[length];
-            list.add(strings);
-            for (int k = 0; k < length; k++) {
-                strings[k] = i + " -- " + mTotalData[(length + i + k)%mTotalData.length];
-            }
-        }
-        return list;
+    @Override
+    public void onRefresh() {
+        loadData(1);
     }
 
+    private void loadData (final int index) {
+        User me = AccountManager.getInstance(getActivity()).getMe();
+        if (me != null) {
+            StatusManager.getInstance(getActivity()).getAssessList(0, 0, 0, index, me.getCookie(), new RequestCallback<StatusList>() {
+                @Override
+                public void callback(ReturnInfo<StatusList> returnInfo, String callbackId) {
+                    if (returnInfo.isSuccess()) {
+                        List l = returnInfo.getData().teacherList;
+                        if (l != null) {
+                            Log.v(TAG, "teachers size=" + l.size());
+                        }
+
+                        List<StatusDelegate> list = new ArrayList<StatusDelegate>();
+                        List<Status> statuses = returnInfo.getData().assessList;
+                        final int length = statuses.size();
+                        for (int i = 0; i < length; i++) {
+                            list.add(new StatusDelegate(statuses.get(i)));
+                        }
+                        if (index == 1) {
+                            mAdapter.clearDataList();
+                        }
+                        mAdapter.addDataList(list);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    mSrl.setRefreshing(false);
+                }
+            });
+        }
+    }
 }

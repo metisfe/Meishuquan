@@ -17,6 +17,7 @@
             android:layout_marginTop="@dimen/margin_middle"
             android:layout_marginRight="@dimen/margin_big"
             android:layout_marginBottom="@dimen/margin_big"
+            android:scaleType="centerCrop"
             />
         <TextView
             android:id="@+id/status_name"
@@ -70,7 +71,9 @@
         />
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big"
+        >
         <ImageView
             android:id="@+id/status_thumb"
             android:layout_width="fill_parent"
@@ -78,6 +81,18 @@
             android:scaleType="centerCrop"
             android:src="@drawable/test"
             />
+        <!--<CheckBox
+            android:id="@+id/status_thumb_up_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignBottom="@+id/status_thumb"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:background="@drawable/float_btn_bg"
+            android:padding="@dimen/padding_big"
+            android:button="@drawable/ic_thumb_up_sel"
+            />-->
         <LinearLayout
             android:id="@+id/status_thumb_up_btn"
             android:layout_width="wrap_content"
@@ -86,17 +101,36 @@
             android:layout_alignBottom="@+id/status_thumb"
             android:layout_marginBottom="@dimen/margin_big"
             android:layout_marginLeft="@dimen/margin_big"
+            android:background="@drawable/float_btn_bg"
+            android:padding="@dimen/padding_middle"
             >
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/ic_thumb_up_sel"
                 />
             <TextView
                 android:id="@+id/status_thumb_up_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_h6"
+                android:layout_marginLeft="@dimen/margin_middle"
                 />
         </LinearLayout>
+        <!--<CheckBox
+            android:id="@+id/status_comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignBottom="@+id/status_thumb"
+            android:layout_alignRight="@+id/status_thumb"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_big"
+            android:background="@drawable/float_btn_bg"
+            android:padding="@dimen/padding_big"
+            android:button="@drawable/ic_comment"
+            />-->
         <LinearLayout
             android:id="@+id/status_comment_btn"
             android:layout_width="wrap_content"
@@ -106,15 +140,21 @@
             android:layout_alignRight="@+id/status_thumb"
             android:layout_marginBottom="@dimen/margin_big"
             android:layout_marginRight="@dimen/margin_big"
+            android:background="@drawable/float_btn_bg"
+            android:padding="@dimen/padding_middle"
             >
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/ic_comment"
                 />
             <TextView
                 android:id="@+id/status_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_h6"
+                android:layout_marginLeft="@dimen/margin_middle"
                 />
         </LinearLayout>
     </RelativeLayout>
@@ -130,6 +170,7 @@
         android:layout_marginBottom="@dimen/margin_middle"
         />
     <TextView
+        android:id="@+id/status_quick_comment"
         android:layout_width="fill_parent"
         android:layout_height="25dp"
         android:singleLine="true"

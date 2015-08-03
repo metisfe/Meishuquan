@@ -5,28 +5,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.metis.base.manager.DisplayManager;
+import com.metis.base.module.User;
 import com.metis.commentpart.R;
+import com.metis.commentpart.module.Comment;
+
+import java.util.List;
 
 public class FlipperAdapter extends BaseAdapter {
 
-    private String[] mStringArray = null;
+    private List<Comment> mCommentList = null;
     private Context mContext = null;
 
-    public FlipperAdapter (Context context, String[] stringArray) {
+    public FlipperAdapter (Context context, List<Comment> commentList) {
         mContext = context;
-        mStringArray = stringArray;
+        mCommentList = commentList;
     }
 
     @Override
     public int getCount() {
-        return mStringArray.length;
+        return mCommentList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mStringArray[position];
+        return mCommentList.get(position);
     }
 
     @Override
@@ -40,16 +46,24 @@ public class FlipperAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new FlipperHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.layout_flipper_item, null);
+            holder.profileIv = (ImageView)convertView.findViewById(R.id.flipper_profile);
             holder.flipperTv = (TextView)convertView.findViewById(R.id.flipper_content);
             convertView.setTag(holder);
         } else {
             holder = (FlipperHolder)convertView.getTag();
         }
-        holder.flipperTv.setText(mStringArray[position]);
+        final Comment comment = mCommentList.get(position);
+        holder.flipperTv.setText(comment.content);
+        User user = comment.user;
+        if (user != null) {
+            DisplayManager.getInstance(mContext).display(user.avatar, holder.profileIv);
+        }
+
         return convertView;
     }
 
     private class FlipperHolder {
+        public ImageView profileIv = null;
         public TextView flipperTv = null;
     }
 }

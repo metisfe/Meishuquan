@@ -12,6 +12,7 @@ import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.delegate.DividerDelegate;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.StatusAdapter;
+import com.metis.commentpart.adapter.TeacherCbAdapter;
 import com.metis.commentpart.adapter.TeacherSelectedAdapter;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
 import com.metis.commentpart.manager.StatusManager;
@@ -31,7 +32,7 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     private RecyclerView mSelectedRv, mRv;
 
     private TeacherSelectedAdapter mSelectedAdapter = null;
-    private StatusAdapter mAdapter = null;
+    private TeacherCbAdapter mAdapter = null;
 
     private TeacherManager mTeacherManager = null;
     private AccountManager mAccountManager = null;
@@ -50,11 +51,11 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
         mRv = (RecyclerView)findViewById(R.id.invite_recycler_view);
 
         mSelectedRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mSelectedAdapter = new TeacherSelectedAdapter(this, mTeacherManager.getSelectedTeachers());
+        mSelectedAdapter = new TeacherSelectedAdapter(this);
         mSelectedRv.setAdapter(mSelectedAdapter);
 
         mRv.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new StatusAdapter(this);
+        mAdapter = new TeacherCbAdapter(this);
         mRv.setAdapter(mAdapter);
 
         getTitleBar().setDrawableResourceRight(R.drawable.ic_check);
@@ -88,7 +89,9 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
                         List<TeacherCbDelegate> delegates = new ArrayList<TeacherCbDelegate>();
                         final int length = teacherList.size();
                         for (int i = 0; i < length; i++) {
-                            delegates.add(new TeacherCbDelegate(teacherList.get(i)));
+                            TeacherCbDelegate delegate = new TeacherCbDelegate(teacherList.get(i));
+                            delegate.setChecked(mTeacherManager.hasSelected(delegate));
+                            delegates.add(delegate);
                         }
                         mAdapter.addDataItem(new DividerDelegate(getString(R.string.invite_recent_teachers)));
                         mAdapter.addDataList(delegates);
@@ -109,7 +112,9 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
                     List<TeacherCbDelegate> delegates = new ArrayList<TeacherCbDelegate>();
                     final int length = teacherList.size();
                     for (int i = 0; i < length; i++) {
-                        delegates.add(new TeacherCbDelegate(teacherList.get(i)));
+                        TeacherCbDelegate delegate = new TeacherCbDelegate(teacherList.get(i));
+                        delegate.setChecked(mTeacherManager.hasSelected(delegate));
+                        delegates.add(delegate);
                     }
                     mAdapter.addDataItem(new DividerDelegate(getString(R.string.invite_active_teachers)));
                     mAdapter.addDataList(delegates);
@@ -143,12 +148,12 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     @Override
     public void onSelected(TeacherManager manager, Teacher teacher) {
         mSelectedAdapter.notifyDataSetChanged();
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onUnSelected(TeacherManager manager, Teacher teacher) {
         mSelectedAdapter.notifyDataSetChanged();
-        mAdapter.notifyDataSetChanged();
+        mAdapter.unSelected(teacher);
     }
 }

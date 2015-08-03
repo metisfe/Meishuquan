@@ -91,8 +91,11 @@ public class TeacherManager extends AbsManager {
     }
 
     public void unSelectTeacher (Teacher teacher) {
-        TeacherCbDelegate delegate = new TeacherCbDelegate(teacher);
-        unSelectTeacher(delegate);
+        /*TeacherCbDelegate delegate = new TeacherCbDelegate(teacher);*/
+        TeacherCbDelegate delegate = findDelegateByTeacher(teacher);
+        if (delegate != null) {
+            unSelectTeacher(delegate);
+        }
     }
 
     public void unSelectTeacher (TeacherCbDelegate delegate) {
@@ -108,6 +111,17 @@ public class TeacherManager extends AbsManager {
                 listener.onUnSelected(this, delegate.getSource());
             }
         }
+    }
+
+    public TeacherCbDelegate findDelegateByTeacher (Teacher teacher) {
+        final int length = mSelectedTeachers.size();
+        for (int i = 0; i < length; i++) {
+            TeacherCbDelegate delegate = mSelectedTeachers.get(i);
+            if (delegate.getSource().equals(teacher)) {
+                return delegate;
+            }
+        }
+        return null;
     }
 
     public int getSelectedCount () {

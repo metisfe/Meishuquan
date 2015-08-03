@@ -6,6 +6,10 @@
 
     <string name="publish_hint_image_discription">请简单描述一下你的作品吧...</string>
     <string name="publish_toast_empty_content">请选择图片或者输入文字</string>
+    <string name="publish_toast_choose_category">请选择一个类别</string>
+    <string name="publish_toast_offline">您已掉线,请登录后再试</string>
+    <string name="publish_toast_publish_success">发布成功</string>
+    <string name="publish_toast_publish_failed">发布失败,已存入草稿箱</string>
     <string name="publish_btn_choose_category">选择类别</string>
     <string name="publish_btn_invite">邀请名师点评(%1$s)</string>
 

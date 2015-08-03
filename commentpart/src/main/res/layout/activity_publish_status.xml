@@ -97,50 +97,8 @@
                 android:columnCount="4"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/status_category_btn"
-                >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_send"
-                    android:background="@android:color/holo_green_dark"
-                    />
-            </GridLayout>
+                />
+
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -163,36 +121,18 @@
                 android:layout_margin="@dimen/margin_middle"
                 android:gravity="center"
                 />
-            <GridLayout
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/status_teacher_contaner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:columnCount="3"
+                android:layout_height="80dp"
                 android:layout_below="@+id/status_invite_teacher_btn"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_big"
                 android:layout_marginBottom="@dimen/margin_big"
+                android:visibility="gone"
                 >
-                <include
-                    layout="@layout/layout_teacher_item_square"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
-                    />
-                <include
-                    layout="@layout/layout_teacher_item_square"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    />
-                <include
-                    layout="@layout/layout_teacher_item_square"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    />
-            </GridLayout>
+
+            </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
 
     </LinearLayout>

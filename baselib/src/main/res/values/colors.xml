@@ -8,6 +8,8 @@
     <color name="color_c5">#e5e5e5</color>
     <color name="color_c6">#aaaaaa</color>
 
+    <color name="color_press">#f0f0f0</color>
+
     <color name="std_color_A">#fb6d6d</color>
     <color name="std_color_B">#2c2c3f</color>
     <color name="std_color_C">#ecebeb</color>

@@ -27,10 +27,6 @@ public class StatusAdapter extends DelegateAdapter {
         switch (viewType) {
             case CommentDelegateType.ID.ID_STATUS_ITEM:
                 return new StatusHolder (view);
-            case CommentDelegateType.ID.ID_TEACHER_WITH_CHECK_BOX:
-                return new TeacherCbHolder(view);
-            case DelegateType.ID.ID_LIST_DIVIDER:
-                return new DividerHolder(view);
         }
         throw new IllegalArgumentException("DelegateAdapter onCreateAbsViewHolder return null");
     }

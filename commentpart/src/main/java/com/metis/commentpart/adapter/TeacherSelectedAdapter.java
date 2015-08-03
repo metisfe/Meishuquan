@@ -24,9 +24,9 @@ public class TeacherSelectedAdapter extends RecyclerView.Adapter<TeacherSqHolder
     private Context mContext = null;
     private List<TeacherCbDelegate> mDataList = null;
 
-    public TeacherSelectedAdapter (Context context, List<TeacherCbDelegate> list) {
+    public TeacherSelectedAdapter (Context context) {
         mContext = context;
-        mDataList = list;
+        mDataList = TeacherManager.getInstance(context).getSelectedTeachers();
     }
 
     @Override
@@ -47,9 +47,8 @@ public class TeacherSelectedAdapter extends RecyclerView.Adapter<TeacherSqHolder
         holder.closeIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TeacherManager.getInstance(mContext).unSelectTeacher(teacher);
-                //delegate.setChecked(false);
-                notifyDataSetChanged();
+                TeacherManager.getInstance(mContext).unSelectTeacher(delegate);
+                //notifyDataSetChanged();
             }
         });
     }

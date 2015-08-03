@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -21,15 +24,22 @@ import com.metis.base.fragment.ImageChooseDialogFragment;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.manager.UploadManager;
+import com.metis.base.module.ImageInfo;
 import com.metis.base.module.Thumbnail;
+import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.commentpart.R;
+import com.metis.commentpart.adapter.TeacherSelectedAdapter;
+import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
 import com.metis.commentpart.manager.StatusManager;
 import com.metis.commentpart.manager.TeacherManager;
+import com.metis.commentpart.module.AssessChannel;
+import com.metis.commentpart.module.ChannelItem;
 import com.metis.commentpart.module.Teacher;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PublishStatusActivity extends TitleBarActivity implements View.OnClickListener, TeacherManager.OnTeachersListener {
@@ -47,11 +57,15 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
     private RelativeLayout mCategoryBtn;
     private ImageView mCategoryFlagIv;
 
-    private GridLayout mCategoryLayout = null, mTeacherLayout;
+    private GridLayout mCategoryLayout = null;
+    private RecyclerView mTeacherLayout;
 
     private Bitmap mBitmap = null;
-
+    private TeacherSelectedAdapter mTeacherAdapter = null;
     private TeacherManager mTeacherManager = null;
+
+    private ChannelItem mCurrentChannel = null;
+    private int mCurrentChannelIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +83,17 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
         mCategoryFlagIv = (ImageView)mCategoryBtn.findViewById(R.id.status_category_switch_flag);
         mInviteBtn = (TextView)findViewById(R.id.status_invite_teacher_btn);
         mCategoryLayout = (GridLayout)findViewById(R.id.status_category_layout);
-        mTeacherLayout = (GridLayout)findViewById(R.id.status_teacher_contaner);
+        mTeacherLayout = (RecyclerView)findViewById(R.id.status_teacher_contaner);
 
         mImageAdd.setOnClickListener(this);
         mImageDelIv.setOnClickListener(this);
         mCategoryBtn.setOnClickListener(this);
         mInviteBtn.setOnClickListener(this);
         mInviteBtn.setText(getString(R.string.publish_btn_invite, mTeacherManager.getSelectedCount() + "/" + mTeacherManager.getMaxCount()));
+
+        mTeacherLayout.setLayoutManager(new GridLayoutManager(this, 3));
+        mTeacherAdapter = new TeacherSelectedAdapter(this);
+        mTeacherLayout.setAdapter(mTeacherAdapter);
 
         mRemainCountTv.setText(MAX_COUNT + "");
 
@@ -101,7 +119,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
         getTitleBar().setOnRightBtnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = mInputEt.getText().toString();
+                final String content = mInputEt.getText().toString();
                 if (mBitmap == null && TextUtils.isEmpty(content)) {
                     Toast.makeText(PublishStatusActivity.this, R.string.publish_toast_empty_content, Toast.LENGTH_SHORT).show();
                     return;
@@ -113,14 +131,63 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                             new RequestCallback<List<Thumbnail>>() {
                                 @Override
                                 public void callback(ReturnInfo<List<Thumbnail>> returnInfo, String callbackId) {
+                                    if (!returnInfo.isSuccess()) {
+                                        return;
+                                    }
 
+                                    Thumbnail thumbnail = returnInfo.getData().get(0);
+                                    Log.v(TAG, "publish access with " + thumbnail.getOriginalImage());
+                                    publishContent(content, thumbnail.toImageInfo());
                                 }
                             });
+                } else {
+                    publishContent(content, null);
                 }
+                finish();
 
             }
         });
+        AssessChannel channel = StatusManager.getInstance(this).getAssessChannel();
+        if (channel != null) {
+            fillCategoryGrid(channel.assessChannel);
+        } else {
+            StatusManager.getInstance(this).getChannelList(new RequestCallback<AssessChannel>() {
+                @Override
+                public void callback(ReturnInfo<AssessChannel> returnInfo, String callbackId) {
+                    if (returnInfo.isSuccess()) {
+                        fillCategoryGrid(returnInfo.getData().assessChannel);
+                    }
+                }
+            });
+        }
 
+    }
+
+    private void publishContent (String content, ImageInfo thumbnail) {
+        if (mCurrentChannel == null) {
+            Toast.makeText(this, R.string.publish_toast_choose_category, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (content == null) {
+            content = "";
+        }
+        List<Long> teachersId = new ArrayList<Long>();
+        final int length = mTeacherManager.getSelectedCount();
+        List<TeacherCbDelegate> delegates = mTeacherManager.getSelectedTeachers();
+        for (int i = 0; i < length; i++) {
+            teachersId.add(delegates.get(i).getSource().user.userId);
+        }
+        User me = AccountManager.getInstance(this).getMe();
+        if (me == null) {
+            Toast.makeText(this, R.string.publish_toast_offline, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        StatusManager.getInstance(PublishStatusActivity.this).publishAssess(content, mCurrentChannel.channelId, teachersId, thumbnail, me.getCookie(), new RequestCallback() {
+            @Override
+            public void callback(ReturnInfo returnInfo, String callbackId) {
+                Toast.makeText(PublishStatusActivity.this, returnInfo.isSuccess() ? R.string.publish_toast_publish_success : R.string.publish_toast_publish_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -199,7 +266,33 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
         }
     }
 
-    private void pushContent (String content, int channelId,
+    private void fillCategoryGrid (List<ChannelItem> itemList) {
+        mCategoryLayout.removeAllViews();
+        final int length = itemList.size();
+        for (int i = 0; i < length; i++) {
+            final int index = i;
+            final ChannelItem item = itemList.get(i);
+            if (item != null) {
+                final View view = LayoutInflater.from(this).inflate(R.layout.layout_category_item, null);
+                final TextView tv = (TextView)view.findViewById(R.id.category_name);
+                tv.setText(item.name);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mCurrentChannelIndex >= 0) {
+                            mCategoryLayout.getChildAt(mCurrentChannelIndex).setSelected(false);
+                        }
+                        view.setSelected(true);
+                        mCurrentChannelIndex = index;
+                        mCurrentChannel = item;
+                    }
+                });
+                mCategoryLayout.addView(view);
+            }
+        }
+    }
+
+    /*private void pushContent (String content, int channelId,
                               List<Long> teacherIds, Thumbnail thumbnail) {
         StatusManager.getInstance(this).publishAssess(content, channelId, teacherIds, thumbnail, new RequestCallback() {
             @Override
@@ -207,7 +300,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
 
             }
         });
-    }
+    }*/
 
     private void recycleBitmap () {
         if (mBitmap != null && !mBitmap.isRecycled()) {
@@ -218,17 +311,21 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
 
     @Override
     public void onConfirmed(List<Teacher> teachers) {
-        mInviteBtn.setText(getString(R.string.publish_btn_invite, mTeacherManager.getSelectedCount() + "/" + mTeacherManager.getMaxCount()));
+        //mInviteBtn.setText(getString(R.string.publish_btn_invite, mTeacherManager.getSelectedCount() + "/" + mTeacherManager.getMaxCount()));
     }
 
     @Override
     public void onSelected(TeacherManager manager, Teacher teacher) {
-
+        mTeacherAdapter.notifyDataSetChanged();
+        mTeacherLayout.setVisibility(manager.getSelectedCount() > 0 ? View.VISIBLE : View.GONE);
+        mInviteBtn.setText(getString(R.string.publish_btn_invite, mTeacherManager.getSelectedCount() + "/" + mTeacherManager.getMaxCount()));
     }
 
     @Override
     public void onUnSelected(TeacherManager manager, Teacher teacher) {
-
+        mTeacherAdapter.notifyDataSetChanged();
+        mTeacherLayout.setVisibility(manager.getSelectedCount() > 0 ? View.VISIBLE : View.GONE);
+        mInviteBtn.setText(getString(R.string.publish_btn_invite, mTeacherManager.getSelectedCount() + "/" + mTeacherManager.getMaxCount()));
     }
 
 }

@@ -66,6 +66,7 @@ public class NetProxy {
             @Override
             public void onCompleted(ReturnInfo<String> returnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
                 if (serviceFilterResponse == null) {
+                    Log.e(TAG, "response(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
                 final String responseString = serviceFilterResponse.getContent();
@@ -91,11 +92,17 @@ public class NetProxy {
             }
         }
         final String requestUUID = UUID.randomUUID().toString();
-        Log.v(TAG, "request_get(" + requestUUID + ")=" + request);
+        Log.v(TAG, "request_post(" + requestUUID + ")=" + request);
+        StringBuilder builder = new StringBuilder();
+        for (Pair<String, String> pair : params) {
+            builder.append("&" + pair.first + "=" + pair.second);
+        }
+        Log.v(TAG, "request_post(" + requestUUID + ") params=" + builder.toString());
         mClient.invokeApi(request, HttpPost.METHOD_NAME, params, (Class<ReturnInfo<String>>) new ReturnInfo<String>().getClass(), new ApiOperationCallback<ReturnInfo<String>>() {
             @Override
             public void onCompleted(ReturnInfo<String> returnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
                 if (serviceFilterResponse == null) {
+                    Log.e(TAG, "response(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
                 final String responseString = serviceFilterResponse.getContent();
@@ -107,6 +114,26 @@ public class NetProxy {
         });
         return requestUUID;
         //mClient.invokeApi();
+    }
+
+    public String doPostRequest (String request, Object object, final OnResponseListener listener) {
+        final String requestUUID = UUID.randomUUID().toString();
+        Log.v(TAG, "request_post(" + requestUUID + ")=" + request);
+        mClient.invokeApi(request, object, HttpPost.METHOD_NAME, null, (Class<ReturnInfo<String>>) new ReturnInfo<String>().getClass(), new ApiOperationCallback<ReturnInfo<String>>() {
+            @Override
+            public void onCompleted(ReturnInfo<String> stringReturnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
+                if (serviceFilterResponse == null) {
+                    Log.e(TAG, "response(" + requestUUID + ")=serviceFilterResponse is null");
+                    return;
+                }
+                final String responseString = serviceFilterResponse.getContent();
+                Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                if (listener != null) {
+                    listener.onResponse(responseString, requestUUID);
+                }
+            }
+        });
+        return requestUUID;
     }
 
     public void upload (int type, byte[] data, String session, NetProxy.OnResponseListener listener) {
