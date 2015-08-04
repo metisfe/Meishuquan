@@ -11,6 +11,6 @@ public class DividerDelegate extends BaseDelegate<String> {
 
     @Override
     public int getDelegateType() {
-        return DelegateType.TYPE_lIST_DIVIDER.getType();
+        return DelegateType.TYPE_LIST_DIVIDER.getType();
     }
 }

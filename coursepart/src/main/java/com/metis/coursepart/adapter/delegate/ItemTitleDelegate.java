@@ -1,6 +1,7 @@
 package com.metis.coursepart.adapter.delegate;
 
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
+import com.metis.base.widget.adapter.delegate.DelegateType;
 import com.metis.coursepart.adapter.FilterAdapter;
 
 /**
@@ -25,7 +26,7 @@ public class ItemTitleDelegate extends BaseDelegate<String> implements FilterAda
 
     @Override
     public int getDelegateType() {
-        return CourseDelegateType.TYPE_ALBUM_ITEM_SMALL_TITLE.getType();
+        return DelegateType.TYPE_ITEM_SMALL_TITLE.getType();
     }
 
     @Override

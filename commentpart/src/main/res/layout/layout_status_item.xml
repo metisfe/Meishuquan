@@ -79,7 +79,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/test"
             />
         <!--<CheckBox
             android:id="@+id/status_thumb_up_btn"

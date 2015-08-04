@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="status_item_decoration_offset">@dimen/margin_middle</dimen>
+
+    <dimen name="filter_status_list_decoration_top_offset">190dp</dimen>
 </resources>

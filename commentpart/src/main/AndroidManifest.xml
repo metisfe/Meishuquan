@@ -25,6 +25,10 @@
             android:name=".activity.ReplyActivity"
             android:label="@string/title_activity_reply" >
         </activity>
+        <activity
+            android:name=".activity.TeacherListActivity"
+            android:label="@string/title_activity_teacher_list" >
+        </activity>
     </application>
 
 </manifest>

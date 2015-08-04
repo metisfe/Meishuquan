@@ -21,7 +21,14 @@
     <string name="filter_not_comment">未点评</string>
     <string name="filter_hot_comment">热门点评</string>
 
+    <string name="teacher_list_tab_most">点评最多</string>
+    <string name="teacher_list_tab_best">口碑最好</string>
+
     <string name="status_item_publish_comment">发表评论...</string>
+    <string name="status_item_famous_teacher_list">名师榜</string>
+
+    <string name="btn_focus">+关注</string>
+    <string name="btn_has_focused">已关注</string>
 
     <string name="title_activity_fliter">筛选</string>
     <string name="title_activity_publish_status">PublishStatusActivity</string>
@@ -30,4 +37,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_teacher_list">TeacherListActivity</string>
 </resources>

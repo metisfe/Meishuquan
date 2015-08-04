@@ -9,6 +9,7 @@ import com.metis.base.widget.adapter.delegate.AbsDelegate;
 import com.metis.base.widget.adapter.delegate.DelegateType;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.base.widget.adapter.holder.DividerHolder;
+import com.metis.base.widget.adapter.holder.FooterHolder;
 import com.metis.commentpart.adapter.delegate.CommentDelegateType;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
 import com.metis.commentpart.adapter.holder.TeacherCbHolder;
@@ -30,9 +31,10 @@ public class TeacherCbAdapter extends DelegateAdapter {
                 return new TeacherCbHolder(view);
             case DelegateType.ID.ID_LIST_DIVIDER:
                 return new DividerHolder(view);
+            case DelegateType.ID.ID_FOOTER:
+                return new FooterHolder(view);
         }
-
-        return null;
+        throw new IllegalArgumentException("TeacherCbAdapter onCreateAbsViewHolder return null");
     }
 
     public void unSelected (Teacher teacher) {

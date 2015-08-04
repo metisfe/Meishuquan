@@ -8,8 +8,11 @@ import android.view.View;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.module.Footer;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.delegate.DividerDelegate;
+import com.metis.base.widget.adapter.delegate.FooterDelegate;
+import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.StatusAdapter;
 import com.metis.commentpart.adapter.TeacherCbAdapter;
@@ -37,6 +40,14 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     private TeacherManager mTeacherManager = null;
     private AccountManager mAccountManager = null;
 
+    private boolean isRecentLoaded = false;
+    private boolean isActiveFirstLoad = true;
+    private boolean isLoading = false;
+    private int mIndex = 1;
+
+    private Footer mFooter = null;
+    private FooterDelegate mFooterDelegate = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +66,14 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
         mSelectedRv.setAdapter(mSelectedAdapter);
 
         mRv.setLayoutManager(new LinearLayoutManager(this));
+        mRv.addOnScrollListener(new OnScrollBottomListener() {
+            @Override
+            public void onScrollBottom(RecyclerView recyclerView, int newState) {
+                if (!isLoading) {
+                    loadData(mIndex + 1);
+                }
+            }
+        });
         mAdapter = new TeacherCbAdapter(this);
         mRv.setAdapter(mAdapter);
 
@@ -71,13 +90,17 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        List<TeacherCbDelegate> recentTeachers = mTeacherManager.getRecentTeachers();
-        /*if (recentTeachers != null) {
-            mAdapter.addDataItem(new DividerDelegate(getString(R.string.invite_recent_teachers)));
-            mAdapter.addDataList(recentTeachers);
-            mAdapter.notifyDataSetChanged();
-        } else {*/
-            StatusManager.getInstance(this).getAssessTeacher(StatusManager.TEACHER_TYPE_RECENT, "", mAccountManager.getMe().getCookie(), new RequestCallback<List<Teacher>>() {
+        mFooter = new Footer(Footer.STATE_WAITTING);
+        mFooterDelegate = new FooterDelegate(mFooter);
+        mAdapter.addDataItem(mFooterDelegate);
+        mAdapter.notifyDataSetChanged();
+        loadData(1);
+    }
+
+    private void loadData (final int index) {
+        if (!isRecentLoaded) {
+            List<TeacherCbDelegate> recentTeachers = mTeacherManager.getRecentTeachers();
+            StatusManager.getInstance(this).getAssessTeacher(StatusManager.TEACHER_TYPE_RECENT, "", mAccountManager.getMe().getCookie(), 1, new RequestCallback<List<Teacher>>() {
                 @Override
                 public void callback(ReturnInfo<List<Teacher>> returnInfo, String callbackId) {
                     if (returnInfo.isSuccess()) {
@@ -93,22 +116,29 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
                             delegate.setChecked(mTeacherManager.hasSelected(delegate));
                             delegates.add(delegate);
                         }
-                        mAdapter.addDataItem(new DividerDelegate(getString(R.string.invite_recent_teachers)));
-                        mAdapter.addDataList(delegates);
+                        if (mAdapter.getItemCount() > 0) {
+                            mAdapter.addDataList(0, delegates);
+                        } else {
+                            mAdapter.addDataList(delegates);
+                        }
+                        mAdapter.addDataItem(0, new DividerDelegate(getString(R.string.invite_recent_teachers)));
                         mAdapter.notifyDataSetChanged();
+                        isRecentLoaded = true;
                     }
                 }
             });
-        //}
-
-        StatusManager.getInstance(this).getAssessTeacher(StatusManager.TEACHER_TYPE_MOST_COMMENTS, "", mAccountManager.getMe().getCookie(), new RequestCallback<List<Teacher>>() {
+        }
+        isLoading = true;
+        mFooter.setState(Footer.STATE_WAITTING);
+        mAdapter.notifyDataSetChanged();
+        StatusManager.getInstance(this).getAssessTeacher(StatusManager.TEACHER_TYPE_MOST_COMMENTS, "", mAccountManager.getMe().getCookie(), index, new RequestCallback<List<Teacher>>() {
             @Override
             public void callback(ReturnInfo<List<Teacher>> returnInfo, String callbackId) {
                 if (returnInfo.isSuccess()) {
                     List<Teacher> teacherList = returnInfo.getData();
-                    if (teacherList == null || teacherList.isEmpty()) {
+                    /*if (teacherList == null || teacherList.isEmpty()) {
                         return;
-                    }
+                    }*/
                     List<TeacherCbDelegate> delegates = new ArrayList<TeacherCbDelegate>();
                     final int length = teacherList.size();
                     for (int i = 0; i < length; i++) {
@@ -116,10 +146,22 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
                         delegate.setChecked(mTeacherManager.hasSelected(delegate));
                         delegates.add(delegate);
                     }
-                    mAdapter.addDataItem(new DividerDelegate(getString(R.string.invite_active_teachers)));
-                    mAdapter.addDataList(delegates);
-                    mAdapter.notifyDataSetChanged();
+                    if (isActiveFirstLoad) {
+                        mAdapter.addDataItem(mAdapter.getItemCount() - 1, new DividerDelegate(getString(R.string.invite_active_teachers)));
+                        isActiveFirstLoad = false;
+                    }
+                    if (length > 0) {
+                        mFooter.setState(Footer.STATE_SUCCESS);
+                    } else {
+                        mFooter.setState(Footer.STATE_NO_MORE);
+                    }
+                    mAdapter.addDataList(mAdapter.getItemCount() - 1, delegates);
+                    mIndex = index;
+                } else {
+                    mFooter.setState(Footer.STATE_FAILED);
                 }
+                mAdapter.notifyDataSetChanged();
+                isLoading = false;
             }
         });
     }

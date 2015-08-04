@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
     <ImageView
         android:id="@+id/teacher_profile"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:scaleType="centerCrop"
         android:layout_marginRight="@dimen/margin_big"
         />

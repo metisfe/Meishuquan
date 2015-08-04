@@ -28,7 +28,7 @@ public class AlbumAdapter extends DelegateAdapter {
         switch (viewType) {
             case CourseDelegateType.ID.ID_ALBUM_ITEM_SMALL:
                 return new AlbumItemSmallHolder(view);
-            case CourseDelegateType.ID.ID_ITEM_TITLE:
+            case DelegateType.ID.ID_ITEM_TITLE:
                 return new ItemTitleHolder(view);
             case CourseDelegateType.ID.ID_USER_IN_DETAIL:
                 return new UserInDetailHolder(view);

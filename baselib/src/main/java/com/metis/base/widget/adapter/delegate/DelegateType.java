@@ -12,7 +12,8 @@ public enum DelegateType  {
     TYPE_NONE (ID.ID_NONE, R.layout.layout_base_type_none),
     TYPE_FOOTER (ID.ID_FOOTER, R.layout.layout_load_more_footer),
     TYPE_DEBUG_STRING (ID.ID_DEBUG_STRING, R.layout.layout_debug_string),
-    TYPE_lIST_DIVIDER (ID.ID_LIST_DIVIDER, R.layout.layout_list_divider_item);
+    TYPE_LIST_DIVIDER(ID.ID_LIST_DIVIDER, R.layout.layout_list_divider_item),
+    TYPE_ITEM_SMALL_TITLE(ID.ID_ITEM_TITLE, R.layout.layout_item_title),;
 
     static {
         for (DelegateType type : values()) {
@@ -43,6 +44,7 @@ public enum DelegateType  {
                 ID_NONE = 0,
                 ID_FOOTER = 1,
                 ID_DEBUG_STRING = 3,
-                ID_LIST_DIVIDER = 4;
+                ID_LIST_DIVIDER = 4,
+                ID_ITEM_TITLE = 5;
     }
 }

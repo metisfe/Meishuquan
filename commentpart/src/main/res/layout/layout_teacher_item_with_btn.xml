@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_big"
+    android:background="@drawable/std_list_item_bg"
+    >
     <include
         android:id="@+id/item_teacher_part"
         android:layout_width="fill_parent"
@@ -9,8 +12,16 @@
         android:layout_toLeftOf="@+id/item_btn"
         layout="@layout/layout_teacher_item"
         />
-    <Button
+    <TextView
         android:id="@+id/item_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/focus_btn_bg"
+        android:text="@string/btn_focus"
+        android:padding="@dimen/padding_middle"
+        android:textColor="@color/btn_focus_text_color"
+        android:textSize="@dimen/size_h6"
+        />
 </RelativeLayout>

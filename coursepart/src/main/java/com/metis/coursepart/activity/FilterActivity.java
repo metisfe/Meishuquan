@@ -12,6 +12,7 @@ import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.User;
 import com.metis.base.utils.FragmentUtils;
 import com.metis.base.utils.Log;
+import com.metis.base.widget.DoubleTab;
 import com.metis.coursepart.ActivityDispatcher;
 import com.metis.coursepart.R;
 import com.metis.coursepart.fragment.FilterPanelFragment;
@@ -24,11 +25,9 @@ import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.List;
 
-public class FilterActivity extends TitleBarActivity implements RadioGroup.OnCheckedChangeListener{
+public class FilterActivity extends TitleBarActivity implements DoubleTab.OnTabSwitchListener{
 
     private static final String TAG = FilterActivity.class.getSimpleName();
-
-    private RadioButton mVideoBtn, mGalleryBtn;
 
     private VideoFilterFragment mVideoFilterFragment = new VideoFilterFragment();
     private GalleryFilterFragment mGalleryFilterFragment = new GalleryFilterFragment();
@@ -46,20 +45,17 @@ public class FilterActivity extends TitleBarActivity implements RadioGroup.OnChe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
         mAction = getIntent().getAction();
-        RadioGroup switchView = (RadioGroup) LayoutInflater.from(this).inflate(R.layout.layout_tab_switch, null);
-        getTitleBar().setCenterView(switchView);
+        DoubleTab doubleTab = new DoubleTab(this);
+        doubleTab.setOnTabSwitchListener(this);
+        doubleTab.setFirstTabText(R.string.tab_video);
+        doubleTab.setSecondTabText(R.string.tab_gallery);
 
-        mVideoBtn = (RadioButton)switchView.findViewById(R.id.tab_video);
-        mGalleryBtn = (RadioButton)switchView.findViewById(R.id.tab_gallery);
-
-        switchView.setOnCheckedChangeListener(this);
+        getTitleBar().setCenterView(doubleTab);
 
         if (ActivityDispatcher.ACTION_VIDEO_FILTER.equals(mAction)) {
-            mVideoBtn.setChecked(true);
-            /*FragmentUtils.showFragment(getSupportFragmentManager(), mVideoFilterFragment, R.id.filter_fragment_container);*/
+            doubleTab.select(0);
         } else if (ActivityDispatcher.ACTION_GALLERY_FILTER.equals(mAction)) {
-            mGalleryBtn.setChecked(true);
-            /*FragmentUtils.showFragment(getSupportFragmentManager(), mGalleryFilterFragment, R.id.filter_fragment_container);*/
+            doubleTab.select(1);
         }
     }
 
@@ -118,14 +114,17 @@ public class FilterActivity extends TitleBarActivity implements RadioGroup.OnChe
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
+    public void onSwitch(int index) {
         if (mCurrentFragment != null) {
             FragmentUtils.hideFragment(getSupportFragmentManager(), mCurrentFragment);
         }
-        if (checkedId == mVideoBtn.getId()) {
-            mCurrentFragment = mVideoFilterFragment;
-        } else if (checkedId == mGalleryBtn.getId()) {
-            mCurrentFragment = mGalleryFilterFragment;
+        switch (index) {
+            case DoubleTab.INDEX_FIRST:
+                mCurrentFragment = mVideoFilterFragment;
+                break;
+            case DoubleTab.INDEX_SECOND:
+                mCurrentFragment = mGalleryFilterFragment;
+                break;
         }
         FragmentUtils.showFragment(getSupportFragmentManager(), mCurrentFragment, R.id.filter_fragment_container);
     }

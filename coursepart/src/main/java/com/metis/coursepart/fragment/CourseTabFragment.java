@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 
 import com.metis.base.fragment.DockFragment;
 import com.metis.base.utils.FragmentUtils;
+import com.metis.base.widget.DoubleTab;
 import com.metis.base.widget.TitleBar;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.coursepart.ActivityDispatcher;
@@ -27,7 +28,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Beak on 2015/7/2.
  */
-public class CourseTabFragment extends DockFragment {
+public class CourseTabFragment extends DockFragment implements DoubleTab.OnTabSwitchListener{
 
     private static final String TAG = CourseTabFragment.class.getSimpleName();
 
@@ -43,6 +44,8 @@ public class CourseTabFragment extends DockFragment {
     private CourseVideoFragment mVideoFragment = new CourseVideoFragment();
     private CourseGalleryFragment mGalleryFragment = new CourseGalleryFragment();
     private Fragment mCurrentFragment = null;
+
+    private DoubleTab mDoubleTab = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,31 +64,14 @@ public class CourseTabFragment extends DockFragment {
 
         mTitleBar = (TitleBar)view.findViewById(R.id.course_title_bar);
 
-        RadioGroup switchView = (RadioGroup)LayoutInflater.from(getActivity()).inflate(R.layout.layout_tab_switch, null);
-        mTitleBar.setCenterView(switchView);
-        /*mTitleBar.setTitleLeft(R.string.title_filter);*/
+        mDoubleTab = new DoubleTab(getActivity());
+        mDoubleTab.setFirstTabText(R.string.tab_video);
+        mDoubleTab.setSecondTabText(R.string.tab_gallery);
+        //RadioGroup switchView = (RadioGroup)LayoutInflater.from(getActivity()).inflate(R.layout.layout_tab_switch, null);
+        mTitleBar.setCenterView(mDoubleTab);
         mTitleBar.setDrawableResourceLeft(R.drawable.ic_filter);
-        switchView.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (mCurrentFragment != null) {
-                    FragmentUtils.hideFragment(getChildFragmentManager(), mCurrentFragment);
-                    mCurrentFragment = null;
-                }
-                if (checkedId == R.id.tab_video) {
-                    mCurrentFragment = mVideoFragment;
-                    //mTitleBar.setTitleLeft(R.string.title_filter);
-                } else if (checkedId == R.id.tab_gallery) {
-                    mCurrentFragment = mGalleryFragment;
-                    //mTitleBar.setTitleLeft("");
-                }
-                FragmentUtils.showFragment(getChildFragmentManager(), mCurrentFragment, R.id.course_fragment_container);
-            }
-        });
-        ((RadioButton)view.findViewById(R.id.tab_video)).setChecked(true);
-        //FragmentUtils.showFragment(getFragmentManager(), mVideoFragment, R.id.course_fragment_container);
-        //switchView.check(R.id.tab_video);
-        //CourseManager.getInstance(getActivity()).getCourseChannelList(null);
+        mDoubleTab.setOnTabSwitchListener(this);
+        mDoubleTab.select(0);
 
         mTitleBar.setOnLeftBtnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +83,24 @@ public class CourseTabFragment extends DockFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onSwitch(int index) {
+        if (mCurrentFragment != null) {
+            FragmentUtils.hideFragment(getChildFragmentManager(), mCurrentFragment);
+            mCurrentFragment = null;
+        }
+
+        switch (index) {
+            case DoubleTab.INDEX_FIRST:
+                mCurrentFragment = mVideoFragment;
+                break;
+            case DoubleTab.INDEX_SECOND:
+                mCurrentFragment = mGalleryFragment;
+                break;
+        }
+        FragmentUtils.showFragment(getChildFragmentManager(), mCurrentFragment, R.id.course_fragment_container);
     }
 
     @Override
@@ -114,4 +118,5 @@ public class CourseTabFragment extends DockFragment {
         }
         return mDock;
     }
+
 }

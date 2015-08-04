@@ -19,13 +19,13 @@ import java.util.List;
 public class FilterAdapter extends RecyclerView.Adapter<FilterHolder> {
 
     private Context mContext = null;
-    private List<FilterProvider> mFilterList = null;
+    private List<? extends FilterProvider> mFilterList = null;
 
     private FilterProvider mCurrentProvider = null;
 
     private OnFilterChangedListener mChangedListener = null;
 
-    public FilterAdapter (Context context, List<FilterProvider> filterProviders) {
+    public FilterAdapter (Context context, List<? extends FilterProvider> filterProviders) {
         mContext = context;
         mFilterList = filterProviders;
         if (!filterProviders.isEmpty()) {
@@ -42,8 +42,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterHolder> {
     @Override
     public void onBindViewHolder(FilterHolder holder, int position) {
         final FilterProvider provider = mFilterList.get(position);
-        Filter filter = provider.getFilter();
-        holder.titleTv.setText(filter.getTitle());
+        holder.titleTv.setText(provider.getFilterName());
         holder.itemView.setSelected(provider.isChecked());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +65,20 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterHolder> {
     @Override
     public int getItemCount() {
         return mFilterList.size();
+    }
+
+    public FilterProvider getSelectedFilterProvider () {
+        if (mCurrentProvider == null) {
+            final int length = mFilterList.size();
+            for (int i = 0; i < length; i++) {
+                FilterProvider provider = mFilterList.get(i);
+                if (provider.isChecked()) {
+                    mCurrentProvider = provider;
+                    break;
+                }
+            }
+        }
+        return mCurrentProvider;
     }
 
     public void setOnFilterChangedListener (OnFilterChangedListener listener) {

@@ -13,6 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@android:color/white"
         >
         <android.support.v7.widget.RecyclerView
             android:id="@+id/comment_state"
@@ -22,7 +23,6 @@
             android:paddingTop="@dimen/padding_middle"
             android:paddingRight="@dimen/padding_big"
             android:paddingBottom="@dimen/padding_middle"
-            android:background="@android:color/holo_green_dark"
             />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/comment_category"
@@ -32,7 +32,6 @@
             android:paddingTop="@dimen/padding_middle"
             android:paddingRight="@dimen/padding_big"
             android:paddingBottom="@dimen/padding_middle"
-            android:background="@android:color/holo_green_light"
             />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/comment_area"
@@ -42,7 +41,6 @@
             android:paddingTop="@dimen/padding_middle"
             android:paddingRight="@dimen/padding_big"
             android:paddingBottom="@dimen/padding_middle"
-            android:background="@android:color/holo_green_dark"
             />
     </LinearLayout>
 </FrameLayout>

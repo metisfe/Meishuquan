@@ -11,7 +11,9 @@ import com.metis.commentpart.R;
 public enum CommentDelegateType {
 
     TYPE_STATUS_ITEM (ID.ID_STATUS_ITEM, R.layout.layout_status_item),
-    TYPE_TEACHER_WITH_CHECK_BOX (ID.ID_TEACHER_WITH_CHECK_BOX, R.layout.layout_teacher_item_with_check);
+    TYPE_TEACHER_WITH_CHECK_BOX (ID.ID_TEACHER_WITH_CHECK_BOX, R.layout.layout_teacher_item_with_check),
+    TYPE_TEACHER_WITH_BTN (ID.ID_TEACHER_WITH_BTN, R.layout.layout_teacher_item_with_btn),
+    TYPE_TEACHER_CONTAINER (ID.ID_TEACHER_CONTAINER, R.layout.layout_teacher_container);
 
     static {
         for (CommentDelegateType courseDelegateType : values()) {
@@ -37,6 +39,8 @@ public enum CommentDelegateType {
     public static final class ID {
         public static final int
                 ID_STATUS_ITEM = 200,
-                ID_TEACHER_WITH_CHECK_BOX = 204;
+                ID_TEACHER_WITH_CHECK_BOX = 204,
+                ID_TEACHER_WITH_BTN = 208,
+                ID_TEACHER_CONTAINER = 212;
     }
 }

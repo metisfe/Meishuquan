@@ -42,7 +42,7 @@ public class StatusManager extends AbsManager {
 
     private static final String
     REQUEST_PUBLISH_ASSESS = "v1.1/Assess/PublishAssess?session={session}",
-    REQUEST_GET_ASSESS_TEACHER = "v1.1/Assess/GetAssessTeacher?softType={softType}&querystring={querystring}&session={session}",
+    REQUEST_GET_ASSESS_TEACHER = "v1.1/Assess/GetAssessTeacher?softType={softType}&querystring={querystring}&session={session}&index={index}",
     REQUEST_GET_ASSESS_LIST = "v1.1/Assess/GetAssessList?assessState={assessState}&channelId={channelId}&region={region}&index={index}&session={session}",
     REQUEST_PUSH_COMMENT = "v1.1/AssessComment/PushComment",
     REQUEST_GET_COMMENT_LIST = "v1.1/AssessComment/GetCommentList?assessId={assessId}",
@@ -116,11 +116,12 @@ public class StatusManager extends AbsManager {
     }
 
     /*排序规则 0 评论最多，1 口碑最好，2 最近点评*/
-    public String getAssessTeacher (int softType, String queryString, String session, final RequestCallback<List<Teacher>> callback) {
+    public String getAssessTeacher (int softType, String queryString, String session, int index, final RequestCallback<List<Teacher>> callback) {
         String request = REQUEST_GET_ASSESS_TEACHER
                 .replace("{softType}", softType + "")
                 .replace("{querystring}", queryString)
-                .replace("{session}", session);
+                .replace("{session}", session)
+                .replace("{index}", index + "");
         return NetProxy.getInstance(getContext()).doGetRequest(
                 request, new NetProxy.OnResponseListener() {
                     @Override
@@ -135,7 +136,7 @@ public class StatusManager extends AbsManager {
         );
     }
     /*点评状态 0 全部 1 未点评 1 点评 2 热门点评*/
-    public String getAssessList (int assessState, long channelId, int region, int index, String session, final RequestCallback<StatusList> callback) {
+    public String getAssessList (long assessState, long channelId, long region, int index, String session, final RequestCallback<StatusList> callback) {
         final String request = REQUEST_GET_ASSESS_LIST
                 .replace("{assessState}", assessState + "")
                 .replace("{channelId}", channelId + "")

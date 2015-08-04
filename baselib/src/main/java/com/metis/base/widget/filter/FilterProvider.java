@@ -7,6 +7,7 @@ import android.widget.Checkable;
  */
 public interface FilterProvider extends Checkable {
 
-    public Filter getFilter ();
+    public long getFilterId ();
+    public String getFilterName ();
 
 }
