@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        >
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="@dimen/margin_middle"
+            android:layout_marginBottom="@dimen/margin_middle"
+            android:background="@android:color/black"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/tab_teacher"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/size_h6"
+            android:textColor="@color/status_detail_tab_text_color"
+            android:singleLine="true"
+            android:paddingTop="@dimen/padding_big"
+            android:paddingBottom="@dimen/padding_big"
+            android:layout_toLeftOf="@+id/divider"
+            />
+        <TextView
+            android:id="@+id/tab_student"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/size_h6"
+            android:textColor="@color/status_detail_tab_text_color"
+            android:singleLine="true"
+            android:paddingTop="@dimen/padding_big"
+            android:paddingBottom="@dimen/padding_big"
+            android:layout_toRightOf="@+id/divider"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

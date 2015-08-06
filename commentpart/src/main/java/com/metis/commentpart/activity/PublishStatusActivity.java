@@ -124,6 +124,10 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                     Toast.makeText(PublishStatusActivity.this, R.string.publish_toast_empty_content, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (mCurrentChannel == null) {
+                    Toast.makeText(PublishStatusActivity.this, R.string.publish_toast_choose_category, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (mBitmap != null) {
                     UploadManager.getInstance(PublishStatusActivity.this).uploadBitmap(
                             mBitmap,
@@ -164,10 +168,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
     }
 
     private void publishContent (String content, ImageInfo thumbnail) {
-        if (mCurrentChannel == null) {
-            Toast.makeText(this, R.string.publish_toast_choose_category, Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         if (content == null) {
             content = "";
         }

@@ -10,6 +10,8 @@ public class StatusDelegate extends BaseDelegate<Status> {
 
     private int mItemHeight = 0;
 
+    private boolean isInDetails = false;
+
     public StatusDelegate(Status status) {
         super(status);
     }
@@ -25,5 +27,13 @@ public class StatusDelegate extends BaseDelegate<Status> {
 
     public int getItemHeight () {
         return mItemHeight;
+    }
+
+    public boolean isInDetails() {
+        return isInDetails;
+    }
+
+    public void setIsInDetails(boolean isInDetails) {
+        this.isInDetails = isInDetails;
     }
 }

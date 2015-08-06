@@ -9,6 +9,13 @@ import java.io.Serializable;
  * Created by Beak on 2015/7/9.
  */
 public class User implements Serializable, Parcelable{
+
+    public static final int
+            USER_ROLE_STUDENT = 1,
+            USER_ROLE_TEACHER = 2,
+            USER_ROLE_STUDIO = 3,
+            USER_ROLE_PARENTS = 4;
+
     private long id;
     public long userId;
     public String name;
@@ -20,7 +27,7 @@ public class User implements Serializable, Parcelable{
     public String account;
     //public String rongCloud;
     public String location;
-    public int userRole;
+    public int userRole; //1,teacher¡¡£²,student 3,studio 4,parents
     public String message;
     public String requestInfo;
     private String cookie;

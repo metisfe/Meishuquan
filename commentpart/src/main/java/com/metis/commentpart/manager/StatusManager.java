@@ -11,6 +11,8 @@ import com.metis.base.module.Thumbnail;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.commentpart.module.AssessChannel;
+import com.metis.commentpart.module.CommentCollection;
+import com.metis.commentpart.module.PushCommentParams;
 import com.metis.commentpart.module.Status;
 import com.metis.commentpart.module.StatusList;
 import com.metis.commentpart.module.Teacher;
@@ -44,8 +46,8 @@ public class StatusManager extends AbsManager {
     REQUEST_PUBLISH_ASSESS = "v1.1/Assess/PublishAssess?session={session}",
     REQUEST_GET_ASSESS_TEACHER = "v1.1/Assess/GetAssessTeacher?softType={softType}&querystring={querystring}&session={session}&index={index}",
     REQUEST_GET_ASSESS_LIST = "v1.1/Assess/GetAssessList?assessState={assessState}&channelId={channelId}&region={region}&index={index}&session={session}",
-    REQUEST_PUSH_COMMENT = "v1.1/AssessComment/PushComment",
-    REQUEST_GET_COMMENT_LIST = "v1.1/AssessComment/GetCommentList?assessId={assessId}",
+    REQUEST_PUSH_COMMENT = "v1.1/AssessComment/PushComment?session={session}",
+    REQUEST_GET_COMMENT_LIST = "v1.1/AssessComment/GetCommentList?assessId={assessId}&session={session}",
     REQUEST_CHANNEL_LIST = "v1.1/Channel/AssessChanellist";
 
     public static final int TEACHER_TYPE_MOST_COMMENTS = 0, TEACHER_TYPE_BEST = 1, TEACHER_TYPE_RECENT = 2;
@@ -96,13 +98,13 @@ public class StatusManager extends AbsManager {
 
         return NetProxy.getInstance(getContext()).doPostRequest(
                 REQUEST_PUBLISH_ASSESS.replace("{session}", session),
-                        access, new NetProxy.OnResponseListener() {
+                access, new NetProxy.OnResponseListener() {
 
-                            @Override
-                            public void onResponse(String result, String requestId) {
+                    @Override
+                    public void onResponse(String result, String requestId) {
 
-                            }
-                        });
+                    }
+                });
         /*return NetProxy.getInstance(getContext()).doPostRequest(
                 REQUEST_PUBLISH_ASSESS.replace("{session}", session),
                 map, new NetProxy.OnResponseListener() {
@@ -149,7 +151,8 @@ public class StatusManager extends AbsManager {
                     public void onResponse(String result, String requestId) {
                         ReturnInfo<StatusList> returnInfo = getGson().fromJson(
                                 result,
-                                new TypeToken<ReturnInfo<StatusList>>(){}.getType());
+                                new TypeToken<ReturnInfo<StatusList>>() {
+                                }.getType());
                         if (callback != null) {
                             callback.callback(returnInfo, requestId);
                         }
@@ -158,10 +161,42 @@ public class StatusManager extends AbsManager {
         );
     }
 
+    /**
+     *
+     * @param assessId
+     * @param userId
+     * @param replyUserId
+     * @param content
+     * @param replyCid
+     * @param thumbnails
+     * @param voiceUrl
+     * @param voiceLength
+     * @param commentType 1图片 2语音 3文字
+     * @param session
+     * @return
+     */
     public String pushComment (long assessId, long userId, long replyUserId,
                                String content, long replyCid, List<Thumbnail> thumbnails,
-                               String voiceUrl, String voiceLength, int commentType) {
-        Map<String, String> map = new Hashtable<String, String>();
+                               String voiceUrl, String voiceLength, int commentType, int commentSource, String session) {
+        PushCommentParams params = new PushCommentParams();
+        params.setAssessId(assessId);
+        params.setUserId(userId);
+        params.setReplyCid(replyCid);
+        params.setContent(content);
+        params.setCommentType(commentType);
+        params.setCommentSource(commentSource);
+
+        return NetProxy.getInstance(getContext())
+                .doPostRequest(
+                        REQUEST_PUSH_COMMENT.replace("{session}", session),
+                        params, new NetProxy.OnResponseListener() {
+                            @Override
+                            public void onResponse(String result, String requestId) {
+
+                            }
+                        }
+                );
+        /*Map<String, String> map = new Hashtable<String, String>();
         map.put("assessId", assessId + "");
         map.put("userId", userId + "");
         map.put("replyUserId", replyUserId + "");
@@ -169,29 +204,38 @@ public class StatusManager extends AbsManager {
         map.put("replyCid", replyCid + "");
 
         //TODO thumbnails
+        if (voiceUrl != null) {
+            map.put("voice", voiceUrl);
+        }
+        if (voiceLength != null) {
+            map.put("voiceLength", voiceLength);
+        }
 
-        map.put("voice", voiceUrl);
-        map.put("voiceLength", voiceLength);
         map.put("commentType", commentType + "");
 
         return NetProxy.getInstance(getContext()).doPostRequest(
-                REQUEST_PUSH_COMMENT, map, new NetProxy.OnResponseListener() {
+                REQUEST_PUSH_COMMENT.replace("{session}", session), map, new NetProxy.OnResponseListener() {
                     @Override
                     public void onResponse(String result, String requestId) {
 
                     }
                 }
-        );
+        );*/
     }
 
-    public String getCommentList (long assessId, final RequestCallback callback) {
-        String request = REQUEST_GET_COMMENT_LIST.replace("{assessId}", assessId + "");
+    public String getCommentList (long assessId, String session, final RequestCallback<CommentCollection> callback) {
+        final String request = REQUEST_GET_COMMENT_LIST
+                .replace("{assessId}", assessId + "")
+                .replace("{session}", session);
         return NetProxy.getInstance(getContext()).doGetRequest(
                 request, new NetProxy.OnResponseListener() {
                     @Override
                     public void onResponse(String result, String requestId) {
+                        ReturnInfo<CommentCollection> returnInfo = getGson().fromJson(
+                                result, new TypeToken<ReturnInfo<CommentCollection>>(){}.getType()
+                        );
                         if (callback != null) {
-                            //callback
+                            callback.callback(returnInfo, requestId);
                         }
                     }
                 }

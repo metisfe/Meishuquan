@@ -13,6 +13,10 @@
     <string name="publish_btn_choose_category">选择类别</string>
     <string name="publish_btn_invite">邀请名师点评(%1$s)</string>
 
+    <string name="status_detail_tab_teacher">老师评(%1$d)</string>
+    <string name="status_detail_tab_student">学生评(%1$d)</string>
+    <string name="status_detail_card_reply">回复</string>
+
     <string name="invite_recent_teachers">最近邀请的名师</string>
     <string name="invite_active_teachers">最活跃的老师</string>
 
@@ -24,6 +28,8 @@
     <string name="teacher_list_tab_most">点评最多</string>
     <string name="teacher_list_tab_best">口碑最好</string>
 
+    <string name="reply_to">回复 %1$s :</string>
+
     <string name="status_item_publish_comment">发表评论...</string>
     <string name="status_item_famous_teacher_list">名师榜</string>
 
@@ -33,9 +39,6 @@
     <string name="title_activity_fliter">筛选</string>
     <string name="title_activity_publish_status">PublishStatusActivity</string>
     <string name="title_activity_invite">选择老师</string>
-    <string name="title_activity_reply">ReplyActivity</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_activity_reply">评论</string>
     <string name="title_activity_teacher_list">TeacherListActivity</string>
 </resources>

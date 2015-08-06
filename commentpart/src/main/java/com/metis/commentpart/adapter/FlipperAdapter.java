@@ -58,7 +58,6 @@ public class FlipperAdapter extends BaseAdapter {
         if (user != null) {
             DisplayManager.getInstance(mContext).display(user.avatar, holder.profileIv);
         }
-
         return convertView;
     }
 

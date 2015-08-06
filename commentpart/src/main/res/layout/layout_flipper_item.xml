@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    >
     <ImageView
         android:id="@+id/flipper_profile"
         android:layout_width="@dimen/profile_size_small"
         android:layout_height="@dimen/profile_size_small"
         android:layout_marginLeft="@dimen/margin_big"
         android:layout_marginRight="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginBottom="@dimen/margin_middle"
+        android:scaleType="centerCrop"
         />
     <TextView
         android:id="@+id/flipper_content"
@@ -19,6 +24,6 @@
         android:layout_toRightOf="@+id/flipper_profile"
         android:gravity="center_vertical"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/padding_middle"
+        android:ellipsize="end"
         />
 </RelativeLayout>

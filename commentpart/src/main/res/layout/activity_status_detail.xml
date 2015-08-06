@@ -7,5 +7,38 @@
         android:id="@+id/detail_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_above="@+id/reply_container"
         />
+    <RelativeLayout
+        android:id="@+id/reply_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true"
+        >
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_alignTop="@+id/reply_text"
+            android:background="@color/color_c3"
+            />
+        <TextView
+            android:id="@+id/reply_text"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/size_h5"
+            android:textColor="@color/color_c6"
+            android:text="@string/status_item_publish_comment"
+            android:paddingLeft="@dimen/padding_large"
+            />
+        <ImageView
+            android:id="@+id/reply_voice"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_microphone"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
 </RelativeLayout>

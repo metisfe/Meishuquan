@@ -56,7 +56,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
     }
 
     @Override
-    public void bindData(final Context context, StatusDelegate statusDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, final StatusDelegate statusDelegate, RecyclerView.Adapter adapter, int position) {
         final Status status = statusDelegate.getSource();
         final User user = status.user;
         if (user != null) {
@@ -115,7 +115,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         }
 
         List<Comment> commentList = statusDelegate.getSource().teacherCommentList;
-        if (commentList != null && !commentList.isEmpty()) {
+        if (commentList != null && !commentList.isEmpty() && !statusDelegate.isInDetails()) {
             adapterViewFlipper.setVisibility(View.VISIBLE);
             adapterViewFlipper.setAdapter(new FlipperAdapter(context, commentList));
             adapterViewFlipper.startFlipping();
@@ -124,11 +124,19 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             adapterViewFlipper.setAdapter(null);
             adapterViewFlipper.stopFlipping();
         }
-
+        quickCommentBtn.setVisibility(statusDelegate.isInDetails() ? View.GONE : View.VISIBLE);
+        quickCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+            }
+        });
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityDispatcher.statusDetail(context);
+                if (!statusDelegate.isInDetails()) {
+                    ActivityDispatcher.statusDetail(context, status);
+                }
             }
         });
     }

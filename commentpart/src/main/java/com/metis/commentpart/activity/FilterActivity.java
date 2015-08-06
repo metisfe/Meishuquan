@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.metis.base.activity.TitleBarActivity;
@@ -19,6 +20,7 @@ import com.metis.base.widget.adapter.FilterAdapter;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.base.widget.adapter.lookup.FilterSpanSizeLookup;
 import com.metis.base.widget.callback.OnScrollBottomListener;
+import com.metis.base.widget.callback.TopTrackListener;
 import com.metis.base.widget.filter.Filter;
 import com.metis.base.widget.filter.FilterProvider;
 import com.metis.commentpart.R;
@@ -44,6 +46,7 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
 
     private static final String TAG = FilterActivity.class.getSimpleName();
 
+    private LinearLayout mFilterPanel = null;
     private RecyclerView mStateRv, mCategoryRv, mAreaRv;
     private RecyclerView mFilterRv = null;
 
@@ -66,6 +69,7 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fliter);
 
+        mFilterPanel = (LinearLayout)findViewById(R.id.filter_panel);
         mStateRv = (RecyclerView)findViewById(R.id.comment_state);
         mCategoryRv = (RecyclerView)findViewById(R.id.comment_category);
         mAreaRv = (RecyclerView)findViewById(R.id.comment_area);
@@ -83,6 +87,7 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
                 }
             }
         });
+        mFilterRv.addOnScrollListener(new TopTrackListener(mFilterPanel));
     }
 
     @Override

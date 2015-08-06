@@ -1,9 +1,11 @@
 package com.metis.commentpart.module;
 
+import java.io.Serializable;
+
 /**
  * Created by Beak on 2015/7/30.
  */
-public class CommentAttachment {
+public class CommentAttachment implements Serializable{
     public long imgId;
     public long assessCommentID;
     public String originalImage;

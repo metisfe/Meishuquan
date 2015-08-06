@@ -11,6 +11,7 @@ import com.metis.base.widget.adapter.holder.DividerHolder;
 import com.metis.base.widget.adapter.holder.FooterHolder;
 import com.metis.base.widget.adapter.holder.TitleHolder;
 import com.metis.commentpart.adapter.delegate.CommentDelegateType;
+import com.metis.commentpart.adapter.holder.StatusDetailTabHolder;
 import com.metis.commentpart.adapter.holder.StatusHolder;
 import com.metis.commentpart.adapter.holder.TeacherBtnHolder;
 import com.metis.commentpart.adapter.holder.TeacherCbHolder;
@@ -39,6 +40,8 @@ public class StatusAdapter extends DelegateAdapter {
                 return new TeacherContainerHolder(view);
             case DelegateType.ID.ID_FOOTER:
                 return new FooterHolder(view);
+            case CommentDelegateType.ID.ID_STATUS_DETAIL_TAB:
+                return new StatusDetailTabHolder(view);
         }
         throw new IllegalArgumentException("DelegateAdapter onCreateAbsViewHolder return null");
     }

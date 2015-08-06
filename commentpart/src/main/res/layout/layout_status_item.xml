@@ -80,18 +80,6 @@
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
             />
-        <!--<CheckBox
-            android:id="@+id/status_thumb_up_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_alignBottom="@+id/status_thumb"
-            android:layout_marginBottom="@dimen/margin_big"
-            android:layout_marginLeft="@dimen/margin_big"
-            android:background="@drawable/float_btn_bg"
-            android:padding="@dimen/padding_big"
-            android:button="@drawable/ic_thumb_up_sel"
-            />-->
         <LinearLayout
             android:id="@+id/status_thumb_up_btn"
             android:layout_width="wrap_content"
@@ -117,26 +105,13 @@
                 android:layout_marginLeft="@dimen/margin_middle"
                 />
         </LinearLayout>
-        <!--<CheckBox
-            android:id="@+id/status_comment_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_alignBottom="@+id/status_thumb"
-            android:layout_alignRight="@+id/status_thumb"
-            android:layout_marginBottom="@dimen/margin_big"
-            android:layout_marginRight="@dimen/margin_big"
-            android:background="@drawable/float_btn_bg"
-            android:padding="@dimen/padding_big"
-            android:button="@drawable/ic_comment"
-            />-->
         <LinearLayout
             android:id="@+id/status_comment_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_alignBottom="@+id/status_thumb"
-            android:layout_alignRight="@+id/status_thumb"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/margin_big"
             android:layout_marginRight="@dimen/margin_big"
             android:background="@drawable/float_btn_bg"
@@ -175,7 +150,7 @@
         android:singleLine="true"
         android:gravity="center_vertical"
         android:textSize="@dimen/size_h6"
-        android:textColor="@color/color_c6"
+        android:textColorHint="@color/color_c6"
         android:hint="@string/status_item_publish_comment"
         android:paddingLeft="@dimen/padding_middle"
         android:layout_margin="@dimen/margin_middle"
