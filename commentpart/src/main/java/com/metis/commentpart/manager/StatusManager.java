@@ -48,7 +48,8 @@ public class StatusManager extends AbsManager {
     REQUEST_GET_ASSESS_LIST = "v1.1/Assess/GetAssessList?assessState={assessState}&channelId={channelId}&region={region}&index={index}&session={session}",
     REQUEST_PUSH_COMMENT = "v1.1/AssessComment/PushComment?session={session}",
     REQUEST_GET_COMMENT_LIST = "v1.1/AssessComment/GetCommentList?assessId={assessId}&session={session}",
-    REQUEST_CHANNEL_LIST = "v1.1/Channel/AssessChanellist";
+    REQUEST_CHANNEL_LIST = "v1.1/Channel/AssessChanellist",
+    REQUEST_SUPPORT = "v1.1/Comment/Support?userid={userid}&id={id}&type={type}&result={result}&session={session}";
 
     public static final int TEACHER_TYPE_MOST_COMMENTS = 0, TEACHER_TYPE_BEST = 1, TEACHER_TYPE_RECENT = 2;
 
@@ -232,7 +233,8 @@ public class StatusManager extends AbsManager {
                     @Override
                     public void onResponse(String result, String requestId) {
                         ReturnInfo<CommentCollection> returnInfo = getGson().fromJson(
-                                result, new TypeToken<ReturnInfo<CommentCollection>>(){}.getType()
+                                result, new TypeToken<ReturnInfo<CommentCollection>>() {
+                        }.getType()
                         );
                         if (callback != null) {
                             callback.callback(returnInfo, requestId);
@@ -257,6 +259,31 @@ public class StatusManager extends AbsManager {
                 if (listener != null) {
                     listener.callback(returnInfo, requestId);
                 }
+            }
+        });
+    }
+    /*REQUEST_SUPPORT = "v1.1/Comment/Support?userid={userid}&id={id}&type={type}&result={result}&session={session}";*/
+    /// <summary>
+    /// 赞/踩
+    /// </summary>
+    /// <param name="userid">用户id</param>
+    /// <param name="id">内容id</param>
+    /// 赞/转发 类型Assess = 1,AssessComment = 2,News = 3,NewsComment = 4,Course = 5,CourseComment = 6,Circle=7,CircleComment =8,ActivityStudio = 9,ActivityStudent = 10,Activity = 11
+    /// <param name="type"></param>
+    /// <param name="result">1 赞 2 踩</param>
+    /// <returns></returns>
+
+    public String supportComment (long userId, long commentId, String session) {
+        String request = REQUEST_SUPPORT
+                .replace("{userid}", userId + "")
+                .replace("{id}", commentId + "")
+                .replace("{type}", 2 + "")
+                .replace("{result}", 1 + "")
+                .replace("{session}", session);
+        return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+
             }
         });
     }

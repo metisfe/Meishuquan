@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -89,6 +90,7 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
         mDetailRv.removeItemDecoration(mCardDecoration);
         mDetailRv.addItemDecoration(mListDecoration);
         mDetailRv.setAdapter(mListAdapter);
+        Log.v(TAG, "switchToList ");
     }
 
     @Override
@@ -102,17 +104,14 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
         mTabItem = new StatusDetailTabItem();
         mTabItem.setTextLeft(getString(R.string.status_detail_tab_teacher, 0));
         mTabItem.setTextRight(getString(R.string.status_detail_tab_student, 0));
-        mTabItem.setOnClickListenerLeft(new View.OnClickListener() {
+        mTabItem.setOnTabSelectListener(new StatusDetailTabItem.OnTabSelectListener() {
             @Override
-            public void onClick(View v) {
-                //TODO
+            public void onLeftSelected() {
                 switchToCard();
             }
-        });
-        mTabItem.setOnClickListenerRight(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                //TODO
+            public void onRightSelected() {
                 switchToList();
             }
         });

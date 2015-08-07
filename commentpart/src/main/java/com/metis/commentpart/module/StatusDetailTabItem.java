@@ -1,15 +1,15 @@
 package com.metis.commentpart.module;
 
 import android.view.View;
+import android.widget.CompoundButton;
 
 /**
  * Created by Beak on 2015/8/5.
  */
 public class StatusDetailTabItem {
     private String mTextLeft;
-    private View.OnClickListener mOnClickListenerLeft;
     private String mTextRight;
-    private View.OnClickListener mOnClickListenerRight;
+    private OnTabSelectListener mTabListener;
 
     public String getTextLeft() {
         return mTextLeft;
@@ -17,14 +17,6 @@ public class StatusDetailTabItem {
 
     public void setTextLeft(String mTextLeft) {
         this.mTextLeft = mTextLeft;
-    }
-
-    public View.OnClickListener getOnClickListenerLeft() {
-        return mOnClickListenerLeft;
-    }
-
-    public void setOnClickListenerLeft(View.OnClickListener mOnClickListenerLeft) {
-        this.mOnClickListenerLeft = mOnClickListenerLeft;
     }
 
     public String getTextRight() {
@@ -35,11 +27,16 @@ public class StatusDetailTabItem {
         this.mTextRight = mTextRight;
     }
 
-    public View.OnClickListener getOnClickListenerRight() {
-        return mOnClickListenerRight;
+    public void setOnTabSelectListener (OnTabSelectListener listener) {
+        mTabListener = listener;
     }
 
-    public void setOnClickListenerRight(View.OnClickListener mOnClickListenerRight) {
-        this.mOnClickListenerRight = mOnClickListenerRight;
+    public OnTabSelectListener getOnTabSelectListener () {
+        return mTabListener;
+    }
+
+    public static interface OnTabSelectListener {
+        public void onLeftSelected ();
+        public void onRightSelected ();
     }
 }

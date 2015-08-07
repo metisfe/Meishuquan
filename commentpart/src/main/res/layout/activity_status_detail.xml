@@ -7,7 +7,14 @@
         android:id="@+id/detail_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/reply_container"
+        android:layout_above="@+id/detail_reply_container"
+        />
+    <fragment
+        android:id="@+id/detail_reply_container"
+        android:name="com.metis.commentpart.fragment.ChatInputFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         />
     <RelativeLayout
         android:id="@+id/reply_container"
@@ -15,6 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         >
         <View
             android:layout_width="fill_parent"

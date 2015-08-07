@@ -16,6 +16,7 @@
     <string name="status_detail_tab_teacher">老师评(%1$d)</string>
     <string name="status_detail_tab_student">学生评(%1$d)</string>
     <string name="status_detail_card_reply">回复</string>
+    <string name="status_detail_has_supported">你已赞过</string>
 
     <string name="invite_recent_teachers">最近邀请的名师</string>
     <string name="invite_active_teachers">最活跃的老师</string>

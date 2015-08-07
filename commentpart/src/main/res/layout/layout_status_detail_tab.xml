@@ -3,21 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     >
-    <RelativeLayout
+    <RadioGroup
+        android:id="@+id/tab_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
+        android:orientation="horizontal"
         >
-        <View
-            android:id="@+id/divider"
-            android:layout_width="1dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="@dimen/margin_middle"
-            android:layout_marginBottom="@dimen/margin_middle"
-            android:background="@android:color/black"
-            android:layout_centerHorizontal="true"
-            />
-        <TextView
+        <RadioButton
             android:id="@+id/tab_teacher"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -27,9 +20,20 @@
             android:singleLine="true"
             android:paddingTop="@dimen/padding_big"
             android:paddingBottom="@dimen/padding_big"
-            android:layout_toLeftOf="@+id/divider"
+            android:layout_weight="1"
+            android:button="@null"
             />
-        <TextView
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="@dimen/margin_middle"
+            android:layout_marginBottom="@dimen/margin_middle"
+            android:background="@android:color/black"
+            android:layout_centerHorizontal="true"
+            />
+        <!--android:layout_toLeftOf="@+id/divider"-->
+        <RadioButton
             android:id="@+id/tab_student"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -39,9 +43,12 @@
             android:singleLine="true"
             android:paddingTop="@dimen/padding_big"
             android:paddingBottom="@dimen/padding_big"
-            android:layout_toRightOf="@+id/divider"
-            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:button="@null"
             />
-    </RelativeLayout>
+        <!--android:layout_toRightOf="@+id/divider"
+        android:layout_alignParentRight="true"
+        -->
+    </RadioGroup>
 
 </RelativeLayout>
