@@ -12,7 +12,31 @@
         android:id="@+id/voice_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/voice_duration"
         android:src="@drawable/ic_camera"
+        android:layout_below="@+id/voice_duration"
         />
+    <LinearLayout
+        android:id="@+id/btn_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/voice_btn"
+        >
+        <TextView
+            android:id="@+id/voice_give_up"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/btn_give_up"
+            />
+        <TextView
+            android:id="@+id/voice_send"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/btn_send"
+            />
+    </LinearLayout>
 </RelativeLayout>

@@ -66,11 +66,11 @@ public class NetProxy {
             @Override
             public void onCompleted(ReturnInfo<String> returnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
                 if (serviceFilterResponse == null) {
-                    Log.e(TAG, "response(" + requestUUID + ")=serviceFilterResponse is null");
+                    Log.e(TAG, "response_get(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
                 final String responseString = serviceFilterResponse.getContent();
-                Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                Log.v(TAG, "response_get(" + requestUUID + ")=" + responseString);
                 if (listener != null) {
                     listener.onResponse(responseString, requestUUID);
                 }
@@ -102,11 +102,11 @@ public class NetProxy {
             @Override
             public void onCompleted(ReturnInfo<String> returnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
                 if (serviceFilterResponse == null) {
-                    Log.e(TAG, "response(" + requestUUID + ")=serviceFilterResponse is null");
+                    Log.e(TAG, "response_post(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
                 final String responseString = serviceFilterResponse.getContent();
-                Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                Log.v(TAG, "response_post(" + requestUUID + ")=" + responseString);
                 if (listener != null) {
                     listener.onResponse(responseString, requestUUID);
                 }
@@ -123,11 +123,11 @@ public class NetProxy {
             @Override
             public void onCompleted(ReturnInfo<String> stringReturnInfo, Exception e1, ServiceFilterResponse serviceFilterResponse) {
                 if (serviceFilterResponse == null) {
-                    Log.e(TAG, "response(" + requestUUID + ")=serviceFilterResponse is null");
+                    Log.e(TAG, "response_post(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
                 final String responseString = serviceFilterResponse.getContent();
-                Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                Log.v(TAG, "response_post(" + requestUUID + ")=" + responseString);
                 if (listener != null) {
                     listener.onResponse(responseString, requestUUID);
                 }
@@ -174,13 +174,13 @@ public class NetProxy {
                     public void onResponse(ServiceFilterResponse serviceFilterResponse, Exception e) {
                         if (listener != null && serviceFilterResponse != null) {
                             String responseString = serviceFilterResponse.getContent();
-                            Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                            Log.v(TAG, "response_upload(" + requestUUID + ")=" + responseString);
                             listener.onResponse(responseString, requestUUID);
                             return;
                         }
                         if (listener != null && e != null) {
                             String responseString = e.getLocalizedMessage();
-                            Log.v(TAG, "response(" + requestUUID + ")=" + responseString);
+                            Log.v(TAG, "response_upload(" + requestUUID + ")=" + responseString);
                             listener.onResponse(responseString, requestUUID);
                             return;
                         }

@@ -15,7 +15,12 @@ import com.microsoft.windowsazure.mobileservices.ServiceFilterResponseCallback;
 
 import org.apache.http.client.methods.HttpPost;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,11 +52,11 @@ public class UploadManager extends AbsManager {
     }
 
     public void uploadBitmap (List<Bitmap> bitmaps, String session, final RequestCallback<List<Thumbnail>> callback) {
-        int totalLength = 0;
+        //int totalLength = 0;
         final int length = bitmaps.size();
-        for (int i = 0; i < length; i++) {
+        /*for (int i = 0; i < length; i++) {
             totalLength += bitmaps.get(0).getByteCount();
-        }
+        }*/
         byte[][] totalData = new byte[length][];
         for (int i = 0; i < length; i++) {
             totalData[i] = FileUtils.bitmapToByteArray(Bitmap.CompressFormat.JPEG, bitmaps.get(i));
@@ -60,12 +65,44 @@ public class UploadManager extends AbsManager {
             @Override
             public void onResponse(String result, String requestId) {
                 ReturnInfo<List<Thumbnail>> returnInfo = getGson().fromJson(result,
-                        new TypeToken<ReturnInfo<List<Thumbnail>>>(){}.getType());
+                        new TypeToken<ReturnInfo<List<Thumbnail>>>() {
+                        }.getType());
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
                 }
             }
         });
+    }
+
+    public void uploadFile (File file, String session, NetProxy.OnResponseListener listener) {
+        List<File> fileList = new ArrayList<File>();
+        uploadFile(fileList, session, listener);
+    }
+
+    public void uploadFile (List<File> fileList, String session, NetProxy.OnResponseListener listener) {
+        final int length = fileList.size();
+        byte[][] totalData = new byte[length][];
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        for (int i = 0; i < length; i++) {
+            File file = fileList.get(i);
+            try {
+                FileInputStream fis = new FileInputStream(file);
+                byte[] buffer = new byte[1024];
+                int result = 0;
+                while ((result = fis.read(buffer)) != -1) {
+                    byteArrayOutputStream.write(buffer, 0, result);
+                }
+                fis.close();
+                byteArrayOutputStream.close();
+                totalData[i] = byteArrayOutputStream.toByteArray();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        NetProxy.getInstance(getContext()).upload(NetProxy.TYPE_VOICE, totalData, session, listener);
+
     }
 
 }

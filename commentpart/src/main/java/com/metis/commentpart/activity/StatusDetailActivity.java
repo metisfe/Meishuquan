@@ -8,9 +8,13 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.metis.base.activity.TitleBarActivity;
+import com.metis.base.framework.NetProxy;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.manager.UploadManager;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
@@ -25,20 +29,24 @@ import com.metis.commentpart.adapter.delegate.CardHeaderDelegate;
 import com.metis.commentpart.adapter.delegate.CommentItemDelegate;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
 import com.metis.commentpart.adapter.delegate.StatusDetailTabDelegate;
+import com.metis.commentpart.fragment.ChatInputFragment;
+import com.metis.commentpart.fragment.VoiceFragment;
 import com.metis.commentpart.manager.StatusManager;
 import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.CommentCollection;
 import com.metis.commentpart.module.Status;
 import com.metis.commentpart.module.StatusDetailTabItem;
 import com.metis.commentpart.module.TeacherComment;
+import com.metis.commentpart.module.Voice;
 import com.metis.commentpart.utils.CommentFactory;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class StatusDetailActivity extends TitleBarActivity implements CardFooterDelegate.OnCommentFooterClickListener, View.OnClickListener {
+public class StatusDetailActivity extends TitleBarActivity implements CardFooterDelegate.OnCommentFooterClickListener, View.OnClickListener, VoiceFragment.VoiceDispatcher {
 
     private static final String TAG = StatusDetailActivity.class.getSimpleName();
 
@@ -54,12 +62,16 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
     private CommentCardDecoration mCardDecoration = null;
     private CommentListDecoration mListDecoration = null;
 
+    private ChatInputFragment mChatFragment = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_detail);
 
         mStatus = (Status)getIntent().getSerializableExtra(ActivityDispatcher.KEY_STATUS);
+
+        mChatFragment = (ChatInputFragment)getSupportFragmentManager().findFragmentById(R.id.detail_reply_container);
 
         mReplyTextTv = (TextView)findViewById(R.id.reply_text);
         mReplyVoiceIv = (ImageView)findViewById(R.id.reply_voice);
@@ -74,6 +86,8 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
         mListAdapter = new CommentListAdapter(this);
 
         switchToCard();
+
+        mChatFragment.setVoiceDispatcher(this);
 
         mReplyTextTv.setOnClickListener(this);
         mReplyVoiceIv.setOnClickListener(this);
@@ -229,5 +243,35 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
                 ActivityDispatcher.replyActivity(this, mStatus, ReplyActivity.REPLY_TYPE_VOICE);
             }
         }
+    }
+
+    @Override
+    public void onGiveUp(String path) {
+
+    }
+
+    @Override
+    public void onUse(String path) {
+        final User me = AccountManager.getInstance(this).getMe();
+        if (me == null) {
+            //TODO
+            return;
+        }
+        File file = new File (path);
+        if (!file.exists()) {
+            //TODO
+            return;
+        }
+        Log.v(TAG, "onUse upload path=" + path);
+        UploadManager.getInstance(this).uploadFile(file, me.getCookie(), new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo<List<Voice>> voiceResult = new Gson().fromJson(result, new TypeToken<ReturnInfo<List<Voice>>>(){}.getType());
+                if (voiceResult.isSuccess()) {
+                    StatusManager.getInstance(StatusDetailActivity.this).pushComment(mStatus.id, 0, 0, "", 0, null, voiceResult.getData().get(0).voiceUrl, null, 2, CommentFactory.getCommentSource(me), me.getCookie());
+                }
+
+            }
+        });
     }
 }

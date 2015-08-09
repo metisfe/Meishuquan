@@ -35,6 +35,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     private Fragment mExtraFragment = null;
 
     private VoiceFragment mVoiceFragment = null;
+    private VoiceFragment.VoiceDispatcher mDispatcher = null;
 
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
@@ -89,10 +90,16 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
             } else {
                 if (mVoiceFragment == null) {
                     mVoiceFragment = new VoiceFragment();
+                    mVoiceFragment.setVoiceDispatcher(mDispatcher);
                 }
                 FragmentUtils.showFragment(getChildFragmentManager(), mVoiceFragment, R.id.chat_input_extra_container);
+
                 mExtraFragment = mVoiceFragment;
             }
         }
+    }
+
+    public void setVoiceDispatcher (VoiceFragment.VoiceDispatcher dispatcher) {
+        mDispatcher = dispatcher;
     }
 }

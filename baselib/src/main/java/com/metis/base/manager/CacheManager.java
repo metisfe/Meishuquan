@@ -66,6 +66,10 @@ public class CacheManager extends AbsManager {
         return getMyCacheFolder("video");
     }
 
+    public File getMyVoiceCacheDir () {
+        return getMyCacheFolder("voice");
+    }
+
     public File getMyDataCacheDir () {
         return getMyCacheFolder("data");
     }

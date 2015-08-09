@@ -186,6 +186,7 @@ public class StatusManager extends AbsManager {
         params.setContent(content);
         params.setCommentType(commentType);
         params.setCommentSource(commentSource);
+        params.setVoice(voiceUrl);
 
         return NetProxy.getInstance(getContext())
                 .doPostRequest(

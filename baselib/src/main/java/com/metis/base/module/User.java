@@ -27,7 +27,7 @@ public class User implements Serializable, Parcelable{
     public String account;
     //public String rongCloud;
     public String location;
-    public int userRole; //1,teacher¡¡£²,student 3,studio 4,parents
+    public int userRole; //1,teacher 2,student 3,studio 4,parents
     public String message;
     public String requestInfo;
     private String cookie;
