@@ -8,12 +8,13 @@ import java.util.List;
  */
 public class PushCommentParams implements Serializable {
 
-    private long assessId, replyCid, userId;
+    private long assessId, replyCid, userId, replyUserId;
     private String content;
     private int score;
     private String points;
     private List<String> image;
     private String voice;
+    private int voiceLength;
     private int commentType;
     private int commentSource;// 评论来源 0 老师评论 1 学生评论
 
@@ -95,5 +96,21 @@ public class PushCommentParams implements Serializable {
 
     public void setCommentSource(int commentSource) {
         this.commentSource = commentSource;
+    }
+
+    public int getVoiceLength() {
+        return voiceLength;
+    }
+
+    public void setVoiceLength(int voiceLength) {
+        this.voiceLength = voiceLength;
+    }
+
+    public long getReplyUserId() {
+        return replyUserId;
+    }
+
+    public void setReplyUserId(long replyUserId) {
+        this.replyUserId = replyUserId;
     }
 }

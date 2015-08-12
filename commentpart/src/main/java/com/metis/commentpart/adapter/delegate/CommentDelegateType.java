@@ -19,7 +19,8 @@ public enum CommentDelegateType {
     TYPE_COMMENT_CARD_FOOTER (ID.ID_COMMENT_CARD_FOOTER, R.layout.layout_comment_card_footer),
     TYPE_COMMENT_CARD_TEXT_T (ID.ID_COMMENT_CARD_TEXT_T, R.layout.layout_comment_card_text_t),
     TYPE_COMMENT_CARD_TEXT_S (ID.ID_COMMENT_CARD_TEXT_S, R.layout.layout_comment_card_text_s),
-    TYPE_COMMENT_LIST_ITEM (ID.ID_COMMENT_LIST_ITEM, R.layout.layout_comment_list_item);
+    TYPE_COMMENT_LIST_ITEM (ID.ID_COMMENT_LIST_ITEM, R.layout.layout_comment_list_item),
+    TYPE_COMMENT_CARD_VOICE_T (ID.ID_COMMENT_CARD_VOICE_T, R.layout.layout_comment_card_voice_t);
 
     static {
         for (CommentDelegateType courseDelegateType : values()) {
@@ -53,6 +54,7 @@ public enum CommentDelegateType {
                 ID_COMMENT_CARD_FOOTER = 224,
                 ID_COMMENT_CARD_TEXT_T = 228,
                 ID_COMMENT_CARD_TEXT_S = 232,
-                ID_COMMENT_LIST_ITEM = 236;
+                ID_COMMENT_LIST_ITEM = 236,
+                ID_COMMENT_CARD_VOICE_T = 240;
     }
 }

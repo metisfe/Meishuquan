@@ -6,12 +6,15 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.widget.Toast;
 
 import com.metis.base.utils.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Beak on 2015/8/7.
@@ -38,6 +41,9 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
     private long mStartTime = 0;
 
     private MediaPlayer mPlayer = null;
+    private boolean isPlaying = false;
+    private String mPlayPath = null;
+    private OnPlayListener mPlayListener = null;
 
     private MediaRecorder.OnErrorListener mRecordErrorListener = new MediaRecorder.OnErrorListener() {
         @Override
@@ -51,8 +57,53 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         @Override
         public void onPrepared(MediaPlayer mp) {
             mp.start();
+            isPlaying = true;
+            mUpdateHandler.postDelayed(mPlayUpdateRunnable, 1000);
+            if (mPlayListener != null) {
+                mPlayListener.onPlayStart(mp);
+            }
+            /*final int length = mPlayListenerList.size();
+            for (int i = 0; i < length; i++) {
+                OnPlayListener listener = mPlayListenerList.get(i);
+                if (listener != null) {
+                    listener.onPlayStart(mp);
+                }
+            }*/
         }
     };
+
+    private MediaPlayer.OnCompletionListener mPlayerCompetionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            stopPlay();
+        }
+    };
+
+    private Runnable mRecordUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mRecordListener != null && isRecording) {
+                mRecordListener.onRecording(mRecordPath, mRecorder, SystemClock.elapsedRealtime() - mStartTime);
+            }
+            if (isRecording) {
+                mUpdateHandler.postDelayed(this, 1000);
+            }
+        }
+    };
+
+    private Runnable mPlayUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mPlayListener != null && isPlaying) {
+                mPlayListener.onPlaying(mPlayPath, mPlayer, mPlayer.getCurrentPosition());//TODO
+            }
+            if (isPlaying) {
+                mUpdateHandler.postDelayed(this, 1000);
+            }
+        }
+    };
+
+    private Handler mUpdateHandler = new Handler();
 
     private VoiceManager(Context context) {
         super(context);
@@ -94,6 +145,7 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         mRecorder = null;
         mAudioManager.abandonAudioFocus(this);
         isRecording = false;
+        mUpdateHandler.removeCallbacks(mRecordUpdateRunnable);
         if (mRecordListener != null) {
             mRecordListener.onRecordStop(mRecordPath, SystemClock.elapsedRealtime() - mStartTime);
         }
@@ -111,6 +163,7 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         mRecorder.start();
         isRecording = true;
         mStartTime = SystemClock.elapsedRealtime();
+        mUpdateHandler.postDelayed(mRecordUpdateRunnable, 1000);
         if (mRecordListener != null) {
             mRecordListener.onRecordStart(mRecordPath);
         }
@@ -120,13 +173,42 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(path);
+            mPlayPath = path;
             mPlayer.setOnPreparedListener(mPlayerPreparedListener);
-
+            mPlayer.setOnCompletionListener(mPlayerCompetionListener);
+            int result = mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+            if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                //TODO couldn't get audio focus
+                Toast.makeText(getContext(), "startPlay result failed", Toast.LENGTH_SHORT).show();
+                return;
+            }
             mPlayer.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void stopPlay () {
+        mPlayer.stop();
+        mPlayer.reset();
+        mPlayer.release();
+        mPlayer = null;
+        isPlaying = false;
+        mUpdateHandler.removeCallbacks(mPlayUpdateRunnable);
+        if (mPlayListener != null) {
+            mPlayListener.onPlayStop();
+        }
+        /*final int length = mPlayListenerList.size();
+        for (int i = 0; i < length; i++) {
+            OnPlayListener listener = mPlayListenerList.get(i);
+            if (listener != null) {
+                listener.onPlayStop();
+            }
+        }*/
+    }
+
+    public boolean isPlaying () {
+        return isPlaying;
     }
 
     public boolean isRecording () {
@@ -151,7 +233,31 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
 
     public static interface OnRecordListener {
         public void onRecordStart (String targetPath);
-        public void onRecording (String targetPath, MediaRecorder recorder);
+        public void onRecording (String targetPath, MediaRecorder recorder, long currentDuration);
         public void onRecordStop (String targetPath, long durationInMills);
+    }
+
+    public void setOnPlayListener (OnPlayListener listener) {
+        mPlayListener = listener;
+    }
+
+    /*public void registerOnPlayListener (OnPlayListener listener) {
+        if (mPlayListenerList.contains(listener)) {
+            return;
+        }
+        mPlayListenerList.add(listener);
+    }
+
+    public void unregisterOnPlayListener (OnPlayListener listener) {
+        if (!mPlayListenerList.contains(listener)) {
+            return;
+        }
+        mPlayListenerList.remove(listener);
+    }*/
+
+    public static interface OnPlayListener {
+        public void onPlayStart (MediaPlayer player);
+        public void onPlaying (String targetPath, MediaPlayer mp, long position);
+        public void onPlayStop ();
     }
 }

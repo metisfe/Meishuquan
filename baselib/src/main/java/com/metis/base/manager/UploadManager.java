@@ -76,6 +76,7 @@ public class UploadManager extends AbsManager {
 
     public void uploadFile (File file, String session, NetProxy.OnResponseListener listener) {
         List<File> fileList = new ArrayList<File>();
+        fileList.add(file);
         uploadFile(fileList, session, listener);
     }
 
@@ -95,6 +96,7 @@ public class UploadManager extends AbsManager {
                 fis.close();
                 byteArrayOutputStream.close();
                 totalData[i] = byteArrayOutputStream.toByteArray();
+                Log.v(TAG, "uploadFile[" + i + "]=" + totalData[i].length);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

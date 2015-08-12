@@ -39,14 +39,19 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
     }
 
     @Override
-    public void bindData(final Context context, CommentItemDelegate commentItemDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, final CommentItemDelegate commentItemDelegate, final RecyclerView.Adapter adapter, int position) {
         final Comment comment = commentItemDelegate.getSource();
-        Status status = commentItemDelegate.getStatus();
+        final Status status = commentItemDelegate.getStatus();
         final User user = comment.user;
+        final User replyUser = comment.replyUser;
         final UserMark mark = comment.userMark;
         if (user != null) {
-            DisplayManager.getInstance(context).display(user.avatar, profileIv);
-            nameTv.setText(user.name);
+            DisplayManager.getInstance(context).displayProfile(user.avatar, profileIv);
+            String nameStr = user.name;
+            if (replyUser != null) {
+                nameStr = context.getString(R.string.comment_item_reply_to_whom, user.name, replyUser.name);
+            }
+            nameTv.setText(nameStr);
             profileIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -64,11 +69,22 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
                     return;
                 }
                 if (mark != null) {
-                    //TODO 提示您已赞过
-                    Toast.makeText(context, R.string.status_detail_has_supported, Toast.LENGTH_SHORT).show();
-                    return;
+                    if (mark.isSupport) {
+                        Toast.makeText(context, R.string.status_detail_has_supported, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+                UserMark userMark = null;
+                if (mark == null) {
+                    userMark = new UserMark();
+                } else {
+                    userMark = mark;
+                }
+                userMark.isSupport = true;
+                comment.supportCount++;
+                comment.userMark = userMark;
                 StatusManager.getInstance(context).supportComment(user.userId, comment.id, me.getCookie());
+                adapter.notifyDataSetChanged();
             }
         });
         if (mark != null) {
@@ -85,6 +101,17 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
             itemView.setBackgroundResource(R.drawable.header_round_conner_bg_nor);
         } else if (position == adapter.getItemCount() - 1) {
             itemView.setBackgroundResource(R.drawable.footer_round_conner_bg_nor);
+        } else {
+            itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
         }
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommentItemDelegate.OnCommentActionListener listener = commentItemDelegate.getOnCommentActionListener();
+                if (listener != null) {
+                    listener.onClick(v, comment, status);
+                }
+            }
+        });
     }
 }

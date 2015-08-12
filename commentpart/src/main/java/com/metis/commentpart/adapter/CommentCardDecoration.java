@@ -11,6 +11,7 @@ import com.metis.commentpart.adapter.delegate.CardFooterDelegate;
 import com.metis.commentpart.adapter.delegate.CardHeaderDelegate;
 import com.metis.commentpart.adapter.delegate.CardTextSDelegate;
 import com.metis.commentpart.adapter.delegate.CardTextTDelegate;
+import com.metis.commentpart.adapter.delegate.CardVoiceTDelegate;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
 import com.metis.commentpart.adapter.delegate.StatusDetailTabDelegate;
 
@@ -43,7 +44,7 @@ public class CommentCardDecoration extends RecyclerView.ItemDecoration {
             outRect.set(offset, offset, offset, 0);
         } else if (delegate instanceof CardFooterDelegate) {
             outRect.set(offset, 0, offset, 0);
-        } else if (delegate instanceof CardTextTDelegate || delegate instanceof CardTextSDelegate) {
+        } else if (delegate instanceof CardTextTDelegate || delegate instanceof CardTextSDelegate || delegate instanceof CardVoiceTDelegate) {
             outRect.set(offset, 0, offset, 0);
         }
     }

@@ -10,6 +10,8 @@ import com.metis.commentpart.module.Status;
  */
 public class CardFooterDelegate extends CommentDelegate {
 
+    public static final int REPLY_TYPE_TEXT = 0, REPLY_TYPE_VOICE = 1;
+
     private OnCommentFooterClickListener mCommentListener = null;
 
     public CardFooterDelegate(Comment comment, Status status) {

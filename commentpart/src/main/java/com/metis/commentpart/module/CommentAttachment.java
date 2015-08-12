@@ -13,5 +13,5 @@ public class CommentAttachment implements Serializable{
     public String voiceUrl;
     public int thumbnailsHeight;
     public int thumbnailsWidth;
-    public String voiceLength;
+    public int voiceLength;
 }

@@ -10,8 +10,8 @@ import com.metis.base.manager.AccountManager;
 import com.metis.base.module.User;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.commentpart.R;
-import com.metis.commentpart.activity.ReplyActivity;
 import com.metis.commentpart.adapter.delegate.CardFooterDelegate;
+import com.metis.commentpart.adapter.delegate.CommentDelegate;
 import com.metis.commentpart.module.Status;
 
 /**
@@ -34,12 +34,13 @@ public class CardFooterHolder extends AbsViewHolder<CardFooterDelegate> {
         Status status = cardFooterDelegate.getStatus();
         User statusUser = status.user;
         User me = AccountManager.getInstance(context).getMe();
-        itemView.setVisibility(statusUser.equals(me) || commentUser.equals(me) ? View.VISIBLE : View.GONE);
+        replyBtn.setVisibility(statusUser.equals(me) || commentUser.equals(me) ? View.VISIBLE : View.GONE);
+        replyVoiceBtn.setVisibility(me == null || me.userRole == User.USER_ROLE_STUDIO || me.userRole == User.USER_ROLE_TEACHER ? View.VISIBLE : View.GONE);
         replyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cardFooterDelegate.getOnCommentFooterClickListener() != null) {
-                    cardFooterDelegate.getOnCommentFooterClickListener().onClick(v, cardFooterDelegate.getSource(), ReplyActivity.REPLY_TYPE_TEXT);
+                    cardFooterDelegate.getOnCommentFooterClickListener().onClick(v, cardFooterDelegate.getSource(), CardFooterDelegate.REPLY_TYPE_TEXT);
                 }
             }
         });
@@ -47,7 +48,7 @@ public class CardFooterHolder extends AbsViewHolder<CardFooterDelegate> {
             @Override
             public void onClick(View v) {
                 if (cardFooterDelegate.getOnCommentFooterClickListener() != null) {
-                    cardFooterDelegate.getOnCommentFooterClickListener().onClick(v, cardFooterDelegate.getSource(), ReplyActivity.REPLY_TYPE_VOICE);
+                    cardFooterDelegate.getOnCommentFooterClickListener().onClick(v, cardFooterDelegate.getSource(), CardFooterDelegate.REPLY_TYPE_VOICE);
                 }
             }
         });

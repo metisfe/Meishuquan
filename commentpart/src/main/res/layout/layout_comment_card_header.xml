@@ -41,8 +41,16 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/margin_big"
+        android:layout_toLeftOf="@+id/header_support_count"
         android:src="@drawable/comment_thumb_up"
+        />
+    <TextView
+        android:id="@+id/header_support_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/support_text_color_comment"
+        android:layout_marginRight="@dimen/margin_big"
         />
 </RelativeLayout>

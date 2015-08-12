@@ -6,4 +6,7 @@
     <dimen name="status_item_decoration_offset">@dimen/margin_middle</dimen>
 
     <dimen name="filter_status_list_decoration_top_offset">190dp</dimen>
+
+    <dimen name="voice_min_width">60dp</dimen>
+    <dimen name="voice_max_width">180dp</dimen>
 </resources>

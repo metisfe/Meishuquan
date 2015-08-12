@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -15,8 +16,10 @@ import com.metis.base.framework.NetProxy;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.manager.UploadManager;
+import com.metis.base.manager.VoiceManager;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
+import com.metis.base.utils.SystemUtils;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
@@ -46,7 +49,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StatusDetailActivity extends TitleBarActivity implements CardFooterDelegate.OnCommentFooterClickListener, View.OnClickListener, VoiceFragment.VoiceDispatcher {
+public class StatusDetailActivity extends TitleBarActivity implements
+        CardFooterDelegate.OnCommentFooterClickListener,
+        View.OnClickListener, VoiceFragment.VoiceDispatcher, ChatInputFragment.Controller,
+        CommentItemDelegate.OnCommentActionListener{
 
     private static final String TAG = StatusDetailActivity.class.getSimpleName();
 
@@ -63,6 +69,8 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
     private CommentListDecoration mListDecoration = null;
 
     private ChatInputFragment mChatFragment = null;
+
+    private Comment mReplyingComment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +96,7 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
         switchToCard();
 
         mChatFragment.setVoiceDispatcher(this);
+        mChatFragment.setController(this);
 
         mReplyTextTv.setOnClickListener(this);
         mReplyVoiceIv.setOnClickListener(this);
@@ -190,6 +199,7 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
                         for (int i = 0; i < length; i++) {
                             Comment comment = studentList.get(i);
                             CommentItemDelegate itemDelegate = new CommentItemDelegate(comment, mStatus);
+                            itemDelegate.setOnCommentActionListener(StatusDetailActivity.this);
                             itemDelegateList.add(itemDelegate);
                         }
                         mTabItem.setTextRight(getString(R.string.status_detail_tab_student, length));
@@ -205,6 +215,22 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (VoiceManager.getInstance(this).isPlaying()) {
+            VoiceManager.getInstance(this).stopPlay();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mChatFragment.onBackPressed()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
     public CharSequence getTitleCenter() {
         return getString(R.string.title_activity_comment_detail);
     }
@@ -216,8 +242,13 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
 
     @Override
     public void onClick(View view, Comment comment, int replyType) {
-        //Toast.makeText(this, comment.id + "", Toast.LENGTH_SHORT).show();
-        ActivityDispatcher.replyActivity(this, mStatus, comment, replyType);
+        mReplyingComment = comment;
+        switch (replyType) {
+            case CardFooterDelegate.REPLY_TYPE_TEXT:
+                break;
+            case CardFooterDelegate.REPLY_TYPE_VOICE:
+                break;
+        }
     }
 
     @Override
@@ -232,15 +263,12 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
         if (id == mReplyTextTv.getId()) {
             if (comment != null) {
                 Log.v(TAG, "comment id=" + comment + " text=" + comment.content);
-                ActivityDispatcher.replyActivity(this, mStatus, comment, ReplyActivity.REPLY_TYPE_TEXT);
             } else {
-                ActivityDispatcher.replyActivity(this, mStatus, ReplyActivity.REPLY_TYPE_TEXT);
+
             }
         } else if (id == mReplyVoiceIv.getId()) {
             if (comment != null) {
-                ActivityDispatcher.replyActivity(this, mStatus, comment, ReplyActivity.REPLY_TYPE_VOICE);
             } else {
-                ActivityDispatcher.replyActivity(this, mStatus, ReplyActivity.REPLY_TYPE_VOICE);
             }
         }
     }
@@ -251,10 +279,13 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
     }
 
     @Override
-    public void onUse(String path) {
+    public void onUse(String path, final int duration) {
         final User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
             //TODO
+            return;
+        }
+        if (path == null) {
             return;
         }
         File file = new File (path);
@@ -262,16 +293,78 @@ public class StatusDetailActivity extends TitleBarActivity implements CardFooter
             //TODO
             return;
         }
-        Log.v(TAG, "onUse upload path=" + path);
+        final Comment comment = mCardAdapter.getMyCardHeader(me.userId);
+        final User replyUser = comment != null ? comment.user : null;
         UploadManager.getInstance(this).uploadFile(file, me.getCookie(), new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
                 ReturnInfo<List<Voice>> voiceResult = new Gson().fromJson(result, new TypeToken<ReturnInfo<List<Voice>>>(){}.getType());
                 if (voiceResult.isSuccess()) {
-                    StatusManager.getInstance(StatusDetailActivity.this).pushComment(mStatus.id, 0, 0, "", 0, null, voiceResult.getData().get(0).voiceUrl, null, 2, CommentFactory.getCommentSource(me), me.getCookie());
+                    StatusManager.getInstance(StatusDetailActivity.this).pushComment(mStatus.id, me.userId, replyUser != null ? replyUser.userId : 0, "", comment == null ? 0 : comment.id, null, voiceResult.getData().get(0).voiceUrl, duration, 2, CommentFactory.getCommentSource(me), me.getCookie(), new RequestCallback<Comment>() {
+                        @Override
+                        public void callback(ReturnInfo<Comment> returnInfo, String callbackId) {
+                            if (!returnInfo.isSuccess()) {
+                                //TODO
+                                return;
+                            }
+                            Comment newComment = returnInfo.getData();
+                            Log.v(TAG, "pushComment newComment=" + newComment);
+                            mCardAdapter.addCommentFollow(mStatus, comment, newComment);
+                            mTabItem.setTextLeft(getString(R.string.status_detail_tab_teacher, mCardAdapter.getCommentCardCount()));
+                            mCardAdapter.notifyDataSetChanged();
+                        }
+                    });
                 }
 
             }
         });
+    }
+
+    @Override
+    public void onSend(String content) {
+        final User me = AccountManager.getInstance(this).getMe();
+        if (me == null) {
+            //TODO
+            return;
+        }
+        final int commentSource = CommentFactory.getCommentSource(me);
+
+        final Comment comment = commentSource == 0 ? mCardAdapter.getMyCardHeader(me.userId) : mReplyingComment;
+
+        User replyUser = comment != null ? comment.user : null;
+        Log.v(TAG, "onSend " + content + " comment=" + comment);
+        StatusManager.getInstance(StatusDetailActivity.this).pushComment(mStatus.id, me.userId, replyUser != null ? replyUser.userId : 0, content, comment == null ? 0 : comment.id, null, null, 0, 3, commentSource, me.getCookie(), new RequestCallback<Comment>() {
+            @Override
+            public void callback(ReturnInfo<Comment> returnInfo, String callbackId) {
+                if (!returnInfo.isSuccess()) {
+                    //TODO
+                    return;
+                }
+                if (me.userRole == User.USER_ROLE_TEACHER || me.userRole == User.USER_ROLE_STUDIO) {
+                    Comment newComment = returnInfo.getData();
+                    Log.v(TAG, "pushComment newComment=" + newComment);
+                    mCardAdapter.addCommentFollow(mStatus, comment, newComment);
+                    mTabItem.setTextLeft(getString(R.string.status_detail_tab_teacher, mCardAdapter.getCommentCardCount()));
+                    mCardAdapter.notifyDataSetChanged();
+                } else {
+                    mListAdapter.addDataItem(new CommentItemDelegate(returnInfo.getData(), mStatus));
+                    mTabItem.setTextRight(getString(R.string.status_detail_tab_student, mListAdapter.getItemCount() - 2));
+                    mListAdapter.notifyDataSetChanged();
+                    mDetailRv.smoothScrollToPosition(mListAdapter.getItemCount() - 1);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v, Comment comment, Status status) {
+        mReplyingComment = comment;
+        Toast.makeText(this, "orgcomment=" + comment.content, Toast.LENGTH_SHORT).show();
+        mChatFragment.askToInput();
+    }
+
+    @Override
+    public void onLongClick(View v, Comment comment, Status status) {
+
     }
 }

@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textColor="@color/support_text_color"
+        android:textColor="@color/support_text_color_comment"
         />
     <TextView
         android:id="@+id/comment_list_item_name"

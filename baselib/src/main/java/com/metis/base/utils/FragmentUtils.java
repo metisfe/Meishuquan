@@ -10,20 +10,24 @@ import android.text.TextUtils;
  * Created by Beak on 2015/7/6.
  */
 public class FragmentUtils {
+
+    private static final String TAG = FragmentUtils.class.getSimpleName();
+
     public static void showFragment (FragmentManager manager, Fragment fragment, @IdRes int at) {
-        showFragment(manager, fragment, at, null);
+        showFragment(manager, fragment, at, false);
     }
-    public static void showFragment (FragmentManager manager, Fragment fragment, @IdRes int at, String backStackName) {
+    public static void showFragment (FragmentManager manager, Fragment fragment, @IdRes int at, boolean addToBackStack) {
         FragmentTransaction ft = manager.beginTransaction();
         if (fragment.isAdded()) {
             ft.show(fragment);
         } else {
             ft.add(at, fragment);
         }
-        if (!TextUtils.isEmpty(backStackName)) {
-            ft.addToBackStack(backStackName);
+        if (addToBackStack) {
+            boolean allow = ft.isAddToBackStackAllowed();
+            Log.v(TAG, "allow=" + allow);
+            ft.addToBackStack(null);
         }
-
         ft.commit();
     }
 

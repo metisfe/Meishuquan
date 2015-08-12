@@ -21,7 +21,7 @@ public class Comment implements Serializable {
     public int replyCount;
     public User replyUser;
     public long replyCid;
-    public List<CommentAttachment> imgOrVoiceUrl;
+    public CommentAttachment imgOrVoiceUrl;
     public int commentType;
     public UserMark userMark;
 }

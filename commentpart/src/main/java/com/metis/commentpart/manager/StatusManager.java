@@ -1,6 +1,7 @@
 package com.metis.commentpart.manager;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
 import com.metis.base.framework.NetProxy;
@@ -11,6 +12,7 @@ import com.metis.base.module.Thumbnail;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.commentpart.module.AssessChannel;
+import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.CommentCollection;
 import com.metis.commentpart.module.PushCommentParams;
 import com.metis.commentpart.module.Status;
@@ -178,15 +180,21 @@ public class StatusManager extends AbsManager {
      */
     public String pushComment (long assessId, long userId, long replyUserId,
                                String content, long replyCid, List<Thumbnail> thumbnails,
-                               String voiceUrl, String voiceLength, int commentType, int commentSource, String session) {
+                               String voiceUrl, int voiceLength, int commentType, int commentSource, String session, final RequestCallback<Comment> callback) {
         PushCommentParams params = new PushCommentParams();
         params.setAssessId(assessId);
         params.setUserId(userId);
+        params.setReplyUserId(replyUserId);
         params.setReplyCid(replyCid);
         params.setContent(content);
         params.setCommentType(commentType);
         params.setCommentSource(commentSource);
-        params.setVoice(voiceUrl);
+        if (!TextUtils.isEmpty(voiceUrl)) {
+            params.setVoice(voiceUrl);
+        }
+        if (voiceLength > 0) {
+            params.setVoiceLength(voiceLength);
+        }
 
         return NetProxy.getInstance(getContext())
                 .doPostRequest(
@@ -194,7 +202,10 @@ public class StatusManager extends AbsManager {
                         params, new NetProxy.OnResponseListener() {
                             @Override
                             public void onResponse(String result, String requestId) {
-
+                                ReturnInfo<Comment> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<Comment>>(){}.getType());
+                                if (callback != null) {
+                                    callback.callback(returnInfo, requestId);
+                                }
                             }
                         }
                 );
@@ -279,6 +290,21 @@ public class StatusManager extends AbsManager {
                 .replace("{userid}", userId + "")
                 .replace("{id}", commentId + "")
                 .replace("{type}", 2 + "")
+                .replace("{result}", 1 + "")
+                .replace("{session}", session);
+        return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+
+            }
+        });
+    }
+
+    public String supportStatus (long userId, long assessId, String session) {
+        String request = REQUEST_SUPPORT
+                .replace("{userid}", userId + "")
+                .replace("{id}", assessId + "")
+                .replace("{type}", 1 + "")
                 .replace("{result}", 1 + "")
                 .replace("{session}", session);
         return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {

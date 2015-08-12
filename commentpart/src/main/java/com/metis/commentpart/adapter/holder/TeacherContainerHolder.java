@@ -11,13 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.metis.base.ActivityDispatcher;
+import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.User;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.commentpart.R;
 import com.metis.commentpart.activity.TeacherListActivity;
 import com.metis.commentpart.adapter.delegate.TeacherContainerDelegate;
 import com.metis.commentpart.module.Teacher;
+import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
     }
 
     @Override
-    public void bindData(final Context context, TeacherContainerDelegate teacherContainerDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, TeacherContainerDelegate teacherContainerDelegate, final RecyclerView.Adapter adapter, int position) {
         titleTv.setText(context.getString(R.string.status_item_famous_teacher_list));
         subTitleTv.setText(context.getString(R.string.title_more));
         subTitleTv.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +48,6 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
             public void onClick(View v) {
                 Intent it = new Intent(context, TeacherListActivity.class);
                 context.startActivity(it);
-                //TODO
             }
         });
         List<Teacher> teacherList = teacherContainerDelegate.getSource();
@@ -54,7 +56,7 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
             final int length = teacherList.size();
             LayoutInflater inflater = LayoutInflater.from(context);
             for (int i = 0; i < length; i++) {
-                Teacher teacher = teacherList.get(i);
+                final Teacher teacher = teacherList.get(i);
                 if (teacher == null) {
                     continue;
                 }
@@ -67,7 +69,7 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
                 TextView nameTv = (TextView)view.findViewById(R.id.teacher_name);
                 TextView extraInfoTv = (TextView)view.findViewById(R.id.teacher_extra_info);
                 TextView actionBtn = (TextView)view.findViewById(R.id.item_btn);
-                DisplayManager.getInstance(context).display(teacher.user.avatar, profileIv);
+                DisplayManager.getInstance(context).displayProfile(teacher.user.avatar, profileIv);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -75,13 +77,44 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
                     }
                 });
                 nameTv.setText(user.name);
-                //TODO
-                actionBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //TODO
-                    }
-                });
+                StringBuilder builder = new StringBuilder();
+                if (teacher.commentCount > 0) {
+                    builder.append(context.getString(R.string.invite_teacher_extra_info_answer, teacher.commentCount));
+                }
+                if (teacher.supportCount > 0) {
+                    builder.append("  " + context.getString(R.string.invite_teacher_extra_info_support, teacher.supportCount));
+                }
+                extraInfoTv.setText(builder.toString());
+                User me = AccountManager.getInstance(context).getMe();
+                actionBtn.setVisibility(user.equals(me) ? View.GONE : View.VISIBLE);
+
+                if (teacher.relationType == Teacher.RELATION_TYPE_EACH || teacher.relationType == Teacher.RELATION_TYPE_I_FOCUS) {
+                    actionBtn.setSelected(true);
+                    actionBtn.setText(R.string.btn_has_focused);
+                    actionBtn.setOnClickListener(null);
+                } else if (teacher.relationType == Teacher.RELATION_TYPE_I_WAS_FOLLOWED || teacher.relationType == Teacher.RELATION_TYPE_NONE) {
+                    actionBtn.setSelected(false);
+                    actionBtn.setText(R.string.btn_focus);
+                    actionBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AccountManager.getInstance(context).attention(user.userId, 1, new RequestCallback() {
+                                @Override
+                                public void callback(ReturnInfo returnInfo, String callbackId) {
+                                    if (returnInfo.isSuccess()) {
+                                        if (teacher.relationType == Teacher.RELATION_TYPE_I_WAS_FOLLOWED) {
+                                            teacher.relationType = Teacher.RELATION_TYPE_EACH;
+                                        } else if (teacher.relationType == Teacher.RELATION_TYPE_NONE) {
+                                            teacher.relationType = Teacher.RELATION_TYPE_I_FOCUS;
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+
                 mTeacherContainer.addView(view);
                 if (i < length - 1) {
                     View divider = new View (context);

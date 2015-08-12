@@ -110,6 +110,16 @@ public class DisplayManager extends AbsManager {
         return mOptions;
     }
 
+    public void displayProfile (String uri, ImageView iv) {
+        final int profileSize = getContext().getResources().getDimensionPixelSize(R.dimen.profile_size_middle);
+        final int radius = getContext().getResources().getDimensionPixelSize(R.dimen.profile_radius);
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .cloneFrom(mDefaultOptions)
+                .displayer(new SquareRoundDisplayer(profileSize, radius))
+                .build();
+        mImageLoader.displayImage(uri, iv, options);
+    }
+
     public DisplayImageOptions getDefaultOptions () {
         return mDefaultOptions;
     }

@@ -9,8 +9,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
@@ -18,6 +21,7 @@ import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.FlipperAdapter;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
+import com.metis.commentpart.manager.StatusManager;
 import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.Status;
 import com.metis.commentpart.widget.ViewFlippable;
@@ -56,11 +60,11 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
     }
 
     @Override
-    public void bindData(final Context context, final StatusDelegate statusDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, final StatusDelegate statusDelegate, final RecyclerView.Adapter adapter, int position) {
         final Status status = statusDelegate.getSource();
         final User user = status.user;
         if (user != null) {
-            DisplayManager.getInstance(context).display(user.avatar, statusProfileIv);
+            DisplayManager.getInstance(context).displayProfile(user.avatar, statusProfileIv);
             nameTv.setText(user.name);
             statusProfileIv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,14 +111,38 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             statusThumbIv.setOnClickListener(null);
         }
 
-        UserMark mark = status.userMark;
+        final UserMark mark = status.userMark;
         if (mark != null) {
             thumbUpBtn.setSelected(mark.isSupport);
         } else {
             thumbUpBtn.setSelected(false);
         }
+        thumbUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User me = AccountManager.getInstance(context).getMe();
+                if (me == null) {
+                    //TODO
+                    return;
+                }
+                if (mark != null && mark.isSupport) {
+                    Toast.makeText(context, R.string.status_detail_has_supported, Toast.LENGTH_SHORT).show();
+                } else {
+                    StatusManager.getInstance(context).supportStatus(me.userId, status.id, me.getCookie());
+                    status.supportCount++;
+                    UserMark userMark = mark;
+                    if (userMark == null) {
+                        userMark = new UserMark();
+                    }
+                    userMark.isSupport = true;
+                    status.userMark = userMark;
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         List<Comment> commentList = statusDelegate.getSource().teacherCommentList;
+        stateTv.setText(commentList != null && commentList.size() > 0 ? context.getString(R.string.status_item_has_commented) : null);
         if (commentList != null && !commentList.isEmpty() && !statusDelegate.isInDetails()) {
             adapterViewFlipper.setVisibility(View.VISIBLE);
             adapterViewFlipper.setAdapter(new FlipperAdapter(context, commentList));

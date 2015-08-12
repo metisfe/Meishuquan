@@ -7,13 +7,21 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="00:00"
+        android:layout_marginTop="@dimen/margin_big"
         />
     <ImageView
         android:id="@+id/voice_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_camera"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_record_start"
         android:layout_below="@+id/voice_duration"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin_middle"
+        android:padding="@dimen/padding_large"
+        android:background="@drawable/voice_btn_bg"
         />
     <LinearLayout
         android:id="@+id/btn_container"
@@ -21,6 +29,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/voice_btn"
+        android:visibility="invisible"
         >
         <TextView
             android:id="@+id/voice_give_up"
@@ -29,6 +38,9 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="@string/btn_give_up"
+            android:background="@drawable/std_list_item_bg"
+            android:padding="@dimen/padding_middle"
+            android:layout_margin="@dimen/margin_middle"
             />
         <TextView
             android:id="@+id/voice_send"
@@ -37,6 +49,9 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="@string/btn_send"
+            android:background="@drawable/std_list_item_bg"
+            android:padding="@dimen/padding_middle"
+            android:layout_margin="@dimen/margin_middle"
             />
     </LinearLayout>
 </RelativeLayout>

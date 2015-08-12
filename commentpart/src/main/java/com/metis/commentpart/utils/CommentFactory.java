@@ -4,6 +4,7 @@ import com.metis.base.module.User;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.commentpart.adapter.delegate.CardTextSDelegate;
 import com.metis.commentpart.adapter.delegate.CardTextTDelegate;
+import com.metis.commentpart.adapter.delegate.CardVoiceTDelegate;
 import com.metis.commentpart.module.Comment;
 
 /**
@@ -20,7 +21,13 @@ public final class CommentFactory {
         switch (user.userRole) {
             case User.USER_ROLE_STUDIO:
             case User.USER_ROLE_TEACHER:
-                return new CardTextTDelegate(comment);
+                switch (commentType) {
+                    case Comment.COMMENT_TYPE_TEXT:
+                        return new CardTextTDelegate(comment);
+                    case Comment.COMMENT_TYPE_VOICE:
+                        return new CardVoiceTDelegate(comment);
+                }
+
             case User.USER_ROLE_STUDENT:
             case User.USER_ROLE_PARENTS:
                 return new CardTextSDelegate(comment);

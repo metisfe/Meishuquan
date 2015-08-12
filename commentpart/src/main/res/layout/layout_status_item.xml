@@ -100,7 +100,7 @@
                 android:id="@+id/status_thumb_up_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
+                android:textColor="@color/support_text_color_status"
                 android:textSize="@dimen/size_h6"
                 android:layout_marginLeft="@dimen/margin_middle"
                 />

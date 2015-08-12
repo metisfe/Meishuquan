@@ -35,10 +35,18 @@ public abstract class TeacherHolder<T extends TeacherDelegate> extends AbsViewHo
         Teacher teacher = t.getSource();
         User user = teacher.user;
         if (user != null) {
-            DisplayManager.getInstance(context).display(
+            DisplayManager.getInstance(context).displayProfile(
                     user.avatar, profileIv);
 
             nameTv.setText(user.name);
         }
+        StringBuilder builder = new StringBuilder();
+        if (teacher.commentCount > 0) {
+            builder.append(context.getString(R.string.invite_teacher_extra_info_answer, teacher.commentCount));
+        }
+        if (teacher.supportCount > 0) {
+            builder.append("  " + context.getString(R.string.invite_teacher_extra_info_support, teacher.supportCount));
+        }
+        extraInfoTv.setText(builder.toString());
     }
 }

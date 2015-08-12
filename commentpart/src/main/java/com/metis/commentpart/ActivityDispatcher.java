@@ -5,9 +5,7 @@ import android.content.Intent;
 
 import com.metis.commentpart.activity.FilterActivity;
 import com.metis.commentpart.activity.PublishStatusActivity;
-import com.metis.commentpart.activity.ReplyActivity;
 import com.metis.commentpart.activity.StatusDetailActivity;
-import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.Status;
 
 /**
@@ -37,7 +35,7 @@ public class ActivityDispatcher {
         context.startActivity(it);
     }
 
-    public static void replyActivity (Context context, Status status, int replyType) {
+    /*public static void replyActivity (Context context, Status status, int replyType) {
         Intent it = new Intent(context, ReplyActivity.class);
         it.putExtra(KEY_STATUS, status);
         it.putExtra(KEY_MODE, ReplyActivity.MODE_STATUS);
@@ -52,6 +50,6 @@ public class ActivityDispatcher {
         it.putExtra(KEY_MODE, ReplyActivity.MODE_COMMENT);
         it.putExtra(KEY_REPLY_TYPE, replyType);
         context.startActivity(it);
-    }
+    }*/
 
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.metis.base.fragment.DockFragment;
 import com.metis.base.manager.AccountManager;
+import com.metis.base.manager.CacheManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Footer;
 import com.metis.base.module.User;
@@ -56,6 +57,8 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     private boolean isLoading = false;
     private int mIndex = 1;
 
+    private CacheManager mCacheManager = null;
+
     @Override
     public DockBar.Dock getDock(Context context) {
         if (mDock == null) {
@@ -79,7 +82,6 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
 
         mTitleBar.setTitleCenter(R.string.tab_title_center);
         mTitleBar.setDrawableResourceLeft(R.drawable.ic_filter);
-        mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
 
         mTitleBar.setOnLeftBtnClickListener(new View.OnClickListener() {
             @Override
@@ -87,12 +89,7 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
                 ActivityDispatcher.filterActivity(getActivity());
             }
         });
-        mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityDispatcher.publishStatusActivity(getActivity());
-            }
-        });
+
         mTitleBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +127,15 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
         super.onActivityCreated(savedInstanceState);
         mFooter = new Footer(Footer.STATE_WAITTING);
         mFooterDelegate = new FooterDelegate(mFooter);
+
+        mCacheManager = CacheManager.getInstance(getActivity());
+
+        List<Status> statusList = mCacheManager.readUserDataAtDatabase(Status.class, "assessList.db");
+        List<Teacher> teacherList = mCacheManager.readUserDataAtDatabase(Teacher.class, "teacherList.db");
+
+        parseData(1, statusList, teacherList);
+        mAdapter.notifyDataSetChanged();
+
         loadData(1);
         mSrl.post(new Runnable() {
             @Override
@@ -137,6 +143,21 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
                 mSrl.setRefreshing(true);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        User me = AccountManager.getInstance(getActivity()).getMe();
+        if (me != null && (me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_STUDENT)) {
+            mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
+            mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityDispatcher.publishStatusActivity(getActivity());
+                }
+            });
+        }
     }
 
     @Override
@@ -160,34 +181,15 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
                     }
                     if (returnInfo.isSuccess()) {
 
-                        List<BaseDelegate> list = new ArrayList<BaseDelegate>();
                         List<Status> statuses = returnInfo.getData().assessList;
-                        final int length = statuses.size();
-                        for (int i = 0; i < length; i++) {
-                            list.add(new StatusDelegate(statuses.get(i)));
-                        }
+                        List<Teacher> teacherList = returnInfo.getData().teacherList;
+
                         if (index == 1) {
-                            if (list.size() > 2) {
-                                List<Teacher> teacherList = returnInfo.getData().teacherList;
-                                if (teacherList != null && !teacherList.isEmpty()) {
-                                    TeacherContainerDelegate containerDelegate = new TeacherContainerDelegate(teacherList);
-                                    list.add(1, containerDelegate);
-                                }
-                            }
-                            mAdapter.clearDataList();
-                            mAdapter.addDataItem(mFooterDelegate);
+                            mCacheManager.saveAllUserDataAtDatabase(statuses, "assessList.db", Status.class, true);
+                            mCacheManager.saveAllUserDataAtDatabase(teacherList, "teacherList.db", Teacher.class, true);
                         }
-                        final int itemCount = mAdapter.getItemCount();
-                        if (itemCount > 0) {
-                            mAdapter.addDataList(itemCount - 1, list);
-                        } else {
-                            mAdapter.addDataList(list);
-                        }
-                        if (length == 0) {
-                            mFooter.setState(Footer.STATE_NO_MORE);
-                        } else {
-                            mFooter.setState(Footer.STATE_SUCCESS);
-                        }
+
+                        parseData(index, statuses, teacherList);
                         mIndex = index;
                     } else {
                         mFooter.setState(Footer.STATE_FAILED);
@@ -200,6 +202,36 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
                     mSrl.setRefreshing(false);
                 }
             });
+        }
+    }
+
+    private void parseData (final int index, List<Status> statuses, List<Teacher> teacherList) {
+        List<BaseDelegate> list = new ArrayList<BaseDelegate>();
+        final int length = statuses.size();
+        for (int i = 0; i < length; i++) {
+            list.add(new StatusDelegate(statuses.get(i)));
+        }
+        if (index == 1) {
+            if (list.size() > 2) {
+                //teacherList = returnInfo.getData().teacherList;
+                if (teacherList != null && !teacherList.isEmpty()) {
+                    TeacherContainerDelegate containerDelegate = new TeacherContainerDelegate(teacherList);
+                    list.add(1, containerDelegate);
+                }
+            }
+            mAdapter.clearDataList();
+            mAdapter.addDataItem(mFooterDelegate);
+        }
+        final int itemCount = mAdapter.getItemCount();
+        if (itemCount > 0) {
+            mAdapter.addDataList(itemCount - 1, list);
+        } else {
+            mAdapter.addDataList(list);
+        }
+        if (length == 0) {
+            mFooter.setState(Footer.STATE_NO_MORE);
+        } else {
+            mFooter.setState(Footer.STATE_SUCCESS);
         }
     }
 }
