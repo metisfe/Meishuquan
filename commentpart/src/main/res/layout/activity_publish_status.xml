@@ -29,7 +29,7 @@
                 android:id="@+id/status_image_delete"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/ic_close"
+                android:src="@drawable/ic_close_round"
                 android:layout_alignTop="@+id/status_image"
                 android:layout_alignRight="@+id/status_image"
                 android:visibility="gone"

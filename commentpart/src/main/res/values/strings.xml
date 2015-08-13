@@ -33,6 +33,7 @@
     <string name="teacher_list_tab_best">口碑最好</string>
 
     <string name="reply_to">回复 %1$s :</string>
+    <string name="replying_to">回复 %1$s</string>
 
     <string name="status_item_publish_comment">发表评论...</string>
     <string name="status_item_famous_teacher_list">名师榜</string>

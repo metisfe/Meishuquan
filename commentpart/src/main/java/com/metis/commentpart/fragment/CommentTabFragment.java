@@ -206,6 +206,9 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     }
 
     private void parseData (final int index, List<Status> statuses, List<Teacher> teacherList) {
+        if (statuses == null) {
+            return;
+        }
         List<BaseDelegate> list = new ArrayList<BaseDelegate>();
         final int length = statuses.size();
         for (int i = 0; i < length; i++) {

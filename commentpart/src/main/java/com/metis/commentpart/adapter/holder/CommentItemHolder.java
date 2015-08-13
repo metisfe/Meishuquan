@@ -12,6 +12,7 @@ import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
+import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.delegate.CommentItemDelegate;
@@ -23,6 +24,8 @@ import com.metis.commentpart.module.Status;
  * Created by Beak on 2015/8/6.
  */
 public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
+
+    private static final String TAG = CommentItemHolder.class.getSimpleName();
 
     public ImageView profileIv, supportIv;
     public TextView nameTv, contentTv, timeTv, supportCountTv;
@@ -108,7 +111,13 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
             @Override
             public void onClick(View v) {
                 CommentItemDelegate.OnCommentActionListener listener = commentItemDelegate.getOnCommentActionListener();
-                if (listener != null) {
+                User me = AccountManager.getInstance(context).getMe();
+                if (me == null) {
+                    //TODO
+                    return;
+                }
+                Log.v(TAG, TAG + " click happened");
+                if (listener != null && (me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_PARENTS)) {
                     listener.onClick(v, comment, status);
                 }
             }

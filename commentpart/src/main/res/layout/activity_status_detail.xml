@@ -7,15 +7,52 @@
         android:id="@+id/detail_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/detail_reply_container"
+        android:layout_above="@+id/fragment_container"
         />
-    <fragment
-        android:id="@+id/detail_reply_container"
-        android:name="com.metis.commentpart.fragment.ChatInputFragment"
+    <RelativeLayout
+        android:id="@+id/fragment_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        />
+        >
+        <RelativeLayout
+            android:id="@+id/replying_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@android:color/white"
+            >
+            <ImageView
+                android:id="@+id/replying_comment_close_btn"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_close"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_big"
+                />
+            <TextView
+                android:id="@+id/replying_comment_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/replying_comment_close_btn"
+                android:padding="@dimen/padding_middle"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_alignTop="@+id/replying_container"
+            android:background="@color/color_c3"
+            />
+        <fragment
+            android:id="@+id/detail_reply_container"
+            android:name="com.metis.commentpart.fragment.ChatInputFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/replying_container"
+            />
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/reply_container"
         android:layout_width="fill_parent"

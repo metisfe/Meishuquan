@@ -20,7 +20,7 @@
             android:id="@+id/item_close"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_close_round"
             />
     </RelativeLayout>
     <TextView

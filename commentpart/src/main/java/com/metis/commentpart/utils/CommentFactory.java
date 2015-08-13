@@ -11,6 +11,9 @@ import com.metis.commentpart.module.Comment;
  * Created by Beak on 2015/8/5.
  */
 public final class CommentFactory {
+
+    public static final int COMMENT_SOURCE_TEACHER = 0, COMMENT_SOURCE_STUDENT = 1;
+
     private CommentFactory () {
 
     }
@@ -35,14 +38,17 @@ public final class CommentFactory {
         return null;
     }
 
-    public static int getCommentSource (User user) {
-        switch (user.userRole) {
+    public static int getCommentSource (User me, User user) {
+        if (user.userRole == User.USER_ROLE_TEACHER || me.userRole == User.USER_ROLE_TEACHER) {
+            return COMMENT_SOURCE_TEACHER;
+        }
+        switch (me.userRole) {
             case User.USER_ROLE_STUDIO:
             case User.USER_ROLE_TEACHER:
-                return 0;
+                return COMMENT_SOURCE_TEACHER;
             case User.USER_ROLE_STUDENT:
             case User.USER_ROLE_PARENTS:
-                return 1;
+                return COMMENT_SOURCE_STUDENT;
         }
         return 1;
     }

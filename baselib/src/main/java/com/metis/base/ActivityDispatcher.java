@@ -14,7 +14,8 @@ import com.metis.base.widget.ImagePreviewable;
 public class ActivityDispatcher {
     public static final String
     ACTION_USER = "com.metis.meishuquan.action.user",
-    ACTION_IMAGE_PREVIEW = "com.metis.meishuquan.action.image_preview";
+    ACTION_IMAGE_PREVIEW = "com.metis.meishuquan.action.image_preview",
+    ACTION_LOGIN = "com.metis.meishuquan.action.login";
 
     public static final String
     KEY_USER_ID = "user_id",
@@ -65,5 +66,16 @@ public class ActivityDispatcher {
     public static void captureImage (Activity activity, int requestCode) {
         Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         activity.startActivityForResult(it, requestCode);
+    }
+
+    public static void loginActivity (Context context) {
+        try {
+            Intent it = new Intent (ACTION_LOGIN);
+            context.startActivity(it);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "loginActivity exception", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

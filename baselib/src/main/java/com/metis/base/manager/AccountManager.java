@@ -3,6 +3,7 @@ package com.metis.base.manager;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
+import com.metis.base.ActivityDispatcher;
 import com.metis.base.framework.NetProxy;
 import com.metis.base.module.User;
 import com.metis.msnetworklib.contract.ReturnInfo;
@@ -39,6 +40,14 @@ public class AccountManager extends AbsManager {
 
     public User getMe () {
         return mMe;
+    }
+
+    public String getCookies () {
+        if (mMe != null) {
+            return mMe.getCookie();
+        }
+        ActivityDispatcher.loginActivity(getContext());
+        return "";
     }
 
     public String login (String account, String pwd, final RequestCallback<User> callback) {

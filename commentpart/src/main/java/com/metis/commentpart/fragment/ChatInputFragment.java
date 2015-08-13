@@ -98,14 +98,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
                 getActivity().onBackPressed();
                 //FragmentUtils.hideFragment(getChildFragmentManager(), mExtraFragment);
             } else {
-                if (mVoiceFragment == null) {
-                    mVoiceFragment = new VoiceFragment();
-                    mVoiceFragment.setVoiceDispatcher(this);
-                    mVoiceFragment.setOnRecordListener(this);
-                }
-                FragmentUtils.showFragment(getFragmentManager(), mVoiceFragment, R.id.chat_input_extra_container);
-                toVoice();
-                mExtraFragment = mVoiceFragment;
+                askToRecord();
             }
         } else if (id == mSendIv.getId()) {
             String content = mInputEt.getText().toString();
@@ -185,7 +178,20 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     }
 
     public void askToInput () {
+        mInputEt.requestFocus();
+        //SystemUtils.toggleIME(getActivity());
         SystemUtils.showIME(getActivity(), mInputEt);
+    }
+
+    public void askToRecord () {
+        if (mVoiceFragment == null) {
+            mVoiceFragment = new VoiceFragment();
+            mVoiceFragment.setVoiceDispatcher(this);
+            mVoiceFragment.setOnRecordListener(this);
+        }
+        FragmentUtils.showFragment(getFragmentManager(), mVoiceFragment, R.id.chat_input_extra_container);
+        toVoice();
+        mExtraFragment = mVoiceFragment;
     }
 
     public interface Controller {
