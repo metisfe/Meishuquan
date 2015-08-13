@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     >
-    <ImageView
-        android:id="@+id/flipper_profile"
-        android:layout_width="@dimen/profile_size_small"
-        android:layout_height="@dimen/profile_size_small"
-        android:layout_marginLeft="@dimen/margin_big"
-        android:layout_marginRight="@dimen/margin_middle"
-        android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginBottom="@dimen/margin_middle"
-        android:scaleType="centerCrop"
-        />
-    <TextView
-        android:id="@+id/flipper_content"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/size_h5"
-        android:maxLines="2"
-        android:layout_toRightOf="@+id/flipper_profile"
-        android:gravity="center_vertical"
-        android:layout_centerVertical="true"
-        android:ellipsize="end"
-        />
     <RelativeLayout
-        android:id="@+id/voice_panel"
+        android:id="@+id/flipper_item_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/padding_big"
-        android:paddingRight="@dimen/padding_big"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/flipper_profile"
+        android:background="@color/color_c4"
         >
-        <FrameLayout
-            android:id="@+id/voice_container"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/flipper_profile"
+            android:layout_width="@dimen/profile_size_small"
+            android:layout_height="@dimen/profile_size_small"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_middle"
+            android:layout_marginTop="@dimen/margin_middle"
+            android:layout_marginBottom="@dimen/margin_middle"
+            android:scaleType="centerCrop"
+            />
+        <TextView
+            android:id="@+id/flipper_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/comment_voice_t"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/size_h5"
+            android:maxLines="2"
+            android:layout_toRightOf="@+id/flipper_profile"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:minWidth="300dp"
+            />
+        <RelativeLayout
+            android:id="@+id/voice_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_big"
+            android:paddingRight="@dimen/padding_big"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/flipper_profile"
             >
-            <ImageView
-                android:id="@+id/flipper_voice"
+            <FrameLayout
+                android:id="@+id/voice_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/voice_play"
-                android:layout_gravity="center_vertical"
+                android:background="@drawable/comment_voice_t"
+                >
+                <ImageView
+                    android:id="@+id/flipper_voice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/voice_play"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    />
+            </FrameLayout>
+            <TextView
+                android:id="@+id/voice_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/voice_container"
                 android:layout_centerVertical="true"
                 />
-        </FrameLayout>
-        <TextView
-            android:id="@+id/voice_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/voice_container"
-            android:layout_centerVertical="true"
-            />
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</FrameLayout>

@@ -1,6 +1,7 @@
 package com.metis.commentpart.activity;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -54,13 +55,14 @@ import java.util.List;
 public class StatusDetailActivity extends TitleBarActivity implements
         CardFooterDelegate.OnCommentFooterClickListener,
         View.OnClickListener, VoiceFragment.VoiceDispatcher, ChatInputFragment.Controller,
-        CommentItemDelegate.OnCommentActionListener{
+        CommentItemDelegate.OnCommentActionListener, SwipeRefreshLayout.OnRefreshListener{
 
     private static final String TAG = StatusDetailActivity.class.getSimpleName();
 
     private Status mStatus = null;
     private TextView mReplyTextTv;
     private ImageView mReplyVoiceIv;
+    private SwipeRefreshLayout mSrl = null;
     private RecyclerView mDetailRv = null;
     private CommentCardAdapter mCardAdapter = null;
     private CommentListAdapter mListAdapter = null;
@@ -96,6 +98,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mReplyTextTv = (TextView)findViewById(R.id.reply_text);
         mReplyVoiceIv = (ImageView)findViewById(R.id.reply_voice);
 
+        mSrl = (SwipeRefreshLayout)findViewById(R.id.detail_swipe_refresh_layout);
         mDetailRv = (RecyclerView)findViewById(R.id.detail_recycler_view);
 
         mCardDecoration = new CommentCardDecoration();
@@ -119,6 +122,20 @@ public class StatusDetailActivity extends TitleBarActivity implements
             mFragmentContainer.setVisibility(View.GONE);
         }
 
+        mSrl.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_purple
+        );
+        mSrl.setOnRefreshListener(this);
+
+    }
+
+    @Override
+    public void onRefresh() {
+        loadData();
     }
 
     private void switchToCard () {
@@ -134,9 +151,9 @@ public class StatusDetailActivity extends TitleBarActivity implements
         Log.v(TAG, "switchToList ");
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
+    private void loadData () {
+        mCardAdapter.clearDataList();
+        mListAdapter.clearDataList();
         StatusDelegate statusDelegate = new StatusDelegate(mStatus);
         statusDelegate.setIsInDetails(true);
         mCardAdapter.addDataItem(statusDelegate);
@@ -166,12 +183,14 @@ public class StatusDetailActivity extends TitleBarActivity implements
 
         User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
+            mSrl.setRefreshing(false);
             //TODO
             return;
         }
         StatusManager.getInstance(this).getCommentList(mStatus.id, me.getCookie(), new RequestCallback<CommentCollection>() {
             @Override
             public void callback(ReturnInfo<CommentCollection> returnInfo, String callbackId) {
+                mSrl.setRefreshing(false);
                 if (returnInfo.isSuccess()) {
                     CommentCollection collection = returnInfo.getData();
                     List<TeacherComment> teacherList = collection.teacherCommentList;
@@ -230,6 +249,18 @@ public class StatusDetailActivity extends TitleBarActivity implements
 
             }
         });
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mSrl.post(new Runnable() {
+            @Override
+            public void run() {
+                mSrl.setRefreshing(true);
+            }
+        });
+        loadData();
     }
 
     @Override
@@ -338,7 +369,8 @@ public class StatusDetailActivity extends TitleBarActivity implements
         UploadManager.getInstance(this).uploadFile(file, me.getCookie(), new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<List<Voice>> voiceResult = new Gson().fromJson(result, new TypeToken<ReturnInfo<List<Voice>>>(){}.getType());
+                ReturnInfo<List<Voice>> voiceResult = new Gson().fromJson(result, new TypeToken<ReturnInfo<List<Voice>>>() {
+                }.getType());
                 if (voiceResult.isSuccess()) {
                     StatusManager.getInstance(StatusDetailActivity.this).pushComment(mStatus.id, me.userId, useReplyUserId, "", useReplyCid, null, voiceResult.getData().get(0).voiceUrl, duration, 2, useCommentSource, me.getCookie(), new RequestCallback<Comment>() {
                         @Override
@@ -404,7 +436,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
                     mCardAdapter.addCommentFollow(mStatus, comment, newComment);
                     mTabItem.setTextLeft(getString(R.string.status_detail_tab_teacher, mCardAdapter.getCommentCardCount()));
                     mCardAdapter.notifyDataSetChanged();
-                    mDetailRv.smoothScrollToPosition(mCardAdapter.getItemCount() - 1);
+                    //mDetailRv.smoothScrollToPosition(mCardAdapter.getItemCount() - 1);
                 } else {
                     mListAdapter.addDataItem(new CommentItemDelegate(returnInfo.getData(), mStatus));
                     mTabItem.setTextRight(getString(R.string.status_detail_tab_student, mListAdapter.getItemCount() - 2));
@@ -441,4 +473,5 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mReplyingComment = null;
         mReplyingContainer.setVisibility(View.GONE);
     }
+
 }

@@ -70,6 +70,7 @@ public class CommentCardAdapter extends DelegateAdapter {
     }
 
     public void addCommentFollow (Status status, Comment comment, Comment newComment) {
+
         if (comment == null) {
             addDataItem(new CardHeaderDelegate(newComment));
             addDataItem(CommentFactory.makeCommentDelegate(newComment));
@@ -81,7 +82,11 @@ public class CommentCardAdapter extends DelegateAdapter {
         for (i = 0; i < length; i++) {
             AbsDelegate delegate = getDataItem(i);
             if (delegate instanceof CardFooterDelegate) {
-                break;
+                CardFooterDelegate footerDelegate = (CardFooterDelegate)delegate;
+                Comment c = footerDelegate.getSource();
+                if (c.user.equals(comment.user)) {
+                    break;
+                }
             }
         }
         addDataItem(i, CommentFactory.makeCommentDelegate(newComment));

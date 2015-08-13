@@ -82,7 +82,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         mSendIv.setOnClickListener(this);
 
         User me = AccountManager.getInstance(getActivity()).getMe();
-        if (me == null || (me.userRole != User.USER_ROLE_STUDIO && me.userRole != User.USER_ROLE_TEACHER)) {
+        if (me == null || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_PARENTS) {
             mVoiceIv.setVisibility(View.GONE);
             mSendIv.setVisibility(View.VISIBLE);
         }

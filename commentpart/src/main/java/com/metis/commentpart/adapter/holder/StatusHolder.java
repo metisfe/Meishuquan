@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -87,9 +88,9 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                 int itemWidth = context.getResources().getDisplayMetrics().widthPixels - 2 * margin;
                 statusDelegate.setItemHeight(itemWidth);
             }
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)statusThumbIv.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)statusThumbIv.getLayoutParams();
             if (params == null) {
-                params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, statusDelegate.getItemHeight());
+                params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, statusDelegate.getItemHeight());
                 statusThumbIv.setLayoutParams(params);
             } else {
                 if (params.height != statusDelegate.getItemHeight()) {
@@ -143,7 +144,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
 
         List<Comment> commentList = statusDelegate.getSource().teacherCommentList;
         stateTv.setText(commentList != null && commentList.size() > 0 ? context.getString(R.string.status_item_has_commented) : null);
-        if (commentList != null && !commentList.isEmpty() && !statusDelegate.isInDetails()) {
+        if (commentList != null && commentList.size() > 1 && !statusDelegate.isInDetails()) {
             adapterViewFlipper.setVisibility(View.VISIBLE);
             adapterViewFlipper.setAdapter(new FlipperAdapter(context, commentList));
             adapterViewFlipper.startFlipping();

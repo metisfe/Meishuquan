@@ -35,7 +35,8 @@ public class CardFooterHolder extends AbsViewHolder<CardFooterDelegate> {
         User statusUser = status.user;
         User me = AccountManager.getInstance(context).getMe();
         replyBtn.setVisibility(statusUser.equals(me) || commentUser.equals(me) ? View.VISIBLE : View.GONE);
-        replyVoiceBtn.setVisibility(me == null || me.userRole == User.USER_ROLE_STUDIO || me.userRole == User.USER_ROLE_TEACHER ? View.VISIBLE : View.GONE);
+        replyVoiceBtn.setVisibility(me != null && me.userRole == User.USER_ROLE_TEACHER && commentUser.equals(me) ? View.VISIBLE : View.GONE);
+        //replyVoiceBtn.setVisibility(me == null || me.userRole == User.USER_ROLE_TEACHER ? View.VISIBLE : View.GONE);
         replyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
