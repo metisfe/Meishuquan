@@ -59,6 +59,8 @@ public class StatusDetailActivity extends TitleBarActivity implements
 
     private static final String TAG = StatusDetailActivity.class.getSimpleName();
 
+    public static final int MODE_NORMAL = 0, MODE_WITH_COMMENT = 1;
+
     private Status mStatus = null;
     private TextView mReplyTextTv;
     private ImageView mReplyVoiceIv;
@@ -79,12 +81,15 @@ public class StatusDetailActivity extends TitleBarActivity implements
 
     private Comment mReplyingComment = null;
 
+    private int mMode = MODE_NORMAL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_detail);
 
         mStatus = (Status)getIntent().getSerializableExtra(ActivityDispatcher.KEY_STATUS);
+        mMode = getIntent().getIntExtra(ActivityDispatcher.KEY_MODE, MODE_NORMAL);
 
         User me = AccountManager.getInstance(this).getMe();
 
@@ -245,6 +250,10 @@ public class StatusDetailActivity extends TitleBarActivity implements
                         //TODO
                     }
                     mListAdapter.notifyDataSetChanged();
+                    if (mMode == MODE_WITH_COMMENT) {
+                        mChatFragment.askToInput();
+                        mMode = MODE_NORMAL;
+                    }
                 }
 
             }

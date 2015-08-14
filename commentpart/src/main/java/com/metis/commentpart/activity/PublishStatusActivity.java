@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +28,9 @@ import com.metis.base.manager.UploadManager;
 import com.metis.base.module.ImageInfo;
 import com.metis.base.module.Thumbnail;
 import com.metis.base.module.User;
+import com.metis.base.utils.FileUtils;
 import com.metis.base.utils.Log;
+import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.TeacherSelectedAdapter;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
@@ -129,8 +132,9 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                     return;
                 }
                 if (mBitmap != null) {
+                    final Bitmap compressedBmp = FileUtils.compressBitmap(mBitmap, 1000);
                     UploadManager.getInstance(PublishStatusActivity.this).uploadBitmap(
-                            mBitmap,
+                            compressedBmp,
                             AccountManager.getInstance(PublishStatusActivity.this).getMe().getCookie(),
                             new RequestCallback<List<Thumbnail>>() {
                                 @Override
@@ -138,7 +142,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                                     if (!returnInfo.isSuccess()) {
                                         return;
                                     }
-
+                                    compressedBmp.recycle();
                                     Thumbnail thumbnail = returnInfo.getData().get(0);
                                     Log.v(TAG, "publish access with " + thumbnail.getOriginalImage());
                                     publishContent(content, thumbnail.toImageInfo());

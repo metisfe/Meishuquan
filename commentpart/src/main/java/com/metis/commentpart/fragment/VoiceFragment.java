@@ -137,6 +137,7 @@ public class VoiceFragment extends BaseFragment implements View.OnClickListener,
         mVoiceBtn.setImageResource(R.drawable.ic_record_stop);
         mGiveUpTv.setEnabled(false);
         mUseTv.setEnabled(false);
+        mVoiceBtn.setKeepScreenOn(true);
         if (mRecordListener != null) {
             mRecordListener.onRecordStart(targetPath);
         }
@@ -152,6 +153,7 @@ public class VoiceFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void onRecordStop(String targetPath, long durationInMills) {
+        mVoiceBtn.setKeepScreenOn(false);
         if (durationInMills < 1000) {
             toRecordIdle();
             Toast.makeText(getActivity(), R.string.voice_to_short, Toast.LENGTH_SHORT).show();

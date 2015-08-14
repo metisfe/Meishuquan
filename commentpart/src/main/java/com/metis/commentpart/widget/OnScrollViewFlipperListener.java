@@ -57,7 +57,6 @@ public class OnScrollViewFlipperListener extends RecyclerView.OnScrollListener {
             AdapterViewFlipper flipper = flippable.getViewFlipper();
             if (flipper != null) {
                 flipper.stopFlipping();
-                flipper.showNext();
             }
         }
     }
@@ -69,6 +68,7 @@ public class OnScrollViewFlipperListener extends RecyclerView.OnScrollListener {
             AdapterViewFlipper flipper = flippable.getViewFlipper();
             if (flipper != null) {
                 flipper.startFlipping();
+                flipper.showNext();
             }
         }
     }

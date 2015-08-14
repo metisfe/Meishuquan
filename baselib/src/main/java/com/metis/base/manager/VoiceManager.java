@@ -188,12 +188,17 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         }
     }
 
+    public String getPlayingPath () {
+        return mPlayPath;
+    }
+
     public void stopPlay () {
         mPlayer.stop();
         mPlayer.reset();
         mPlayer.release();
         mPlayer = null;
         isPlaying = false;
+        mPlayPath = null;
         mUpdateHandler.removeCallbacks(mPlayUpdateRunnable);
         if (mPlayListener != null) {
             mPlayListener.onPlayStop();
@@ -217,6 +222,14 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
 
     @Override
     public void onAudioFocusChange(int focusChange) {
+        if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+            if (isRecording()) {
+                stopRecord();
+            }
+            if (isPlaying()) {
+                stopPlay();
+            }
+        }
         Log.v(TAG, "focusChange=" + focusChange);
         /*switch (mMode) {
             case MODE_RECORD:

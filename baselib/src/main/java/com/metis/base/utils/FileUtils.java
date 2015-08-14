@@ -1,6 +1,7 @@
 package com.metis.base.utils;
 
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -101,5 +102,21 @@ public class FileUtils {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(format, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    public static Bitmap compressBitmap (Bitmap bmp, int maxSize) {
+        final int width = bmp.getWidth();
+        final int height = bmp.getHeight();
+        //Log.v(TAG, "compressBitmap width=" + width + " height" + height);
+        int size = Math.max(width, height);
+        if (size > maxSize) {
+            float scale = (float)maxSize / size;
+            final int targetWidth = (int)(width * scale);
+            final int targetHeight = (int)(height * scale);
+            //Log.v(TAG, "compressBitmap targetWidth=" + targetWidth + " targetHeight" + targetHeight + " scale=" + scale);
+            return ThumbnailUtils.extractThumbnail(bmp, targetWidth, targetHeight, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+        } else {
+            return bmp;
+        }
     }
 }

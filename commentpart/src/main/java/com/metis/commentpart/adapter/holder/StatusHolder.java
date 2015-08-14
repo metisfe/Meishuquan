@@ -64,6 +64,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
     public void bindData(final Context context, final StatusDelegate statusDelegate, final RecyclerView.Adapter adapter, int position) {
         final Status status = statusDelegate.getSource();
         final User user = status.user;
+        final User me = AccountManager.getInstance(context).getMe();
         if (user != null) {
             DisplayManager.getInstance(context).displayProfile(user.avatar, statusProfileIv);
             nameTv.setText(user.name);
@@ -121,7 +122,6 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         thumbUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User me = AccountManager.getInstance(context).getMe();
                 if (me == null) {
                     //TODO
                     return;
@@ -153,11 +153,14 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             adapterViewFlipper.setAdapter(null);
             adapterViewFlipper.stopFlipping();
         }
-        quickCommentBtn.setVisibility(statusDelegate.isInDetails() ? View.GONE : View.VISIBLE);
+        boolean quickVisibility = !statusDelegate.isInDetails() && me != null && me.userRole != User.USER_ROLE_STUDIO;
+        quickCommentBtn.setVisibility( quickVisibility ? View.VISIBLE : View.GONE);
         quickCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                if (!statusDelegate.isInDetails()) {
+                    ActivityDispatcher.statusDetailWithComment(context, status);
+                }
             }
         });
         itemView.setOnClickListener(new View.OnClickListener() {

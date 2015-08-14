@@ -7,12 +7,14 @@ import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.cache.MD5FileNameGenerator;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
@@ -73,24 +75,41 @@ public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> implemen
             @Override
             public void onClick(View v) {
                 mVoiceManager = VoiceManager.getInstance(context);
-                HttpUtils utils = new HttpUtils(10 * 1000);
-                utils.download(comment.imgOrVoiceUrl.voiceUrl, CacheManager.getInstance(context).getMyVoiceCacheDir().getAbsolutePath() + File.separator + "a.mp3", true, true, new RequestCallBack<File>() {
-                    @Override
-                    public void onSuccess(ResponseInfo<File> responseInfo) {
-                        if (mVoiceManager.isPlaying()) {
-                            mVoiceManager.stopPlay();
-                        }
-                        if (!mVoiceManager.isPlaying()) {
-                            mVoiceManager.setOnPlayListener(CardVoiceTHolder.this);
-                            mVoiceManager.startPlay(responseInfo.result.getAbsolutePath());
+
+                String url = comment.imgOrVoiceUrl.voiceUrl;
+                MD5FileNameGenerator generator = new MD5FileNameGenerator();
+                String fileName = generator.generate(url);
+                File targetFile = new File(CacheManager.getInstance(context).getMyVoiceCacheDir().getAbsolutePath() + File.separator + fileName + ".mp3");
+
+                if (targetFile.exists()) {
+                    if (mVoiceManager.isPlaying()) {
+                        mVoiceManager.stopPlay();
+                        if (targetFile.getAbsolutePath().equals(mVoiceManager.getPlayingPath())) {
+                            return;
                         }
                     }
+                    mVoiceManager.startPlay(targetFile.getAbsolutePath());
 
-                    @Override
-                    public void onFailure(HttpException e, String s) {
+                } else {
+                    HttpUtils utils = new HttpUtils(10 * 1000);
+                    utils.download(url, targetFile.getAbsolutePath(), true, false, new RequestCallBack<File>() {
+                        @Override
+                        public void onSuccess(ResponseInfo<File> responseInfo) {
+                            if (mVoiceManager.isPlaying()) {
+                                mVoiceManager.stopPlay();
+                            }
+                            if (!mVoiceManager.isPlaying()) {
+                                mVoiceManager.setOnPlayListener(CardVoiceTHolder.this);
+                                mVoiceManager.startPlay(responseInfo.result.getAbsolutePath());
+                            }
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onFailure(HttpException e, String s) {
+
+                        }
+                    });
+                }
                 /*AnimationDrawable drawable = (AnimationDrawable)voiceIv.getDrawable();
                 drawable.start();*/
             }

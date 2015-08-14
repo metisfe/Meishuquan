@@ -25,6 +25,13 @@ public class ActivityDispatcher {
         context.startActivity(it);
     }
 
+    public static void statusDetailWithComment (Context context, Status status) {
+        Intent it = new Intent(context, StatusDetailActivity.class);
+        it.putExtra(KEY_STATUS, status);
+        it.putExtra(KEY_MODE, StatusDetailActivity.MODE_WITH_COMMENT);
+        context.startActivity(it);
+    }
+
     public static void filterActivity (Context context) {
         Intent it = new Intent(context, FilterActivity.class);
         context.startActivity(it);
