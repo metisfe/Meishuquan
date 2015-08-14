@@ -6,6 +6,7 @@
 
     <string name="publish_hint_image_discription">请简单描述一下你的作品吧...</string>
     <string name="publish_toast_empty_content">请选择图片或者输入文字</string>
+    <string name="publish_toast_beyond_max">文字内容长度不能超过%1$d</string>
     <string name="publish_toast_choose_category">请选择一个类别</string>
     <string name="publish_toast_offline">您已掉线,请登录后再试</string>
     <string name="publish_toast_publish_success">发布成功</string>
@@ -49,7 +50,7 @@
     <string name="btn_send">发送</string>
 
     <string name="title_activity_fliter">筛选</string>
-    <string name="title_activity_publish_status">PublishStatusActivity</string>
+    <string name="title_activity_publish_status">发点评</string>
     <string name="title_activity_invite">选择老师</string>
     <string name="title_activity_reply">评论</string>
     <string name="title_activity_teacher_list">TeacherListActivity</string>

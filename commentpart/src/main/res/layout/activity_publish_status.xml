@@ -42,6 +42,7 @@
                 android:layout_alignBottom="@+id/status_image"
                 android:layout_toRightOf="@+id/status_image"
                 android:paddingRight="@dimen/padding_big"
+                android:paddingBottom="@dimen/padding_large"
                 android:gravity="left|top"
                 android:background="@android:color/transparent"
                 android:hint="@string/publish_hint_image_discription"
@@ -54,6 +55,7 @@
                 android:layout_alignBottom="@+id/status_input"
                 android:layout_alignRight="@+id/status_input"
                 android:layout_marginRight="@dimen/margin_big"
+                android:textColor="@color/color_c2"
                 />
         </RelativeLayout>
         <RelativeLayout

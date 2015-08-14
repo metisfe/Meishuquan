@@ -30,6 +30,7 @@ import com.metis.base.module.Thumbnail;
 import com.metis.base.module.User;
 import com.metis.base.utils.FileUtils;
 import com.metis.base.utils.Log;
+import com.metis.base.utils.SystemUtils;
 import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.TeacherSelectedAdapter;
@@ -113,7 +114,13 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
 
             @Override
             public void afterTextChanged(Editable s) {
-                mRemainCountTv.setText((MAX_COUNT - s.length()) + "");
+                int remain = MAX_COUNT - s.length();
+                mRemainCountTv.setText(remain + "");
+                if (remain < 0) {
+                    mRemainCountTv.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                } else {
+                    mRemainCountTv.setTextColor(getResources().getColor(R.color.color_c2));
+                }
                 Log.v(TAG, "afterTextChanged " + s);
             }
         });
@@ -125,6 +132,10 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                 final String content = mInputEt.getText().toString();
                 if (mBitmap == null && TextUtils.isEmpty(content)) {
                     Toast.makeText(PublishStatusActivity.this, R.string.publish_toast_empty_content, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (content.length() > MAX_COUNT) {
+                    Toast.makeText(PublishStatusActivity.this, getString(R.string.publish_toast_beyond_max, MAX_COUNT), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (mCurrentChannel == null) {
@@ -290,6 +301,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                         view.setSelected(true);
                         mCurrentChannelIndex = index;
                         mCurrentChannel = item;
+                        SystemUtils.hideIME(PublishStatusActivity.this, mInputEt);
                     }
                 });
                 mCategoryLayout.addView(view);

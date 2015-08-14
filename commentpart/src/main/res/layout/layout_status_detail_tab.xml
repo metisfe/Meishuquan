@@ -3,14 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     >
-    <RadioGroup
+    <LinearLayout
         android:id="@+id/tab_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="horizontal"
         >
-        <RadioButton
+        <TextView
             android:id="@+id/tab_teacher"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -21,7 +21,6 @@
             android:paddingTop="@dimen/padding_big"
             android:paddingBottom="@dimen/padding_big"
             android:layout_weight="1"
-            android:button="@null"
             />
         <View
             android:id="@+id/divider"
@@ -33,7 +32,7 @@
             android:layout_centerHorizontal="true"
             />
         <!--android:layout_toLeftOf="@+id/divider"-->
-        <RadioButton
+        <TextView
             android:id="@+id/tab_student"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -44,11 +43,10 @@
             android:paddingTop="@dimen/padding_big"
             android:paddingBottom="@dimen/padding_big"
             android:layout_weight="1"
-            android:button="@null"
             />
         <!--android:layout_toRightOf="@+id/divider"
         android:layout_alignParentRight="true"
         -->
-    </RadioGroup>
+    </LinearLayout>
 
 </RelativeLayout>

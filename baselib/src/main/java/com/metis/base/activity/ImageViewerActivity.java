@@ -22,6 +22,17 @@ public class ImageViewerActivity extends TitleBarActivity {
         setContentView(R.layout.activity_image_viewer);
 
         mPreviewFragment = (MultiImagePreviewFragment)getSupportFragmentManager().findFragmentById(R.id.preview_fragment);
+        mPreviewFragment.setOnOperateListener(new MultiImagePreviewFragment.OnImageOperateListener() {
+            @Override
+            public void onPageChange(int position, ImagePreviewable image) {
+
+            }
+
+            @Override
+            public void onPageTab(int position, ImagePreviewable image) {
+                finish();
+            }
+        });
     }
 
     @Override

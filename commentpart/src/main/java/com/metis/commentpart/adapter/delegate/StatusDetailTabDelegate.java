@@ -26,4 +26,8 @@ public class StatusDetailTabDelegate extends BaseDelegate<StatusDetailTabItem> {
     public int getCurrentCheckedId () {
         return mCurrentCheckedId;
     }
+
+    public boolean isLeft () {
+        return getCurrentCheckedId() == R.id.tab_teacher;
+    }
 }

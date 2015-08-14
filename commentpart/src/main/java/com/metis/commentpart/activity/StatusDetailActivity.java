@@ -5,8 +5,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,7 +20,6 @@ import com.metis.base.manager.UploadManager;
 import com.metis.base.manager.VoiceManager;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
-import com.metis.base.utils.SystemUtils;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
@@ -82,6 +79,9 @@ public class StatusDetailActivity extends TitleBarActivity implements
     private Comment mReplyingComment = null;
 
     private int mMode = MODE_NORMAL;
+
+    private StatusDelegate mStatusDelegate = null;
+    StatusDetailTabDelegate mTabDelegate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,46 +144,28 @@ public class StatusDetailActivity extends TitleBarActivity implements
     }
 
     private void switchToCard () {
+        mDetailRv.setAdapter(mCardAdapter);
         mDetailRv.removeItemDecoration(mListDecoration);
         mDetailRv.addItemDecoration(mCardDecoration);
-        mDetailRv.setAdapter(mCardAdapter);
     }
 
-    private void switchToList () {
+    private void switchToList() {
+        mDetailRv.setAdapter(mListAdapter);
         mDetailRv.removeItemDecoration(mCardDecoration);
         mDetailRv.addItemDecoration(mListDecoration);
-        mDetailRv.setAdapter(mListAdapter);
-        Log.v(TAG, "switchToList ");
     }
 
     private void loadData () {
         mCardAdapter.clearDataList();
         mListAdapter.clearDataList();
-        StatusDelegate statusDelegate = new StatusDelegate(mStatus);
-        statusDelegate.setIsInDetails(true);
-        mCardAdapter.addDataItem(statusDelegate);
-        mListAdapter.addDataItem(statusDelegate);
 
-        mTabItem = new StatusDetailTabItem();
-        mTabItem.setTextLeft(getString(R.string.status_detail_tab_teacher, 0));
-        mTabItem.setTextRight(getString(R.string.status_detail_tab_student, 0));
-        mTabItem.setOnTabSelectListener(new StatusDetailTabItem.OnTabSelectListener() {
-            @Override
-            public void onLeftSelected() {
-                switchToCard();
-            }
+        mCardAdapter.addDataItem(mStatusDelegate);
+        mListAdapter.addDataItem(mStatusDelegate);
 
-            @Override
-            public void onRightSelected() {
-                switchToList();
-            }
-        });
-        StatusDetailTabDelegate tabDelegate = new StatusDetailTabDelegate(mTabItem);
-
-        mCardAdapter.addDataItem(tabDelegate);
+        mCardAdapter.addDataItem(mTabDelegate);
         mCardAdapter.notifyDataSetChanged();
 
-        mListAdapter.addDataItem(tabDelegate);
+        mListAdapter.addDataItem(mTabDelegate);
         mListAdapter.notifyDataSetChanged();
 
         User me = AccountManager.getInstance(this).getMe();
@@ -263,6 +245,26 @@ public class StatusDetailActivity extends TitleBarActivity implements
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        mStatusDelegate = new StatusDelegate(mStatus);
+        mStatusDelegate.setIsInDetails(true);
+
+        mTabItem = new StatusDetailTabItem();
+        mTabItem.setTextLeft(getString(R.string.status_detail_tab_teacher, 0));
+        mTabItem.setTextRight(getString(R.string.status_detail_tab_student, 0));
+        mTabItem.setOnTabSelectListener(new StatusDetailTabItem.OnTabSelectListener() {
+            @Override
+            public void onLeftSelected() {
+                switchToCard();
+            }
+
+            @Override
+            public void onRightSelected() {
+                switchToList();
+            }
+        });
+        mTabDelegate = new StatusDetailTabDelegate(mTabItem);
+
         mSrl.post(new Runnable() {
             @Override
             public void run() {

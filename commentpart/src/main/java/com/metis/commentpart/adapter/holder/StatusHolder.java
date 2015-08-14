@@ -2,6 +2,7 @@ package com.metis.commentpart.adapter.holder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
@@ -42,7 +43,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
     public TextView thumbUpCountTv, commentCountTv;
     public AdapterViewFlipper adapterViewFlipper = null;
 
-    public View thumbUpBtn;
+    public View thumbUpBtn, commentBtn;
 
     public StatusHolder(View itemView) {
         super(itemView);
@@ -54,6 +55,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         contentTv = (TextView)itemView.findViewById(R.id.status_text);
         statusThumbIv = (ImageView)itemView.findViewById(R.id.status_thumb);
         thumbUpBtn = itemView.findViewById(R.id.status_thumb_up_btn);
+        commentBtn = itemView.findViewById(R.id.status_comment_btn);
         thumbUpCountTv = (TextView)itemView.findViewById(R.id.status_thumb_up_count);
         commentCountTv = (TextView)itemView.findViewById(R.id.status_comment_count);
         quickCommentBtn = (TextView)itemView.findViewById(R.id.status_quick_comment);
@@ -75,7 +77,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                 }
             });
         }
-
+        contentTv.setVisibility(TextUtils.isEmpty(status.desc) ? View.GONE : View.VISIBLE);
         contentTv.setText(status.desc);
         thumbUpCountTv.setText("" + status.supportCount);
         commentCountTv.setText("" + status.commentCount);
@@ -141,7 +143,18 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                 }
             }
         });
-
+        commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!statusDelegate.isInDetails()) {
+                    if (me == null || me.userRole == User.USER_ROLE_STUDIO) {
+                        ActivityDispatcher.statusDetail(context, status);
+                    } else {
+                        ActivityDispatcher.statusDetailWithComment(context, status);
+                    }
+                }
+            }
+        });
         List<Comment> commentList = statusDelegate.getSource().teacherCommentList;
         stateTv.setText(commentList != null && commentList.size() > 0 ? context.getString(R.string.status_item_has_commented) : null);
         if (commentList != null && commentList.size() > 1 && !statusDelegate.isInDetails()) {
@@ -154,7 +167,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             adapterViewFlipper.stopFlipping();
         }
         boolean quickVisibility = !statusDelegate.isInDetails() && me != null && me.userRole != User.USER_ROLE_STUDIO;
-        quickCommentBtn.setVisibility( quickVisibility ? View.VISIBLE : View.GONE);
+        quickCommentBtn.setVisibility(quickVisibility ? View.VISIBLE : View.GONE);
         quickCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
