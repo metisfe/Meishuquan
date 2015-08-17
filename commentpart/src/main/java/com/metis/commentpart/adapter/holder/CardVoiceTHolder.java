@@ -33,13 +33,14 @@ import java.io.File;
 /**
  * Created by Beak on 2015/8/10.
  */
-public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> implements VoiceManager.OnPlayListener {
+public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> {
+
+    private static final String TAG = CardVoiceTHolder.class.getSimpleName();
 
     public ImageView voiceIv = null;
     public ViewGroup voiceContainer = null;
     public TextView voiceDurationTv = null;
     private VoiceManager mVoiceManager = null;
-    private AnimationDrawable mAnimDrawable = null;
 
     public CardVoiceTHolder(View itemView) {
         super(itemView);
@@ -47,13 +48,13 @@ public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> implemen
         voiceContainer = (ViewGroup)itemView.findViewById(R.id.voice_container);
         voiceDurationTv = (TextView)itemView.findViewById(R.id.voice_duration);
 
-        mAnimDrawable = (AnimationDrawable)voiceIv.getDrawable();
     }
 
     @Override
-    public void bindData(final Context context, CardVoiceTDelegate cardVoiceTDelegate, RecyclerView.Adapter adapter, int position) {
+    public void bindData(final Context context, final CardVoiceTDelegate cardVoiceTDelegate, final RecyclerView.Adapter adapter, int position) {
         final Comment comment = cardVoiceTDelegate.getSource();
         CommentAttachment attachment = cardVoiceTDelegate.getSource().imgOrVoiceUrl;
+        final AnimationDrawable animDrawable = (AnimationDrawable)voiceIv.getBackground();
         Resources resources = context.getResources();
         final int min = resources.getDimensionPixelSize(R.dimen.voice_min_width);
         final int max = resources.getDimensionPixelSize(R.dimen.voice_max_width);
@@ -70,26 +71,50 @@ public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> implemen
         } else {
             layoutParams = new RelativeLayout.LayoutParams(width, FrameLayout.LayoutParams.WRAP_CONTENT);
         }
+        mVoiceManager = VoiceManager.getInstance(context);
+
+        final String url = comment.imgOrVoiceUrl.voiceUrl;
+        MD5FileNameGenerator generator = new MD5FileNameGenerator();
+        String fileName = generator.generate(url);
+        final File targetFile = new File(CacheManager.getInstance(context).getMyVoiceCacheDir().getAbsolutePath() + File.separator + fileName + ".mp3");
+
+        cardVoiceTDelegate.setOnNeedUpdateCallback(new CardVoiceTDelegate.OnNeedUpdateCallback() {
+            @Override
+            public void onNeed(boolean isStarted) {
+                if (isStarted) {
+                    animDrawable.start();
+                } else {
+                    animDrawable.stop();
+                }
+                //adapter.notifyDataSetChanged();
+            }
+        });
+
+
+        /*animDrawable.stop();
+        if (mVoiceManager.isPlaying() && cardVoiceTDelegate.isPlaying()) {
+            animDrawable.start();
+            Log.v(TAG, "animDrawable.START()");
+        } else {
+            Log.v(TAG, "mAnimDrawable.stop()");
+            animDrawable.stop();
+        }*/
+
         voiceContainer.setLayoutParams(layoutParams);
         voiceContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mVoiceManager = VoiceManager.getInstance(context);
-
-                String url = comment.imgOrVoiceUrl.voiceUrl;
-                MD5FileNameGenerator generator = new MD5FileNameGenerator();
-                String fileName = generator.generate(url);
-                File targetFile = new File(CacheManager.getInstance(context).getMyVoiceCacheDir().getAbsolutePath() + File.separator + fileName + ".mp3");
-
                 if (targetFile.exists()) {
                     if (mVoiceManager.isPlaying()) {
+                        final String playingPath = mVoiceManager.getPlayingPath();
                         mVoiceManager.stopPlay();
-                        if (targetFile.getAbsolutePath().equals(mVoiceManager.getPlayingPath())) {
+                        animDrawable.stop();
+                        if (targetFile.getAbsolutePath().equals(playingPath)) {
                             return;
                         }
                     }
+                    mVoiceManager.setOnPlayListener(cardVoiceTDelegate);
                     mVoiceManager.startPlay(targetFile.getAbsolutePath());
-
                 } else {
                     HttpUtils utils = new HttpUtils(10 * 1000);
                     utils.download(url, targetFile.getAbsolutePath(), true, false, new RequestCallBack<File>() {
@@ -99,8 +124,9 @@ public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> implemen
                                 mVoiceManager.stopPlay();
                             }
                             if (!mVoiceManager.isPlaying()) {
-                                mVoiceManager.setOnPlayListener(CardVoiceTHolder.this);
+                                mVoiceManager.setOnPlayListener(cardVoiceTDelegate);
                                 mVoiceManager.startPlay(responseInfo.result.getAbsolutePath());
+                                //cardVoiceTDelegate.setIsPlaying(true);
                             }
                         }
 
@@ -110,27 +136,8 @@ public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> implemen
                         }
                     });
                 }
-                /*AnimationDrawable drawable = (AnimationDrawable)voiceIv.getDrawable();
-                drawable.start();*/
             }
         });
     }
 
-    @Override
-    public void onPlayStart(MediaPlayer player) {
-        mAnimDrawable.start();
-    }
-
-    @Override
-    public void onPlaying(String path, MediaPlayer player, long position) {
-
-    }
-
-    @Override
-    public void onPlayStop() {
-        mAnimDrawable.stop();
-        if (mVoiceManager != null) {
-            mVoiceManager.setOnPlayListener(null);
-        }
-    }
 }

@@ -38,7 +38,9 @@ public class CommentListDecoration extends RecyclerView.ItemDecoration {
             return;
         }
         final int offset = parent.getContext().getResources().getDimensionPixelSize(R.dimen.margin_middle);
-        if (position == adapter.getItemCount() - 1) {
+        if (position == adapter.getItemCount() - 1 && position == 2) {
+            outRect.set(offset, offset, offset, offset);
+        } else if (position == adapter.getItemCount() - 1) {
             outRect.set(offset, 0, offset, offset);
         } else if (position == 2) {
             outRect.set(offset, offset, offset, 0);
@@ -61,14 +63,12 @@ public class CommentListDecoration extends RecyclerView.ItemDecoration {
         mPaint.setStrokeWidth(1);
         final int offset = parent.getContext().getResources().getDimensionPixelSize(R.dimen.margin_middle);
         for (int i = 0; i < parent.getChildCount(); i++) {
-            if (i != adapter.getItemCount() - 1) {
-                View view = parent.getChildAt(i);
-                final int position = parent.getChildAdapterPosition(view);
-                if (position <= 1) {
-                    continue;
-                }
-                c.drawLine(view.getLeft() + offset, view.getBottom(), view.getRight() - offset, view.getBottom(), mPaint);
+            View view = parent.getChildAt(i);
+            final int position = parent.getChildAdapterPosition(view);
+            if (position <= 1 || position == adapter.getItemCount() - 1) {
+                continue;
             }
+            c.drawLine(view.getLeft() + offset, view.getBottom(), view.getRight() - offset, view.getBottom(), mPaint);
         }
     }
 }

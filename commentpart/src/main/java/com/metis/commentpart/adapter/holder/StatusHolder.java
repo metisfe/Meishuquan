@@ -24,6 +24,7 @@ import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.FlipperAdapter;
 import com.metis.commentpart.adapter.delegate.StatusDelegate;
 import com.metis.commentpart.manager.StatusManager;
+import com.metis.commentpart.module.ChannelItem;
 import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.Status;
 import com.metis.commentpart.widget.ViewFlippable;
@@ -76,6 +77,12 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                     com.metis.base.ActivityDispatcher.userActivity(context, user.userId);
                 }
             });
+        }
+        ChannelItem channelItem = status.channel;
+        if (channelItem != null) {
+            categoryTv.setText(channelItem.name);
+        } else {
+            categoryTv.setText(null);
         }
         contentTv.setVisibility(TextUtils.isEmpty(status.desc) ? View.GONE : View.VISIBLE);
         contentTv.setText(status.desc);

@@ -13,6 +13,7 @@ import com.metis.base.manager.DisplayManager;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
 import com.metis.base.utils.Log;
+import com.metis.base.utils.TimeUtils;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.delegate.CommentItemDelegate;
@@ -97,6 +98,7 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
         if (comment.supportCount > 0) {
             supportCountTv.setText(comment.supportCount + "");
         }
+        timeTv.setText(TimeUtils.formatStdTime(context, comment.commentDateTime));
         //TODO
         if (adapter.getItemCount() == 3 && position == 2) {
             itemView.setBackgroundResource(R.drawable.std_list_item_bg_nor);

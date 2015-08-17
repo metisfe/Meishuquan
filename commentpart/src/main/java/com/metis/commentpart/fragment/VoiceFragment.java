@@ -191,7 +191,7 @@ public class VoiceFragment extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void onPlayStart(MediaPlayer player) {
+    public void onPlayStart(VoiceManager manager, MediaPlayer player) {
         mVoiceBtn.setImageResource(R.drawable.ic_record_stop);
         mDurationTv.setText("00:00");
         mGiveUpTv.setEnabled(false);
@@ -199,12 +199,12 @@ public class VoiceFragment extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void onPlaying(String path, MediaPlayer player, long position) {
+    public void onPlaying(VoiceManager manager,String path, MediaPlayer player, long position) {
         mDurationTv.setText(TimeUtils.format(position));
     }
 
     @Override
-    public void onPlayStop() {
+    public void onPlayStop(VoiceManager manager) {
         toPlayIdle(mVoicePath, mDuration);
     }
 

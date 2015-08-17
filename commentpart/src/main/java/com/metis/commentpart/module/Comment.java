@@ -24,4 +24,5 @@ public class Comment implements Serializable {
     public CommentAttachment imgOrVoiceUrl;
     public int commentType;
     public UserMark userMark;
+
 }

@@ -15,11 +15,10 @@
         android:id="@+id/comment_list_item_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/comment_list_item_support"
-        android:layout_toRightOf="@+id/comment_list_item_name"
-        android:layout_alignTop="@+id/comment_list_item_name"
+        android:layout_alignBottom="@+id/comment_list_item_name"
         android:textSize="@dimen/size_h6"
         android:textColor="@color/color_c6"
+        android:layout_alignParentRight="true"
         />
     <ImageView
         android:id="@+id/comment_list_item_support"
@@ -27,6 +26,7 @@
         android:layout_height="18dp"
         android:src="@drawable/comment_thumb_up"
         android:layout_toLeftOf="@+id/comment_list_item_support_count"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/comment_list_item_support_count"
@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:textColor="@color/support_text_color_comment"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/comment_list_item_name"
@@ -44,7 +45,7 @@
         android:singleLine="true"
         android:layout_alignTop="@+id/comment_list_item_profile"
         android:layout_toRightOf="@+id/comment_list_item_profile"
-        android:visibility="gone"
+        android:layout_toLeftOf="@+id/comment_list_item_time"
         />
     <TextView
         android:id="@+id/comment_list_item_content"
@@ -54,6 +55,5 @@
         android:textSize="@dimen/size_h6"
         android:layout_toRightOf="@+id/comment_list_item_profile"
         android:layout_below="@+id/comment_list_item_name"
-        android:visibility="gone"
         />
 </RelativeLayout>

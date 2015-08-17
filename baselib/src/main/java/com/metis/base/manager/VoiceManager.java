@@ -62,7 +62,7 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
             isPlaying = true;
 
             if (mPlayListener != null) {
-                mPlayListener.onPlayStart(mp);
+                mPlayListener.onPlayStart(VoiceManager.this, mp);
             }
             mUpdateHandler.post(mPlayUpdateRunnable);
             /*final int length = mPlayListenerList.size();
@@ -103,7 +103,7 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         @Override
         public void run() {
             if (mPlayListener != null && isPlaying) {
-                mPlayListener.onPlaying(mPlayPath, mPlayer, mPlayer.getCurrentPosition());//TODO
+                mPlayListener.onPlaying(VoiceManager.this, mPlayPath, mPlayer, mPlayer.getCurrentPosition());//TODO
             }
             if (isPlaying) {
                 mUpdateHandler.postDelayed(this, 1000);
@@ -210,7 +210,7 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         mPlayPath = null;
         mUpdateHandler.removeCallbacks(mPlayUpdateRunnable);
         if (mPlayListener != null) {
-            mPlayListener.onPlayStop();
+            mPlayListener.onPlayStop(this);
         }
         /*final int length = mPlayListenerList.size();
         for (int i = 0; i < length; i++) {
@@ -278,8 +278,8 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
     }*/
 
     public static interface OnPlayListener {
-        public void onPlayStart (MediaPlayer player);
-        public void onPlaying (String targetPath, MediaPlayer mp, long position);
-        public void onPlayStop ();
+        public void onPlayStart (VoiceManager voiceManager, MediaPlayer player);
+        public void onPlaying (VoiceManager voiceManager, String targetPath, MediaPlayer mp, long position);
+        public void onPlayStop (VoiceManager voiceManager);
     }
 }

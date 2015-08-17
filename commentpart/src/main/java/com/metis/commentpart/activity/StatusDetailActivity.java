@@ -476,8 +476,9 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mReplyingComment = comment;
         mReplyingContainer.setVisibility(View.VISIBLE);
         User user = comment.user;
+        User me = AccountManager.getInstance(this).getMe();
         if (user != null) {
-            mReplyingInfoTv.setText(getString(R.string.replying_to, user.name));
+            mReplyingInfoTv.setText(getString(R.string.replying_to, me != null && me.userRole == User.USER_ROLE_TEACHER ? mStatus.user.name : user.name));
         }
     }
 

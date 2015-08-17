@@ -86,7 +86,8 @@ public class StatusManager extends AbsManager {
         }*/
         Access access = new Access();
         access.assessContent = content;
-        access.assessChannell = channelId;
+        access.setAssessChanell((int)channelId);
+        Log.v(TAG, "pushAssess=" + channelId);
         if (teacherIds != null && !teacherIds.isEmpty()) {
             final int length = teacherIds.size();
             access.teacherIds = new long[length];
@@ -317,7 +318,7 @@ public class StatusManager extends AbsManager {
 
     private class Access implements Serializable {
         public String assessContent;
-        public long assessChannell;
+        public int assessChanell;
         public long[] teacherIds;
         public ImageInfo assessImg;
 
@@ -327,14 +328,6 @@ public class StatusManager extends AbsManager {
 
         public void setAssessContent(String assessContent) {
             this.assessContent = assessContent;
-        }
-
-        public long getAssessChannell() {
-            return assessChannell;
-        }
-
-        public void setAssessChannell(long assessChannell) {
-            this.assessChannell = assessChannell;
         }
 
         public long[] getTeacherIds() {
@@ -351,6 +344,14 @@ public class StatusManager extends AbsManager {
 
         public void setAssessImg(ImageInfo assessImg) {
             this.assessImg = assessImg;
+        }
+
+        public int getAssessChanell() {
+            return assessChanell;
+        }
+
+        public void setAssessChanell(int assessChanell) {
+            this.assessChanell = assessChanell;
         }
     }
 

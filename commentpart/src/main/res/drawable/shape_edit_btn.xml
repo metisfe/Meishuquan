@@ -7,5 +7,5 @@
         android:dashWidth="8dp"
         android:width="1dp"
         />
-
+    <solid android:color="@android:color/transparent"/>
 </shape>

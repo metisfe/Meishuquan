@@ -22,4 +22,5 @@ public class Status implements Serializable{
     public String updateTime;
     public UserMark userMark;
     public List<Comment> teacherCommentList;
+    public ChannelItem channel;
 }
