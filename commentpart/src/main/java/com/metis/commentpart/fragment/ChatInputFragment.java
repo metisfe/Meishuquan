@@ -197,4 +197,10 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     public interface Controller {
         public void onSend (String content);
     }
+
+    public void setEnable (boolean enable) {
+        mInputEt.setEnabled(enable);
+        mVoiceIv.setEnabled(enable);
+        mSendIv.setEnabled(enable);
+    }
 }

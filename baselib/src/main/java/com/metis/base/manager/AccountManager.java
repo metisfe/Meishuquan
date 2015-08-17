@@ -30,6 +30,7 @@ public class AccountManager extends AbsManager {
             REGISTER = "v1.1/UserCenter/Register",//获取验证码;/*?phone={phone}&code={code}&pwd={pwd}&roleId={roleId}*/
             REQUEST_CODE = "v1.1/UserCenter/RegisterCode?phone={phone}&operation={operation}",
             URL_ATTENTION = "v1.1/Circle/FocusUserForGroup?userId={userId}&groupId={groupId}&session={session}",
+            URL_CANCEL_ATTENTION = "v1.1/Circle/CancelAttention?userId={userId}&session={session}",
             MOMENTSGROUPS = "v1.1/Circle/MyDiscussions?userid={userid}&type={type}&session={session}";//朋友圈分组信息;
 
     private User mMe = null;
@@ -114,7 +115,28 @@ public class AccountManager extends AbsManager {
         NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>(){}.getType());
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>() {
+                }.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
+            }
+        });
+    }
+
+    public void cancelAttention (long userId, final RequestCallback callback) {
+        if (mMe == null) {
+            //TODO
+            return;
+        }
+        String request = URL_CANCEL_ATTENTION
+                .replace("{userId}", userId + "")
+                .replace("{session}", mMe.getCookie());
+        NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>() {
+                }.getType());
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
                 }

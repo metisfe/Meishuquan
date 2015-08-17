@@ -44,6 +44,7 @@
         android:singleLine="true"
         android:layout_alignTop="@+id/comment_list_item_profile"
         android:layout_toRightOf="@+id/comment_list_item_profile"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/comment_list_item_content"
@@ -53,5 +54,6 @@
         android:textSize="@dimen/size_h6"
         android:layout_toRightOf="@+id/comment_list_item_profile"
         android:layout_below="@+id/comment_list_item_name"
+        android:visibility="gone"
         />
 </RelativeLayout>

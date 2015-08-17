@@ -149,6 +149,7 @@ public class VoiceFragment extends BaseFragment implements View.OnClickListener,
             mRecordListener.onRecording(targetPath, recorder, currentDuration);
         }
         mDurationTv.setText(TimeUtils.format(currentDuration));
+        mDurationTv.setTextColor(currentDuration > 50 * 1000 ? getResources().getColor(android.R.color.holo_red_light) : getResources().getColor(R.color.color_c2));
     }
 
     @Override
@@ -172,7 +173,7 @@ public class VoiceFragment extends BaseFragment implements View.OnClickListener,
         mVoiceBtn.setImageResource(R.drawable.ic_record_start);
         mVoicePath = null;
         mDuration = 0;
-        mDurationTv.setText("00:00");
+        mDurationTv.setText(R.string.voice_max_duration);
     }
 
     private void toPlayIdle(String targetPath, long durationInMills) {
@@ -182,6 +183,7 @@ public class VoiceFragment extends BaseFragment implements View.OnClickListener,
         mVoicePath = targetPath;
         mDuration = (int)durationInMills;
         mBtnContainer.setVisibility(View.VISIBLE);
+        mDurationTv.setTextColor(getResources().getColor(R.color.color_c2));
     }
 
     public void setVoiceDispatcher (VoiceDispatcher dispatcher) {

@@ -2,6 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/voice_btn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_record_start"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin_big"
+        android:padding="@dimen/padding_large"
+        android:background="@drawable/voice_btn_bg"
+        />
     <TextView
         android:id="@+id/voice_duration"
         android:layout_width="fill_parent"
@@ -9,26 +20,16 @@
         android:singleLine="true"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="00:00"
-        android:layout_marginTop="@dimen/margin_big"
-        />
-    <ImageView
-        android:id="@+id/voice_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_record_start"
-        android:layout_below="@+id/voice_duration"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_middle"
-        android:padding="@dimen/padding_large"
-        android:background="@drawable/voice_btn_bg"
+        android:text="@string/voice_max_duration"
+        android:layout_below="@+id/voice_btn"
+        android:textColor="@color/color_c2"
         />
     <LinearLayout
         android:id="@+id/btn_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/voice_btn"
+        android:layout_below="@+id/voice_duration"
         android:visibility="invisible"
         >
         <TextView

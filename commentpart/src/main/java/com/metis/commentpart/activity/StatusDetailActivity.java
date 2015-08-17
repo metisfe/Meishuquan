@@ -167,17 +167,19 @@ public class StatusDetailActivity extends TitleBarActivity implements
 
         mListAdapter.addDataItem(mTabDelegate);
         mListAdapter.notifyDataSetChanged();
-
+        mChatFragment.setEnable(false);
         User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
             mSrl.setRefreshing(false);
             //TODO
             return;
         }
+
         StatusManager.getInstance(this).getCommentList(mStatus.id, me.getCookie(), new RequestCallback<CommentCollection>() {
             @Override
             public void callback(ReturnInfo<CommentCollection> returnInfo, String callbackId) {
                 mSrl.setRefreshing(false);
+                mChatFragment.setEnable(returnInfo.isSuccess());
                 if (returnInfo.isSuccess()) {
                     CommentCollection collection = returnInfo.getData();
                     List<TeacherComment> teacherList = collection.teacherCommentList;
@@ -462,7 +464,6 @@ public class StatusDetailActivity extends TitleBarActivity implements
     @Override
     public void onClick(View v, Comment comment, Status status) {
         replyingComment(comment);
-        Toast.makeText(this, "orgcomment=" + comment.content, Toast.LENGTH_SHORT).show();
         mChatFragment.askToInput();
     }
 

@@ -23,6 +23,8 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
 
     private static final String TAG = VoiceManager.class.getSimpleName();
 
+    private static final int MAX_RECORD_DURATION = 60 * 1000;
+
     private static VoiceManager sManager = null;
 
     public static synchronized VoiceManager getInstance (Context context) {
@@ -58,10 +60,11 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         public void onPrepared(MediaPlayer mp) {
             mp.start();
             isPlaying = true;
-            mUpdateHandler.postDelayed(mPlayUpdateRunnable, 1000);
+
             if (mPlayListener != null) {
                 mPlayListener.onPlayStart(mp);
             }
+            mUpdateHandler.post(mPlayUpdateRunnable);
             /*final int length = mPlayListenerList.size();
             for (int i = 0; i < length; i++) {
                 OnPlayListener listener = mPlayListenerList.get(i);
@@ -82,8 +85,13 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
     private Runnable mRecordUpdateRunnable = new Runnable() {
         @Override
         public void run() {
+            long currentDuration = SystemClock.elapsedRealtime() - mStartTime;
+            if (currentDuration > MAX_RECORD_DURATION && isRecording) {
+                stopRecord();
+                return;
+            }
             if (mRecordListener != null && isRecording) {
-                mRecordListener.onRecording(mRecordPath, mRecorder, SystemClock.elapsedRealtime() - mStartTime);
+                mRecordListener.onRecording(mRecordPath, mRecorder, currentDuration);
             }
             if (isRecording) {
                 mUpdateHandler.postDelayed(this, 1000);
@@ -163,10 +171,11 @@ public class VoiceManager extends AbsManager implements AudioManager.OnAudioFocu
         mRecorder.start();
         isRecording = true;
         mStartTime = SystemClock.elapsedRealtime();
-        mUpdateHandler.postDelayed(mRecordUpdateRunnable, 1000);
+
         if (mRecordListener != null) {
             mRecordListener.onRecordStart(mRecordPath);
         }
+        mUpdateHandler.post(mRecordUpdateRunnable);
     }
 
     public void startPlay (String path) {

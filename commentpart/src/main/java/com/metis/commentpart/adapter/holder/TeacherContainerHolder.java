@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.manager.AccountManager;
@@ -95,9 +96,12 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
                 } else if (teacher.relationType == Teacher.RELATION_TYPE_I_WAS_FOLLOWED || teacher.relationType == Teacher.RELATION_TYPE_NONE) {
                     actionBtn.setSelected(false);
                     actionBtn.setText(R.string.btn_focus);
-                    actionBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+
+                }
+                actionBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (teacher.relationType == Teacher.RELATION_TYPE_I_WAS_FOLLOWED || teacher.relationType == Teacher.RELATION_TYPE_NONE) {
                             AccountManager.getInstance(context).attention(user.userId, 1, new RequestCallback() {
                                 @Override
                                 public void callback(ReturnInfo returnInfo, String callbackId) {
@@ -108,13 +112,32 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
                                             teacher.relationType = Teacher.RELATION_TYPE_I_FOCUS;
                                         }
                                         adapter.notifyDataSetChanged();
+                                    } else {
+                                        Toast.makeText(context, context.getString(R.string.toast_attention_failed, returnInfo.getMessage()), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        } else {
+                            AccountManager.getInstance(context).cancelAttention(user.userId, new RequestCallback() {
+                                @Override
+                                public void callback(ReturnInfo returnInfo, String callbackId) {
+                                    if (returnInfo.isSuccess()) {
+                                        if (teacher.relationType == Teacher.RELATION_TYPE_EACH) {
+                                            teacher.relationType = Teacher.RELATION_TYPE_I_WAS_FOLLOWED;
+                                        } else if (teacher.relationType == Teacher.RELATION_TYPE_I_FOCUS) {
+                                            teacher.relationType = Teacher.RELATION_TYPE_NONE;
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        Toast.makeText(context, context.getString(R.string.toast_cancel_attention_failed, returnInfo.getMessage
+                                                ()), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                         }
-                    });
-                }
 
+                    }
+                });
                 mTeacherContainer.addView(view);
                 if (i < length - 1) {
                     View divider = new View (context);

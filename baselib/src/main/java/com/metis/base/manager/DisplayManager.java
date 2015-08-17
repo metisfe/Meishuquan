@@ -2,6 +2,7 @@ package com.metis.base.manager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -117,7 +118,11 @@ public class DisplayManager extends AbsManager {
                 .cloneFrom(mDefaultOptions)
                 .displayer(new SquareRoundDisplayer(profileSize, radius))
                 .build();
-        mImageLoader.displayImage(uri, iv, options);
+        if (TextUtils.isEmpty(uri)) {
+            iv.setImageResource(R.drawable.profile_default);
+        } else {
+            mImageLoader.displayImage(uri, iv, options);
+        }
     }
 
     public DisplayImageOptions getDefaultOptions () {

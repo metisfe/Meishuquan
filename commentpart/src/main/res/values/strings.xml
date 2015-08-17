@@ -43,11 +43,15 @@
     <string name="comment_item_reply_to_whom">%1$s 回复 %2$s</string>
 
     <string name="voice_to_short">录音时间太短</string>
+    <string name="voice_max_duration">录音时长只支持1分钟</string>
 
     <string name="btn_focus">+关注</string>
     <string name="btn_has_focused">已关注</string>
     <string name="btn_give_up">放弃</string>
     <string name="btn_send">发送</string>
+
+    <string name="toast_attention_failed">关注失败:%1$s</string>
+    <string name="toast_cancel_attention_failed">取消关注失败:%1$s</string>
 
     <string name="title_activity_fliter">筛选</string>
     <string name="title_activity_publish_status">发点评</string>
