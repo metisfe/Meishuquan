@@ -73,7 +73,7 @@ public class StatusImageActivity extends TitleBarActivity {
         Parcelable[] parcelables = getIntent().getParcelableArrayExtra(ActivityDispatcher.KEY_IMAGES);
         if (parcelables != null && parcelables.length > 0) {
             Status status = (Status)parcelables[0];
-            User user = status.user;
+            final User user = status.user;
             if (user != null) {
                 ProfileNameView profileNameView = new ProfileNameView(this);
                 profileNameView.setProfile(user.avatar, DisplayManager.getInstance(this).makeRoundDisplayImageOptions(
@@ -81,6 +81,12 @@ public class StatusImageActivity extends TitleBarActivity {
                 ));
                 profileNameView.setName(user.name);
                 getTitleBar().setCenterView(profileNameView);
+                profileNameView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ActivityDispatcher.userActivity(StatusImageActivity.this, user.userId);
+                    }
+                });
             }
         }
 

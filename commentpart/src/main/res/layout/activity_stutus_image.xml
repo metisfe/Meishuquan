@@ -21,6 +21,6 @@
         android:padding="@dimen/padding_middle"
         android:text="@string/btn_save"
         android:textColor="@android:color/white"
-        android:background="@drawable/btn_save"
+        android:background="@drawable/float_btn_bg"
         />
 </RelativeLayout>
