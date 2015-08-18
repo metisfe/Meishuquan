@@ -7,6 +7,7 @@
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin_middle"
         >
         <ImageView
             android:id="@+id/item_profile"
@@ -29,11 +30,11 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_below="@+id/item_profile_container"
-        android:layout_marginTop="@dimen/margin_middle"
         android:textSize="@dimen/size_h6"
         android:textColor="@android:color/black"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:text="ABC"
+        android:layout_alignLeft="@+id/item_profile_container"
+        android:layout_alignParentRight="@+id/item_profile_container"
         />
 </RelativeLayout>

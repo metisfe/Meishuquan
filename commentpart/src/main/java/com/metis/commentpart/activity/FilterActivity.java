@@ -133,6 +133,7 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
         stateLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         mStateRv.setLayoutManager(stateLayoutManager);
         mStateRv.setAdapter(mStateAdapter);
+        mStateRv.setHasFixedSize(true);
         mStateAdapter.setOnFilterChangedListener(this);
 
     }
@@ -142,6 +143,7 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
         categoryLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         categoryLayoutManager.setSpanSizeLookup(new FilterSpanSizeLookup());
         mCategoryRv.setLayoutManager(categoryLayoutManager);
+        mCategoryRv.setHasFixedSize(true);
         List<CategoryFilter> categoryFilters = new ArrayList<CategoryFilter>();
         ChannelItem allCategoryItem = new ChannelItem();
         allCategoryItem.channelId = 0;
@@ -163,6 +165,7 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
         areaLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         areaLayoutManager.setSpanSizeLookup(new FilterSpanSizeLookup());
         mAreaRv.setLayoutManager(areaLayoutManager);
+        mAreaRv.setHasFixedSize(true);
         AssessCRegionItem allArea = new AssessCRegionItem();
         allArea.codeid = 0;
         allArea.cityName = getString(R.string.filter_all);

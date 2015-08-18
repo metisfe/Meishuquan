@@ -9,12 +9,10 @@ import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Footer;
-import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.delegate.DividerDelegate;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.commentpart.R;
-import com.metis.commentpart.adapter.StatusAdapter;
 import com.metis.commentpart.adapter.TeacherCbAdapter;
 import com.metis.commentpart.adapter.TeacherSelectedAdapter;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
@@ -51,7 +49,7 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invite);
+        setContentView(R.layout.activity_teacher_invite);
 
         mAccountManager = AccountManager.getInstance(this);
         mTeacherManager = TeacherManager.getInstance(this);

@@ -18,6 +18,7 @@ import com.metis.base.manager.DisplayManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
+import com.metis.base.utils.TimeUtils;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
@@ -40,7 +41,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
 
     public ImageView statusProfileIv, statusThumbIv;
     public TextView nameTv, locationTv, categoryTv,
-            stateTv, contentTv, quickCommentBtn;
+            stateTv, contentTv, quickCommentBtn, timeTv;
     public TextView thumbUpCountTv, commentCountTv;
     public AdapterViewFlipper adapterViewFlipper = null;
 
@@ -53,6 +54,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         locationTv = (TextView)itemView.findViewById(R.id.status_location);
         categoryTv = (TextView)itemView.findViewById(R.id.status_category);
         stateTv = (TextView)itemView.findViewById(R.id.status_state);
+        timeTv = (TextView)itemView.findViewById(R.id.status_time);
         contentTv = (TextView)itemView.findViewById(R.id.status_text);
         statusThumbIv = (ImageView)itemView.findViewById(R.id.status_thumb);
         thumbUpBtn = itemView.findViewById(R.id.status_thumb_up_btn);
@@ -66,6 +68,9 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
     @Override
     public void bindData(final Context context, final StatusDelegate statusDelegate, final RecyclerView.Adapter adapter, int position) {
         final Status status = statusDelegate.getSource();
+        if (status == null) {
+            return;
+        }
         final User user = status.user;
         final User me = AccountManager.getInstance(context).getMe();
         if (user != null) {
@@ -114,7 +119,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             statusThumbIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    com.metis.base.ActivityDispatcher.imagePreviewActivity(context, status.img);
+                    ActivityDispatcher.imagePreviewActivity(context, status);
                 }
             });
         } else {
@@ -164,6 +169,8 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         });
         List<Comment> commentList = statusDelegate.getSource().teacherCommentList;
         stateTv.setText(commentList != null && commentList.size() > 0 ? context.getString(R.string.status_item_has_commented) : null);
+        stateTv.setVisibility(commentList != null && commentList.size() > 0 ? View.VISIBLE : View.GONE);
+        timeTv.setText(TimeUtils.formatStdTime(context, status.createTime));
         if (commentList != null && commentList.size() > 1 && !statusDelegate.isInDetails()) {
             adapterViewFlipper.setVisibility(View.VISIBLE);
             adapterViewFlipper.setAdapter(new FlipperAdapter(context, commentList));

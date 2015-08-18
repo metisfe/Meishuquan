@@ -54,17 +54,33 @@
                 android:layout_alignBottom="@+id/status_profile"
                 android:layout_toRightOf="@+id/status_profile"
                 />
-            <TextView
-                android:id="@+id/status_state"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/margin_big"
+                android:orientation="vertical"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/size_h6"
-                android:textColor="@color/color_c1"
-                android:text="已点评"
-                />
+                android:layout_marginRight="@dimen/margin_big"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                >
+                <TextView
+                    android:id="@+id/status_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/size_h6"
+                    android:textColor="@color/color_c1"
+                    android:singleLine="true"
+                    />
+                <TextView
+                    android:id="@+id/status_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/size_h6"
+                    android:textColor="@color/color_c6"
+                    android:singleLine="true"
+                    />
+            </LinearLayout>
+
         </RelativeLayout>
         <TextView
             android:id="@+id/status_text"

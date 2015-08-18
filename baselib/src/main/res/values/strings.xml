@@ -15,5 +15,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_image_preview">ImagePreviewActivity</string>
 
+    <string name="time_just_now">刚刚</string>
     <string name="time_minutes_age">%1$d分钟前</string>
 </resources>

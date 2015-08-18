@@ -73,7 +73,7 @@ public class TeacherManager extends AbsManager {
     }
 
     public void selectTeacher (TeacherCbDelegate delegate) {
-        if (mSelectedTeachers.size() > MAX_SELECTED_COUNT) {
+        if (mSelectedTeachers.size() >= MAX_SELECTED_COUNT) {
             return;
         }
         if (hasSelected(delegate)) {

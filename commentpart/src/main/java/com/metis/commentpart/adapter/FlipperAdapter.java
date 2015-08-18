@@ -2,6 +2,8 @@ package com.metis.commentpart.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +63,7 @@ public class FlipperAdapter extends BaseAdapter {
         } else {
             holder = (FlipperHolder)convertView.getTag();
         }
+
         final Comment comment = mCommentList.get(position);
         if (comment.commentType == Comment.COMMENT_TYPE_TEXT) {
             holder.flipperTv.setText(comment.content);
@@ -91,6 +94,10 @@ public class FlipperAdapter extends BaseAdapter {
         User user = comment.user;
         if (user != null) {
             DisplayManager.getInstance(mContext).displayProfile(user.avatar, holder.profileIv);
+        }
+        Drawable drawable = holder.flipperVoiceIv.getDrawable();
+        if (drawable != null && drawable instanceof AnimationDrawable) {
+            ((AnimationDrawable)drawable).stop();
         }
         return convertView;
     }

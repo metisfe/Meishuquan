@@ -25,7 +25,7 @@ public class TimeUtils {
     public static final SimpleDateFormat MONTH_DAY_FORMAT = new SimpleDateFormat("MM-dd");
 
     public static String format (long time) {
-        return DATE_FORMAT.format(new Date(time));
+        return (time / 1000) + "''";
     }
 
     public static String formatStdTime (Context context, String time) {

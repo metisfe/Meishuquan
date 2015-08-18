@@ -407,11 +407,11 @@ public class StatusDetailActivity extends TitleBarActivity implements
     }
 
     @Override
-    public void onSend(String content) {
+    public boolean onSend(String content) {
         final User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
             //TODO
-            return;
+            return false;
         }
         final Comment comment = me.userRole == User.USER_ROLE_TEACHER ? mCardAdapter.getMyCardHeader(me.userId) : mReplyingComment;
         int commentSource = 1;/*CommentFactory.getCommentSource(me);*/
@@ -459,6 +459,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
                 dismissComment();
             }
         });
+        return me != null && me.userRole == User.USER_ROLE_TEACHER;
     }
 
     @Override

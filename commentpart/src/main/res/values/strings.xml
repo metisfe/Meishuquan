@@ -49,6 +49,10 @@
     <string name="btn_has_focused">已关注</string>
     <string name="btn_give_up">放弃</string>
     <string name="btn_send">发送</string>
+    <string name="btn_save">保存</string>
+
+    <string name="toast_saved_at">保存成功:%1$s</string>
+    <string name="toast_save_failed">保存失败</string>
 
     <string name="toast_attention_failed">关注失败:%1$s</string>
     <string name="toast_cancel_attention_failed">取消关注失败:%1$s</string>
@@ -58,4 +62,8 @@
     <string name="title_activity_invite">选择老师</string>
     <string name="title_activity_reply">评论</string>
     <string name="title_activity_teacher_list">TeacherListActivity</string>
+    <string name="title_activity_stutus_image">StutusImageActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

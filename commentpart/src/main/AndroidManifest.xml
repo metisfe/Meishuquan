@@ -8,8 +8,7 @@
         <activity
             android:name=".activity.StatusDetailActivity"
             android:label="@string/title_activity_comment_detail"
-            android:windowSoftInputMode="adjustPan"
-            >
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name=".activity.FilterActivity"
@@ -26,6 +25,10 @@
         <activity
             android:name=".activity.TeacherListActivity"
             android:label="@string/title_activity_teacher_list" >
+        </activity>
+        <activity
+            android:name=".activity.StatusImageActivity"
+            android:label="@string/title_activity_stutus_image" >
         </activity>
     </application>
 

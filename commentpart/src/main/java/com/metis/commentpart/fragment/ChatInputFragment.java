@@ -38,6 +38,8 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     private VoiceFragment mVoiceFragment = null;
     private VoiceFragment.VoiceDispatcher mDispatcher = null;
 
+    private boolean mNeedShowVoiceBtnWhenClear = false;
+
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -55,8 +57,8 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
                 mVoiceIv.setVisibility(View.GONE);
                 mSendIv.setVisibility(View.VISIBLE);
             } else {
-                mVoiceIv.setVisibility(View.VISIBLE);
-                mSendIv.setVisibility(View.GONE);
+                mVoiceIv.setVisibility(mNeedShowVoiceBtnWhenClear ? View.VISIBLE : View.GONE);
+                mSendIv.setVisibility(mNeedShowVoiceBtnWhenClear ? View.GONE : View.VISIBLE);
             }
         }
     };
@@ -106,10 +108,11 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
                 Toast.makeText(getActivity(), R.string.status_detail_input_not_empty, Toast.LENGTH_SHORT).show();
                 return;
             }
-            mInputEt.setText("");
+
             if (mController != null) {
-                mController.onSend(content);
+                mNeedShowVoiceBtnWhenClear = mController.onSend(content);
             }
+            mInputEt.setText("");
         }
     }
 
@@ -195,7 +198,12 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     }
 
     public interface Controller {
-        public void onSend (String content);
+        /**
+         *
+         * @param content
+         * @return true if showVoiceBtn
+         */
+        public boolean onSend (String content);
     }
 
     public void setEnable (boolean enable) {

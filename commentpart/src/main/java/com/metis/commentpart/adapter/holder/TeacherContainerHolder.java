@@ -56,7 +56,8 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
             mTeacherContainer.removeAllViews();
             final int length = teacherList.size();
             LayoutInflater inflater = LayoutInflater.from(context);
-            for (int i = 0; i < length; i++) {
+            final int size = Math.min(length, 3);
+            for (int i = 0; i < size; i++) {
                 final Teacher teacher = teacherList.get(i);
                 if (teacher == null) {
                     continue;
@@ -71,12 +72,14 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
                 TextView extraInfoTv = (TextView)view.findViewById(R.id.teacher_extra_info);
                 TextView actionBtn = (TextView)view.findViewById(R.id.item_btn);
                 DisplayManager.getInstance(context).displayProfile(teacher.user.avatar, profileIv);
-                view.setOnClickListener(new View.OnClickListener() {
+                View.OnClickListener listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ActivityDispatcher.userActivity(context, user.userId);
                     }
-                });
+                };
+                profileIv.setOnClickListener(listener);
+                nameTv.setOnClickListener(listener);
                 nameTv.setText(user.name);
                 StringBuilder builder = new StringBuilder();
                 if (teacher.commentCount > 0) {
@@ -139,7 +142,7 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
                     }
                 });
                 mTeacherContainer.addView(view);
-                if (i < length - 1) {
+                if (i < size - 1) {
                     View divider = new View (context);
                     divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 1));
                     divider.setBackgroundColor(context.getResources().getColor(R.color.color_c6));
