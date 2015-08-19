@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.fragment.ImageChooseDialogFragment;
 import com.metis.base.manager.AccountManager;
+import com.metis.base.manager.DisplayManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.manager.UploadManager;
 import com.metis.base.module.ImageInfo;
@@ -39,6 +40,7 @@ import com.metis.commentpart.module.AssessChannel;
 import com.metis.commentpart.module.ChannelItem;
 import com.metis.commentpart.module.Teacher;
 import com.metis.msnetworklib.contract.ReturnInfo;
+import com.nostra13.universalimageloader.core.download.ImageDownloader;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -255,7 +257,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE_INVITE:
@@ -266,7 +268,8 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                     ContentResolver cr = getContentResolver();
                     try {
                         mBitmap = BitmapFactory.decodeStream(cr.openInputStream(data.getData()));
-                        mImageAdd.setImageBitmap(mBitmap);
+                        DisplayManager.getInstance(PublishStatusActivity.this).display(data.getDataString(), mImageAdd);
+                        //mImageAdd.setImageBitmap(mBitmap);
                         mImageDelIv.setVisibility(View.VISIBLE);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -279,8 +282,9 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                 if (resultCode == RESULT_OK) {
                     recycleBitmap();
                     Log.v(TAG, "PATH=" + mImageChooseDialogFragment.getLastCapturePath());
-                    mBitmap = BitmapFactory.decodeFile(mImageChooseDialogFragment.getLastCapturePath());
-                    mImageAdd.setImageBitmap(mBitmap);
+                    String path = mImageChooseDialogFragment.getLastCapturePath();
+                    mBitmap = BitmapFactory.decodeFile(path);
+                    DisplayManager.getInstance(PublishStatusActivity.this).display(ImageDownloader.Scheme.FILE.wrap(mImageChooseDialogFragment.getLastCapturePath()), mImageAdd);
                     mImageDelIv.setVisibility(View.VISIBLE);
                 }
                 break;
