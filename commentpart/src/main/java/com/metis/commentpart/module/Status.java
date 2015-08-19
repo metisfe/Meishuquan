@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/8/3.
  */
-public class Status implements Serializable, ImagePreviewable {
+public class Status implements Serializable {
     public long id;
     public User user;
     public int commentCount;
@@ -28,46 +28,4 @@ public class Status implements Serializable, ImagePreviewable {
     public List<Comment> teacherCommentList;
     public ChannelItem channel;
 
-    @Override
-    public String getThumbnail() {
-        if (img != null) {
-            return img.imgThumbnailUrl;
-        }
-        return null;
-    }
-
-    @Override
-    public String getUrl() {
-        if (img != null) {
-            return img.imgUrl;
-        }
-        return null;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(user, 1);
-        dest.writeParcelable(img, 2);
-    }
-
-    public static final Parcelable.Creator<Status> CREATOR
-            = new Parcelable.Creator<Status>() {
-        public Status createFromParcel(Parcel in) {
-            return new Status(in);
-        }
-
-        public Status[] newArray(int size) {
-            return new Status[size];
-        }
-    };
-
-    private Status(Parcel in) {
-        user = in.readParcelable(User.class.getClassLoader());
-        img = in.readParcelable(ImageInfo.class.getClassLoader());
-    }
 }

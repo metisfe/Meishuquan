@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.metis.base.module.User;
 import com.metis.base.widget.ImagePreviewable;
 import com.metis.commentpart.activity.FilterActivity;
 import com.metis.commentpart.activity.PublishStatusActivity;
@@ -22,7 +23,8 @@ public class ActivityDispatcher {
             KEY_STATUS = "key_status",
             KEY_COMMENT = "key_comment",
             KEY_MODE = "key_mode",
-            KEY_REPLY_TYPE = "key_reply_type";
+            KEY_REPLY_TYPE = "key_reply_type",
+            KEY_USER = "user";
 
     public static void statusDetail (Context context, Status status) {
         Intent it = new Intent (context, StatusDetailActivity.class);
@@ -47,9 +49,10 @@ public class ActivityDispatcher {
         context.startActivity(it);
     }
 
-    public static void imagePreviewActivity (Context context, ImagePreviewable[] imagePreviewables, int index) {
+    public static void imagePreviewActivity (Context context, User user, ImagePreviewable[] imagePreviewables, int index) {
         try {
             Intent it = new Intent(context, StatusImageActivity.class);
+            it.putExtra(KEY_USER, (Serializable)user);
             it.putExtra(com.metis.base.ActivityDispatcher.KEY_IMAGES, imagePreviewables);
             it.putExtra(com.metis.base.ActivityDispatcher.KEY_INDEX, index);
             it.addCategory(Intent.CATEGORY_DEFAULT);
@@ -60,14 +63,14 @@ public class ActivityDispatcher {
         }
     }
 
-    public static void imagePreviewActivity (Context context, ImagePreviewable[] imagePreviewables) {
-        imagePreviewActivity(context, imagePreviewables, 0);
+    public static void imagePreviewActivity (Context context, User user, ImagePreviewable[] imagePreviewables) {
+        imagePreviewActivity(context, user, imagePreviewables, 0);
     }
 
-    public static void imagePreviewActivity (Context context, ImagePreviewable imagePreviewables) {
+    public static void imagePreviewActivity (Context context, User user, ImagePreviewable imagePreviewables) {
         ImagePreviewable[] array = new ImagePreviewable[1];
         array[0] = imagePreviewables;
-        imagePreviewActivity(context, array);
+        imagePreviewActivity(context, user, array);
     }
 
 

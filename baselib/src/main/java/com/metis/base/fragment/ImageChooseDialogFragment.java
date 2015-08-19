@@ -1,6 +1,7 @@
 package com.metis.base.fragment;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
+
+import java.io.File;
 
 /**
  * Created by Beak on 2015/7/29.
@@ -21,6 +24,8 @@ public class ImageChooseDialogFragment extends DialogFragment implements View.On
             REQUEST_CODE_GET_IMAGE_CAMERA = 10086;
 
     private View mGalleryBtn, mCameraBtn;
+
+    private String mPath = null;
 
     @Nullable
     @Override
@@ -46,8 +51,13 @@ public class ImageChooseDialogFragment extends DialogFragment implements View.On
         if (id == mGalleryBtn.getId()) {
             ActivityDispatcher.getImage(getActivity(), REQUEST_CODE_GET_IMAGE_GALLERY);
         } else if (id == mCameraBtn.getId()) {
-            ActivityDispatcher.captureImage(getActivity(), REQUEST_CODE_GET_IMAGE_CAMERA);
+            mPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + System.currentTimeMillis() + ".jpg";
+            ActivityDispatcher.captureImage(getActivity(), REQUEST_CODE_GET_IMAGE_CAMERA, mPath);
         }
         dismiss();
+    }
+
+    public String getLastCapturePath () {
+        return mPath;
     }
 }

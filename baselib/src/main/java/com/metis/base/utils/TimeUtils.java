@@ -37,10 +37,12 @@ public class TimeUtils {
             Date date = STD_DATE_FORMAT.parse(after);
             final long now = System.currentTimeMillis();
             long diff = now - date.getTime();
-            if (diff <  HOUR_LONG) {
+            if (diff < MINUTE_LONG) {
+                return context.getString(R.string.time_just_now);
+            } else if (diff <  HOUR_LONG) {
                 return context.getString(R.string.time_minutes_age, diff / (1000 * 60));
             } else if (diff < DAY_LONG) {
-                return HOUR_MINUTE_FORMAT.format(date);
+                return context.getString(R.string.time_hours_ago, diff / HOUR_LONG);
             } else {
                 return MONTH_DAY_FORMAT.format(date);
             }

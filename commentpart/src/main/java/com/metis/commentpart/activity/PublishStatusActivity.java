@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +30,6 @@ import com.metis.base.module.User;
 import com.metis.base.utils.FileUtils;
 import com.metis.base.utils.Log;
 import com.metis.base.utils.SystemUtils;
-import com.metis.commentpart.ActivityDispatcher;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.TeacherSelectedAdapter;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
@@ -70,6 +68,8 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
 
     private ChannelItem mCurrentChannel = null;
     private int mCurrentChannelIndex = -1;
+
+    private ImageChooseDialogFragment mImageChooseDialogFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +144,7 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
                 }
                 if (mBitmap != null) {
                     final Bitmap compressedBmp = FileUtils.compressBitmap(mBitmap, 1000);
+                    Log.v(TAG, "compressedBmp.width=" + compressedBmp.getWidth() + " compressedBmp.height=" + compressedBmp.getHeight());
                     UploadManager.getInstance(PublishStatusActivity.this).uploadBitmap(
                             compressedBmp,
                             AccountManager.getInstance(PublishStatusActivity.this).getMe().getCookie(),
@@ -227,8 +228,8 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
     public void onClick(View v) {
         final int id = v.getId();
         if (id == mImageAdd.getId()) {
-            ImageChooseDialogFragment fragment = new ImageChooseDialogFragment();
-            fragment.show(getSupportFragmentManager(), TAG);
+            mImageChooseDialogFragment = new ImageChooseDialogFragment();
+            mImageChooseDialogFragment.show(getSupportFragmentManager(), TAG);
         }  else if (id == mImageDelIv.getId()) {
             mImageAdd.setImageDrawable(null);
             recycleBitmap();
@@ -273,8 +274,8 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
             case ImageChooseDialogFragment.REQUEST_CODE_GET_IMAGE_CAMERA:
                 if (resultCode == RESULT_OK) {
                     recycleBitmap();
-                    Bundle bundle = data.getExtras();
-                    mBitmap = (Bitmap)bundle.get("data");
+                    Log.v(TAG, "PATH=" + mImageChooseDialogFragment.getLastCapturePath());
+                    mBitmap = BitmapFactory.decodeFile(mImageChooseDialogFragment.getLastCapturePath());
                     mImageAdd.setImageBitmap(mBitmap);
                     mImageDelIv.setVisibility(View.VISIBLE);
                 }

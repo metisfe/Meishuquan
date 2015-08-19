@@ -3,10 +3,14 @@ package com.metis.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.metis.base.widget.ImagePreviewable;
+
+import java.io.File;
 
 /**
  * Created by Beak on 2015/7/16.
@@ -63,8 +67,9 @@ public class ActivityDispatcher {
         context.startActivityForResult(it, requestCode);
     }
 
-    public static void captureImage (Activity activity, int requestCode) {
+    public static void captureImage (Activity activity, int requestCode, String path) {
         Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        it.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(path)));
         activity.startActivityForResult(it, requestCode);
     }
 

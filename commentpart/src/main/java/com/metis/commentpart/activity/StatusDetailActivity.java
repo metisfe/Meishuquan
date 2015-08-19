@@ -90,7 +90,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
 
         mStatus = (Status)getIntent().getSerializableExtra(ActivityDispatcher.KEY_STATUS);
         mMode = getIntent().getIntExtra(ActivityDispatcher.KEY_MODE, MODE_NORMAL);
-
+        Log.v(TAG, "mStatus.desc=" + mStatus.desc);
         User me = AccountManager.getInstance(this).getMe();
 
         mReplyingContainer = (RelativeLayout)findViewById(R.id.replying_container);

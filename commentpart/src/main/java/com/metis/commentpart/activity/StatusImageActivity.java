@@ -15,6 +15,7 @@ import com.metis.base.activity.BaseActivity;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.fragment.MultiImagePreviewFragment;
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.module.ImageInfo;
 import com.metis.base.module.User;
 import com.metis.base.utils.FileUtils;
 import com.metis.base.widget.ImagePreviewable;
@@ -72,8 +73,8 @@ public class StatusImageActivity extends TitleBarActivity {
         });
         Parcelable[] parcelables = getIntent().getParcelableArrayExtra(ActivityDispatcher.KEY_IMAGES);
         if (parcelables != null && parcelables.length > 0) {
-            Status status = (Status)parcelables[0];
-            final User user = status.user;
+            ImageInfo status = (ImageInfo)parcelables[0];
+            final User user = (User)getIntent().getSerializableExtra(com.metis.commentpart.ActivityDispatcher.KEY_USER);
             if (user != null) {
                 ProfileNameView profileNameView = new ProfileNameView(this);
                 profileNameView.setProfile(user.avatar, DisplayManager.getInstance(this).makeRoundDisplayImageOptions(
