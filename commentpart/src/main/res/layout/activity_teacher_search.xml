@@ -2,11 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HelloActivity">
-    <ImageView
+    tools:context="com.metis.commentpart.activity.TeacherSearchActivity"
+    android:background="#dcdcdcdc"
+    >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/teacher_list_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/hello"
-        android:scaleType="centerCrop"
         />
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
@@ -37,7 +38,10 @@ public class TeacherCbHolder extends TeacherHolder<TeacherCbDelegate> {
                 if (teacherDelegate.isChecked()) {
                     TeacherManager.getInstance(context).unSelectTeacher(teacherDelegate);
                 } else {
-                    TeacherManager.getInstance(context).selectTeacher(teacherDelegate);
+                    boolean success = TeacherManager.getInstance(context).selectTeacher(teacherDelegate);
+                    if (!success) {
+                        Toast.makeText(context, R.string.toast_max_is_3_or_has_selected, Toast.LENGTH_SHORT).show();
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

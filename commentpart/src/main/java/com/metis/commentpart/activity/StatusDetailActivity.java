@@ -390,8 +390,10 @@ public class StatusDetailActivity extends TitleBarActivity implements
                         public void callback(ReturnInfo<Comment> returnInfo, String callbackId) {
                             if (!returnInfo.isSuccess()) {
                                 //TODO
+                                Toast.makeText(StatusDetailActivity.this, getString(R.string.toast_comment_failed, returnInfo.getMessage()), Toast.LENGTH_SHORT).show();
                                 return;
                             }
+                            Toast.makeText(StatusDetailActivity.this, R.string.toast_comment_success, Toast.LENGTH_SHORT).show();
                             Comment newComment = returnInfo.getData();
                             Log.v(TAG, "pushComment newComment=" + newComment);
                             mCardAdapter.addCommentFollow(mStatus, comment, newComment);
@@ -440,9 +442,10 @@ public class StatusDetailActivity extends TitleBarActivity implements
             @Override
             public void callback(ReturnInfo<Comment> returnInfo, String callbackId) {
                 if (!returnInfo.isSuccess()) {
-                    //TODO
+                    Toast.makeText(StatusDetailActivity.this, getString(R.string.toast_comment_failed, returnInfo.getMessage()), Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Toast.makeText(StatusDetailActivity.this, R.string.toast_comment_success, Toast.LENGTH_SHORT).show();
                 if (useCommentSource == CommentFactory.COMMENT_SOURCE_TEACHER) {
                     Comment newComment = returnInfo.getData();
                     Log.v(TAG, "pushComment newComment=" + newComment);

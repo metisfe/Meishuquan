@@ -21,6 +21,7 @@ import com.metis.commentpart.module.Teacher;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -106,7 +107,10 @@ public class StatusManager extends AbsManager {
 
                     @Override
                     public void onResponse(String result, String requestId) {
-
+                        ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>(){}.getType());
+                        if (callback != null) {
+                            callback.callback(returnInfo, requestId);
+                        }
                     }
                 });
         /*return NetProxy.getInstance(getContext()).doPostRequest(
@@ -125,7 +129,7 @@ public class StatusManager extends AbsManager {
     public String getAssessTeacher (int softType, String queryString, String session, int index, final RequestCallback<List<Teacher>> callback) {
         String request = REQUEST_GET_ASSESS_TEACHER
                 .replace("{softType}", softType + "")
-                .replace("{querystring}", queryString)
+                .replace("{querystring}", URLEncoder.encode(queryString))
                 .replace("{session}", session)
                 .replace("{index}", index + "");
         return NetProxy.getInstance(getContext()).doGetRequest(

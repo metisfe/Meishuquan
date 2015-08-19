@@ -202,7 +202,11 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
         StatusManager.getInstance(PublishStatusActivity.this).publishAssess(content, mCurrentChannel.channelId, teachersId, thumbnail, me.getCookie(), new RequestCallback() {
             @Override
             public void callback(ReturnInfo returnInfo, String callbackId) {
-                Toast.makeText(PublishStatusActivity.this, returnInfo.isSuccess() ? R.string.publish_toast_publish_success : R.string.publish_toast_publish_failed, Toast.LENGTH_SHORT).show();
+                String tip = getString(R.string.publish_toast_publish_success);
+                if (!returnInfo.isSuccess()) {
+                    tip = getString(R.string.publish_toast_publish_failed, returnInfo.getMessage());
+                }
+                Toast.makeText(PublishStatusActivity.this, tip, Toast.LENGTH_SHORT).show();
             }
         });
     }

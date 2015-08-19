@@ -3,6 +3,7 @@ package com.metis.base.activity;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewDebug;
@@ -30,7 +31,11 @@ public abstract class TitleBarActivity extends BaseActivity {
         mContentViewContainer = (FrameLayout)findViewById(R.id.content_view_container);
 
         mTitleBar.setTitleLeft(getTitleLeft());
-        mTitleBar.setTitleCenter(getTitleCenter());
+        CharSequence title = getTitleCenter();
+        if (TextUtils.isEmpty(title)) {
+            title = getTitle();
+        }
+        mTitleBar.setTitleCenter(title);
         if (showAsUpEnable()) {
             mTitleBar.setDrawableResourceLeft(R.drawable.ic_title_back);
             mTitleBar.setOnLeftBtnClickListener(new View.OnClickListener() {

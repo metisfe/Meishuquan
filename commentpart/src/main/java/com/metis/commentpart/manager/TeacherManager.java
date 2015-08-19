@@ -72,12 +72,12 @@ public class TeacherManager extends AbsManager {
         return mSelectedTeachers.contains(delegate);
     }
 
-    public void selectTeacher (TeacherCbDelegate delegate) {
+    public boolean selectTeacher (TeacherCbDelegate delegate) {
         if (mSelectedTeachers.size() >= MAX_SELECTED_COUNT) {
-            return;
+            return false;
         }
         if (hasSelected(delegate)) {
-            return;
+            return false;
         }
         mSelectedTeachers.add(delegate);
         delegate.setChecked(hasSelected(delegate));
@@ -88,6 +88,7 @@ public class TeacherManager extends AbsManager {
                 listener.onSelected(this, delegate.getSource());
             }
         }
+        return true;
     }
 
     public void unSelectTeacher (Teacher teacher) {

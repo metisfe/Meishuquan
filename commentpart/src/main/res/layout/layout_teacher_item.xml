@@ -11,11 +11,12 @@
         />
     <TextView
         android:id="@+id/teacher_name"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/teacher_profile"
         android:textSize="@dimen/size_h5"
         android:textColor="@android:color/black"
+        android:singleLine="true"
         />
     <TextView
         android:id="@+id/teacher_extra_info"

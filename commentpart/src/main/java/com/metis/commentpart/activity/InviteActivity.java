@@ -1,5 +1,6 @@
 package com.metis.commentpart.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,14 +76,15 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
         mAdapter = new TeacherCbAdapter(this);
         mRv.setAdapter(mAdapter);
 
-        getTitleBar().setDrawableResourceRight(R.drawable.ic_check);
+        /*getTitleBar().setDrawableResourceRight(R.drawable.ic_search);
         getTitleBar().setOnRightBtnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                mTeacherManager.commitRecentTeachers();
+                //finish();
+                Intent it = new Intent(InviteActivity.this, TeacherSearchActivity.class);
+                startActivity(it);
             }
-        });
+        });*/
     }
 
     @Override
@@ -167,6 +169,7 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mTeacherManager.commitRecentTeachers();
         mTeacherManager.unregisterOnTeachersListener(this);
     }
 
