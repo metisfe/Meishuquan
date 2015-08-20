@@ -80,6 +80,7 @@ public class CourseGalleryFragment extends BaseFragment implements SwipeRefreshL
 
         mGallerySrl = (SwipeRefreshLayout)view.findViewById(R.id.gallery_swipe_refresh_layout);
         mGalleryRv = (RecyclerView)view.findViewById(R.id.gallery_recycler_view);
+        mGalleryRv.setHasFixedSize(true);
         final int spanCount = getResources().getInteger(R.integer.gallery_span_count);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);

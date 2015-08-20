@@ -27,5 +27,6 @@ public class Status implements Serializable {
     public UserMark userMark;
     public List<Comment> teacherCommentList;
     public ChannelItem channel;
+    public boolean assessState;
 
 }

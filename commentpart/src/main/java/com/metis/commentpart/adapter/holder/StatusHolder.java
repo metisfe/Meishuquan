@@ -174,8 +174,8 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             }
         });
         List<Comment> commentList = statusDelegate.getSource().teacherCommentList;
-        stateTv.setText(commentList != null && commentList.size() > 0 ? context.getString(R.string.status_item_has_commented) : null);
-        stateTv.setVisibility(commentList != null && commentList.size() > 0 ? View.VISIBLE : View.GONE);
+        stateTv.setText(status.assessState ? context.getString(R.string.status_item_has_commented) : null);
+        stateTv.setVisibility(status.assessState ? View.VISIBLE : View.GONE);
         timeTv.setText(TimeUtils.formatStdTime(context, status.createTime));
         if (commentList != null && commentList.size() > 1 && !statusDelegate.isInDetails()) {
             adapterViewFlipper.setVisibility(View.VISIBLE);
