@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.framework.NetProxy;
 import com.metis.base.module.User;
+import com.metis.base.utils.Log;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.HashMap;
@@ -58,9 +59,15 @@ public class AccountManager extends AbsManager {
         return NetProxy.getInstance(getContext()).doPostRequest(LOGIN, map, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<User> returnInfo = getGson().fromJson(
-                        result,
-                        new TypeToken<ReturnInfo<User>>(){}.getType());
+                ReturnInfo<User> returnInfo = null;
+                try {
+                    returnInfo = getGson().fromJson(
+                            result,
+                            new TypeToken<ReturnInfo<User>>(){}.getType());
+                } catch (IllegalStateException e) {
+                    String errorMsg = e.getMessage();
+                }
+
                 if (returnInfo.isSuccess()) {
                     mMe = returnInfo.getData();
                 }

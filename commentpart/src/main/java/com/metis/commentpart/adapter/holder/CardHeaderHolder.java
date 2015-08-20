@@ -13,6 +13,7 @@ import com.metis.base.manager.DisplayManager;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
 import com.metis.base.utils.Log;
+import com.metis.base.utils.TimeUtils;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.delegate.CardHeaderDelegate;
@@ -27,13 +28,14 @@ public class CardHeaderHolder extends AbsViewHolder<CardHeaderDelegate> {
     private static final String TAG = CardHeaderHolder.class.getSimpleName();
 
     public ImageView profileIv;
-    public TextView nameTv, locationTv, supportCountTv;
+    public TextView nameTv, locationTv, supportCountTv, timeTv;
     public ImageView thumbUpIv;
 
     public CardHeaderHolder(View itemView) {
         super(itemView);
         profileIv = (ImageView)itemView.findViewById(R.id.header_profile);
         nameTv = (TextView)itemView.findViewById(R.id.header_name);
+        timeTv = (TextView)itemView.findViewById(R.id.header_time);
         locationTv = (TextView)itemView.findViewById(R.id.header_location);
         thumbUpIv = (ImageView)itemView.findViewById(R.id.header_support);
         supportCountTv = (TextView)itemView.findViewById(R.id.header_support_count);
@@ -54,6 +56,7 @@ public class CardHeaderHolder extends AbsViewHolder<CardHeaderDelegate> {
                 }
             });
         }
+        timeTv.setText(TimeUtils.formatStdTime(context, comment.commentDateTime));
         final UserMark mark = comment.userMark;
         thumbUpIv.setOnClickListener(new View.OnClickListener() {
             @Override

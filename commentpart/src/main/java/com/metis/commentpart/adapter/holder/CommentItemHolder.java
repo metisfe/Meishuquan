@@ -118,6 +118,9 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
                     //TODO
                     return;
                 }
+                if (me.equals(user)) {
+                    return;
+                }
                 Log.v(TAG, TAG + " click happened");
                 if (listener != null && (me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_PARENTS)) {
                     listener.onClick(v, comment, status);

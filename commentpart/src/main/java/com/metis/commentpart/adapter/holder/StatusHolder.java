@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.module.Province;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
 import com.metis.base.utils.TimeUtils;
@@ -82,6 +83,10 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                     com.metis.base.ActivityDispatcher.userActivity(context, user.userId);
                 }
             });
+            Province province = user.provinceEntity;
+            if (province != null) {
+                locationTv.setText(province.cityName);
+            }
         }
         ChannelItem channelItem = status.channel;
         if (channelItem != null) {
@@ -89,6 +94,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         } else {
             categoryTv.setText(null);
         }
+
         contentTv.setVisibility(TextUtils.isEmpty(status.desc) ? View.GONE : View.VISIBLE);
         contentTv.setText(status.desc);
         thumbUpCountTv.setText("" + status.supportCount);

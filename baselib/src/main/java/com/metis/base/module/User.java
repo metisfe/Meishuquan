@@ -30,6 +30,7 @@ public class User implements Serializable, Parcelable{
     public int userRole; //1,teacher 2,student 3,studio 4,parents
     public String message;
     public String requestInfo;
+    public Province provinceEntity;
     private String cookie;
 
     public User () {}

@@ -36,6 +36,17 @@
         android:textSize="@dimen/size_h6"
         android:textColor="@color/color_c6"
         />
+    <TextView
+        android:id="@+id/header_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_toRightOf="@+id/header_profile"
+        android:layout_below="@+id/header_name"
+        android:layout_toLeftOf="@+id/header_support"
+        android:textSize="@dimen/size_h6"
+        android:textColor="@color/color_c6"
+        />
     <ImageView
         android:id="@+id/header_support"
         android:layout_width="18dp"
