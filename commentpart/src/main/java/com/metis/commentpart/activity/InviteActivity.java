@@ -1,5 +1,7 @@
 package com.metis.commentpart.activity;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -191,6 +193,9 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     @Override
     public void onSelected(TeacherManager manager, Teacher teacher) {
         mSelectedAdapter.notifyDataSetChanged();
+        if (manager.getSelectedCount() == 1) {
+            animationDown();
+        }
         //mAdapter.notifyDataSetChanged();
     }
 
@@ -198,5 +203,64 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     public void onUnSelected(TeacherManager manager, Teacher teacher) {
         mSelectedAdapter.notifyDataSetChanged();
         mAdapter.unSelected(teacher);
+        if (manager.getSelectedCount() == 0) {
+            animationBack();
+        }
+    }
+
+    private void animationDown () {
+        final int targetTransY = getResources().getDimensionPixelSize(R.dimen.invite_selected_rv_height);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mRv, "translationY", 0, targetTransY);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mRv.setPadding(0, 0, 0, targetTransY);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mRv.setTranslationY(targetTransY);
+                mRv.setPadding(0, 0, 0, targetTransY);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animator.start();
+    }
+
+    private void animationBack () {
+        float fromTransY = mRv.getTranslationY();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mRv, "translationY", fromTransY, 0);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mRv.setPadding(0, 0, 0, 0);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mRv.setTranslationY(0);
+                mRv.setPadding(0, 0, 0, 0);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animator.start();
     }
 }

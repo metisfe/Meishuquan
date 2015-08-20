@@ -9,4 +9,6 @@
 
     <dimen name="voice_min_width">60dp</dimen>
     <dimen name="voice_max_width">180dp</dimen>
+
+    <dimen name="invite_selected_rv_height">90dp</dimen>
 </resources>

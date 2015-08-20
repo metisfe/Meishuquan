@@ -133,7 +133,6 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
         stateLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         mStateRv.setLayoutManager(stateLayoutManager);
         mStateRv.setAdapter(mStateAdapter);
-        mStateRv.setHasFixedSize(true);
         mStateAdapter.setOnFilterChangedListener(this);
 
     }
