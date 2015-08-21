@@ -7,7 +7,10 @@
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginBottom="@dimen/margin_middle"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginRight="@dimen/margin_big"
         >
         <ImageView
             android:id="@+id/item_profile"
@@ -26,7 +29,7 @@
     </RelativeLayout>
     <TextView
         android:id="@+id/item_name"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_below="@+id/item_profile_container"
@@ -35,6 +38,7 @@
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_alignLeft="@+id/item_profile_container"
-        android:layout_alignParentRight="@+id/item_profile_container"
+        android:layout_alignRight="@+id/item_profile_container"
+        android:ellipsize="end"
         />
 </RelativeLayout>

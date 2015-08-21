@@ -31,6 +31,7 @@ public abstract class TitleBarActivity extends BaseActivity {
         mContentViewContainer = (FrameLayout)findViewById(R.id.content_view_container);
 
         mTitleBar.setTitleLeft(getTitleLeft());
+        mTitleBar.setTitleRight(getTitleRight());
         CharSequence title = getTitleCenter();
         if (TextUtils.isEmpty(title)) {
             title = getTitle();
@@ -63,6 +64,10 @@ public abstract class TitleBarActivity extends BaseActivity {
     }
 
     public CharSequence getTitleLeft () {
+        return null;
+    }
+
+    public CharSequence getTitleRight () {
         return null;
     }
 

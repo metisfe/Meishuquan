@@ -281,7 +281,6 @@ public class PublishStatusActivity extends TitleBarActivity implements View.OnCl
             case ImageChooseDialogFragment.REQUEST_CODE_GET_IMAGE_CAMERA:
                 if (resultCode == RESULT_OK) {
                     recycleBitmap();
-                    Log.v(TAG, "PATH=" + mImageChooseDialogFragment.getLastCapturePath());
                     String path = mImageChooseDialogFragment.getLastCapturePath();
                     mBitmap = BitmapFactory.decodeFile(path);
                     DisplayManager.getInstance(PublishStatusActivity.this).display(ImageDownloader.Scheme.FILE.wrap(mImageChooseDialogFragment.getLastCapturePath()), mImageAdd);

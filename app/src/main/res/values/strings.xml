@@ -1,7 +1,32 @@
 <resources>
-    <string name="app_name">����Ȧ</string>
+    <string name="app_name">美术圈</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="hint_login_account">请输入手机号</string>
+    <string name="hint_login_pwd">请输入密码</string>
+    <string name="hint_login_find_pwd">忘记密码?</string>
+    <string name="hint_register_code">请输入验证码</string>
+    <string name="hint_register_confirm_pwd">请确认密码</string>
+
+    <string name="text_login_auth">其他账号登录</string>
+    <string name="text_we_chat">微信</string>
+    <string name="text_sina">新浪微博</string>
+    <string name="text_qq">QQ</string>
+    <string name="text_agreement">我同意并遵守"美术圈"用户协议</string>
+    <string name="text_get_register_code">获取验证码</string>
+
+    <string name="toast_login_empty_account">请填写手机号</string>
+    <string name="toast_login_empty_pwd">请输入密码</string>
+    <string name="toast_register_code_requested">验证码已发生,请注意查收</string>
+    <string name="toast_register_empty_code">请输入验证码</string>
+    <string name="toast_register_error_code">验证码错误,请重新输入</string>
+    <string name="toast_register_empty_pwd_confirm">请输入确认密码</string>
+    <string name="toast_register_empty_pwd_cannot_confirm">确认密码不相符</string>
+    <string name="toast_register_agreement_not_checked">请先同意用户协议</string>
+
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_login">登录</string>
+    <string name="title_activity_register">注册</string>
+
+
+
 </resources>

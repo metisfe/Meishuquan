@@ -83,14 +83,17 @@ public class AccountManager extends AbsManager {
      * @param phone
      * @param codeType 1 or 2
      */
-    public void getRequestCode (String phone, int codeType) {
+    public void getRequestCode (String phone, RequestCodeTypeEnum codeType, final RequestCallback<Integer> callback) {
         String request = REQUEST_CODE
                 .replace("{phone}", phone)
-                .replace("{operation}", codeType + "");
+                .replace("{operation}", codeType.getVal() + "");
         NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-
+                ReturnInfo<Integer> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<Integer>>(){}.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
             }
         });
     }
@@ -165,5 +168,18 @@ public class AccountManager extends AbsManager {
 
             }
         });
+    }
+
+    public enum RequestCodeTypeEnum {
+        REGISTER(1), RESET_PWD(2);
+        private final int val;
+
+        private RequestCodeTypeEnum(int val) {
+            this.val = val;
+        }
+
+        public int getVal() {
+            return this.val;
+        }
     }
 }

@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/padding_big"
         android:paddingRight="@dimen/padding_big"
+        android:paddingTop="@dimen/padding_middle"
+        android:paddingBottom="@dimen/padding_middle"
         >
         <FrameLayout
             android:id="@+id/voice_container"

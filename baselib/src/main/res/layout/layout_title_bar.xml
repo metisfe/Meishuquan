@@ -43,7 +43,7 @@
             android:singleLine="true"
             android:gravity="center"
             android:textSize="18sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/std_color_A"
             />
     </FrameLayout>
     <FrameLayout

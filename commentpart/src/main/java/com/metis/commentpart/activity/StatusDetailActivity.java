@@ -153,6 +153,9 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mDetailRv.setAdapter(mListAdapter);
         mDetailRv.removeItemDecoration(mCardDecoration);
         mDetailRv.addItemDecoration(mListDecoration);
+        if (VoiceManager.getInstance(this).isPlaying()) {
+            VoiceManager.getInstance(this).stopPlay();
+        }
     }
 
     private void loadData () {

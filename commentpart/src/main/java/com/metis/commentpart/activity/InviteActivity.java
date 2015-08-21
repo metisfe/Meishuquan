@@ -49,10 +49,14 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     private Footer mFooter = null;
     private FooterDelegate mFooterDelegate = null;
 
+    private int mTargetTransY = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_invite);
+
+        mTargetTransY = getResources().getDimensionPixelSize(R.dimen.invite_selected_rv_height);
 
         mAccountManager = AccountManager.getInstance(this);
         mTeacherManager = TeacherManager.getInstance(this);
@@ -77,6 +81,9 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
         });
         mAdapter = new TeacherCbAdapter(this);
         mRv.setAdapter(mAdapter);
+        if (mTeacherManager.getSelectedCount() > 0) {
+            mRv.setTranslationY(mTargetTransY);
+        }
 
         /*getTitleBar().setDrawableResourceRight(R.drawable.ic_search);
         getTitleBar().setOnRightBtnClickListener(new View.OnClickListener() {
@@ -209,8 +216,8 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     }
 
     private void animationDown () {
-        final int targetTransY = getResources().getDimensionPixelSize(R.dimen.invite_selected_rv_height);
-        ObjectAnimator animator = ObjectAnimator.ofFloat(mRv, "translationY", 0, targetTransY);
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mRv, "translationY", 0, mTargetTransY);
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -219,13 +226,13 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mRv.setPadding(0, 0, 0, targetTransY);
+                mRv.setPadding(0, 0, 0, mTargetTransY);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                mRv.setTranslationY(targetTransY);
-                mRv.setPadding(0, 0, 0, targetTransY);
+                mRv.setTranslationY(mTargetTransY);
+                mRv.setPadding(0, 0, 0, mTargetTransY);
             }
 
             @Override
