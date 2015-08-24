@@ -63,7 +63,7 @@
 
     <string name="title_activity_fliter">筛选</string>
     <string name="title_activity_publish_status">发点评</string>
-    <string name="title_activity_invite">名师榜</string>
+    <string name="title_activity_invite_teacher">名师榜</string>
     <string name="title_activity_reply">评论</string>
     <string name="title_activity_teacher_list">TeacherListActivity</string>
     <string name="title_activity_stutus_image">StutusImageActivity</string>

@@ -2,11 +2,9 @@ package com.metis.commentpart.activity;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.AccountManager;
@@ -81,9 +79,6 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
         });
         mAdapter = new TeacherCbAdapter(this);
         mRv.setAdapter(mAdapter);
-        if (mTeacherManager.getSelectedCount() > 0) {
-            mRv.setTranslationY(mTargetTransY);
-        }
 
         /*getTitleBar().setDrawableResourceRight(R.drawable.ic_search);
         getTitleBar().setOnRightBtnClickListener(new View.OnClickListener() {
@@ -99,6 +94,11 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        if (mTeacherManager.getSelectedCount() > 0) {
+            mRv.setTranslationY(mTargetTransY);
+        }
+
         mFooter = new Footer(Footer.STATE_WAITTING);
         mFooterDelegate = new FooterDelegate(mFooter);
         mAdapter.addDataItem(mFooterDelegate);
@@ -184,7 +184,7 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
 
     @Override
     public CharSequence getTitleCenter() {
-        return getString(R.string.title_activity_invite);
+        return getString(R.string.title_activity_invite_teacher);
     }
 
     @Override
