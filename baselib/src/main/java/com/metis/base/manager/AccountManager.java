@@ -32,7 +32,8 @@ public class AccountManager extends AbsManager {
             REQUEST_CODE = "v1.1/UserCenter/RegisterCode?phone={phone}&operation={operation}",
             URL_ATTENTION = "v1.1/Circle/FocusUserForGroup?userId={userId}&groupId={groupId}&session={session}",
             URL_CANCEL_ATTENTION = "v1.1/Circle/CancelAttention?userId={userId}&session={session}",
-            MOMENTSGROUPS = "v1.1/Circle/MyDiscussions?userid={userid}&type={type}&session={session}";//朋友圈分组信息;
+            FORGET_PWD = "v1.1/UserCenter/ForgetPassword?account={account}&code={code}&newPwd={newPwd}&type={type}",
+            MOMENTSGROUPS = "v1.1/Circle/MyDiscussions?userid={userid}&type={type}&session={session}";//朋友圈分组信息
 
     private User mMe = null;
 
@@ -90,7 +91,25 @@ public class AccountManager extends AbsManager {
         NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<Integer> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<Integer>>(){}.getType());
+                ReturnInfo<Integer> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<Integer>>() {
+                }.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
+            }
+        });
+    }
+
+    public void resetPwd (String account, String code, String newPwd, final RequestCallback callback) {
+        final String request = FORGET_PWD
+                .replace("{account}", account)
+                .replace("{code}", code)
+                .replace("{newPwd}", newPwd)
+                .replace("{type}", 1 + "");
+        NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>(){}.getType());
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
                 }

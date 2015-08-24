@@ -66,7 +66,7 @@ public class AlbumContainerHolder extends AbsViewHolder<AlbumContainerDelegate> 
             itemBigTitleTv.setText(firstOne.title);
             itemBigCountTv.setText(context.getString(R.string.course_play_count, firstOne.viewCount));
             if (studioInfo != null) {
-                DisplayManager.getInstance(context).display(studioInfo.avatar, itemBigAuthorProfileIv);
+                DisplayManager.getInstance(context).display(studioInfo.getAvailableAvatar(), itemBigAuthorProfileIv);
                 itemBigAuthorNameTv.setText(studioInfo.name);
                 /*View.OnClickListener listener = new View.OnClickListener() {
                     @Override

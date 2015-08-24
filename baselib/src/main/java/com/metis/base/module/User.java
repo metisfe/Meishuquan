@@ -2,6 +2,7 @@ package com.metis.base.module;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 
@@ -20,7 +21,8 @@ public class User implements Serializable, Parcelable{
     public long userId;
     public String name;
     public String remarkName;
-    public String avatar;
+    private String avatar;
+    private String userAvatar;
     public String grade;
     public int identity;
     public int relation;
@@ -31,6 +33,8 @@ public class User implements Serializable, Parcelable{
     public String message;
     public String requestInfo;
     public Province provinceEntity;
+    public int fansNum;
+    public int focusNum;
     private String cookie;
 
     public User () {}
@@ -46,6 +50,7 @@ public class User implements Serializable, Parcelable{
         dest.writeString(name);
         dest.writeString(remarkName);
         dest.writeString(avatar);
+        dest.writeString(userAvatar);
         dest.writeString(grade);
         dest.writeInt(identity);
         dest.writeInt(relation);
@@ -72,6 +77,7 @@ public class User implements Serializable, Parcelable{
         name = in.readString();
         remarkName = in.readString();
         avatar = in.readString();
+        userAvatar = in.readString();
         grade = in.readString();
         identity = in.readInt();
         relation = in.readInt();
@@ -80,6 +86,16 @@ public class User implements Serializable, Parcelable{
         userRole = in.readInt();
         message = in.readString();
         requestInfo = in.readString();
+    }
+
+    public String getAvailableAvatar () {
+        if (!TextUtils.isEmpty(avatar)) {
+            return avatar;
+        }
+        if (!TextUtils.isEmpty(userAvatar)) {
+            return userAvatar;
+        }
+        return "";
     }
 
     public String getCookie() {

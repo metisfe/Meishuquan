@@ -41,7 +41,7 @@ public class TeacherSelectedAdapter extends RecyclerView.Adapter<TeacherSqHolder
         final Teacher teacher = delegate.getSource();
         User user = teacher.user;
         if (user != null) {
-            DisplayManager.getInstance(mContext).displayProfile(user.avatar, holder.profileIv);
+            DisplayManager.getInstance(mContext).displayProfile(user.getAvailableAvatar(), holder.profileIv);
             holder.nameTv.setText(user.name);
         }
         holder.closeIv.setOnClickListener(new View.OnClickListener() {

@@ -74,6 +74,10 @@ public class CacheManager extends AbsManager {
         return getMyCacheFolder("data");
     }
 
+    public File getMyImageCacheDir () {
+        return getMyCacheFolder("image");
+    }
+
     public boolean saveUserDataAtDatabase (Object object, String dbName) {
         File myDataCache = getMyDataCacheDir();
         if (myDataCache == null) {

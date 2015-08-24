@@ -75,7 +75,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         final User user = status.user;
         final User me = AccountManager.getInstance(context).getMe();
         if (user != null) {
-            DisplayManager.getInstance(context).displayProfile(user.avatar, statusProfileIv);
+            DisplayManager.getInstance(context).displayProfile(user.getAvailableAvatar(), statusProfileIv);
             nameTv.setText(user.name);
             statusProfileIv.setOnClickListener(new View.OnClickListener() {
                 @Override

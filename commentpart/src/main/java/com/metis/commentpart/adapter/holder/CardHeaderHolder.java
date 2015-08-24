@@ -46,7 +46,7 @@ public class CardHeaderHolder extends AbsViewHolder<CardHeaderDelegate> {
         final Comment comment = cardHeaderDelegate.getSource();
         final User user = comment.user;
         if (user != null) {
-            DisplayManager.getInstance(context).displayProfile(user.avatar, profileIv);
+            DisplayManager.getInstance(context).displayProfile(user.getAvailableAvatar(), profileIv);
             nameTv.setText(user.name);
             locationTv.setText(user.location);
             profileIv.setOnClickListener(new View.OnClickListener() {

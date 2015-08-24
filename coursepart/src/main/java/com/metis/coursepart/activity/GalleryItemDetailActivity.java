@@ -91,7 +91,7 @@ public class GalleryItemDetailActivity extends TitleBarActivity
 
             User info = mCurrentItem.studio;
             if (info != null) {
-                mProfileNameView.setProfile(info.avatar, DisplayManager.getInstance(this).makeRoundDisplayImageOptions(getResources().getDimensionPixelSize(R.dimen.gallery_title_profile_size)));
+                mProfileNameView.setProfile(info.getAvailableAvatar(), DisplayManager.getInstance(this).makeRoundDisplayImageOptions(getResources().getDimensionPixelSize(R.dimen.gallery_title_profile_size)));
                 mProfileNameView.setName(info.name);
             } else {
                 mProfileNameView.setProfile(null);

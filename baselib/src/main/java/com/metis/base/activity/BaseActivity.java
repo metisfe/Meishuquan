@@ -1,9 +1,11 @@
 package com.metis.base.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.AnimRes;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 
 import com.metis.base.utils.Log;
@@ -16,6 +18,8 @@ public class BaseActivity extends AppCompatActivity {
     private static final String TAG = BaseActivity.class.getSimpleName();
 
     private boolean isAlive = false;
+
+    private ProgressDialog mProgressDialog = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
@@ -55,6 +59,30 @@ public class BaseActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(getEnterAnimation(), getExitAnimation());
+    }
+
+    public void showProgressDialog (boolean cancelable) {
+        showProgressDialog(null, cancelable);
+    }
+
+    public void showProgressDialog (@StringRes int msgRes, boolean cancelable) {
+        showProgressDialog(getString(msgRes), cancelable);
+    }
+
+    public void showProgressDialog (CharSequence msg, boolean cancelable) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setCancelable(cancelable);
+            mProgressDialog.setMessage(msg);
+            mProgressDialog.show();
+        }
+    }
+
+    public void dismissProgressDialog () {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     @Override

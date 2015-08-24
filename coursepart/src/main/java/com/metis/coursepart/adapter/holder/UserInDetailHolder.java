@@ -61,7 +61,7 @@ public class UserInDetailHolder extends AbsViewHolder<UserInDetailDelegate>{
         final User user = album.author != null ? album.author : album.studio;
 
         if (user != null) {
-            DisplayManager.getInstance(context).display(user.avatar, profileIv);
+            DisplayManager.getInstance(context).display(user.getAvailableAvatar(), profileIv);
             nameTv.setText(user.name);
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override

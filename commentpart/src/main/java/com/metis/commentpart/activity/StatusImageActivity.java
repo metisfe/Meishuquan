@@ -77,7 +77,7 @@ public class StatusImageActivity extends TitleBarActivity {
             final User user = (User)getIntent().getSerializableExtra(com.metis.commentpart.ActivityDispatcher.KEY_USER);
             if (user != null) {
                 ProfileNameView profileNameView = new ProfileNameView(this);
-                profileNameView.setProfile(user.avatar, DisplayManager.getInstance(this).makeRoundDisplayImageOptions(
+                profileNameView.setProfile(user.getAvailableAvatar(), DisplayManager.getInstance(this).makeRoundDisplayImageOptions(
                         getResources().getDimensionPixelSize(R.dimen.profile_size_small)
                 ));
                 profileNameView.setName(user.name);

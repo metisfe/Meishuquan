@@ -50,7 +50,7 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
         final User replyUser = comment.replyUser;
         final UserMark mark = comment.userMark;
         if (user != null) {
-            DisplayManager.getInstance(context).displayProfile(user.avatar, profileIv);
+            DisplayManager.getInstance(context).displayProfile(user.getAvailableAvatar(), profileIv);
             String nameStr = user.name;
             if (replyUser != null) {
                 nameStr = context.getString(R.string.comment_item_reply_to_whom, user.name, replyUser.name);

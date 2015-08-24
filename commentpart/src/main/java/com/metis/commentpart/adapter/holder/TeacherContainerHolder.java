@@ -71,7 +71,7 @@ public class TeacherContainerHolder extends AbsViewHolder<TeacherContainerDelega
                 TextView nameTv = (TextView)view.findViewById(R.id.teacher_name);
                 TextView extraInfoTv = (TextView)view.findViewById(R.id.teacher_extra_info);
                 TextView actionBtn = (TextView)view.findViewById(R.id.item_btn);
-                DisplayManager.getInstance(context).displayProfile(teacher.user.avatar, profileIv);
+                DisplayManager.getInstance(context).displayProfile(teacher.user.getAvailableAvatar(), profileIv);
                 View.OnClickListener listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

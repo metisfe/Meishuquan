@@ -37,7 +37,7 @@ public abstract class TeacherHolder<T extends TeacherDelegate> extends AbsViewHo
         final User user = teacher.user;
         if (user != null) {
             DisplayManager.getInstance(context).displayProfile(
-                    user.avatar, profileIv);
+                    user.getAvailableAvatar(), profileIv);
 
             nameTv.setText(user.name);
             profileIv.setOnClickListener(new View.OnClickListener() {

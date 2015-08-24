@@ -93,7 +93,7 @@ public class FlipperAdapter extends BaseAdapter {
         }
         User user = comment.user;
         if (user != null) {
-            DisplayManager.getInstance(mContext).displayProfile(user.avatar, holder.profileIv);
+            DisplayManager.getInstance(mContext).displayProfile(user.getAvailableAvatar(), holder.profileIv);
         }
         Drawable drawable = holder.flipperVoiceIv.getDrawable();
         if (drawable != null && drawable instanceof AnimationDrawable) {

@@ -10,6 +10,7 @@
 
     <dimen name="profile_size_small">30dp</dimen>
     <dimen name="profile_size_middle">45dp</dimen>
+    <dimen name="profile_size_big">100dp</dimen>
     <dimen name="profile_radius">4dp</dimen>
 
     <dimen name="margin_middle">5dp</dimen>

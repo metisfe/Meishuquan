@@ -40,7 +40,7 @@ public class AlbumItemSmallHolder extends AbsViewHolder<AlbumSmallDelegate> {
         DisplayManager.getInstance(context).display(album.coursePic, itemThumbIv);
         itemTitleTv.setText(album.title);
         if (studioInfo != null) {
-            DisplayManager.getInstance(context).display(studioInfo.avatar, itemAuthorProfileIv);
+            DisplayManager.getInstance(context).display(studioInfo.getAvailableAvatar(), itemAuthorProfileIv);
             itemAuthorNameTv.setText(studioInfo.name);
             /*View.OnClickListener userListener = new View.OnClickListener() {
                 @Override

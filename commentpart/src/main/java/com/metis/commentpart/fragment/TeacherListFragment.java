@@ -14,6 +14,7 @@ import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Footer;
 import com.metis.base.module.User;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
+import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.StatusAdapter;
 import com.metis.commentpart.adapter.delegate.TeacherBtnDelegate;
@@ -39,6 +40,8 @@ public class TeacherListFragment extends BaseFragment {
     private Footer mFooter = null;
     private FooterDelegate mFooterDelegate = null;
 
+    private boolean isLoading = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +56,14 @@ public class TeacherListFragment extends BaseFragment {
         mTeacherRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new StatusAdapter(getActivity());
         mTeacherRv.setAdapter(mAdapter);
+        mTeacherRv.addOnScrollListener(new OnScrollBottomListener() {
+            @Override
+            public void onScrollBottom(RecyclerView recyclerView, int newState) {
+                if (!isLoading) {
+                    loadData(mIndex + 1);
+                }
+            }
+        });
     }
 
     @Override
@@ -80,9 +91,11 @@ public class TeacherListFragment extends BaseFragment {
         }
         mFooter.setState(Footer.STATE_WAITTING);
         mAdapter.notifyDataSetChanged();
+        isLoading = true;
         StatusManager.getInstance(getActivity()).getAssessTeacher(mTeacherFilter, "", me.getCookie(), index, new RequestCallback<List<Teacher>>() {
             @Override
             public void callback(ReturnInfo<List<Teacher>> returnInfo, String callbackId) {
+                isLoading = false;
                 if (!isAlive()) {
                     return;
                 }
@@ -99,7 +112,7 @@ public class TeacherListFragment extends BaseFragment {
                     } else {
                         mFooter.setState(Footer.STATE_NO_MORE);
                     }
-
+                    mIndex = index;
                 } else {
                     mFooter.setState(Footer.STATE_FAILED);
                 }

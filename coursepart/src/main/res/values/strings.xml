@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CoursePart</string>
+    <string name="tab_title_course">课程</string>
     <string name="tab_video">视频</string>
     <string name="tab_gallery">图库</string>
     <string name="tab_detail">详情</string>
