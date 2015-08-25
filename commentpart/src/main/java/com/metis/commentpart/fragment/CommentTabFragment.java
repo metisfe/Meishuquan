@@ -149,7 +149,7 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     public void onResume() {
         super.onResume();
         User me = AccountManager.getInstance(getActivity()).getMe();
-        if (me != null && (me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_STUDENT)) {
+        if (me != null && (me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_FANS)) {
             mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
             mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
                 @Override

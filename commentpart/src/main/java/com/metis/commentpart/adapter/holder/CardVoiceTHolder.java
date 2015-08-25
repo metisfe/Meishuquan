@@ -73,71 +73,63 @@ public class CardVoiceTHolder extends AbsViewHolder<CardVoiceTDelegate> {
         }
         mVoiceManager = VoiceManager.getInstance(context);
 
-        final String url = comment.imgOrVoiceUrl.voiceUrl;
-        MD5FileNameGenerator generator = new MD5FileNameGenerator();
-        String fileName = generator.generate(url);
-        final File targetFile = new File(CacheManager.getInstance(context).getMyVoiceCacheDir().getAbsolutePath() + File.separator + fileName + ".mp3");
+        if (comment.imgOrVoiceUrl != null) {
+            final String url = comment.imgOrVoiceUrl.voiceUrl;
+            MD5FileNameGenerator generator = new MD5FileNameGenerator();
+            String fileName = generator.generate(url);
+            final File targetFile = new File(CacheManager.getInstance(context).getMyVoiceCacheDir().getAbsolutePath() + File.separator + fileName + ".mp3");
 
-        cardVoiceTDelegate.setOnNeedUpdateCallback(new CardVoiceTDelegate.OnNeedUpdateCallback() {
-            @Override
-            public void onNeed(boolean isStarted) {
-                if (isStarted) {
-                    animDrawable.start();
-                } else {
-                    animDrawable.stop();
-                }
-                //adapter.notifyDataSetChanged();
-            }
-        });
-
-
-        /*animDrawable.stop();
-        if (mVoiceManager.isPlaying() && cardVoiceTDelegate.isPlaying()) {
-            animDrawable.start();
-            Log.v(TAG, "animDrawable.START()");
-        } else {
-            Log.v(TAG, "mAnimDrawable.stop()");
-            animDrawable.stop();
-        }*/
-
-        voiceContainer.setLayoutParams(layoutParams);
-        voiceContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (targetFile.exists()) {
-                    if (mVoiceManager.isPlaying()) {
-                        final String playingPath = mVoiceManager.getPlayingPath();
-                        mVoiceManager.stopPlay();
+            cardVoiceTDelegate.setOnNeedUpdateCallback(new CardVoiceTDelegate.OnNeedUpdateCallback() {
+                @Override
+                public void onNeed(boolean isStarted) {
+                    if (isStarted) {
+                        animDrawable.start();
+                    } else {
                         animDrawable.stop();
-                        if (targetFile.getAbsolutePath().equals(playingPath)) {
-                            return;
-                        }
                     }
-                    mVoiceManager.setOnPlayListener(cardVoiceTDelegate);
-                    mVoiceManager.startPlay(targetFile.getAbsolutePath());
-                } else {
-                    HttpUtils utils = new HttpUtils(10 * 1000);
-                    utils.download(url, targetFile.getAbsolutePath(), true, false, new RequestCallBack<File>() {
-                        @Override
-                        public void onSuccess(ResponseInfo<File> responseInfo) {
-                            if (mVoiceManager.isPlaying()) {
-                                mVoiceManager.stopPlay();
-                            }
-                            if (!mVoiceManager.isPlaying()) {
-                                mVoiceManager.setOnPlayListener(cardVoiceTDelegate);
-                                mVoiceManager.startPlay(responseInfo.result.getAbsolutePath());
-                                //cardVoiceTDelegate.setIsPlaying(true);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(HttpException e, String s) {
-
-                        }
-                    });
+                    //adapter.notifyDataSetChanged();
                 }
-            }
-        });
+            });
+            voiceContainer.setLayoutParams(layoutParams);
+            voiceContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (targetFile.exists()) {
+                        if (mVoiceManager.isPlaying()) {
+                            final String playingPath = mVoiceManager.getPlayingPath();
+                            mVoiceManager.stopPlay();
+                            animDrawable.stop();
+                            if (targetFile.getAbsolutePath().equals(playingPath)) {
+                                return;
+                            }
+                        }
+                        mVoiceManager.setOnPlayListener(cardVoiceTDelegate);
+                        mVoiceManager.startPlay(targetFile.getAbsolutePath());
+                    } else {
+                        HttpUtils utils = new HttpUtils(10 * 1000);
+                        utils.download(url, targetFile.getAbsolutePath(), true, false, new RequestCallBack<File>() {
+                            @Override
+                            public void onSuccess(ResponseInfo<File> responseInfo) {
+                                if (mVoiceManager.isPlaying()) {
+                                    mVoiceManager.stopPlay();
+                                }
+                                if (!mVoiceManager.isPlaying()) {
+                                    mVoiceManager.setOnPlayListener(cardVoiceTDelegate);
+                                    mVoiceManager.startPlay(responseInfo.result.getAbsolutePath());
+                                    //cardVoiceTDelegate.setIsPlaying(true);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(HttpException e, String s) {
+
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
     }
 
 }

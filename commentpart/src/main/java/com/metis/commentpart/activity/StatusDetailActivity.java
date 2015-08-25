@@ -376,7 +376,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
             }
         } else if (me.userRole == User.USER_ROLE_TEACHER) {
             commentSource = 0;
-        } else if (me.userRole == User.USER_ROLE_STUDENT) {
+        } else if (me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_FANS) {
             commentSource = 1;
         }
         final long useReplyUserId = replyUserId;
@@ -432,7 +432,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
             }
         } else if (me.userRole == User.USER_ROLE_TEACHER) {
             commentSource = 0;
-        } else if (me.userRole == User.USER_ROLE_STUDENT) {
+        } else if (me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_FANS) {
             commentSource = 1;
         }
 
