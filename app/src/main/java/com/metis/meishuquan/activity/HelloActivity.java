@@ -21,7 +21,7 @@ public class HelloActivity extends BaseActivity {
         this.getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(HelloActivity.this, LoginActivity.class));
+                startActivity(new Intent(HelloActivity.this, LoginActivity.class/*RoleChooseActivity.class*/));
                 finish();
             }
         }, 3000);

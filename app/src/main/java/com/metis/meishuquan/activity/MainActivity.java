@@ -3,12 +3,11 @@ package com.metis.meishuquan.activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.metis.base.activity.BaseActivity;
+import com.metis.base.fragment.MeTabFragment;
+import com.metis.base.utils.FragmentUtils;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.commentpart.fragment.CommentTabFragment;
@@ -26,6 +25,7 @@ public class MainActivity extends BaseActivity implements DockBar.OnDockItemClic
 
     private CourseTabFragment mCourseFragment = new CourseTabFragment();
     private CommentTabFragment mCommentFragment = new CommentTabFragment();
+    private MeTabFragment mMeFragment = new MeTabFragment();
 
     private Fragment mCurrentFragment = null;
 
@@ -37,12 +37,12 @@ public class MainActivity extends BaseActivity implements DockBar.OnDockItemClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        /*List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
         if (fragmentList != null) {
             Log.v(TAG, "fragmentList.size=" + fragmentList.size());
         } else {
             Log.v(TAG, "fragmentList=null");
-        }
+        }*/
 
         ButterKnife.inject(this);
 
@@ -54,18 +54,45 @@ public class MainActivity extends BaseActivity implements DockBar.OnDockItemClic
 
         mMainDockBar.addDock(mCommentFragment.getDock(this));
         mMainDockBar.addDock(mCourseFragment.getDock(this));
+        mMainDockBar.addDock(mMeFragment.getDock(this));
 
         mMainDockBar.setOnDockItemClickListener(this);
-        mMainDockBar.selectDock(mCommentFragment.getDock(this));
+        if (mCurrentFragment == null) {
+            mMainDockBar.selectDock(mCommentFragment.getDock(this));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() <= 0) {
+            moveTaskToBack(true);
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        /*List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        final int length = fragments.size();
+        for (int i = 0; i < length; i++) {
+            FragmentUtils.removeFragment(getSupportFragmentManager(), fragments.get(i));
+        }
+        mCurrentFragment = null;*/
     }
 
     @Override
     public void onDockClick(View view, DockBar.Dock dock) {
-        hideFragment(mCurrentFragment);
-        showFragment(dock.target);
+        if (mCurrentFragment != null) {
+            FragmentUtils.hideFragment(getSupportFragmentManager(), mCurrentFragment);
+            mCurrentFragment = null;
+        }
+        FragmentUtils.showFragment(getSupportFragmentManager(), dock.target, R.id.main_fragment_container);
+        mCurrentFragment = dock.target;
     }
 
-    private void showFragment (Fragment fragment) {
+    /*private void showFragment (Fragment fragment) {
         if (fragment == null) {
             return;
         }
@@ -87,28 +114,6 @@ public class MainActivity extends BaseActivity implements DockBar.OnDockItemClic
         ft.hide(fragment);
         ft.commit();
         mCurrentFragment = null;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 }

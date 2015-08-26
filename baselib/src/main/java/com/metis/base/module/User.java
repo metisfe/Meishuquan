@@ -15,7 +15,8 @@ public class User implements Serializable, Parcelable{
             USER_ROLE_STUDENT = 1,
             USER_ROLE_TEACHER = 2,
             USER_ROLE_STUDIO = 3,
-            USER_ROLE_PARENTS = 4;
+            USER_ROLE_PARENTS = 4,
+            USER_ROLE_FANS = 5;
 
     private long id;
     public long userId;

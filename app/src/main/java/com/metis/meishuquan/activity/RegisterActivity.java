@@ -2,10 +2,13 @@ package com.metis.meishuquan.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.os.SystemClock;
 import android.provider.Telephony;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
@@ -14,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +29,16 @@ import com.metis.base.manager.RequestCallback;
 import com.metis.base.utils.Log;
 import com.metis.base.utils.SystemUtils;
 import com.metis.base.utils.TimeUtils;
+import com.metis.meishuquan.ActivityDispatcher;
 import com.metis.meishuquan.R;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +52,8 @@ import butterknife.OnClick;
 public class RegisterActivity extends TitleBarActivity {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
+
+    public static final int MODE_REGISTER = 0, MODE_RESET_PWD = 1;
 
     public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
 
@@ -55,8 +69,14 @@ public class RegisterActivity extends TitleBarActivity {
     EditText mPwdEt;
     @InjectView(R.id.register_pwd_confirm)
     EditText mPwdConfirmEt;
+    @InjectView(R.id.register_agreement_container)
+    RelativeLayout mAgreeContainer;
     @InjectView(R.id.register_agreement)
     CheckBox mAgreeCb;
+    @InjectView(R.id.register_agreement_title)
+    TextView mAgreeTitleTv;
+
+    private String mAgreementStr = null;
 
     private String mCode = null;
     private long mStartTime = 0;
@@ -108,12 +128,63 @@ public class RegisterActivity extends TitleBarActivity {
 
     };
 
+    private int mMode = MODE_REGISTER;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mMode = getIntent().getIntExtra(ActivityDispatcher.KEY_MODE, MODE_REGISTER);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         ButterKnife.inject(this);
+
+        if (isResetMode()) {
+            mRegisterBtn.setText(R.string.title_activity_reset_pwd);
+        }
+        mAgreeContainer.setVisibility(isResetMode() ? View.GONE : View.VISIBLE);
+        mAgreeTitleTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAgreementStr == null) {
+                    AssetManager assetManager = getAssets();
+                    try {
+                        InputStream is = assetManager.open("agreement");
+                        InputStreamReader reader = new InputStreamReader(is);
+                        BufferedReader bufferedReader = new BufferedReader(reader);
+                        String line = null;
+                        StringBuilder builder = new StringBuilder();
+                        while ((line = bufferedReader.readLine()) != null) {
+                            builder.append(line + "\n");
+                        }
+                        mAgreementStr = builder.toString();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                final AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this)
+                        .setMessage(mAgreementStr)
+                        .setPositiveButton(R.string.btn_agree, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+            }
+        });
+    }
+
+    private boolean isResetMode () {
+        return mMode == MODE_RESET_PWD;
+    }
+
+    @Override
+    public CharSequence getTitleCenter() {
+        if (isResetMode()) {
+            return getString(R.string.title_activity_reset_pwd);
+        }
+        return null;
     }
 
     @Override
@@ -187,11 +258,28 @@ public class RegisterActivity extends TitleBarActivity {
                     Toast.makeText(this, R.string.toast_register_agreement_not_checked, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (isResetMode()) {
+                    AccountManager.getInstance(this).resetPwd(phone, code, pwd, new RequestCallback() {
+                        @Override
+                        public void callback(ReturnInfo returnInfo, String callbackId) {
+                            if (returnInfo.isSuccess()) {
+                                Toast.makeText(RegisterActivity.this, R.string.toast_reset_pwd_success, Toast.LENGTH_SHORT).show();
+                                ActivityDispatcher.loginActivity(RegisterActivity.this);
+                                finish();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, getString(R.string.toast_reset_pwd_failed, returnInfo.getMessage()), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    //TODO
+                } else {
+                    //TODO
+                }
                 //AccountManager.getInstance(this).register(phone, code, pwd, );
                 break;
             case R.id.register_get_code:
                 mGetCodeBtn.setEnabled(false);
-                AccountManager.getInstance(this).getRequestCode(phone, AccountManager.RequestCodeTypeEnum.REGISTER, new RequestCallback<Integer>() {
+                AccountManager.getInstance(this).getRequestCode(phone, isResetMode() ? AccountManager.RequestCodeTypeEnum.RESET_PWD : AccountManager.RequestCodeTypeEnum.REGISTER, new RequestCallback<Integer>() {
                     @Override
                     public void callback(ReturnInfo<Integer> returnInfo, String callbackId) {
                         mGetCodeBtn.setEnabled(!returnInfo.isSuccess());

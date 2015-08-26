@@ -2,4 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="role_choose_length">130dp</dimen>
+    <dimen name="role_profile_size">50dp</dimen>
 </resources>

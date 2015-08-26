@@ -51,6 +51,7 @@
             android:padding="@dimen/padding_middle"
             android:background="@android:color/transparent"
             android:hint="@string/hint_register_code"
+            android:singleLine="true"
             />
     </RelativeLayout>
     <View
@@ -91,14 +92,27 @@
         android:background="@color/color_c2"
         android:layout_centerVertical="true"
         />
-    <CheckBox
-        android:id="@+id/register_agreement"
+    <RelativeLayout
+        android:id="@+id/register_agreement_container"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:text="@string/text_agreement"
-        android:checked="true"
-        />
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/register_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:checked="true"
+            />
+        <TextView
+            android:id="@+id/register_agreement_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/register_agreement"
+            android:layout_centerVertical="true"
+            android:text="@string/text_agreement"
+            />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/register_btn"
         android:layout_width="fill_parent"
