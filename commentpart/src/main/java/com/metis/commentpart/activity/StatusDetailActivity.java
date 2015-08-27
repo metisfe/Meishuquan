@@ -52,7 +52,8 @@ import java.util.List;
 public class StatusDetailActivity extends TitleBarActivity implements
         CardFooterDelegate.OnCommentFooterClickListener,
         View.OnClickListener, VoiceFragment.VoiceDispatcher, ChatInputFragment.Controller,
-        CommentItemDelegate.OnCommentActionListener, SwipeRefreshLayout.OnRefreshListener{
+        CommentItemDelegate.OnCommentActionListener, SwipeRefreshLayout.OnRefreshListener,
+        AccountManager.OnUserChangeListener{
 
     private static final String TAG = StatusDetailActivity.class.getSimpleName();
 
@@ -81,7 +82,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
     private int mMode = MODE_NORMAL;
 
     private StatusDelegate mStatusDelegate = null;
-    StatusDetailTabDelegate mTabDelegate = null;
+    private StatusDetailTabDelegate mTabDelegate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,6 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mStatus = (Status)getIntent().getSerializableExtra(ActivityDispatcher.KEY_STATUS);
         mMode = getIntent().getIntExtra(ActivityDispatcher.KEY_MODE, MODE_NORMAL);
         Log.v(TAG, "mStatus.desc=" + mStatus.desc);
-        User me = AccountManager.getInstance(this).getMe();
 
         mReplyingContainer = (RelativeLayout)findViewById(R.id.replying_container);
         mReplyingInfoTv = (TextView)findViewById(R.id.replying_comment_info);
@@ -123,10 +123,6 @@ public class StatusDetailActivity extends TitleBarActivity implements
 
         mReplyingCloseIv.setOnClickListener(this);
 
-        if (me == null || me.userRole == User.USER_ROLE_STUDIO) {
-            mFragmentContainer.setVisibility(View.GONE);
-        }
-
         mSrl.setColorSchemeResources(
                 android.R.color.holo_blue_light,
                 android.R.color.holo_green_light,
@@ -135,7 +131,39 @@ public class StatusDetailActivity extends TitleBarActivity implements
                 android.R.color.holo_purple
         );
         mSrl.setOnRefreshListener(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        User me = AccountManager.getInstance(this).getMe();
+        checkUser(me);
+        AccountManager.getInstance(this).registerOnUserChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (VoiceManager.getInstance(this).isPlaying()) {
+            VoiceManager.getInstance(this).stopPlay();
+        }
+        AccountManager.getInstance(this).unregisterOnUserChangeListener(this);
+    }
+
+    private void checkUser (User me) {
+        if (me == null) {
+            mChatFragment.showMask();
+            mChatFragment.setInputHint(getString(R.string.hint_comment_need_login));
+        } else {
+            mChatFragment.hideMask();
+            if (me.userRole == User.USER_ROLE_STUDIO) {
+                mChatFragment.setEnable(false);
+                mChatFragment.setInputHint(getString(R.string.hint_comment_not_for_studio));
+            } else {
+                mChatFragment.setEnable(false);
+                mChatFragment.setInputHint(getString(R.string.status_item_publish_comment));
+            }
+        }
     }
 
     @Override
@@ -172,13 +200,14 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mListAdapter.notifyDataSetChanged();
         mChatFragment.setEnable(false);
         User me = AccountManager.getInstance(this).getMe();
+        String session = "";
         if (me == null) {
             mSrl.setRefreshing(false);
-            //TODO
-            return;
+        } else {
+            session = me.getCookie();
         }
 
-        StatusManager.getInstance(this).getCommentList(mStatus.id, me.getCookie(), new RequestCallback<CommentCollection>() {
+        StatusManager.getInstance(this).getCommentList(mStatus.id, session, new RequestCallback<CommentCollection>() {
             @Override
             public void callback(ReturnInfo<CommentCollection> returnInfo, String callbackId) {
                 mSrl.setRefreshing(false);
@@ -205,7 +234,6 @@ public class StatusDetailActivity extends TitleBarActivity implements
                                     Comment innerComment = subList.get(k);
                                     BaseDelegate innerDelegate = CommentFactory.makeCommentDelegate(innerComment);
                                     teacherDelegates.add(innerDelegate);
-                                    //TODO
                                 }
                             }
 
@@ -280,14 +308,6 @@ public class StatusDetailActivity extends TitleBarActivity implements
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (VoiceManager.getInstance(this).isPlaying()) {
-            VoiceManager.getInstance(this).stopPlay();
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (mChatFragment.onBackPressed()) {
             return;
@@ -322,7 +342,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
     public void onClick(View v) {
         User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
-            //TODO
+            com.metis.base.ActivityDispatcher.loginActivity(this);
             return;
         }
         Comment comment = mCardAdapter.getMyCardHeader(me);
@@ -415,7 +435,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
     public boolean onSend(String content) {
         final User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
-            //TODO
+            com.metis.base.ActivityDispatcher.loginActivity(this);
             return false;
         }
         final Comment comment = me.userRole == User.USER_ROLE_TEACHER ? mCardAdapter.getMyCardHeader(me.userId) : mReplyingComment;
@@ -469,6 +489,14 @@ public class StatusDetailActivity extends TitleBarActivity implements
     }
 
     @Override
+    public void onInputMaskClick(View view) {
+        User me = AccountManager.getInstance(this).getMe();
+        if (me == null) {
+            com.metis.base.ActivityDispatcher.loginActivity(this);
+        }
+    }
+
+    @Override
     public void onClick(View v, Comment comment, Status status) {
         replyingComment(comment);
         mChatFragment.askToInput();
@@ -494,4 +522,8 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mReplyingContainer.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onUserChanged(User user, boolean onLine) {
+        checkUser(user);
+    }
 }

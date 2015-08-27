@@ -75,7 +75,9 @@ public class ActivityDispatcher {
 
     public static void loginActivity (Context context) {
         try {
-            Intent it = new Intent (ACTION_LOGIN);
+            Intent it = new Intent ();
+            it.setAction(ACTION_LOGIN);
+            it.addCategory(Intent.CATEGORY_DEFAULT);
             context.startActivity(it);
         } catch (Exception e) {
             e.printStackTrace();

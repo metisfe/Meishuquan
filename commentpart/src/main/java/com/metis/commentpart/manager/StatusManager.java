@@ -221,7 +221,6 @@ public class StatusManager extends AbsManager {
         map.put("content", content);
         map.put("replyCid", replyCid + "");
 
-        //TODO thumbnails
         if (voiceUrl != null) {
             map.put("voice", voiceUrl);
         }

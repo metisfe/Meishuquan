@@ -83,6 +83,7 @@ public class SearchView extends RelativeLayout {
                 }
             }
         });
+        mSearchInput.requestFocus();
     }
 
     private OnClickListener mClickListener = new OnClickListener() {
@@ -98,6 +99,10 @@ public class SearchView extends RelativeLayout {
             }
         }
     };
+
+    public void requestInputFocus () {
+        mSearchInput.requestFocus();
+    }
 
     public void setOnSearchListener (OnSearchListener listener) {
         mSearchListener = listener;

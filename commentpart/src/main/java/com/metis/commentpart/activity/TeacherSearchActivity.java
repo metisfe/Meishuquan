@@ -11,16 +11,15 @@ import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Footer;
 import com.metis.base.module.User;
-import com.metis.base.utils.SystemUtils;
 import com.metis.base.widget.SearchView;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.TeacherCbAdapter;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
 import com.metis.commentpart.manager.StatusManager;
+import com.metis.commentpart.manager.TeacherManager;
 import com.metis.commentpart.module.Teacher;
 import com.metis.msnetworklib.contract.ReturnInfo;
-import com.metis.msnetworklib.utils.SystemUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,7 @@ public class TeacherSearchActivity extends TitleBarActivity implements SearchVie
     private String mRequestId = null;
 
     private RecyclerView mTeacherRv = null;
+    private SearchView mSearchView = null;
 
     private TeacherCbAdapter mTeacherCbAdapter = null;
 
@@ -41,9 +41,9 @@ public class TeacherSearchActivity extends TitleBarActivity implements SearchVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_search);
 
-        SearchView searchView = new SearchView(this);
-        searchView.setOnSearchListener(this);
-        getTitleBar().setCenterView(searchView);
+        mSearchView = new SearchView(this);
+        mSearchView.setOnSearchListener(this);
+        getTitleBar().setCenterView(mSearchView);
 
         mTeacherRv = (RecyclerView)findViewById(R.id.teacher_list_recycler_view);
         mTeacherRv.setLayoutManager(new LinearLayoutManager(this));
@@ -68,7 +68,7 @@ public class TeacherSearchActivity extends TitleBarActivity implements SearchVie
         }
         User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
-            //TODO
+            com.metis.base.ActivityDispatcher.loginActivity(this);
             return;
         }
         mTeacherCbAdapter.clearDataList();
@@ -78,7 +78,7 @@ public class TeacherSearchActivity extends TitleBarActivity implements SearchVie
         StatusManager.getInstance(this).getAssessTeacher(1, content, me.getCookie(), 1, new RequestCallback<List<Teacher>>() {
             @Override
             public void callback(ReturnInfo<List<Teacher>> returnInfo, String callbackId) {
-
+                mSearchView.requestInputFocus();
                 if (returnInfo.isSuccess()) {
                     List<Teacher> teacherList = returnInfo.getData();
                     if (teacherList != null && !teacherList.isEmpty()) {
@@ -86,6 +86,7 @@ public class TeacherSearchActivity extends TitleBarActivity implements SearchVie
                         List<TeacherCbDelegate> delegates = new ArrayList<TeacherCbDelegate>();
                         for (int i = 0; i < length; i++) {
                             TeacherCbDelegate delegate = new TeacherCbDelegate(teacherList.get(i));
+                            delegate.setChecked(TeacherManager.getInstance(TeacherSearchActivity.this).hasSelected(delegate));
                             delegates.add(delegate);
                         }
                         mTeacherCbAdapter.addDataList(0, delegates);

@@ -105,7 +105,6 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
                     }
                 }
             });
-            //TODO
         }
     }
 

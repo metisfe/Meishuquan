@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/7/24.
  */
-public class CommentTabFragment extends DockFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class CommentTabFragment extends DockFragment implements SwipeRefreshLayout.OnRefreshListener, AccountManager.OnUserChangeListener{
 
     private static final String TAG = CommentTabFragment.class.getSimpleName();
 
@@ -149,15 +149,28 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     public void onResume() {
         super.onResume();
         User me = AccountManager.getInstance(getActivity()).getMe();
-        if (me != null && (me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_FANS)) {
-            mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
-            mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        checkUser(me);
+        AccountManager.getInstance(getActivity()).registerOnUserChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AccountManager.getInstance(getActivity()).unregisterOnUserChangeListener(this);
+    }
+
+    private void checkUser (final User me) {
+        mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
+        mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (me != null && (me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_FANS)) {
                     ActivityDispatcher.publishStatusActivity(getActivity());
+                } else {
+                    com.metis.base.ActivityDispatcher.loginActivity(getActivity());
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
@@ -239,5 +252,10 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
         } else {
             mFooter.setState(Footer.STATE_SUCCESS);
         }
+    }
+
+    @Override
+    public void onUserChanged(User user, boolean onLine) {
+        checkUser(user);
     }
 }

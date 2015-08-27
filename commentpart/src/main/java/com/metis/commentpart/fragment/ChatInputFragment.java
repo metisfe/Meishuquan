@@ -26,13 +26,14 @@ import com.metis.commentpart.R;
 /**
  * Created by Beak on 2015/8/7.
  */
-public class ChatInputFragment extends BaseFragment implements View.OnClickListener, VoiceManager.OnRecordListener, VoiceFragment.VoiceDispatcher {
+public class ChatInputFragment extends BaseFragment implements View.OnClickListener, VoiceManager.OnRecordListener,
+        VoiceFragment.VoiceDispatcher, AccountManager.OnUserChangeListener {
 
     private static final String TAG = ChatInputFragment.class.getSimpleName();
 
     private EditText mInputEt = null;
     private ImageView mVoiceIv, mSendIv;
-
+    private View mInputMaskView = null;
     private Fragment mExtraFragment = null;
 
     private VoiceFragment mVoiceFragment = null;
@@ -75,18 +76,39 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mInputEt = (EditText)view.findViewById(R.id.chat_text);
+        mInputMaskView = view.findViewById(R.id.chat_text_mask);
         mVoiceIv = (ImageView)view.findViewById(R.id.chat_voice);
         mSendIv = (ImageView)view.findViewById(R.id.chat_send);
 
         mInputEt.addTextChangedListener(mTextWatcher);
 
+        mInputMaskView.setOnClickListener(this);
         mVoiceIv.setOnClickListener(this);
         mSendIv.setOnClickListener(this);
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         User me = AccountManager.getInstance(getActivity()).getMe();
+        checkUser(me);
+        AccountManager.getInstance(getActivity()).registerOnUserChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AccountManager.getInstance(getActivity()).unregisterOnUserChangeListener(this);
+    }
+
+    private void checkUser (User me) {
         if (me == null || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_PARENTS) {
             mVoiceIv.setVisibility(View.GONE);
             mSendIv.setVisibility(View.VISIBLE);
+        } else if (me != null && me.userRole == User.USER_ROLE_TEACHER) {
+            mVoiceIv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -113,7 +135,27 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
                 mNeedShowVoiceBtnWhenClear = mController.onSend(content);
             }
             mInputEt.setText("");
+        } else if (id == mInputMaskView.getId()) {
+            if (mController != null) {
+                mController.onInputMaskClick(v);
+            }
         }
+    }
+
+    public void hideMask () {
+        mInputMaskView.setVisibility(View.GONE);
+    }
+
+    public void showMask () {
+        mInputMaskView.setVisibility(View.VISIBLE);
+    }
+
+    public void setInputEnable (boolean enable) {
+        mInputEt.setEnabled(enable);
+    }
+
+    public void setInputHint (CharSequence charSequence) {
+        mInputEt.setHint(charSequence);
     }
 
     public boolean onBackPressed () {
@@ -197,6 +239,11 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         mExtraFragment = mVoiceFragment;
     }
 
+    @Override
+    public void onUserChanged(User user, boolean onLine) {
+        checkUser(user);
+    }
+
     public interface Controller {
         /**
          *
@@ -204,6 +251,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
          * @return true if showVoiceBtn
          */
         public boolean onSend (String content);
+        public void onInputMaskClick (View view);
     }
 
     public void setEnable (boolean enable) {

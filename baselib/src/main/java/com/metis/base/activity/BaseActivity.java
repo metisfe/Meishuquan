@@ -8,6 +8,7 @@ import android.support.annotation.AnimRes;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 
+import com.metis.base.R;
 import com.metis.base.utils.Log;
 
 /**
@@ -44,11 +45,11 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public @AnimRes int getEnterAnimation () {
-        return android.R.anim.fade_in;
+        return R.anim.fade_in;
     }
 
     public @AnimRes int getExitAnimation () {
-        return android.R.anim.fade_out;
+        return R.anim.fade_out;
     }
 
     public boolean isAlive () {

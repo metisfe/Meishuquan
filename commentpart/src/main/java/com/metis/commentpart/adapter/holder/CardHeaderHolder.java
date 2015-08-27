@@ -63,7 +63,7 @@ public class CardHeaderHolder extends AbsViewHolder<CardHeaderDelegate> {
             public void onClick(View v) {
                 User me = AccountManager.getInstance(context).getMe();
                 if (me == null) {
-                    //TODO
+                    com.metis.base.ActivityDispatcher.loginActivity(context);
                     return;
                 }
                 if (mark != null) {

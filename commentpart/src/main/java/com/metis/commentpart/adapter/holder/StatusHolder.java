@@ -143,7 +143,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             @Override
             public void onClick(View v) {
                 if (me == null) {
-                    //TODO
+                    com.metis.base.ActivityDispatcher.loginActivity(context);
                     return;
                 }
                 if (mark != null && mark.isSupport) {
@@ -186,13 +186,17 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             adapterViewFlipper.setAdapter(null);
             adapterViewFlipper.stopFlipping();
         }
-        boolean quickVisibility = !statusDelegate.isInDetails() && me != null && me.userRole != User.USER_ROLE_STUDIO;
-        quickCommentBtn.setVisibility(quickVisibility ? View.VISIBLE : View.GONE);
+        /*boolean quickVisibility = !statusDelegate.isInDetails() && me != null && me.userRole != User.USER_ROLE_STUDIO;
+        quickCommentBtn.setVisibility(quickVisibility ? View.VISIBLE : View.GONE);*/
         quickCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!statusDelegate.isInDetails()) {
-                    ActivityDispatcher.statusDetailWithComment(context, status);
+                    if (me == null || me.userRole == User.USER_ROLE_STUDIO) {
+                        ActivityDispatcher.statusDetail(context, status);
+                    } else {
+                        ActivityDispatcher.statusDetailWithComment(context, status);
+                    }
                 }
             }
         });

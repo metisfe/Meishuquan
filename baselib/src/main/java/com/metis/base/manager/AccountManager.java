@@ -6,10 +6,11 @@ import com.google.gson.reflect.TypeToken;
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.framework.NetProxy;
 import com.metis.base.module.User;
-import com.metis.base.utils.Log;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,14 +38,16 @@ public class AccountManager extends AbsManager {
 
     private User mMe = null;
 
+    private List<OnUserChangeListener> mUserChangeListenerList = new ArrayList<OnUserChangeListener>();
+
     private AccountManager(Context context) {
         super(context);
     }
 
     public User getMe () {
-        if (mMe == null) {
+        /*if (mMe == null) {
             ActivityDispatcher.loginActivity(getContext());
-        }
+        }*/
         return mMe;
     }
 
@@ -77,6 +80,13 @@ public class AccountManager extends AbsManager {
                 }
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
+                }
+                if (!mUserChangeListenerList.isEmpty()) {
+                    final int length = mUserChangeListenerList.size();
+                    for (int i = 0; i < length; i++) {
+                        OnUserChangeListener userChangeListener = mUserChangeListenerList.get(i);
+                        userChangeListener.onUserChanged(mMe, returnInfo.isSuccess());
+                    }
                 }
             }
         });
@@ -112,7 +122,8 @@ public class AccountManager extends AbsManager {
         NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>(){}.getType());
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>() {
+                }.getType());
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
                 }
@@ -138,6 +149,7 @@ public class AccountManager extends AbsManager {
     public void attention (long userId, long groupId, final RequestCallback callback) {
         if (mMe == null) {
             //TODO
+            com.metis.base.ActivityDispatcher.loginActivity(getContext());
             return;
         }
         String request = URL_ATTENTION
@@ -159,6 +171,7 @@ public class AccountManager extends AbsManager {
     public void cancelAttention (long userId, final RequestCallback callback) {
         if (mMe == null) {
             //TODO
+            com.metis.base.ActivityDispatcher.loginActivity(getContext());
             return;
         }
         String request = URL_CANCEL_ATTENTION
@@ -203,5 +216,23 @@ public class AccountManager extends AbsManager {
         public int getVal() {
             return this.val;
         }
+    }
+
+    public void registerOnUserChangeListener (OnUserChangeListener listener) {
+        if (mUserChangeListenerList.contains(listener)) {
+            return;
+        }
+        mUserChangeListenerList.add(listener);
+    }
+
+    public void unregisterOnUserChangeListener (OnUserChangeListener listener) {
+        if (!mUserChangeListenerList.contains(listener)) {
+            return;
+        }
+        mUserChangeListenerList.remove(listener);
+    }
+
+    public static interface OnUserChangeListener {
+        public void onUserChanged (User user, boolean onLine);
     }
 }
