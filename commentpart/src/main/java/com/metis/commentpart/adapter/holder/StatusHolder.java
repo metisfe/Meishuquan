@@ -186,8 +186,8 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             adapterViewFlipper.setAdapter(null);
             adapterViewFlipper.stopFlipping();
         }
-        /*boolean quickVisibility = !statusDelegate.isInDetails() && me != null && me.userRole != User.USER_ROLE_STUDIO;
-        quickCommentBtn.setVisibility(quickVisibility ? View.VISIBLE : View.GONE);*/
+        boolean quickVisibility = !statusDelegate.isInDetails();
+        quickCommentBtn.setVisibility(quickVisibility ? View.VISIBLE : View.GONE);
         quickCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

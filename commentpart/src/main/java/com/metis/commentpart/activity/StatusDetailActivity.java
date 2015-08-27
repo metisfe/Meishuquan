@@ -52,8 +52,8 @@ import java.util.List;
 public class StatusDetailActivity extends TitleBarActivity implements
         CardFooterDelegate.OnCommentFooterClickListener,
         View.OnClickListener, VoiceFragment.VoiceDispatcher, ChatInputFragment.Controller,
-        CommentItemDelegate.OnCommentActionListener, SwipeRefreshLayout.OnRefreshListener,
-        AccountManager.OnUserChangeListener{
+        CommentItemDelegate.OnCommentActionListener, SwipeRefreshLayout.OnRefreshListener
+        /*AccountManager.OnUserChangeListener*/{
 
     private static final String TAG = StatusDetailActivity.class.getSimpleName();
 
@@ -136,9 +136,9 @@ public class StatusDetailActivity extends TitleBarActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        User me = AccountManager.getInstance(this).getMe();
-        checkUser(me);
-        AccountManager.getInstance(this).registerOnUserChangeListener(this);
+        /*User me = AccountManager.getInstance(this).getMe();
+        checkUser(me);*/
+//        AccountManager.getInstance(this).registerOnUserChangeListener(this);
     }
 
     @Override
@@ -147,10 +147,10 @@ public class StatusDetailActivity extends TitleBarActivity implements
         if (VoiceManager.getInstance(this).isPlaying()) {
             VoiceManager.getInstance(this).stopPlay();
         }
-        AccountManager.getInstance(this).unregisterOnUserChangeListener(this);
+//        AccountManager.getInstance(this).unregisterOnUserChangeListener(this);
     }
 
-    private void checkUser (User me) {
+    /*private void checkUser (User me) {
         if (me == null) {
             mChatFragment.showMask();
             mChatFragment.setInputHint(getString(R.string.hint_comment_need_login));
@@ -164,7 +164,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
                 mChatFragment.setInputHint(getString(R.string.status_item_publish_comment));
             }
         }
-    }
+    }*/
 
     @Override
     public void onRefresh() {
@@ -522,8 +522,8 @@ public class StatusDetailActivity extends TitleBarActivity implements
         mReplyingContainer.setVisibility(View.GONE);
     }
 
-    @Override
+    /*@Override
     public void onUserChanged(User user, boolean onLine) {
         checkUser(user);
-    }
+    }*/
 }

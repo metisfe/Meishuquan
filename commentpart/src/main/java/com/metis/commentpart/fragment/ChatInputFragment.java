@@ -110,6 +110,20 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         } else if (me != null && me.userRole == User.USER_ROLE_TEACHER) {
             mVoiceIv.setVisibility(View.VISIBLE);
         }
+
+        if (me == null) {
+            showMask();
+            setInputHint(getString(R.string.hint_comment_need_login));
+        } else {
+            hideMask();
+            if (me.userRole == User.USER_ROLE_STUDIO) {
+                setEnable(false);
+                setInputHint(getString(R.string.hint_comment_not_for_studio));
+            } else {
+                setEnable(false);
+                setInputHint(getString(R.string.status_item_publish_comment));
+            }
+        }
     }
 
     @Override
