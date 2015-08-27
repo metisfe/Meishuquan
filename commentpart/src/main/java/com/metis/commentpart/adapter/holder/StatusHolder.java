@@ -125,7 +125,10 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             statusThumbIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ActivityDispatcher.imagePreviewActivity(context, status.user, status.img);
+                    if (!statusDelegate.isInDetails()) {
+                        ActivityDispatcher.statusDetail(context, status);
+                    }
+                    //ActivityDispatcher.imagePreviewActivity(context, status.user, status.img);
                 }
             });
         } else {
