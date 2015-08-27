@@ -37,6 +37,7 @@
             android:paddingBottom="@dimen/padding_middle"
             android:background="@android:color/transparent"
             android:layout_toLeftOf="@+id/chat_control_container"
+            android:maxLines="4"
             />
         <FrameLayout
             android:id="@+id/chat_control_container"

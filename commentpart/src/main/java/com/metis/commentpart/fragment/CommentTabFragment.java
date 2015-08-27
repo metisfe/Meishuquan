@@ -167,42 +167,45 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
 
     private void loadData (final int index) {
         User me = AccountManager.getInstance(getActivity()).getMe();
+        String session = "";
         if (me != null) {
-            if (index > 1) {
-                mFooter.setState(Footer.STATE_WAITTING);
-                mAdapter.notifyDataSetChanged();
-            }
-            isLoading = true;
-            StatusManager.getInstance(getActivity()).getAssessList(0, 0, 0, index, me.getCookie(), new RequestCallback<StatusList>() {
-                @Override
-                public void callback(ReturnInfo<StatusList> returnInfo, String callbackId) {
-                    if (!isAlive()) {
-                        return;
-                    }
-                    if (returnInfo.isSuccess()) {
-
-                        List<Status> statuses = returnInfo.getData().assessList;
-                        List<Teacher> teacherList = returnInfo.getData().teacherList;
-
-                        if (index == 1) {
-                            mCacheManager.saveAllUserDataAtDatabase(statuses, "assessList.db", Status.class, true);
-                            mCacheManager.saveAllUserDataAtDatabase(teacherList, "teacherList.db", Teacher.class, true);
-                        }
-
-                        parseData(index, statuses, teacherList);
-                        mIndex = index;
-                    } else {
-                        mFooter.setState(Footer.STATE_FAILED);
-                        if (index == 0 && mAdapter.getItemCount() == 0) {
-                            mAdapter.addDataItem(mFooterDelegate);
-                        }
-                    }
-                    mAdapter.notifyDataSetChanged();
-                    isLoading = false;
-                    mSrl.setRefreshing(false);
-                }
-            });
+            session = me.getCookie();
         }
+        if (index > 1) {
+            mFooter.setState(Footer.STATE_WAITTING);
+            mAdapter.notifyDataSetChanged();
+        }
+        isLoading = true;
+        StatusManager.getInstance(getActivity()).getAssessList(0, 0, 0, index, session, new RequestCallback<StatusList>() {
+            @Override
+            public void callback(ReturnInfo<StatusList> returnInfo, String callbackId) {
+                if (!isAlive()) {
+                    return;
+                }
+                if (returnInfo.isSuccess()) {
+
+                    List<Status> statuses = returnInfo.getData().assessList;
+                    List<Teacher> teacherList = returnInfo.getData().teacherList;
+
+                    if (index == 1) {
+                        mCacheManager.saveAllUserDataAtDatabase(statuses, "assessList.db", Status.class, true);
+                        mCacheManager.saveAllUserDataAtDatabase(teacherList, "teacherList.db", Teacher.class, true);
+                    }
+
+                    parseData(index, statuses, teacherList);
+                    mIndex = index;
+                } else {
+                    mFooter.setState(Footer.STATE_FAILED);
+                    if (index == 0 && mAdapter.getItemCount() == 0) {
+                        mAdapter.addDataItem(mFooterDelegate);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+                isLoading = false;
+                mSrl.setRefreshing(false);
+            }
+        });
+
     }
 
     private void parseData (final int index, List<Status> statuses, List<Teacher> teacherList) {

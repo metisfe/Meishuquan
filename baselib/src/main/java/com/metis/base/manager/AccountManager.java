@@ -42,6 +42,9 @@ public class AccountManager extends AbsManager {
     }
 
     public User getMe () {
+        if (mMe == null) {
+            ActivityDispatcher.loginActivity(getContext());
+        }
         return mMe;
     }
 

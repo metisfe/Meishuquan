@@ -81,6 +81,6 @@ public class ActivityDispatcher {
             e.printStackTrace();
             Toast.makeText(context, "loginActivity exception", Toast.LENGTH_SHORT).show();
         }
-
     }
+
 }
