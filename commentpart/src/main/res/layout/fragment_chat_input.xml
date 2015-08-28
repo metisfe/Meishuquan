@@ -67,6 +67,7 @@
                 android:id="@+id/chat_send"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:padding="4dp"
                 android:src="@drawable/ic_send_grey"
                 android:visibility="gone"
                 />

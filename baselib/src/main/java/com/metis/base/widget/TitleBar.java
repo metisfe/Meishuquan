@@ -116,4 +116,8 @@ public class TitleBar extends RelativeLayout{
     public void setOnRightBtnClickListener (OnClickListener listener) {
         mRightFrameLayout.setOnClickListener(listener);
     }
+
+    public void setRightEnable (boolean enable) {
+        mRightFrameLayout.setEnabled(enable);
+    }
 }

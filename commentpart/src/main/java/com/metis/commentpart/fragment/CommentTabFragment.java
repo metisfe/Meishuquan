@@ -172,9 +172,11 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
                     }
                 }
             });
+            mTitleBar.setRightEnable(true);
         } else {
             mTitleBar.setDrawableRight(null);
             mTitleBar.setOnRightBtnClickListener(null);
+            mTitleBar.setRightEnable(false);
         }
         /*mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
         mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {

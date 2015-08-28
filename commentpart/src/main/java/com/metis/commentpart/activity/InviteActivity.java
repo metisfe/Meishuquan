@@ -2,9 +2,11 @@ package com.metis.commentpart.activity;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.AccountManager;
@@ -15,6 +17,7 @@ import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.TeacherCbAdapter;
+import com.metis.commentpart.adapter.TeacherDecoration;
 import com.metis.commentpart.adapter.TeacherSelectedAdapter;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
 import com.metis.commentpart.manager.StatusManager;
@@ -63,7 +66,7 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
 
         mSelectedRv = (RecyclerView)findViewById(R.id.invite_selected_recycler_view);
         mRv = (RecyclerView)findViewById(R.id.invite_recycler_view);
-
+        mRv.addItemDecoration(new TeacherDecoration());
         mSelectedRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mSelectedAdapter = new TeacherSelectedAdapter(this);
         mSelectedRv.setAdapter(mSelectedAdapter);

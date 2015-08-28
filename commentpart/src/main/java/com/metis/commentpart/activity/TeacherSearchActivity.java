@@ -15,6 +15,7 @@ import com.metis.base.widget.SearchView;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.TeacherCbAdapter;
+import com.metis.commentpart.adapter.TeacherDecoration;
 import com.metis.commentpart.adapter.delegate.TeacherCbDelegate;
 import com.metis.commentpart.manager.StatusManager;
 import com.metis.commentpart.manager.TeacherManager;
@@ -47,7 +48,7 @@ public class TeacherSearchActivity extends TitleBarActivity implements SearchVie
 
         mTeacherRv = (RecyclerView)findViewById(R.id.teacher_list_recycler_view);
         mTeacherRv.setLayoutManager(new LinearLayoutManager(this));
-
+        mTeacherRv.addItemDecoration(new TeacherDecoration());
         mTeacherCbAdapter = new TeacherCbAdapter(this);
         mTeacherRv.setAdapter(mTeacherCbAdapter);
 

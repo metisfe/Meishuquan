@@ -17,6 +17,7 @@ import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.StatusAdapter;
+import com.metis.commentpart.adapter.TeacherDecoration;
 import com.metis.commentpart.adapter.delegate.TeacherBtnDelegate;
 import com.metis.commentpart.manager.StatusManager;
 import com.metis.commentpart.module.Teacher;
@@ -54,6 +55,7 @@ public class TeacherListFragment extends BaseFragment {
         mTeacherRv = (RecyclerView)view.findViewById(R.id.teacher_recycler_view);
 
         mTeacherRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTeacherRv.addItemDecoration(new TeacherDecoration());
         mAdapter = new StatusAdapter(getActivity());
         mTeacherRv.setAdapter(mAdapter);
         mTeacherRv.addOnScrollListener(new OnScrollBottomListener() {
