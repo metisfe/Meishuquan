@@ -160,7 +160,23 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     }
 
     private void checkUser (final User me) {
-        mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
+        if (me == null || (me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_FANS)) {
+            mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
+            mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (me == null) {
+                        com.metis.base.ActivityDispatcher.loginActivity(getActivity());
+                    } else {
+                        ActivityDispatcher.publishStatusActivity(getActivity());
+                    }
+                }
+            });
+        } else {
+            mTitleBar.setDrawableRight(null);
+            mTitleBar.setOnRightBtnClickListener(null);
+        }
+        /*mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
         mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +186,7 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
                     com.metis.base.ActivityDispatcher.loginActivity(getActivity());
                 }
             }
-        });
+        });*/
     }
 
     @Override
