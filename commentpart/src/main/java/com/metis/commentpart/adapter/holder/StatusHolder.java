@@ -4,18 +4,14 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
-import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Province;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
@@ -30,8 +26,6 @@ import com.metis.commentpart.module.ChannelItem;
 import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.Status;
 import com.metis.commentpart.widget.ViewFlippable;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -148,7 +142,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
             @Override
             public void onClick(View v) {
                 if (me == null) {
-                    com.metis.base.ActivityDispatcher.loginActivity(context);
+                    com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(context);
                     return;
                 }
                 if (mark != null && mark.isSupport) {

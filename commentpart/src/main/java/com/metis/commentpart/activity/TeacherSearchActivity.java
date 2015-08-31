@@ -69,7 +69,7 @@ public class TeacherSearchActivity extends TitleBarActivity implements SearchVie
         }
         User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
-            com.metis.base.ActivityDispatcher.loginActivity(this);
+            com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(this);
             return;
         }
         mTeacherCbAdapter.clearDataList();

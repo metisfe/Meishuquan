@@ -1,20 +1,16 @@
 package com.metis.meishuquan.activity;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 
 import com.metis.base.activity.BaseActivity;
 import com.metis.base.fragment.MeTabFragment;
 import com.metis.base.utils.FragmentUtils;
-import com.metis.base.utils.Log;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.commentpart.fragment.CommentTabFragment;
 import com.metis.coursepart.fragment.CourseTabFragment;
 import com.metis.meishuquan.R;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

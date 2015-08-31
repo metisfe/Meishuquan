@@ -69,7 +69,7 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
             public void onClick(View v) {
                 User me = AccountManager.getInstance(context).getMe();
                 if (me == null) {
-                    com.metis.base.ActivityDispatcher.loginActivity(context);
+                    com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(context);
                     return;
                 }
                 if (mark != null) {
@@ -115,7 +115,7 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
                 CommentItemDelegate.OnCommentActionListener listener = commentItemDelegate.getOnCommentActionListener();
                 User me = AccountManager.getInstance(context).getMe();
                 if (me == null) {
-                    com.metis.base.ActivityDispatcher.loginActivity(context);
+                    com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(context);
                     return;
                 }
                 if (me.equals(user)) {

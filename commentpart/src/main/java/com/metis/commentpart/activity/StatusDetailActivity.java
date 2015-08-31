@@ -342,7 +342,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
     public void onClick(View v) {
         User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
-            com.metis.base.ActivityDispatcher.loginActivity(this);
+            com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(this);
             return;
         }
         Comment comment = mCardAdapter.getMyCardHeader(me);
@@ -435,7 +435,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
     public boolean onSend(String content) {
         final User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
-            com.metis.base.ActivityDispatcher.loginActivity(this);
+            com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(this);
             return false;
         }
         final Comment comment = me.userRole == User.USER_ROLE_TEACHER ? mCardAdapter.getMyCardHeader(me.userId) : mReplyingComment;
@@ -492,7 +492,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
     public void onInputMaskClick(View view) {
         User me = AccountManager.getInstance(this).getMe();
         if (me == null) {
-            com.metis.base.ActivityDispatcher.loginActivity(this);
+            com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(this);
         }
     }
 

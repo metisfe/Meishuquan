@@ -45,7 +45,7 @@
     <string name="voice_to_short">录音时间太短</string>
     <string name="voice_max_duration">录音时长只支持1分钟</string>
 
-    <string name="hint_comment_not_for_studio">画室不能参与评论</string>
+    <string name="hint_comment_not_for_studio">画室机构不能参与评论</string>
     <string name="hint_comment_need_login">参与评论请先登录</string>
 
     <string name="btn_focus">+关注</string>

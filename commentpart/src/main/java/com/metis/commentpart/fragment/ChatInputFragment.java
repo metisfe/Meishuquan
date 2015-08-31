@@ -92,8 +92,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        User me = AccountManager.getInstance(getActivity()).getMe();
-        checkUser(me);
+        checkUser();
         AccountManager.getInstance(getActivity()).registerOnUserChangeListener(this);
     }
 
@@ -103,24 +102,32 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         AccountManager.getInstance(getActivity()).unregisterOnUserChangeListener(this);
     }
 
-    private void checkUser (User me) {
+    private void checkUser () {
+        User me = AccountManager.getInstance(getActivity()).getMe();
         if (me == null || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_PARENTS) {
             mVoiceIv.setVisibility(View.GONE);
             mSendIv.setVisibility(View.VISIBLE);
-        } else if (me != null && me.userRole == User.USER_ROLE_TEACHER) {
-            mVoiceIv.setVisibility(View.VISIBLE);
+        } else if (me != null) {
+            if (me.userRole == User.USER_ROLE_TEACHER) {
+                mVoiceIv.setVisibility(View.VISIBLE);
+                mSendIv.setVisibility(View.GONE);
+            } else if (me.userRole == User.USER_ROLE_STUDIO) {
+                mVoiceIv.setVisibility(View.GONE);
+                mSendIv.setVisibility(View.GONE);
+            }
         }
 
         if (me == null) {
             showMask();
+            setEnable(false);
             setInputHint(getString(R.string.hint_comment_need_login));
         } else {
-            hideMask();
             if (me.userRole == User.USER_ROLE_STUDIO) {
                 setEnable(false);
                 setInputHint(getString(R.string.hint_comment_not_for_studio));
             } else {
-                setEnable(false);
+                hideMask();
+                setEnable(true);
                 setInputHint(getString(R.string.status_item_publish_comment));
             }
         }
@@ -192,6 +199,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         mInputEt.setEnabled(true);
         mVoiceIv.setImageResource(R.drawable.ic_microphone);
         mInputEt.requestFocus();
+        checkUser();
     }
 
     public void setVoiceDispatcher (VoiceFragment.VoiceDispatcher dispatcher) {
@@ -206,6 +214,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
     public void onRecordStart(String targetPath) {
         mInputEt.setEnabled(false);
         mVoiceIv.setEnabled(false);
+        checkUser();
     }
 
     @Override
@@ -225,6 +234,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         if (mDispatcher != null) {
             mDispatcher.onGiveUp(path);
         }
+        checkUser();
     }
 
     @Override
@@ -234,6 +244,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         if (mDispatcher != null) {
             mDispatcher.onUse(path, duration);
         }
+        checkUser();
     }
 
     public void askToInput () {
@@ -255,7 +266,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onUserChanged(User user, boolean onLine) {
-        checkUser(user);
+        checkUser();
     }
 
     public interface Controller {

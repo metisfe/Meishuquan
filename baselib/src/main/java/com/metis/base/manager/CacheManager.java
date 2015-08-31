@@ -57,7 +57,7 @@ public class CacheManager extends AbsManager {
     public File getMyCacheFolder (String folderName) {
         User me = AccountManager.getInstance(getContext()).getMe();
         if (me == null) {
-            return null;
+            return getCacheFolder(VISITOR, folderName);
         }
         return getCacheFolder(me.userId + "", folderName);
     }

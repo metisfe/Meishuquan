@@ -88,13 +88,14 @@ public class TeacherListFragment extends BaseFragment {
 
     private void loadData (final int index) {
         User me = AccountManager.getInstance(getActivity()).getMe();
-        if (me == null) {
-            return;
+        String session = "";
+        if (me != null) {
+            session = me.getCookie();
         }
         mFooter.setState(Footer.STATE_WAITTING);
         mAdapter.notifyDataSetChanged();
         isLoading = true;
-        StatusManager.getInstance(getActivity()).getAssessTeacher(mTeacherFilter, "", me.getCookie(), index, new RequestCallback<List<Teacher>>() {
+        StatusManager.getInstance(getActivity()).getAssessTeacher(mTeacherFilter, session, me.getCookie(), index, new RequestCallback<List<Teacher>>() {
             @Override
             public void callback(ReturnInfo<List<Teacher>> returnInfo, String callbackId) {
                 isLoading = false;

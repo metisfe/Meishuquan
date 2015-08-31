@@ -166,7 +166,7 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
                 @Override
                 public void onClick(View v) {
                     if (me == null) {
-                        com.metis.base.ActivityDispatcher.loginActivity(getActivity());
+                        com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(getActivity());
                     } else {
                         ActivityDispatcher.publishStatusActivity(getActivity());
                     }
@@ -178,17 +178,6 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
             mTitleBar.setOnRightBtnClickListener(null);
             mTitleBar.setRightEnable(false);
         }
-        /*mTitleBar.setDrawableResourceRight(R.drawable.ic_new_status);
-        mTitleBar.setOnRightBtnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (me != null && (me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_FANS)) {
-                    ActivityDispatcher.publishStatusActivity(getActivity());
-                } else {
-                    com.metis.base.ActivityDispatcher.loginActivity(getActivity());
-                }
-            }
-        });*/
     }
 
     @Override

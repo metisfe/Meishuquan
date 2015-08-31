@@ -39,15 +39,6 @@
             android:layout_toLeftOf="@+id/chat_control_container"
             android:maxLines="4"
             />
-        <View
-            android:id="@+id/chat_text_mask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/chat_text"
-            android:layout_alignTop="@+id/chat_text"
-            android:layout_alignRight="@+id/chat_text"
-            android:layout_alignBottom="@+id/chat_text"
-            />
         <FrameLayout
             android:id="@+id/chat_control_container"
             android:layout_width="wrap_content"
@@ -73,6 +64,15 @@
                 />
         </FrameLayout>
     </RelativeLayout>
+    <View
+        android:id="@+id/chat_text_mask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chat_input_panel"
+        android:layout_alignTop="@+id/chat_input_panel"
+        android:layout_alignRight="@+id/chat_input_panel"
+        android:layout_alignBottom="@+id/chat_input_panel"
+        />
     <FrameLayout
         android:id="@+id/chat_input_extra_container"
         android:layout_width="fill_parent"

@@ -12,7 +12,6 @@ import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
-import com.metis.base.utils.Log;
 import com.metis.base.utils.TimeUtils;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.commentpart.R;
@@ -63,7 +62,7 @@ public class CardHeaderHolder extends AbsViewHolder<CardHeaderDelegate> {
             public void onClick(View v) {
                 User me = AccountManager.getInstance(context).getMe();
                 if (me == null) {
-                    com.metis.base.ActivityDispatcher.loginActivity(context);
+                    com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(context);
                     return;
                 }
                 if (mark != null) {
