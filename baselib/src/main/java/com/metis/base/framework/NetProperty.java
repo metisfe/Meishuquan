@@ -5,7 +5,7 @@ package com.metis.base.framework;
  */
 public class NetProperty {
 
-    private static final boolean TESTING = false;
+    private static final boolean TESTING = true;
 
     public static final String FORMAL = "https://metisapi.azure-mobile.cn";
     public static final String FORMAL_KEY = "JhSUSARkPDywIlrCKJKQzOJIttIYWU24";

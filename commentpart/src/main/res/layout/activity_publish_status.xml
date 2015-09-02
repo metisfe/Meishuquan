@@ -14,7 +14,7 @@
             android:id="@+id/status_content_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/std_list_item_bg_nor"
+            android:background="@drawable/std_list_item_round_bg_nor"
             android:layout_marginTop="@dimen/margin_middle"
             >
             <ImageView
@@ -63,7 +63,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:background="@drawable/std_list_item_bg_nor"
+            android:background="@drawable/std_list_item_round_bg_nor"
             android:layout_marginTop="@dimen/margin_middle"
             >
             <RelativeLayout
@@ -106,7 +106,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/status_category_container"
-            android:background="@drawable/std_list_item_bg_nor"
+            android:background="@drawable/std_list_item_round_bg_nor"
             android:layout_marginTop="@dimen/margin_middle"
             android:paddingTop="@dimen/padding_middle"
             android:paddingBottom="@dimen/padding_middle"

@@ -115,7 +115,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                 }
             }
 
-            DisplayManager.getInstance(context).display(status.img.imgThumbnailUrl, statusThumbIv);
+            DisplayManager.getInstance(context).display(status.img.imgUrl, statusThumbIv);
             statusThumbIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

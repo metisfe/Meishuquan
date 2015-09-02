@@ -201,8 +201,9 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
 
     private void loadData (final int index) {
         User me = AccountManager.getInstance(this).getMe();
-        if (me == null) {
-            return;
+        String session = "";
+        if (me != null) {
+            session = me.getCookie();
         }
 
         if (index == 1) {
@@ -215,7 +216,7 @@ public class FilterActivity extends TitleBarActivity implements FilterAdapter.On
         FilterProvider category = mCategoryAdapter.getSelectedFilterProvider();
         FilterProvider area = mAreaAdapter.getSelectedFilterProvider();
         isLoading = true;
-        mLastRequestId = StatusManager.getInstance(this).getAssessList(state.getFilterId(), category.getFilterId(), area.getFilterId(), index, me.getCookie(), new RequestCallback<StatusList>() {
+        mLastRequestId = StatusManager.getInstance(this).getAssessList(state.getFilterId(), category.getFilterId(), area.getFilterId(), index, session, new RequestCallback<StatusList>() {
             @Override
             public void callback(ReturnInfo<StatusList> returnInfo, String callbackId) {
                 isLoading = false;

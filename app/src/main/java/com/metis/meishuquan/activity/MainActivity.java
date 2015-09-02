@@ -11,6 +11,7 @@ import com.metis.base.widget.dock.DockBar;
 import com.metis.commentpart.fragment.CommentTabFragment;
 import com.metis.coursepart.fragment.CourseTabFragment;
 import com.metis.meishuquan.R;
+import com.metis.newslib.fragment.NewsTabFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -19,6 +20,7 @@ public class MainActivity extends BaseActivity implements DockBar.OnDockItemClic
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private NewsTabFragment mNewsFragment = new NewsTabFragment();
     private CourseTabFragment mCourseFragment = new CourseTabFragment();
     private CommentTabFragment mCommentFragment = new CommentTabFragment();
     private MeTabFragment mMeFragment = new MeTabFragment();
@@ -48,13 +50,14 @@ public class MainActivity extends BaseActivity implements DockBar.OnDockItemClic
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        mMainDockBar.addDock(mNewsFragment.getDock(this));
         mMainDockBar.addDock(mCommentFragment.getDock(this));
         mMainDockBar.addDock(mCourseFragment.getDock(this));
         mMainDockBar.addDock(mMeFragment.getDock(this));
 
         mMainDockBar.setOnDockItemClickListener(this);
         if (mCurrentFragment == null) {
-            mMainDockBar.selectDock(mCommentFragment.getDock(this));
+            mMainDockBar.selectDock(mNewsFragment.getDock(this));
         }
     }
 

@@ -61,6 +61,25 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.metis.base.activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:launchMode="singleTask"
+            >
+            <intent-filter>
+                <action android:name="com.metis.meishuquan.action.login"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.metis.base.activity.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" >
+        </activity>
+        <activity
+            android:name="com.metis.base.activity.RoleChooseActivity"
+            android:label="@string/title_activity_role_choose" >
+        </activity>
     </application>
 
 </manifest>

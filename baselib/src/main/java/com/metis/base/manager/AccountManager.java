@@ -1,6 +1,7 @@
 package com.metis.base.manager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewCompat;
 
 import com.google.gson.JsonObject;
@@ -10,6 +11,7 @@ import com.metis.base.framework.NetProxy;
 import com.metis.base.module.User;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -34,7 +40,7 @@ public class AccountManager extends AbsManager {
         return sManager;
     }
 
-    public static final int AUTH_TYPE_WE_CHAT = 0, AUTH_TYPE_SINA = 1, AUTH_TYPE_QQ = 2;
+    public static final int AUTH_TYPE_WE_CHAT = 1, AUTH_TYPE_SINA = 2, AUTH_TYPE_QQ = 3, AUTH_TYPE_NONE = 0;
 
     private static final String
             LOGIN = "v1.1/UserCenter/Login",
@@ -57,6 +63,7 @@ public class AccountManager extends AbsManager {
 
     private AccountManager(Context context) {
         super(context);
+        ShareSDK.initSDK(context);
     }
 
     public User getMe () {
@@ -69,6 +76,30 @@ public class AccountManager extends AbsManager {
         }
         ActivityDispatcher.loginActivityWhenAlreadyIn(getContext());
         return "";
+    }
+
+    public void saveUserLoginInfo (LoginInfo info) {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("account", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("loginType", info.loginType);
+        editor.commit();
+    }
+
+    public LoginInfo readUserLoginInfo() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("account", Context.MODE_PRIVATE);
+        LoginInfo info = new LoginInfo(sharedPreferences.getString("loginType", "none"));
+        return info;
+    }
+
+    public static int getTypeId (String loginTypeStr) {
+        if (Wechat.NAME.equals(loginTypeStr)) {
+            return 0;
+        } else if (SinaWeibo.NAME.equals(loginTypeStr)) {
+            return 1;
+        } else if (QQ.NAME.equals(loginTypeStr)) {
+            return 2;
+        }
+        return -1;
     }
 
     private void smsSdkInit () {
@@ -116,6 +147,8 @@ public class AccountManager extends AbsManager {
 
                 if (returnInfo.isSuccess()) {
                     mMe = returnInfo.getData();
+                    LoginInfo info = new LoginInfo(0);
+                    saveUserLoginInfo(info);
                 }
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
@@ -180,11 +213,30 @@ public class AccountManager extends AbsManager {
         NetProxy.getInstance(getContext()).doPostRequest(request, map, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo<User> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<User>>() {
-                }.getType());
+                ReturnInfo<User> returnInfo = null;
+                try {
+                    returnInfo = getGson().fromJson(
+                            result,
+                            new TypeToken<ReturnInfo<User>>() {
+                            }.getType());
+                } catch (IllegalStateException e) {
+                    String errorMsg = e.getMessage();
+                }
 
+                if (returnInfo.isSuccess()) {
+                    mMe = returnInfo.getData();
+                    LoginInfo info = new LoginInfo(0);
+                    saveUserLoginInfo(info);
+                }
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
+                }
+                if (!mUserChangeListenerList.isEmpty()) {
+                    final int length = mUserChangeListenerList.size();
+                    for (int i = 0; i < length; i++) {
+                        OnUserChangeListener userChangeListener = mUserChangeListenerList.get(i);
+                        userChangeListener.onUserChanged(mMe, returnInfo.isSuccess());
+                    }
                 }
             }
         });
@@ -195,7 +247,7 @@ public class AccountManager extends AbsManager {
     openid：第三方唯一ID
     typeid：0 微信，1 新浪微博，2 QQ
      */
-    public void authLogin (String openId, int typeId, final RequestCallback<User> callback) {
+    public void authLogin (String openId, final int typeId, final RequestCallback<User> callback) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("openid", openId);
         map.put("typeid", typeId + "");
@@ -217,6 +269,8 @@ public class AccountManager extends AbsManager {
 
                         if (returnInfo.isSuccess()) {
                             mMe = returnInfo.getData();
+                            LoginInfo info = new LoginInfo(typeId);
+                            saveUserLoginInfo(info);
                         }
                         if (callback != null) {
                             callback.callback(returnInfo, requestId);
@@ -292,6 +346,17 @@ public class AccountManager extends AbsManager {
         });
     }
 
+    public void updateUserRole (int userRole, final RequestCallback callback) {
+        if (mMe == null) {
+            //TODO
+            return;
+        }
+        mMe.userRole = userRole;
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userRole", userRole + "");
+        updateUserInfo(map, callback);
+    }
+
     public void updateUserInfo (Map<String, String> map, final RequestCallback callback) {
         if (mMe == null) {
             //TODO
@@ -351,5 +416,41 @@ public class AccountManager extends AbsManager {
 
     public static interface OnUserChangeListener {
         public void onUserChanged (User user, boolean onLine);
+    }
+
+    public class LoginInfo {
+        private String loginType = "";
+
+        public LoginInfo (int typeId) {
+            switch (typeId) {
+                case AUTH_TYPE_NONE:
+                    loginType = "none";
+
+                    break;
+                case AUTH_TYPE_WE_CHAT:
+                    loginType = Wechat.NAME;
+
+                    break;
+                case AUTH_TYPE_SINA:
+                    loginType = SinaWeibo.NAME;
+
+                    break;
+                case AUTH_TYPE_QQ:
+                    loginType = QQ.NAME;
+                    break;
+            }
+        }
+
+        public LoginInfo (String login) {
+            loginType = login;
+        }
+
+        public String getLoginType() {
+            return loginType;
+        }
+
+        public void setLoginType(String loginType) {
+            this.loginType = loginType;
+        }
     }
 }

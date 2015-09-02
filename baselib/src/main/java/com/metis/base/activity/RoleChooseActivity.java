@@ -99,7 +99,15 @@ public class RoleChooseActivity extends TitleBarActivity {
                             return;
                         }
                         if (mUser != null) {
-                            Map<String, String> map = new HashMap<String, String>();
+                            AccountManager.getInstance(RoleChooseActivity.this).updateUserRole(mSelectedRole.getRoleId(), new RequestCallback() {
+                                @Override
+                                public void callback(ReturnInfo returnInfo, String callbackId) {
+                                    if (returnInfo.isSuccess()) {
+                                        ActivityDispatcher.mainActivity(RoleChooseActivity.this);
+                                    }
+                                }
+                            });
+                            /*Map<String, String> map = new HashMap<String, String>();
                             map.put("userRole", mSelectedRole.getRoleId() + "");
                             AccountManager.getInstance(RoleChooseActivity.this).updateUserInfo(map, new RequestCallback() {
                                 @Override
@@ -108,7 +116,7 @@ public class RoleChooseActivity extends TitleBarActivity {
                                         ActivityDispatcher.mainActivity(RoleChooseActivity.this);
                                     }
                                 }
-                            });
+                            });*/
                         }
                         //TODO
                     }

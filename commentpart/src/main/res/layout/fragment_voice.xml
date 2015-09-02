@@ -39,7 +39,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="@string/btn_give_up"
-            android:background="@drawable/std_list_item_bg"
+            android:background="@drawable/std_list_item_round_bg"
             android:padding="@dimen/padding_middle"
             android:layout_margin="@dimen/margin_middle"
             />
@@ -50,7 +50,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="@string/btn_send"
-            android:background="@drawable/std_list_item_bg"
+            android:background="@drawable/std_list_item_round_bg"
             android:padding="@dimen/padding_middle"
             android:layout_margin="@dimen/margin_middle"
             />

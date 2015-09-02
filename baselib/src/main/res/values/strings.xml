@@ -68,6 +68,10 @@
     <string name="toast_role_at_least_choose_one">请选择一个角色</string>
     <string name="toast_register_success">注册成功</string>
     <string name="toast_register_failed">注册失败:%1$s</string>
+    <string name="toast_submit_verify_code_error">验证码已过期</string>
+    <string name="toast_verify_phone_illegal_format">手机号码格式错误</string>
+    <string name="toast_verify_not_match">验证码错误</string>
+    <string name="toast_verify_too_soon">验证码请求过于频繁</string>
 
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_login">登录</string>
@@ -75,4 +79,10 @@
     <string name="title_activity_reset_pwd">重置密码</string>
 
     <string name="title_activity_role_choose">选择身份</string>
+
+    <string name="dock_item_news_title">头条</string>
+    <string name="dock_item_comment_title">点评</string>
+    <string name="dock_item_course_title">课程</string>
+    <string name="dock_item_discovery_title">发现</string>
+    <string name="dock_item_me_title">我</string>
 </resources>

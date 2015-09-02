@@ -58,10 +58,16 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
     }
 
     public void addDataList (Collection<? extends BaseDelegate> list) {
+        if (list == null) {
+            return;
+        }
         mDataList.addAll(list);
     }
 
     public void addDataList (int position, Collection<? extends BaseDelegate> list) {
+        if (list == null) {
+            return;
+        }
         mDataList.addAll(position, list);
     }
 

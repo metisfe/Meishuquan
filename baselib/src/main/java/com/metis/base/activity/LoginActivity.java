@@ -105,7 +105,6 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
             }
             SystemUtils.hideIME(this, mPwdEt);
             mLoginBtn.setEnabled(false);
-            showProgressDialog(R.string.text_please_wait, false);
             AccountManager.getInstance(this).login(account, pwd, new RequestCallback<User>() {
                 @Override
                 public void callback(ReturnInfo<User> returnInfo, String callbackId) {
@@ -139,18 +138,20 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
         } else if (id == mPwdFindTv.getId()) {
             ActivityDispatcher.resetPwdActivity(this);
         } else if (id == mWeChatView.getId()) {
+            ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, Wechat.NAME), this);
+        } else if (id == mSinaView.getId()) {
             ActivityDispatcher.mainActivity(this);
             finish();
-            //ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, Wechat.NAME), this);
-        } else if (id == mSinaView.getId()) {
-            ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, SinaWeibo.NAME), this);
+            //ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, SinaWeibo.NAME), this);
         } else if (id == mQqView.getId()) {
             ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, QQ.NAME), this);
         }
+        showProgressDialog(R.string.text_please_wait, false);
     }
 
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        dismissProgressDialog();
         if (platform.isValid()) {
             PlatformDb db = platform.getDb();
             final String userId = db.getUserId();
@@ -177,23 +178,23 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                 }
             };
             if (Wechat.NAME.equals(platformName)) {
-                AccountManager.getInstance(this).authLogin(userId, 0, authLoginCallback);
+                AccountManager.getInstance(this).authLogin(userId, AccountManager.AUTH_TYPE_WE_CHAT, authLoginCallback);
             } else if (SinaWeibo.NAME.equals(platformName)) {
-                AccountManager.getInstance(this).authLogin(userId, 1, authLoginCallback);
+                AccountManager.getInstance(this).authLogin(userId, AccountManager.AUTH_TYPE_SINA, authLoginCallback);
             } else if (QQ.NAME.equals(platformName)) {
-                AccountManager.getInstance(this).authLogin(userId, 2, authLoginCallback);
+                AccountManager.getInstance(this).authLogin(userId, AccountManager.AUTH_TYPE_QQ, authLoginCallback);
             }
         }
     }
 
     @Override
     public void onError(Platform platform, int i, Throwable throwable) {
-
+        dismissProgressDialog();
     }
 
     @Override
     public void onCancel(Platform platform, int i) {
-
+        dismissProgressDialog();
     }
 
     @Override

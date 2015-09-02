@@ -114,7 +114,7 @@ public class CourseTabFragment extends DockFragment implements DoubleTab.OnTabSw
     @Override
     public DockBar.Dock getDock(Context context) {
         if (mDock == null) {
-            mDock = new DockBar.Dock(context, 2, android.R.drawable.alert_dark_frame, R.string.tab_title_course, this);
+            mDock = new DockBar.Dock(context, R.id.dock_item_id_course, android.R.drawable.alert_dark_frame, R.string.dock_item_course_title, this);
         }
         return mDock;
     }

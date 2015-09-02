@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_big"
-    android:background="@drawable/std_list_item_bg"
+    android:background="@drawable/std_list_item_round_bg"
     >
     <include
         android:id="@+id/item_teacher_part"

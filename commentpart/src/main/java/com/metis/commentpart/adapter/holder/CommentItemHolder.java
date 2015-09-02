@@ -101,7 +101,7 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
         timeTv.setText(TimeUtils.formatStdTime(context, comment.commentDateTime));
         //TODO
         if (adapter.getItemCount() == 3 && position == 2) {
-            itemView.setBackgroundResource(R.drawable.std_list_item_bg_nor);
+            itemView.setBackgroundResource(R.drawable.std_list_item_round_bg_nor);
         } else if (position == 2) {
             itemView.setBackgroundResource(R.drawable.header_round_conner_bg_nor);
         } else if (position == adapter.getItemCount() - 1) {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="dock_item_id_news" type="id"/>
+    <item name="dock_item_id_comments" type="id"/>
+    <item name="dock_item_id_course" type="id"/>
+    <item name="dock_item_id_discovery" type="id"/>
+    <item name="dock_item_id_me" type="id"/>
+</resources>

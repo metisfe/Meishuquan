@@ -91,6 +91,8 @@ public class CardHeaderHolder extends AbsViewHolder<CardHeaderDelegate> {
         }
         if (comment.supportCount > 0) {
             supportCountTv.setText(comment.supportCount + "");
+        } else {
+            supportCountTv.setText("");
         }
     }
 }

@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
 import com.metis.base.manager.AccountManager;
@@ -31,6 +33,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,7 +94,7 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
                         continue;
                     }
                     String content = msg.getMessageBody();
-                    Pattern pattern = Pattern.compile("\\w{4}");
+                    Pattern pattern = Pattern.compile("\\d{4}");
                     Matcher matcher = pattern.matcher(content);
                     if (matcher.find()) {
                         mCodeEt.setText(matcher.group());
@@ -151,6 +154,13 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
                                     public void callback(ReturnInfo<User> returnInfo, String callbackId) {
                                         if (returnInfo.isSuccess()) {
                                             Toast.makeText(RegisterActivity.this, R.string.toast_register_success, Toast.LENGTH_SHORT).show();
+                                            User me = returnInfo.getData();
+                                            if (me.userRole == 0) {
+                                                ActivityDispatcher.userRoleActivity(RegisterActivity.this, me);
+                                            } else {
+                                                ActivityDispatcher.mainActivity(RegisterActivity.this);
+                                            }
+                                            finish();
                                             //TODO
                                         } else {
                                             Toast.makeText(RegisterActivity.this, getString(R.string.toast_register_failed, returnInfo.getMessage()), Toast.LENGTH_SHORT).show();
@@ -171,6 +181,23 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
                         }
                     } else {
                         ((Throwable) data).printStackTrace();
+                        try {
+                            SmsException exception = new Gson().fromJson(((Throwable) data).getMessage(), new TypeToken<SmsException>(){}.getType());
+                            switch (exception.status) {
+                                case SmsException.ERROR_CODE_SUBMIT_TOO_SOON_467:
+                                    Toast.makeText(RegisterActivity.this, R.string.toast_verify_too_soon, Toast.LENGTH_SHORT).show();
+                                    break;
+                                case SmsException.ERROR_CODE_VERIFY_CODE_NOT_MATCH_468:
+                                    Toast.makeText(RegisterActivity.this, R.string.toast_verify_not_match, Toast.LENGTH_SHORT).show();
+                                    break;
+                                case SmsException.ERROR_CODE_PHONE_ILLEGAL_FORMAT_457:
+                                    Toast.makeText(RegisterActivity.this, R.string.toast_verify_phone_illegal_format, Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                             //提交验证码失败
                         } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
@@ -331,5 +358,23 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
     @Override
     public boolean showAsUpEnable() {
         return true;
+    }
+
+    private class SmsException implements Serializable {
+
+        public static final int
+        ERROR_CODE_APP_KEY_EMPTY_405 = 405,
+        ERROR_CODE_APP_KEY_ILLEGAL_406 = 406,
+        ERROR_CODE_COUNTRY_CODE_OR_PHONE_EMPTY_456 = 456,
+        ERROR_CODE_PHONE_ILLEGAL_FORMAT_457 = 457,
+        ERROR_CODE_VERIFY_CODE_EMPTY_466 = 466,
+        ERROR_CODE_SUBMIT_TOO_SOON_467 = 467,
+        ERROR_CODE_VERIFY_CODE_NOT_MATCH_468 = 468,
+        ERROR_CODE_NO_VERIFY_SERVICE_474 = 474;
+
+
+        public String detail;
+        public int status;
+        public String description;
     }
 }

@@ -29,7 +29,7 @@ public class MeTabFragment extends DockFragment {
     @Override
     public DockBar.Dock getDock(Context context) {
         if (mDock == null) {
-            mDock = new DockBar.Dock(context, 5, android.R.drawable.btn_star, R.string.tab_me, this);
+            mDock = new DockBar.Dock(context, R.id.dock_item_id_me, android.R.drawable.btn_star, R.string.dock_item_me_title, this);
         }
         return mDock;
     }

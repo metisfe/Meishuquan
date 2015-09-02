@@ -95,7 +95,7 @@ public class TeacherListFragment extends BaseFragment {
         mFooter.setState(Footer.STATE_WAITTING);
         mAdapter.notifyDataSetChanged();
         isLoading = true;
-        StatusManager.getInstance(getActivity()).getAssessTeacher(mTeacherFilter, session, me.getCookie(), index, new RequestCallback<List<Teacher>>() {
+        StatusManager.getInstance(getActivity()).getAssessTeacher(mTeacherFilter, "", session, index, new RequestCallback<List<Teacher>>() {
             @Override
             public void callback(ReturnInfo<List<Teacher>> returnInfo, String callbackId) {
                 isLoading = false;

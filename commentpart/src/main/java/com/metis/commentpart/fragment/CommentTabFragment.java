@@ -62,7 +62,7 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     @Override
     public DockBar.Dock getDock(Context context) {
         if (mDock == null) {
-            mDock = new DockBar.Dock(context, 1, android.R.drawable.btn_star, R.string.tab_title_center, this);
+            mDock = new DockBar.Dock(context, R.id.dock_item_id_comments, android.R.drawable.btn_star, R.string.dock_item_comment_title, this);
         }
         return mDock;
     }
