@@ -3,8 +3,8 @@
     android:id="@+id/share_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.metis.meishuquan.activity.ShareActivity"
     android:background="#aa000000"
+    tools:context="com.metis.base.activity.ShareActivity"
     >
     <LinearLayout
         android:layout_width="fill_parent"

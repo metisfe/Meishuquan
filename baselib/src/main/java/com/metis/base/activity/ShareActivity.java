@@ -1,18 +1,16 @@
-package com.metis.meishuquan.activity;
+package com.metis.base.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
-import com.metis.base.activity.BaseActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.manager.ShareManager;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
-import com.metis.meishuquan.manager.ShareManager;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.HashMap;

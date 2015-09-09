@@ -1,17 +1,6 @@
-package com.metis.meishuquan.manager;
+package com.metis.base.manager;
 
 import android.content.Context;
-import android.os.Environment;
-
-import com.google.gson.reflect.TypeToken;
-import com.metis.base.framework.NetProxy;
-import com.metis.base.manager.AbsManager;
-import com.metis.base.manager.RequestCallback;
-import com.metis.msnetworklib.contract.ReturnInfo;
-import com.metis.newslib.module.CircleImage;
-import com.metis.newslib.module.CirclePushBlogParams;
-
-import java.io.File;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -22,7 +11,6 @@ import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
-import cn.sharesdk.wechat.utils.WXImageObject;
 
 /**
  * Created by Beak on 2015/8/26.
@@ -67,6 +55,14 @@ public class ShareManager extends AbsManager {
         platform.SSOSetting(false);
         platform.showUser(null);
         //platform.authorize();
+    }
+
+    public void loginQuit (Platform platform, PlatformActionListener listener) {
+        if (platform != null && platform.isValid()) {
+            platform.removeAccount(true);
+        }
+        platform.setPlatformActionListener(listener);
+        platform.authorize();
     }
 
     public void weChatMomentsShare (String title, String text, String imageUrl, String url, PlatformActionListener listener) {

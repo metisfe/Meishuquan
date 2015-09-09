@@ -28,25 +28,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.metis.meishuquan.activity.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="com.metis.meishuquan.action.login" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.metis.meishuquan.activity.ShareActivity"
-            android:theme="@style/BaseTheme.Transparent"
-            android:label="@string/title_activity_share" >
-            <intent-filter>
-                <action android:name="com.metis.meishuquan.action.share"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

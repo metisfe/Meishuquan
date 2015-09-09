@@ -1,4 +1,4 @@
-package com.metis.meishuquan.activity;
+package com.metis.base.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +10,12 @@ import android.widget.Toast;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
-import com.metis.base.activity.RegisterActivity;
-import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.manager.ShareManager;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.base.utils.SystemUtils;
-import com.metis.meishuquan.manager.ShareManager;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.HashMap;
