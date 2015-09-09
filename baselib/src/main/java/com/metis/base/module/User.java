@@ -24,6 +24,7 @@ public class User implements Serializable, Parcelable{
     public String remarkName;
     private String avatar;
     private String userAvatar;
+    private String gender;
     public String grade;
     public int identity;
     public int relation;
@@ -52,6 +53,7 @@ public class User implements Serializable, Parcelable{
         dest.writeString(remarkName);
         dest.writeString(avatar);
         dest.writeString(userAvatar);
+        dest.writeString(gender);
         dest.writeString(grade);
         dest.writeInt(identity);
         dest.writeInt(relation);
@@ -79,6 +81,7 @@ public class User implements Serializable, Parcelable{
         remarkName = in.readString();
         avatar = in.readString();
         userAvatar = in.readString();
+        gender = in.readString();
         grade = in.readString();
         identity = in.readInt();
         relation = in.readInt();

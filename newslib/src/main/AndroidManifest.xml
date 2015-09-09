@@ -9,6 +9,12 @@
             android:name=".activity.NewsDetailActivity"
             android:label="@string/title_activity_news_detail" >
         </activity>
+        <activity
+            android:name=".activity.NewsReplyActivity"
+            android:theme="@style/BaseTheme.Transparent"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/title_activity_news_reply" >
+        </activity>
     </application>
 
 </manifest>

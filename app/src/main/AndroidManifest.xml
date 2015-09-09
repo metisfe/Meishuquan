@@ -12,13 +12,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >
-        <!--微信分享回调 -->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.HelloActivity"
             android:label="@string/app_name" >
@@ -32,6 +25,25 @@
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="com.metis.meishuquan.action.main"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.metis.meishuquan.activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="com.metis.meishuquan.action.login" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.metis.meishuquan.activity.ShareActivity"
+            android:theme="@style/BaseTheme.Transparent"
+            android:label="@string/title_activity_share" >
+            <intent-filter>
+                <action android:name="com.metis.meishuquan.action.share"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

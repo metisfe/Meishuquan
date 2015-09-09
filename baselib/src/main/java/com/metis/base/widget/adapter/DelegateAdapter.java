@@ -106,4 +106,9 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         return getDataItem(position).getDelegateType();
     }
 
+    @Override
+    public void onViewDetachedFromWindow(AbsViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.onViewDetachedFromWindow();
+    }
 }

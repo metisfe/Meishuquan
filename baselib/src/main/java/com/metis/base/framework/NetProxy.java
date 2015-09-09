@@ -1,11 +1,13 @@
 package com.metis.base.framework;
 
 import android.content.Context;
+import android.net.http.AndroidHttpClient;
 import android.util.Pair;
 
 import com.metis.base.Debug;
 import com.metis.base.utils.Log;
 import com.metis.msnetworklib.contract.ReturnInfo;
+import com.microsoft.windowsazure.mobileservices.AndroidHttpClientFactory;
 import com.microsoft.windowsazure.mobileservices.ApiOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;

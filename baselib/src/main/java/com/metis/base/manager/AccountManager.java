@@ -2,7 +2,7 @@ package com.metis.base.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.view.ViewCompat;
+import android.util.Patterns;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -367,10 +367,10 @@ public class AccountManager extends AbsManager {
         Set<String> set = map.keySet();
         for (String key : set) {
             String value = map.get(key);
-            value = URLEncoder.encode(value);
-                /*if (!Patterns.WEB_URL.matcher(value).matches()) {
-                    value = URLEncoder.encode(value);
-                }*/
+            //value = URLEncoder.encode(value);
+            if (!Patterns.WEB_URL.matcher(value).matches()) {
+                value = URLEncoder.encode(value);
+            }
             json.addProperty(key, value);
         }
         String request = URL_UPDATE_USER_INFO

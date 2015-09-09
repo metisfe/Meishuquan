@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.manager.SupportManager;
 import com.metis.base.module.Province;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
@@ -148,7 +149,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                 if (mark != null && mark.isSupport) {
                     Toast.makeText(context, R.string.status_detail_has_supported, Toast.LENGTH_SHORT).show();
                 } else {
-                    StatusManager.getInstance(context).supportStatus(me.userId, status.id, me.getCookie());
+                    SupportManager.getInstance(context).supportStatus(me.userId, status.id, me.getCookie());
                     status.supportCount++;
                     UserMark userMark = mark;
                     if (userMark == null) {
@@ -175,7 +176,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         List<Comment> commentList = statusDelegate.getSource().teacherCommentList;
         stateTv.setText(status.assessState ? context.getString(R.string.status_item_has_commented) : null);
         stateTv.setVisibility(status.assessState ? View.VISIBLE : View.GONE);
-        timeTv.setText(TimeUtils.formatStdTime(context, status.createTime));
+        timeTv.setText(TimeUtils.formatStdTime(context, status.updateTime));
         if (commentList != null && commentList.size() > 1 && !statusDelegate.isInDetails()) {
             adapterViewFlipper.setVisibility(View.VISIBLE);
             adapterViewFlipper.setAdapter(new FlipperAdapter(context, commentList));

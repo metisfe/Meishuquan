@@ -2,16 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.metis.base" >
 
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -30,21 +30,31 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <!--shareSdk Activity-->
+        <!-- shareSdk Activity -->
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize" >
             <intent-filter>
-                <data android:scheme="tencent100371282" />
+                <data android:scheme="tencent1104485283" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!--shareSdk Activity end-->
+        <!--微信分享回调 -->
+        <activity
+            android:name="com.metis.meishuquan.wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <!--微信分享回调 -->
+        <!-- shareSdk Activity end -->
 
         <activity
             android:name=".activity.debug.DebugActivity"
@@ -54,30 +64,20 @@
         <activity
             android:name=".activity.ImageViewerActivity"
             android:label="@string/title_activity_image_preview"
-            android:theme="@style/BaseTheme"
-            >
+            android:theme="@style/BaseTheme" >
             <intent-filter>
-                <action android:name="com.metis.meishuquan.action.image_preview"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.metis.meishuquan.action.image_preview" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.metis.base.activity.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:launchMode="singleTask"
-            >
-            <intent-filter>
-                <action android:name="com.metis.meishuquan.action.login"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.metis.base.activity.RegisterActivity"
+            android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" >
         </activity>
         <activity
-            android:name="com.metis.base.activity.RoleChooseActivity"
+            android:name=".activity.RoleChooseActivity"
             android:label="@string/title_activity_role_choose" >
         </activity>
     </application>

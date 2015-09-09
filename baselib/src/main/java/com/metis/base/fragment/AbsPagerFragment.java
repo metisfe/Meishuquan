@@ -8,7 +8,11 @@ import android.content.Context;
 public abstract class AbsPagerFragment extends BaseFragment {
     public abstract CharSequence getTitle (Context context);
 
-    public void onSelected () {
+    public void onPagerIn() {
+
+    }
+
+    public void onPagerOut () {
 
     }
 }

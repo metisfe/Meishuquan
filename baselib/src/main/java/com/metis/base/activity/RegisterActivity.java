@@ -123,6 +123,8 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
 
     private String mPhoneNum = null, mPwd = null;
 
+    private boolean isAlreadyIn = false;
+
     private EventHandler mHandler = new EventHandler() {
         @Override
         public void afterEvent(final int event, final int result, final Object data) {
@@ -156,9 +158,14 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
                                             Toast.makeText(RegisterActivity.this, R.string.toast_register_success, Toast.LENGTH_SHORT).show();
                                             User me = returnInfo.getData();
                                             if (me.userRole == 0) {
-                                                ActivityDispatcher.userRoleActivity(RegisterActivity.this, me);
+                                                ActivityDispatcher.userRoleActivity(RegisterActivity.this, me, isAlreadyIn);
                                             } else {
-                                                ActivityDispatcher.mainActivity(RegisterActivity.this);
+                                                if (isAlreadyIn) {
+                                                    Intent data = new Intent();
+                                                    setResult(RESULT_OK, data);
+                                                } else {
+                                                    ActivityDispatcher.mainActivity(RegisterActivity.this);
+                                                }
                                             }
                                             finish();
                                             //TODO
@@ -215,6 +222,7 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mMode = getIntent().getIntExtra(ActivityDispatcher.KEY_MODE, MODE_REGISTER);
+        isAlreadyIn = getIntent().getBooleanExtra(ActivityDispatcher.KEY_STATUS, false);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);

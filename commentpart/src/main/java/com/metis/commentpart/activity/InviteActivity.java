@@ -83,7 +83,7 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
         mAdapter = new TeacherCbAdapter(this);
         mRv.setAdapter(mAdapter);
 
-        /*getTitleBar().setDrawableResourceRight(R.drawable.ic_search);
+        getTitleBar().setDrawableResourceRight(R.drawable.ic_search);
         getTitleBar().setOnRightBtnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +91,7 @@ public class InviteActivity extends TitleBarActivity implements TeacherManager.O
                 Intent it = new Intent(InviteActivity.this, TeacherSearchActivity.class);
                 startActivity(it);
             }
-        });*/
+        });
     }
 
     @Override

@@ -9,23 +9,18 @@ import com.metis.base.manager.AbsManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.ImageInfo;
 import com.metis.base.module.Thumbnail;
-import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.commentpart.module.AssessChannel;
 import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.CommentCollection;
 import com.metis.commentpart.module.PushCommentParams;
-import com.metis.commentpart.module.Status;
 import com.metis.commentpart.module.StatusList;
 import com.metis.commentpart.module.Teacher;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.io.Serializable;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Beak on 2015/7/30.
@@ -51,8 +46,7 @@ public class StatusManager extends AbsManager {
     REQUEST_GET_ASSESS_LIST = "v1.1/Assess/GetAssessList?assessState={assessState}&channelId={channelId}&region={region}&index={index}&session={session}",
     REQUEST_PUSH_COMMENT = "v1.1/AssessComment/PushComment?session={session}",
     REQUEST_GET_COMMENT_LIST = "v1.1/AssessComment/GetCommentList?assessId={assessId}&session={session}",
-    REQUEST_CHANNEL_LIST = "v1.1/Channel/AssessChanellist",
-    REQUEST_SUPPORT = "v1.1/Comment/Support?userid={userid}&id={id}&type={type}&result={result}&session={session}";
+    REQUEST_CHANNEL_LIST = "v1.1/Channel/AssessChanellist";
 
     public static final int TEACHER_TYPE_MOST_COMMENTS = 0, TEACHER_TYPE_BEST = 1, TEACHER_TYPE_RECENT = 2;
 
@@ -275,46 +269,6 @@ public class StatusManager extends AbsManager {
                 if (listener != null) {
                     listener.callback(returnInfo, requestId);
                 }
-            }
-        });
-    }
-    /*REQUEST_SUPPORT = "v1.1/Comment/Support?userid={userid}&id={id}&type={type}&result={result}&session={session}";*/
-    /// <summary>
-    /// 赞/踩
-    /// </summary>
-    /// <param name="userid">用户id</param>
-    /// <param name="id">内容id</param>
-    /// 赞/转发 类型Assess = 1,AssessComment = 2,News = 3,NewsComment = 4,Course = 5,CourseComment = 6,Circle=7,CircleComment =8,ActivityStudio = 9,ActivityStudent = 10,Activity = 11
-    /// <param name="type"></param>
-    /// <param name="result">1 赞 2 踩</param>
-    /// <returns></returns>
-
-    public String supportComment (long userId, long commentId, String session) {
-        String request = REQUEST_SUPPORT
-                .replace("{userid}", userId + "")
-                .replace("{id}", commentId + "")
-                .replace("{type}", 2 + "")
-                .replace("{result}", 1 + "")
-                .replace("{session}", session);
-        return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
-            @Override
-            public void onResponse(String result, String requestId) {
-
-            }
-        });
-    }
-
-    public String supportStatus (long userId, long assessId, String session) {
-        String request = REQUEST_SUPPORT
-                .replace("{userid}", userId + "")
-                .replace("{id}", assessId + "")
-                .replace("{type}", 1 + "")
-                .replace("{result}", 1 + "")
-                .replace("{session}", session);
-        return NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
-            @Override
-            public void onResponse(String result, String requestId) {
-
             }
         });
     }

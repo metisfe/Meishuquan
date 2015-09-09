@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.DisplayManager;
+import com.metis.base.manager.SupportManager;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
 import com.metis.base.utils.Log;
@@ -87,7 +88,8 @@ public class CommentItemHolder extends AbsViewHolder<CommentItemDelegate> {
                 userMark.isSupport = true;
                 comment.supportCount++;
                 comment.userMark = userMark;
-                StatusManager.getInstance(context).supportComment(user.userId, comment.id, me.getCookie());
+                SupportManager.getInstance(context).supportStatusComment(user.userId, comment.id, me.getCookie());
+                //StatusManager.getInstance(context).supportComment(user.userId, comment.id, me.getCookie());
                 adapter.notifyDataSetChanged();
             }
         });

@@ -1,27 +1,21 @@
 package com.metis.commentpart.activity;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.Footer;
 import com.metis.base.module.User;
-import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.FilterAdapter;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.base.widget.adapter.lookup.FilterSpanSizeLookup;
 import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.base.widget.callback.TopTrackListener;
-import com.metis.base.widget.filter.Filter;
 import com.metis.base.widget.filter.FilterProvider;
 import com.metis.commentpart.R;
 import com.metis.commentpart.adapter.FilterDecoration;

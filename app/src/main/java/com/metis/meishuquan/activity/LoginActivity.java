@@ -1,4 +1,4 @@
-package com.metis.base.activity;
+package com.metis.meishuquan.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +10,14 @@ import android.widget.Toast;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
+import com.metis.base.activity.RegisterActivity;
+import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
-import com.metis.base.manager.ShareManager;
 import com.metis.base.module.User;
 import com.metis.base.utils.Log;
 import com.metis.base.utils.SystemUtils;
+import com.metis.meishuquan.manager.ShareManager;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.HashMap;
@@ -61,6 +63,7 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(LoginActivity.this, RegisterActivity.class);
+                it.putExtra(ActivityDispatcher.KEY_STATUS, isAlreadyIn);
                 startActivity(it);
             }
         });
@@ -113,15 +116,17 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                         User me = returnInfo.getData();
                         if (isAlreadyIn) {
                             if (me.userRole == 0) {
-                                ActivityDispatcher.userRoleActivity(LoginActivity.this, me);
+                                ActivityDispatcher.userRoleActivity(LoginActivity.this, me, isAlreadyIn);
                             }
                         } else {
                             if (me.userRole == 0) {
-                                ActivityDispatcher.userRoleActivity(LoginActivity.this, me);
+                                ActivityDispatcher.userRoleActivity(LoginActivity.this, me, isAlreadyIn);
                             } else {
                                 ActivityDispatcher.mainActivity(LoginActivity.this);
                             }
                         }
+                        Intent data = new Intent();
+                        setResult(RESULT_OK, data);
                         finish();
                         /*if (me.userRole == 0) {
                             it = new Intent(LoginActivity.this, RoleChooseActivity.class);
@@ -140,9 +145,9 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
         } else if (id == mWeChatView.getId()) {
             ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, Wechat.NAME), this);
         } else if (id == mSinaView.getId()) {
-            ActivityDispatcher.mainActivity(this);
-            finish();
-            //ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, SinaWeibo.NAME), this);
+            /*ActivityDispatcher.mainActivity(this);
+            finish();*/
+            ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, SinaWeibo.NAME), this);
         } else if (id == mQqView.getId()) {
             ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, QQ.NAME), this);
         }
@@ -169,9 +174,15 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                         AccountManager.getInstance(LoginActivity.this).updateUserInfo(map, null);
                         User me = returnInfo.getData();
                         if (me.userRole == 0) {
-                            ActivityDispatcher.userRoleActivity(LoginActivity.this, me);
+                            ActivityDispatcher.userRoleActivity(LoginActivity.this, me, isAlreadyIn);
                         } else {
-                            ActivityDispatcher.mainActivity(LoginActivity.this);
+                            if (isAlreadyIn) {
+                                Intent data = new Intent();
+                                setResult(RESULT_OK, data);
+                                finish();
+                            } else {
+                                ActivityDispatcher.mainActivity(LoginActivity.this);
+                            }
                         }
                     }
 

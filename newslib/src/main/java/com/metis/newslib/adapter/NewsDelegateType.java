@@ -9,7 +9,13 @@ import com.metis.newslib.R;
 public enum NewsDelegateType {
 
     TYPE_NEWS_BIG (ID.ID_NEWS_BIG, R.layout.layout_news_big),
-    TYPE_NEWS_SMALL (ID.ID_NEWS_SMALL, R.layout.layout_news_small);
+    TYPE_NEWS_SMALL (ID.ID_NEWS_SMALL, R.layout.layout_news_small),
+    TYPE_NEWS_DETAILS_TITLE (ID.ID_NEWS_DETAIL_TITLE, R.layout.layout_news_details_title),
+    TYPE_NEWS_DETAILS_IMG (ID.ID_NEWS_DETAIL_IMG, R.layout.layout_news_details_img),
+    TYPE_NEWS_DETAILS_TXT (ID.ID_NEWS_DETAIL_TXT, R.layout.layout_news_details_txt),
+    TYPE_NEWS_DETAILS_VDO (ID.ID_NEWS_DETAIL_VDO, R.layout.layout_news_details_video),
+    TYPE_NEWS_RELATIVE_ITEM (ID.ID_NEWS_RELATIVE_ITEM, R.layout.layout_news_small),
+    TYPE_NEWS_COMMENT_ITEM (ID.ID_NEWS_COMMENT_ITEM, R.layout.layout_news_comment_item);
 
     static {
         for (NewsDelegateType type : values()) {
@@ -44,6 +50,12 @@ public enum NewsDelegateType {
     public static class ID {
         public static final int
         ID_NEWS_BIG = 300,
-        ID_NEWS_SMALL = 304;
+        ID_NEWS_SMALL = 304,
+        ID_NEWS_DETAIL_TITLE = 308,
+        ID_NEWS_DETAIL_IMG = 312,
+        ID_NEWS_DETAIL_TXT = 316,
+        ID_NEWS_DETAIL_VDO = 318,
+        ID_NEWS_RELATIVE_ITEM = 320,
+        ID_NEWS_COMMENT_ITEM = 324;
     }
 }

@@ -152,6 +152,14 @@ public class VideoWrapperFragment extends Fragment implements
         }
     }
 
+    public void setFullScreenVisibility (int visibility) {
+        mFullScreenIv.setVisibility(visibility);
+    }
+
+    public void setBackVisibility (int visibility) {
+        mBackIv.setVisibility(visibility);
+    }
+
     public void setPlayCallback (PlayCallback callback) {
         mPlayCallback = callback;
 

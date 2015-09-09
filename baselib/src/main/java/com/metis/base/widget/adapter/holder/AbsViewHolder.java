@@ -14,4 +14,8 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
     }
 
     public abstract void bindData (Context context, T t, RecyclerView.Adapter adapter, int position);
+
+    public void onViewDetachedFromWindow () {
+
+    }
 }

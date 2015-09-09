@@ -1,5 +1,6 @@
 package com.metis.base.activity;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -40,10 +41,15 @@ public class RoleChooseActivity extends TitleBarActivity {
 
     private User mUser = null;
 
+    private boolean isAlreadyIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_role_choose);
+
+        //TODO
+        isAlreadyIn = getIntent().getBooleanExtra(ActivityDispatcher.KEY_STATUS, false);
 
         mRoleLayout = (AbsoluteLayout)findViewById(R.id.role_container);
         final int length = getResources().getDimensionPixelSize(R.dimen.role_choose_length);
@@ -103,7 +109,13 @@ public class RoleChooseActivity extends TitleBarActivity {
                                 @Override
                                 public void callback(ReturnInfo returnInfo, String callbackId) {
                                     if (returnInfo.isSuccess()) {
-                                        ActivityDispatcher.mainActivity(RoleChooseActivity.this);
+                                        if (isAlreadyIn) {
+                                            Intent data = new Intent();
+                                            setResult(RESULT_OK, data);
+                                        } else {
+                                            ActivityDispatcher.mainActivity(RoleChooseActivity.this);
+                                        }
+                                        finish();
                                     }
                                 }
                             });

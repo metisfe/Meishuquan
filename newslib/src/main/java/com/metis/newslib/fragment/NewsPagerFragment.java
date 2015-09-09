@@ -12,8 +12,12 @@ import android.view.ViewGroup;
 
 import com.metis.base.fragment.AbsPagerFragment;
 import com.metis.base.manager.RequestCallback;
+import com.metis.base.module.Footer;
 import com.metis.base.utils.Log;
+import com.metis.base.widget.adapter.delegate.AbsDelegate;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
+import com.metis.base.widget.adapter.delegate.FooterDelegate;
+import com.metis.base.widget.callback.OnScrollBottomListener;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.metis.newslib.R;
 import com.metis.newslib.adapter.NewsAdapter;
@@ -40,12 +44,20 @@ public class NewsPagerFragment extends AbsPagerFragment {
 
     private RecyclerView mNewsRv = null;
     private NewsAdapter mAdapter = null;
+    private LinearLayoutManager mLinearLayoutManager;
 
     private SwipeRefreshLayout mSrl = null;
 
     private long mLastNewsId = 0;
 
     private int mGroupSize = 6;
+
+    private boolean isLoading = false;
+
+    private int mScrolledPosition = 0;
+
+    private Footer mFooter = null;
+    private FooterDelegate mFooterDelegate = null;
 
     @Override
     public CharSequence getTitle(Context context) {
@@ -71,37 +83,89 @@ public class NewsPagerFragment extends AbsPagerFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNewsRv = (RecyclerView)view.findViewById(R.id.news_pager_recycler_view);
-        mNewsRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mNewsRv.setLayoutManager(mLinearLayoutManager);
         mNewsRv.setHasFixedSize(true);
         mNewsRv.addItemDecoration(new NewsDecoration());
+        mNewsRv.addOnScrollListener(new OnScrollBottomListener() {
+            @Override
+            public void onScrollBottom(RecyclerView recyclerView, int newState) {
+                if (!isLoading) {
+                    loadData(mAdapter.getLastId());
+                }
+            }
+        });
 
         mSrl = (SwipeRefreshLayout)view.findViewById(R.id.news_pager_swipe_refresh_layout);
+        mSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mLastNewsId = 0;
+                loadData(mLastNewsId);
+            }
+        });
 
-        Log.v(TAG, TAG + " onViewCreated");
+        mFooter = new Footer(Footer.STATE_SUCCESS);
+        mFooterDelegate = new FooterDelegate(mFooter);
     }
 
     @Override
-    public void onSelected() {
-        super.onSelected();
+    public void onPagerIn() {
+        super.onPagerIn();
         if (mLastNewsId == 0) {
-            loadData(0);
-        } else {
+            if (mSrl != null) {
+                mSrl.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSrl.setRefreshing(true);
+                    }
+                });
+                loadData(0);
+            }
+        } else if (mAdapter != null) {
             mNewsRv.setAdapter(mAdapter);
+            mLinearLayoutManager.scrollToPosition(mScrolledPosition);
         }
     }
 
-    public void loadData (int lastId) {
+    @Override
+    public void onPagerOut() {
+        super.onPagerOut();
+        mScrolledPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    public void loadData (final long lastId) {
         if (mItem != null) {
+            isLoading = true;
+            if (mAdapter != null && mAdapter.getItemCount() > 0) {
+                mFooter.setState(Footer.STATE_WAITTING);
+                mAdapter.notifyDataSetChanged();
+            }
             NewsManager.getInstance(getActivity())
                     .getNewsList(mItem.channelId, lastId, new RequestCallback<List<NewsItem>>() {
                         @Override
                         public void callback(ReturnInfo<List<NewsItem>> returnInfo, String callbackId) {
-                            if (returnInfo.isSuccess()) {
-                                if (mAdapter == null) {
-                                    mAdapter = new NewsAdapter(getActivity());
-                                }
+                            isLoading = false;
+                            if (!isAlive()) {
+                                return;
+                            }
+                            if (mSrl.isRefreshing()) {
+                                mSrl.setRefreshing(false);
+                            }
+                            if (mAdapter == null) {
+                                mAdapter = new NewsAdapter(getActivity());
                                 mNewsRv.setAdapter(mAdapter);
-                                mAdapter.addDataList(translate(returnInfo.getData()));
+                            }
+                            if (returnInfo.isSuccess()) {
+                                if (lastId == 0) {
+                                    mAdapter.clearDataList();
+                                }
+                                List<BaseDelegate> delegateList = translate(returnInfo.getData());
+                                mFooter.setState(delegateList != null && delegateList.size() > 0 ? Footer.STATE_SUCCESS : Footer.STATE_NO_MORE);
+                                if (!mAdapter.hasFooter()) {
+                                    mAdapter.addDataItem(mFooterDelegate);
+                                }
+                                mAdapter.addDataList(mAdapter.getItemCount() - 1, delegateList);
                                 mAdapter.notifyDataSetChanged();
                             }
                         }

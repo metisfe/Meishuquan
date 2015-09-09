@@ -8,16 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.metis.base.fragment.DockFragment;
+import com.metis.base.manager.CacheManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.widget.SlidingTabLayout;
-import com.metis.base.widget.TitleBar;
 import com.metis.base.widget.dock.DockBar;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.metis.newslib.R;
@@ -44,6 +43,8 @@ public class NewsTabFragment extends DockFragment {
 
     private List<ChannelItem> mChannelItemList = new ArrayList<ChannelItem>();
     private List<NewsPagerFragment> mFragmentList = new ArrayList<NewsPagerFragment>();
+
+    private int mLastPosition = 0;
 
     @Override
     public DockBar.Dock getDock(Context context) {
@@ -76,7 +77,9 @@ public class NewsTabFragment extends DockFragment {
 
             @Override
             public void onPageSelected(int position) {
-                mFragmentList.get(position).onSelected();
+                mFragmentList.get(mLastPosition).onPagerOut();
+                mFragmentList.get(position).onPagerIn();
+                mLastPosition = position;
             }
 
             @Override
@@ -103,25 +106,43 @@ public class NewsTabFragment extends DockFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mChannelItemList = CacheManager.getInstance(getActivity()).readUserDataAtDatabase(ChannelItem.class, "newsChannelList");
+        if (mChannelItemList != null) {
+            parseChannelList();
+        }
         NewsManager.getInstance(getActivity()).getChannelList("0", 0, new RequestCallback<ChannelList>() {
             @Override
             public void callback(ReturnInfo<ChannelList> returnInfo, String callbackId) {
                 if (returnInfo.isSuccess()) {
-                    mChannelItemList = returnInfo.getData().selectedChannels;
-                    final int length = mChannelItemList.size();
-                    for (int i = 0; i < length; i++) {
-                        ChannelItem item = mChannelItemList.get(i);
-                        NewsPagerFragment fragment = new NewsPagerFragment();
-                        fragment.setChannelItem(item);
-                        mFragmentList.add(fragment);
-                    }
-                    mPagerAdapter.notifyDataSetChanged();
-                    mSlidingTabLayout.setViewPager(mVp);
 
-                    mFragmentList.get(0).onSelected();
+                    CacheManager.getInstance(getActivity()).saveAllUserDataAtDatabase(returnInfo.getData().selectedChannels, "newsChannelList", ChannelItem.class, true);
+                    if (mChannelItemList == null) {
+                        mChannelItemList = returnInfo.getData().selectedChannels;
+                        parseChannelList();
+                    }
                 }
             }
         });
+
+    }
+
+    private void parseChannelList () {
+        final int length = mChannelItemList.size();
+        for (int i = 0; i < length; i++) {
+            ChannelItem item = mChannelItemList.get(i);
+            NewsPagerFragment fragment = new NewsPagerFragment();
+            fragment.setChannelItem(item);
+            mFragmentList.add(fragment);
+        }
+        mPagerAdapter.notifyDataSetChanged();
+        mSlidingTabLayout.setViewPager(mVp);
+
+        mSlidingTabLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mFragmentList.get(0).onPagerIn();
+            }
+        }, 200);
     }
 
     private class NewsFragmentPagerAdapter extends FragmentStatePagerAdapter {
