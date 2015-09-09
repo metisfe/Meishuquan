@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_text"
         android:layout_toRightOf="@+id/title_source"
-        android:textColor="@color/color_c3"
+        android:textColor="@color/color_c2"
         android:textSize="@dimen/size_h6"
         android:singleLine="true"
         android:layout_marginLeft="@dimen/margin_middle"

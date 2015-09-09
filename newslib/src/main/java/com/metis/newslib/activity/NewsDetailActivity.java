@@ -223,7 +223,9 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                 if (item.isImg()) {
                     list.add(new NewsDetailsImgDelegate(item));
                 } else if (item.isTxt()) {
-                    list.add(new NewsDetailsTxtDelegate(item));
+                    NewsDetailsTxtDelegate txtDelegate = new NewsDetailsTxtDelegate(item);
+                    txtDelegate.setDetails(mDetails);
+                    list.add(txtDelegate);
                 } else if (item.isVideo()) {
                     list.add(new NewsDetailsVdoDelegate(item));
                 }
