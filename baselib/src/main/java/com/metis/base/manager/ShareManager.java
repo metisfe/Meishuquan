@@ -2,6 +2,8 @@ package com.metis.base.manager;
 
 import android.content.Context;
 
+import java.util.HashMap;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.PlatformDb;
@@ -30,16 +32,19 @@ public class ShareManager extends AbsManager {
         return sManager;
     }
 
+    private Platform mPlatform = null;
+
     private ShareManager(Context context) {
         super(context);
         ShareSDK.initSDK(context);
     }
 
-    public void loginAccess (Platform platform, PlatformActionListener listener) {
+    public void loginAccess (Platform platform, final PlatformActionListener listener) {
         if (platform == null) {
             return;
         }
         if (platform.isValid()) {
+            mPlatform = platform;
             //TODO
             listener.onComplete(platform, 0, null);
             PlatformDb db = platform.getDb();
@@ -51,18 +56,40 @@ public class ShareManager extends AbsManager {
                 return;
             }
         }
-        platform.setPlatformActionListener(listener);
+        platform.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                mPlatform = platform;
+                if (listener != null) {
+                    listener.onComplete(platform, i, hashMap);
+                }
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                if (listener != null) {
+                    listener.onError(platform, i, throwable);
+                }
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                if (listener != null) {
+                    listener.onCancel(platform, i);
+                }
+            }
+        });
         platform.SSOSetting(false);
         platform.showUser(null);
         //platform.authorize();
     }
 
-    public void loginQuit (Platform platform, PlatformActionListener listener) {
-        if (platform != null && platform.isValid()) {
-            platform.removeAccount(true);
+    public void loginQuit (PlatformActionListener listener) {
+        if (mPlatform != null && mPlatform.isValid()) {
+            mPlatform.removeAccount(true);
         }
-        platform.setPlatformActionListener(listener);
-        platform.authorize();
+        mPlatform.setPlatformActionListener(listener);
+        mPlatform.authorize();
     }
 
     public void weChatMomentsShare (String title, String text, String imageUrl, String url, PlatformActionListener listener) {
@@ -151,7 +178,7 @@ public class ShareManager extends AbsManager {
         SinaWeibo.ShareParams sp = new SinaWeibo.ShareParams();
         sp.setTitle(title);
         sp.setTitleUrl(url); // 标题的超链接
-        sp.setText(text);
+        sp.setText(url + text);
         sp.setImageUrl(imageUrl);
         /*sp.setSite("发布分享的网站名称");
         sp.setSiteUrl("发布分享网站的地址");*/

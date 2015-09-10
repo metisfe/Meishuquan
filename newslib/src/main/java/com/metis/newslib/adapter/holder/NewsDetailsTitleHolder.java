@@ -33,9 +33,13 @@ public class NewsDetailsTitleHolder extends AbsViewHolder<NewsDetailsTitleDelega
         } else {
             titleTv.setText(details.title.trim());
         }
-
+        if (details.source != null) {
+            sourceTv.setText(details.source.title);
+        } else {
+            sourceTv.setText(R.string.app_name);
+        }
         if (TextUtils.isEmpty(details.author)) {
-            sourceTv.setText("");
+
         } else {
             sourceTv.setText(details.author.trim());
         }

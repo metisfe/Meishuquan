@@ -368,9 +368,10 @@ public class AccountManager extends AbsManager {
         for (String key : set) {
             String value = map.get(key);
             //value = URLEncoder.encode(value);
-            if (!Patterns.WEB_URL.matcher(value).matches()) {
+            /*if (!Patterns.WEB_URL.matcher(value).matches()) {
                 value = URLEncoder.encode(value);
-            }
+            }*/
+            //value = URLEncoder.encode(value);
             json.addProperty(key, value);
         }
         String request = URL_UPDATE_USER_INFO

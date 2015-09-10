@@ -177,11 +177,11 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                             if (isAlreadyIn) {
                                 Intent data = new Intent();
                                 setResult(RESULT_OK, data);
-                                finish();
                             } else {
                                 ActivityDispatcher.mainActivity(LoginActivity.this);
                             }
                         }
+                        finish();
                     }
 
                 }

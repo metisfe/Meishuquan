@@ -154,7 +154,12 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                 }
                 if (returnInfo.isSuccess()) {
                     mDetails = returnInfo.getData();
-                    getTitleBar().setTitleCenter(mDetails.author);
+                    if (mDetails.source != null) {
+                        getTitleBar().setTitleCenter (mDetails.source.title);
+                    } else {
+                        getTitleBar().setTitleCenter(R.string.app_name);
+                    }
+
                     mInputEt.setHint(mDetails.commentDefaultText);
                     parseNewsDetail(mDetails);
                     if (mDetails.userMark != null) {
