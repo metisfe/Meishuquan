@@ -132,7 +132,9 @@
             />
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_big"
+            >
             <EditText
                 android:id="@+id/login_pwd"
                 android:layout_width="fill_parent"
@@ -171,8 +173,8 @@
             android:textSize="@dimen/size_h1"
             android:textColor="@android:color/white"
             android:layout_marginTop="@dimen/margin_large"
-            android:paddingTop="@dimen/padding_middle"
-            android:paddingBottom="@dimen/padding_middle"
+            android:paddingTop="@dimen/padding_big"
+            android:paddingBottom="@dimen/padding_big"
             />
     </LinearLayout>
 

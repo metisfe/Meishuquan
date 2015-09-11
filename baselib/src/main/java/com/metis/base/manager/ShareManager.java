@@ -184,7 +184,7 @@ public class ShareManager extends AbsManager {
         SinaWeibo.ShareParams sp = new SinaWeibo.ShareParams();
         sp.setTitle(title);
         sp.setTitleUrl(url); // 标题的超链接
-        sp.setText(url + text);
+        sp.setText(url + " " + text);
         sp.setImageUrl(imageUrl);
         /*sp.setSite("发布分享的网站名称");
         sp.setSiteUrl("发布分享网站的地址");*/
