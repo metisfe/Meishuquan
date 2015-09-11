@@ -15,9 +15,9 @@ import com.metis.base.manager.DisplayManager;
 import com.metis.base.manager.SupportManager;
 import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
+import com.metis.base.utils.TimeUtils;
 import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.adapter.delegate.AbsDelegate;
-import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.newslib.R;
 import com.metis.newslib.adapter.delegate.NewsCommentDelegate;
@@ -29,17 +29,19 @@ import com.metis.newslib.module.NewsCommentItem;
 public class NewsCommentHolder extends AbsViewHolder<NewsCommentDelegate> {
 
     public ImageView profileIv;
-    public TextView nameTv, supportCountTv, timeTv, contentTv;
-    public View supportBtn = null;
+    public TextView nameTv, supportCountTv, commentCountTv, timeTv, contentTv;
+    public View supportBtn = null, commentBtn;
 
     public NewsCommentHolder(View itemView) {
         super(itemView);
         profileIv = (ImageView)itemView.findViewById(R.id.comment_item_profile);
         nameTv = (TextView)itemView.findViewById(R.id.comment_item_name);
         supportCountTv = (TextView)itemView.findViewById(R.id.comment_item_support_count);
+        commentCountTv = (TextView)itemView.findViewById(R.id.comment_item_comment_count);
         timeTv = (TextView)itemView.findViewById(R.id.comment_item_time);
         contentTv = (TextView)itemView.findViewById(R.id.comment_item_content);
         supportBtn = itemView.findViewById(R.id.comment_item_thumb_up);
+        commentBtn = itemView.findViewById(R.id.comment_item_comment);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class NewsCommentHolder extends AbsViewHolder<NewsCommentDelegate> {
         final User user = item.user;
         if (user != null) {
             DisplayManager.getInstance(context).displayProfile(user.getAvailableAvatar(), profileIv);
-            if (item.replyUser != null) {
+            if (item.replyUser != null && item.replyUser.userId != user.userId) {
                 nameTv.setText(context.getString(R.string.text_reply_one_to_one, user.name, item.replyUser.name));
             } else {
                 nameTv.setText(user.name);
@@ -61,6 +63,7 @@ public class NewsCommentHolder extends AbsViewHolder<NewsCommentDelegate> {
                 }
             });
         }
+        timeTv.setText(TimeUtils.formatStdTime(context, item.commentDateTime));
         if (TextUtils.isEmpty(item.content)) {
             contentTv.setText("");
         } else {
@@ -87,9 +90,14 @@ public class NewsCommentHolder extends AbsViewHolder<NewsCommentDelegate> {
             }
         }
         if (item.supportCount > 0) {
-            supportCountTv.setText(item.supportCount + "");
+            supportCountTv.setText(context.getString(R.string.text_count_rex, item.supportCount));
         } else {
             supportCountTv.setText("");
+        }
+        if (item.replyCount > 0) {
+            commentCountTv.setText(context.getString(R.string.text_count_rex, item.replyCount));
+        } else {
+            commentCountTv.setText("");
         }
         supportBtn.setSelected(item.userMark != null && item.userMark.isSupport);
         supportBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,11 +123,17 @@ public class NewsCommentHolder extends AbsViewHolder<NewsCommentDelegate> {
                 }
             }
         });
-        itemView.setOnClickListener(new View.OnClickListener() {
+        commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 com.metis.newslib.ActivityDispatcher.replyActivity((Activity)context, newsCommentDelegate.getDetails(), item);
             }
         });
+        /*itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <com.baidu.cyberplayer.core.BVideoView
         android:id="@+id/news_details_video_view"
         android:layout_width="fill_parent"
@@ -10,48 +10,59 @@
     <RelativeLayout
         android:id="@+id/news_details_controller"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/news_details_video_view"
-        android:layout_alignRight="@+id/news_details_video_view"
-        android:layout_alignTop="@+id/news_details_video_view"
-        android:layout_alignBottom="@+id/news_details_video_view"
+        android:layout_height="fill_parent"
+        android:layout_alignLeft="@id/news_details_video_view"
+        android:layout_alignRight="@id/news_details_video_view"
+        android:layout_alignTop="@id/news_details_video_view"
+        android:layout_alignBottom="@id/news_details_video_view"
         >
-        <ImageView
-            android:id="@+id/news_details_play_or_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_play_center"
-            />
-        <TextView
-            android:id="@+id/news_details_current"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="4dp"
-            />
-        <TextView
-            android:id="@+id/news_details_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="4dp"
-            />
-        <SeekBar
-            android:id="@+id/news_details_progress"
+
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/news_details_current"
-            android:layout_toLeftOf="@+id/news_details_total"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_alignParentBottom="true"
-            />
+            >
+
+        </RelativeLayout>
+
     </RelativeLayout>
+    <TextView
+        android:id="@+id/news_details_current"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_alignParentBottom="true"
+        />
+    <TextView
+        android:id="@+id/news_details_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_alignParentBottom="true"
+        />
+    <SeekBar
+        android:id="@+id/news_details_progress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/news_details_current"
+        android:layout_toLeftOf="@+id/news_details_total"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_alignParentBottom="true"
+        />
+    <ImageView
+        android:id="@+id/news_details_play_or_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_play_center"
+        android:layout_alignParentBottom="true"
+        />
     <!--<fragment
         android:id="@+id/news_details_video_fragment"
         android:layout_width="fill_parent"

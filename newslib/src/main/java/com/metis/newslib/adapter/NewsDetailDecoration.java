@@ -10,10 +10,9 @@ import android.view.View;
 import com.metis.base.widget.adapter.DelegateAdapter;
 import com.metis.base.widget.adapter.delegate.AbsDelegate;
 import com.metis.newslib.R;
-import com.metis.newslib.adapter.delegate.NewsBigDelegate;
 import com.metis.newslib.adapter.delegate.NewsCommentDelegate;
 import com.metis.newslib.adapter.delegate.NewsRelativeDelegate;
-import com.metis.newslib.adapter.delegate.NewsSmallDelegate;
+import com.metis.newslib.adapter.delegate.NewsCardHeaderDelegate;
 
 /**
  * Created by Beak on 2015/9/2.
@@ -38,6 +37,8 @@ public class NewsDetailDecoration extends RecyclerView.ItemDecoration {
             final int position = parent.getChildAdapterPosition(view);
             AbsDelegate delegate = newsAdapter.getDataItem(position);
             if (delegate instanceof NewsRelativeDelegate && ((NewsRelativeDelegate) delegate).isFirst()) {
+                outRect.set(size, /*size * 2*/0, size, 0);
+            } else if (delegate instanceof NewsCardHeaderDelegate) {
                 outRect.set(size, size * 2, size, 0);
             } else {
                 if (delegate instanceof NewsCommentDelegate) {
@@ -54,9 +55,9 @@ public class NewsDetailDecoration extends RecyclerView.ItemDecoration {
                     } else if (previousDelegate != null && previousDelegate instanceof NewsCommentDelegate) {
                         outRect.set(size, 0, size, size * 2);
                     } else if (nextDelegate != null && nextDelegate instanceof NewsCommentDelegate) {
-                        outRect.set(size, size * 2, size, 0);
+                        outRect.set(size, 0/*size * 2*/, size, 0);
                     } else {
-                        outRect.set(size, size * 2, size, size * 2);
+                        outRect.set(size, 0/*size * 2*/, size, size * 2);
                     }
                 } else if (delegate instanceof NewsRelativeDelegate) {
                     AbsDelegate previousDelegate = null;

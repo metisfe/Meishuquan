@@ -37,6 +37,8 @@ public class NewsManager extends AbsManager {
             "v1.1/Comment/PublishComment?userid={userid}&newsid={newsid}&content={content}&replyCid={replyCid}&blockType={blockType}&session={session}";//发表评论
     private final String PRIVATE = "v1.1/Comment/Favorite?userid={userid}&id={id}&type={type}&result={result}&session={session}";
 
+    public static final int COMMENT_TYPE_ALL = 0, COMMENT_TYPE_HOT = 1, COMMENT_TYPE_NEW = 2;
+
     private static NewsManager sManager = null;
 
     public static synchronized NewsManager getInstance (Context context) {
@@ -121,9 +123,9 @@ public class NewsManager extends AbsManager {
                 });
     }
 
-    public void getCommentListByNewsId (long newsId, long lastCommentId, String session, final RequestCallback<NewsCommentList> callback) {
+    public void getCommentListByNewsId (long newsId, long lastCommentId, int type, String session, final RequestCallback<NewsCommentList> callback) {
         String request = COMMENT_LIST_NEWSID
-                .replace("{type}", 0 + "")
+                .replace("{type}", type + "")
                 .replace("{newsId}", newsId + "")
                 .replace("{lastCommentId}", lastCommentId + "")
                 .replace("{session}", session);

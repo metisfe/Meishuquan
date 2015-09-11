@@ -21,15 +21,16 @@ public class NewsSmallHolder extends AbsViewHolder<NewsSmallDelegate> {
 
     public ImageView smallThumbIv = null;
     public TextView smallTitleTv = null;
-    public TextView smallSocialInfoTv = null;
     public TextView smallSourceTv = null;
+    public TextView smallCommentTv, smallReadTv;
 
     public NewsSmallHolder(View itemView) {
         super(itemView);
         smallThumbIv = (ImageView)itemView.findViewById(R.id.news_small_thumb);
         smallTitleTv = (TextView)itemView.findViewById(R.id.news_small_title);
-        smallSocialInfoTv = (TextView)itemView.findViewById(R.id.news_small_social_info);
         smallSourceTv = (TextView)itemView.findViewById(R.id.news_small_source);
+        smallCommentTv = (TextView)itemView.findViewById(R.id.news_small_comment_count);
+        smallReadTv = (TextView)itemView.findViewById(R.id.news_small_read_count);
     }
 
     @Override
@@ -46,6 +47,16 @@ public class NewsSmallHolder extends AbsViewHolder<NewsSmallDelegate> {
             smallSourceTv.setText(item.source.title);
         } else {
             smallSourceTv.setText("");
+        }
+        if (item.commentCount > 0) {
+            smallCommentTv.setText(context.getString(R.string.text_news_related_comment_count, item.commentCount));
+        } else {
+            smallCommentTv.setText("");
+        }
+        if (item.pageViewCount > 0) {
+            smallReadTv.setText(context.getString(R.string.text_news_related_read_count, item.pageViewCount));
+        } else {
+            smallReadTv.setText("");
         }
         if (newsSmallDelegate.isAboveBig() && newsSmallDelegate.isBelowBig()) {
             itemView.setBackgroundResource(R.drawable.std_list_item_round_bg);

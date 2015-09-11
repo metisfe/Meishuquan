@@ -13,6 +13,7 @@ public class NewsItem implements Serializable {
     public String createTime;
     public String imgUrl;
     public int pageViewCount;
+    public int commentCount;
 
     public class NewsSource implements Serializable {
         public long id;

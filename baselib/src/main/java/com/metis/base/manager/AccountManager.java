@@ -11,6 +11,7 @@ import com.metis.base.framework.NetProxy;
 import com.metis.base.module.User;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -372,7 +373,11 @@ public class AccountManager extends AbsManager {
                 value = URLEncoder.encode(value);
             }*/
             //value = URLEncoder.encode(value);
-            json.addProperty(key, value);
+            try {
+                json.addProperty(key, URLEncoder.encode(value, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         String request = URL_UPDATE_USER_INFO
                 .replace("{param}", json.toString())

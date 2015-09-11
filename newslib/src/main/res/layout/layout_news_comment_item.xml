@@ -20,31 +20,27 @@
         android:textSize="@dimen/size_h2"
         android:layout_toRightOf="@+id/comment_item_profile"
         />
-    <LinearLayout
-        android:id="@+id/comment_item_thumb_up"
+    <TextView
+        android:id="@+id/comment_item_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentRight="true"
-        >
-        <TextView
-            android:id="@+id/comment_item_support_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/thumb_up_news"
-            android:layout_marginLeft="@dimen/margin_middle"
-            />
-    </LinearLayout>
+        android:layout_toRightOf="@+id/comment_item_name"
+        android:textSize="@dimen/size_h6"
+        android:textColor="@color/color_c2"
+        android:layout_alignBaseline="@+id/comment_item_name"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:text="北京"
+        />
     <TextView
         android:id="@+id/comment_item_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="true"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/size_h5"
+        android:textColor="@color/color_c2"
+        android:layout_alignBaseline="@+id/comment_item_location"
         />
+
     <TextView
         android:id="@+id/comment_item_content"
         android:layout_width="fill_parent"
@@ -52,4 +48,48 @@
         android:layout_toRightOf="@+id/comment_item_profile"
         android:layout_below="@+id/comment_item_name"
         />
+    <LinearLayout
+        android:id="@+id/comment_item_thumb_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toLeftOf="@+id/comment_item_comment"
+        android:layout_below="@+id/comment_item_content"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/thumb_up_news"
+            android:layout_marginLeft="@dimen/margin_middle"
+            />
+        <TextView
+            android:id="@+id/comment_item_support_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/support_text_color"
+            android:duplicateParentState="true"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/comment_item_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/comment_item_content"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_text_outline_grey"
+            android:layout_marginLeft="@dimen/margin_middle"
+            />
+        <TextView
+            android:id="@+id/comment_item_comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/support_text_color"
+            android:duplicateParentState="true"
+            />
+    </LinearLayout>
 </RelativeLayout>

@@ -9,5 +9,6 @@ import java.util.List;
 public class NewsCommentList implements Serializable {
 
     public List<NewsCommentItem> newComments;
+    public List<NewsCommentItem> hotComments;
 
 }

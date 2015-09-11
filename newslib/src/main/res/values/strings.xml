@@ -10,6 +10,13 @@
     <string name="text_reply_max_count">%1$d字</string>
     <string name="text_reply_to">回复给:%1$s</string>
     <string name="text_reply_one_to_one">%1$s 回复 %2$s</string>
+    <string name="text_news_related_comment_count">评论 ( %1$d )</string>
+    <string name="text_news_related_read_count">阅读 ( %1$d )</string>
+    <string name="text_related_title">相关阅读</string>
+    <string name="text_hot_comment">热门评论</string>
+    <string name="text_new_comment">最新评论</string>
+    <string name="text_load_more">加载更多...</string>
+    <string name="text_no_more">没有更多热门评论</string>
 
     <string name="hint_reply">我也来说两句...</string>
 

@@ -86,7 +86,6 @@ public class NewsDetailsVdoHolder extends AbsViewHolder<NewsDetailsVdoDelegate> 
         mVideoView.showCacheInfo(true);
         mVideoView.seekTo(newsDetailsVdoDelegate.getCurrent());
         mVideoView.setRetainLastFrame(true);
-        mVideoView.setKeepScreenOn(true);
         mVideoView.setCacheBufferSize(1024 * 1024);
         mVideoView.setOnCompletionListener(this);
 
@@ -109,6 +108,7 @@ public class NewsDetailsVdoHolder extends AbsViewHolder<NewsDetailsVdoDelegate> 
         mVideoView.removeCallbacks(mUpdateRunnable);
         mVideoView.post(mUpdateRunnable);
         mPlayPauseIv.setImageResource(R.drawable.ic_pause_center);
+        mVideoView.setKeepScreenOn(true);
     }
 
     private void pausePlayback () {

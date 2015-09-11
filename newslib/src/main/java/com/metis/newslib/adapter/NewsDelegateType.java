@@ -14,8 +14,10 @@ public enum NewsDelegateType {
     TYPE_NEWS_DETAILS_IMG (ID.ID_NEWS_DETAIL_IMG, R.layout.layout_news_details_img),
     TYPE_NEWS_DETAILS_TXT (ID.ID_NEWS_DETAIL_TXT, R.layout.layout_news_details_txt),
     TYPE_NEWS_DETAILS_VDO (ID.ID_NEWS_DETAIL_VDO, R.layout.layout_news_details_video),
-    TYPE_NEWS_RELATIVE_ITEM (ID.ID_NEWS_RELATIVE_ITEM, R.layout.layout_news_small),
-    TYPE_NEWS_COMMENT_ITEM (ID.ID_NEWS_COMMENT_ITEM, R.layout.layout_news_comment_item);
+    TYPE_NEWS_RELATIVE_ITEM (ID.ID_NEWS_RELATIVE_ITEM, R.layout.layout_news_related),
+    TYPE_NEWS_COMMENT_ITEM (ID.ID_NEWS_COMMENT_ITEM, R.layout.layout_news_comment_item),
+    TYPE_NEWS_CARD_HEADER(ID.ID_NEWS_CARD_ITEM_HEADER, R.layout.layout_news_related_header),
+    TYPE_NEWS_COMMENT_FOOTER (ID.ID_NEWS_COMMENT_FOOTER, R.layout.layout_news_comment_footer);
 
     static {
         for (NewsDelegateType type : values()) {
@@ -56,6 +58,8 @@ public enum NewsDelegateType {
         ID_NEWS_DETAIL_TXT = 316,
         ID_NEWS_DETAIL_VDO = 318,
         ID_NEWS_RELATIVE_ITEM = 320,
-        ID_NEWS_COMMENT_ITEM = 324;
+        ID_NEWS_COMMENT_ITEM = 324,
+        ID_NEWS_CARD_ITEM_HEADER = 328,
+        ID_NEWS_COMMENT_FOOTER = 322;
     }
 }

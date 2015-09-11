@@ -19,6 +19,7 @@ import com.metis.base.module.User;
 import com.metis.base.module.UserMark;
 import com.metis.base.module.enums.SupportTypeEnum;
 import com.metis.base.utils.Log;
+import com.metis.base.widget.adapter.delegate.AbsDelegate;
 import com.metis.base.widget.adapter.delegate.BaseDelegate;
 import com.metis.base.widget.adapter.delegate.FooterDelegate;
 import com.metis.base.widget.callback.OnScrollBottomListener;
@@ -28,11 +29,13 @@ import com.metis.newslib.R;
 import com.metis.newslib.adapter.NewsDetailAdapter;
 import com.metis.newslib.adapter.NewsDetailDecoration;
 import com.metis.newslib.adapter.delegate.NewsCommentDelegate;
+import com.metis.newslib.adapter.delegate.NewsCommentFooterDelegate;
 import com.metis.newslib.adapter.delegate.NewsDetailsImgDelegate;
 import com.metis.newslib.adapter.delegate.NewsDetailsTitleDelegate;
 import com.metis.newslib.adapter.delegate.NewsDetailsTxtDelegate;
 import com.metis.newslib.adapter.delegate.NewsDetailsVdoDelegate;
 import com.metis.newslib.adapter.delegate.NewsRelativeDelegate;
+import com.metis.newslib.adapter.delegate.NewsCardHeaderDelegate;
 import com.metis.newslib.manager.NewsManager;
 import com.metis.newslib.module.NewsCommentItem;
 import com.metis.newslib.module.NewsCommentList;
@@ -62,7 +65,10 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
 
     private boolean isLoading = false;
 
-    private long mLastId = 0;
+    private long mLastIdNew = 0;
+    private long mLastIdHot = 0;
+
+    private NewsCommentFooterDelegate mCommentFooterDelegate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +107,7 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
             @Override
             public void onScrollBottom(RecyclerView recyclerView, int newState) {
                 if (!isLoading) {
-                    loadComments(mDetails.newsId, mLastId);
+                    loadNewComments(mDetails.newsId, mLastIdNew);
                     mFooter.setState(Footer.STATE_WAITTING);
                     mDetailsAdapter.notifyDataSetChanged();
                 }
@@ -155,7 +161,7 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                 if (returnInfo.isSuccess()) {
                     mDetails = returnInfo.getData();
                     if (mDetails.source != null) {
-                        getTitleBar().setTitleCenter (mDetails.source.title);
+                        getTitleBar().setTitleCenter(mDetails.source.title);
                     } else {
                         getTitleBar().setTitleCenter(R.string.app_name);
                     }
@@ -171,14 +177,14 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         });
     }
 
-    private void loadComments (long newsId, final long lastId) {
+    private void loadNewComments(long newsId, final long lastId) {
         User me = AccountManager.getInstance(this).getMe();
         String session = "";
         if (me != null) {
             session = me.getCookie();
         }
         isLoading = true;
-        NewsManager.getInstance(this).getCommentListByNewsId(newsId, lastId, session, new RequestCallback<NewsCommentList>() {
+        NewsManager.getInstance(this).getCommentListByNewsId(newsId, lastId, NewsManager.COMMENT_TYPE_NEW, session, new RequestCallback<NewsCommentList>() {
             @Override
             public void callback(ReturnInfo<NewsCommentList> returnInfo, String callbackId) {
                 isLoading = false;
@@ -186,11 +192,15 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                     List<NewsCommentItem> itemList = returnInfo.getData().newComments;
                     if (itemList != null && !itemList.isEmpty()) {
                         List<BaseDelegate> delegateList = new ArrayList<BaseDelegate>();
+                        if (lastId == 0) {
+                            delegateList.add(new NewsCardHeaderDelegate(getString(R.string.text_new_comment)));
+                        }
+
                         final int length = itemList.size();
                         for (int i = 0; i < length; i++) {
                             NewsCommentItem item = itemList.get(i);
                             if (i == length - 1) {
-                                mLastId = item.id;
+                                mLastIdNew = item.id;
                             }
                             NewsCommentDelegate delegate = new NewsCommentDelegate(item);
                             delegate.setDetails(mDetails);
@@ -209,6 +219,71 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                     mDetailsAdapter.addDataItem(mFooterDelegate);
                 }
                 mDetailsAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void loadHotComments (long newsId, final long lastIdHot) {
+        User me = AccountManager.getInstance(this).getMe();
+        String session = "";
+        if (me != null) {
+            session = me.getCookie();
+        }
+        NewsManager.getInstance(this).getCommentListByNewsId(newsId, lastIdHot, NewsManager.COMMENT_TYPE_HOT, session, new RequestCallback<NewsCommentList>() {
+            @Override
+            public void callback(ReturnInfo<NewsCommentList> returnInfo, String callbackId) {
+                if (returnInfo.isSuccess()) {
+                    List<NewsCommentItem> hotComments = returnInfo.getData().hotComments;
+                    if (hotComments != null && !hotComments.isEmpty()) {
+                        final int length = hotComments.size();
+                        List<BaseDelegate> delegates = new ArrayList<BaseDelegate>();
+                        if (lastIdHot == 0) {
+                            delegates.add(new NewsCardHeaderDelegate(getString(R.string.text_hot_comment)));
+                        }
+
+                        for (int i = 0; i < length; i++) {
+                            NewsCommentDelegate delegate = new NewsCommentDelegate(hotComments.get(i));
+                            delegate.setDetails(mDetails);
+                            delegates.add(delegate);
+                        }
+                        if (lastIdHot == 0) {
+                            mDetailsAdapter.addDataList(delegates);
+                            if (mCommentFooterDelegate == null) {
+                                mCommentFooterDelegate = new NewsCommentFooterDelegate(getString(R.string.text_load_more));
+                            }
+
+                            mDetailsAdapter.addDataItem(mCommentFooterDelegate);
+                        } else {
+                            int size = mDetailsAdapter.getItemCount();
+                            for (int i = size - 1; i >= 0; i--) {
+                                AbsDelegate delegate = mDetailsAdapter.getDataItem(i);
+                                if (delegate instanceof NewsCommentFooterDelegate) {
+                                    mDetailsAdapter.addDataList(i, delegates);
+                                    break;
+                                }
+                            }
+                        }
+                        mCommentFooterDelegate.setAccessable(true);
+
+                        mLastIdHot = hotComments.get(hotComments.size() - 1).id;
+                        //mDetailsAdapter.addNewsCommentDelegateList(delegates);
+                    } else {
+                        if (mCommentFooterDelegate != null) {
+                            mCommentFooterDelegate.setAccessable(false);
+                            mCommentFooterDelegate.setSource(getString(R.string.text_no_more));
+                        }
+                    }
+                    if (mCommentFooterDelegate != null) {
+                        mCommentFooterDelegate.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (mCommentFooterDelegate.isAccessable()) {
+                                    loadHotComments(mDetails.newsId, mLastIdHot);
+                                }
+                            }
+                        });
+                    }
+                }
             }
         });
     }
@@ -238,6 +313,7 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         }
         List<NewsItemRelated> newsItemList = details.relatedNewsList;
         if (newsItemList != null && !newsItemList.isEmpty()) {
+            list.add(new NewsCardHeaderDelegate(getString(R.string.text_related_title)));
             final int length = newsItemList.size();
             for (int i = 0; i < length; i++) {
                 NewsRelativeDelegate delegate = new NewsRelativeDelegate(newsItemList.get(i));
@@ -249,7 +325,8 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         mDetailsAdapter.clearDataList();
         mDetailsAdapter.addDataList(list);
         mDetailsAdapter.notifyDataSetChanged();
-        loadComments(details.newsId, 0);
+        //loadNewComments(details.newsId, 0);
+        loadHotComments(details.newsId, 0);
     }
 
     @Override
@@ -258,11 +335,12 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         switch (requestCode) {
             case ActivityDispatcher.REQUEST_CODE_REPLY:
                 if (resultCode == RESULT_OK) {
+
                     NewsCommentItem item = (NewsCommentItem)data.getSerializableExtra(ActivityDispatcher.KEY_NEWS_COMMENT_ITEM);
-                    mLastId = item.id;
                     NewsCommentDelegate delegate = new NewsCommentDelegate(item);
                     delegate.setDetails(mDetails);
-                    mDetailsAdapter.addNewsCommentDelegate(delegate);
+                    mDetailsAdapter.addNewsCommentDelegate(delegate, new NewsCardHeaderDelegate(getString(R.string.text_new_comment)));
+                    mLastIdNew = item.id;
                 }
                 break;
             case com.metis.base.ActivityDispatcher.REQUEST_CODE_LOGIN:

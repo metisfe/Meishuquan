@@ -22,22 +22,32 @@
         android:textSize="@dimen/size_h5"
         />
     <TextView
-        android:id="@+id/news_small_social_info"
+        android:id="@+id/news_small_comment_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/size_h6"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:textColor="@android:color/black"
+        />
+    <TextView
+        android:id="@+id/news_small_read_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textSize="@dimen/size_h6"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/news_small_comment_count"
+        android:layout_marginRight="@dimen/margin_middle"
         />
     <TextView
         android:id="@+id/news_small_source"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/news_small_thumb"
-        android:layout_toLeftOf="@+id/news_small_social_info"
+        android:layout_toLeftOf="@+id/news_small_read_count"
         android:layout_alignParentBottom="true"
         android:textColor="@color/color_c1"
         android:textSize="@dimen/size_h6"
+        android:ellipsize="end"
+        android:singleLine="true"
         />
 </RelativeLayout>

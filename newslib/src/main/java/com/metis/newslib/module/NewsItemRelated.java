@@ -11,4 +11,5 @@ public class NewsItemRelated implements Serializable {
     public String modifyTime;
     public String source;
     public int pageViewCount;
+    public int commentCount;
 }
