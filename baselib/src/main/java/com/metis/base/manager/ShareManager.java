@@ -2,6 +2,12 @@ package com.metis.base.manager;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
+import com.metis.base.framework.NetProxy;
+import com.metis.base.module.CircleImage;
+import com.metis.base.module.CirclePushBlogParams;
+import com.metis.msnetworklib.contract.ReturnInfo;
+
 import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;
@@ -189,13 +195,10 @@ public class ShareManager extends AbsManager {
         sina.share(sp);
     }
 
-    public void circleShare (String title, String text, String imageUrl, String url, String session, final RequestCallback callback) {
-        /*CirclePushBlogParams params = new CirclePushBlogParams();
-        params.setType(0);
-        params.setContent(text);
-        params.
-        CircleImage image = new CircleImage();
-        image.
+    public void circleShare (/*String title, String text, String imageUrl, String url, */long id, String session, final RequestCallback callback) {
+        CirclePushBlogParams params = new CirclePushBlogParams();
+        params.setType(2);
+        params.setRelayId((int)id);
         NetProxy.getInstance(getContext()).doPostRequest(URL_PUSHBLOG.replace("{session}", session), params, new NetProxy.OnResponseListener() {
 
             @Override
@@ -205,7 +208,7 @@ public class ShareManager extends AbsManager {
                     callback.callback(returnInfo, requestId);
                 }
             }
-        });*/
+        });
     }
 
     /*public void loginAccessWeChat (Context context, PlatformActionListener listener) {

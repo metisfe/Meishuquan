@@ -24,7 +24,8 @@ public class ActivityDispatcher {
     ACTION_IMAGE_PREVIEW = "com.metis.meishuquan.action.image_preview",
     ACTION_LOGIN = "com.metis.meishuquan.action.login",
     ACTION_MAIN = "com.metis.meishuquan.action.main",
-    ACTION_SHARE = "com.metis.meishuquan.action.share";
+    ACTION_SHARE = "com.metis.meishuquan.action.share",
+    ACTION_CIRCLE_SHARE = "com.metis.meishuquan.action.circle_share";
 
     public static final String
     KEY_USER_ID = "user_id",
@@ -36,7 +37,8 @@ public class ActivityDispatcher {
     KEY_TITLE = "title",
     KEY_TEXT = "text",
     KEY_IMAGE_URL = "image_url",
-    KEY_URL = "url";
+    KEY_URL = "url",
+    KEY_ID = "id";
 
     public static final int REQUEST_CODE_LOGIN = 100;
 
@@ -138,14 +140,34 @@ public class ActivityDispatcher {
         context.startActivity(it);
     }
 
-    public static void shareActivity (Context context, String title, String text, String imageUrl, String url) {
-        Intent it = new Intent(ACTION_SHARE);
-        it.addCategory(Intent.CATEGORY_DEFAULT);
-        it.putExtra(KEY_TITLE, title);
-        it.putExtra(KEY_TEXT, text);
-        it.putExtra(KEY_IMAGE_URL, imageUrl);
-        it.putExtra(KEY_URL, url);
-        context.startActivity(it);
+    public static void shareActivity (Context context, long id, String title, String text, String imageUrl, String url) {
+        try {
+            Intent it = new Intent(ACTION_SHARE);
+            it.addCategory(Intent.CATEGORY_DEFAULT);
+            it.putExtra(KEY_ID, id);
+            it.putExtra(KEY_TITLE, title);
+            it.putExtra(KEY_TEXT, text);
+            it.putExtra(KEY_IMAGE_URL, imageUrl);
+            it.putExtra(KEY_URL, url);
+            context.startActivity(it);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
+    public static void circleShareActivity (Context context, long id, String title, String text, String imageUrl, String url) {
+        try {
+            Intent it = new Intent(ACTION_SHARE);
+            it.addCategory(Intent.CATEGORY_DEFAULT);
+            it.putExtra(KEY_ID, id);
+            it.putExtra(KEY_TITLE, title);
+            it.putExtra(KEY_TEXT, text);
+            it.putExtra(KEY_IMAGE_URL, imageUrl);
+            it.putExtra(KEY_URL, url);
+            context.startActivity(it);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

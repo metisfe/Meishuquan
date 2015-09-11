@@ -26,6 +26,8 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
 
     private View mWeChatBtn, mShareMomentsBtn, mSinaWeiboBtn, mQqBtn, mQzoneBtn, mCircelBtn;
 
+    private long mId = -1;
+
     private String mTitle, mText, mImageUrl, mUrl;
 
     private PlatformActionListener mActionListener = new PlatformActionListener() {
@@ -61,6 +63,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
+        mId = getIntent().getLongExtra(ActivityDispatcher.KEY_ID, -1);
         mTitle = getIntent().getStringExtra(ActivityDispatcher.KEY_TITLE);
         mText = getIntent().getStringExtra(ActivityDispatcher.KEY_TEXT);
         mImageUrl = getIntent().getStringExtra(ActivityDispatcher.KEY_IMAGE_URL);
@@ -107,9 +110,11 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
             User me = AccountManager.getInstance(this).getMe();
             if (me == null) {
                 //TODO
+                ActivityDispatcher.loginActivityWhenAlreadyIn(this);
                 return;
             }
-            manager.circleShare(mTitle, mText, mImageUrl, mUrl, me.getCookie(), new RequestCallback() {
+            ActivityDispatcher.circleShareActivity(this, mId, mTitle, mText, mImageUrl, mUrl);
+            /*manager.circleShare(mId, me.getCookie(), new RequestCallback() {
 
                 @Override
                 public void callback(ReturnInfo returnInfo, String callbackId) {
@@ -120,7 +125,7 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
                         Toast.makeText(ShareActivity.this, R.string.toast_share_failed, Toast.LENGTH_SHORT).show();
                     }
                 }
-            });
+            });*/
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.metis.newslib.module;
+package com.metis.base.module;
 
 import com.google.gson.annotations.SerializedName;
 

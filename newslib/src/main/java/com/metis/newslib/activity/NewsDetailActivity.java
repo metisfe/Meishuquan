@@ -396,7 +396,7 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
             String text = TextUtils.isEmpty(mDetails.description) ? mDetails.title : mDetails.description;
             String imageUrl = mDetails.thumbnail;
             String url = SHARE_URL + mDetails.newsId;
-            com.metis.base.ActivityDispatcher.shareActivity(this, title, text, imageUrl, url);
+            com.metis.base.ActivityDispatcher.shareActivity(this, mDetails.newsId, title, text, imageUrl, url);
         }
     }
 }

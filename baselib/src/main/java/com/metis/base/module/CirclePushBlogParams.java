@@ -1,4 +1,4 @@
-package com.metis.newslib.module;
+package com.metis.base.module;
 
 import java.io.Serializable;
 import java.util.ArrayList;
