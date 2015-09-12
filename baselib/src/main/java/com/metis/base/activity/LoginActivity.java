@@ -179,15 +179,16 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                 @Override
                 public void callback(ReturnInfo<User> returnInfo, String callbackId) {
                     if (returnInfo.isSuccess()) {
-                        /*Map<String, String> map = new HashMap<String, String>();
+                        Map<String, String> map = new HashMap<String, String>();
                         map.put("userNickName", name);
-                        map.put("userAvatar", profile);*/
+                        map.put("userAvatar", profile);
 
                         User me = returnInfo.getData();
-                        me.name = name;
-                        me.setUserAvatar(profile);
-                        AccountManager.getInstance(LoginActivity.this).updateUserInfo(me, me.getCookie(), null);
+
                         if (me.userRole == 0) {
+                            me.name = name;
+                            me.setUserAvatar(profile);
+                            AccountManager.getInstance(LoginActivity.this).updateUserInfoPost(map, null);
                             ActivityDispatcher.userRoleActivity(LoginActivity.this, me, isAlreadyIn);
                         } else {
                             if (isAlreadyIn) {

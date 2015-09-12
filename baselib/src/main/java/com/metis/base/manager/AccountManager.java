@@ -247,7 +247,7 @@ public class AccountManager extends AbsManager {
     /*
     1.1/UserCenter/LoginByAuthorize?openid={openid}&typeid={typeid}
     openid：第三方唯一ID
-    typeid：0 微信，1 新浪微博，2 QQ
+    typeid：1 微信，2 新浪微博，3 QQ
      */
     public void authLogin (String openId, final int typeId, final RequestCallback<User> callback) {
         Map<String, String> map = new HashMap<String, String>();
@@ -360,17 +360,50 @@ public class AccountManager extends AbsManager {
         updateUserInfo(map, callback);
     }
 
-    public void updateUserInfo (User user, String session, final RequestCallback callback) {
+    /*public void updateUserInfoPost (User user, final RequestCallback callback) {
         if (mMe == null) {
             return;
         }
-        if (mMe.userId != user.userId) {
-            return;
-        }
-        NetProxy.getInstance(getContext()).doPostRequest(URL_UPDATE_USER_INFO_POST.replace("{session}", session), user, new NetProxy.OnResponseListener() {
+
+        NetProxy.getInstance(getContext()).doPostRequest(URL_UPDATE_USER_INFO_POST.replace("{session}", mMe.getCookie()), user, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
-                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>(){}.getType());
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>() {
+                }.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
+            }
+        });
+    }*/
+
+    public void updateUserInfoPost (Map<String, String> map, final RequestCallback callback) {
+        if (mMe == null) {
+            return;
+        }
+        map.put("userId", mMe.userId + "");
+
+        JsonObject json = new JsonObject();
+        Set<String> set = map.keySet();
+        for (String key : set) {
+            String value = map.get(key);
+            json.addProperty(key, value);
+            /*if (!Patterns.WEB_URL.matcher(value).matches()) {
+                value = URLEncoder.encode(value);
+            }
+            try {
+                json.addProperty(key, URLEncoder.encode(value, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }*/
+        }
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("param", json.toString());
+        NetProxy.getInstance(getContext()).doPostRequest(URL_UPDATE_USER_INFO_POST.replace("{session}", mMe.getCookie()), params, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>() {
+                }.getType());
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
                 }
