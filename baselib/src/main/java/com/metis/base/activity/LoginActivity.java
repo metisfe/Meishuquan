@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
+import com.metis.base.framework.NetProperty;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.manager.ShareManager;
@@ -39,6 +41,8 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
     private TextView mPwdFindTv = null;
     private View mWeChatView, mSinaView, mQqView;
 
+    private Button mNotNowBtn = null;
+
     private boolean isAlreadyIn = false;
 
     /*private RequestCallback<User> mAuthLoginCallback = new RequestCallback<User>() {
@@ -63,6 +67,15 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                 Intent it = new Intent(LoginActivity.this, RegisterActivity.class);
                 it.putExtra(ActivityDispatcher.KEY_STATUS, isAlreadyIn);
                 startActivity(it);
+            }
+        });
+
+        mNotNowBtn = (Button)findViewById(R.id.login_not_now);
+        mNotNowBtn.setVisibility(NetProperty.TESTING ? View.VISIBLE : View.GONE);
+        mNotNowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityDispatcher.mainActivity(LoginActivity.this);
             }
         });
 
@@ -166,11 +179,14 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                 @Override
                 public void callback(ReturnInfo<User> returnInfo, String callbackId) {
                     if (returnInfo.isSuccess()) {
-                        Map<String, String> map = new HashMap<String, String>();
+                        /*Map<String, String> map = new HashMap<String, String>();
                         map.put("userNickName", name);
-                        map.put("userAvatar", profile);
-                        AccountManager.getInstance(LoginActivity.this).updateUserInfo(map, null);
+                        map.put("userAvatar", profile);*/
+
                         User me = returnInfo.getData();
+                        me.name = name;
+                        me.setUserAvatar(profile);
+                        AccountManager.getInstance(LoginActivity.this).updateUserInfo(me, me.getCookie(), null);
                         if (me.userRole == 0) {
                             ActivityDispatcher.userRoleActivity(LoginActivity.this, me, isAlreadyIn);
                         } else {

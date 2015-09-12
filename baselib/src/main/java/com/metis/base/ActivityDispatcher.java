@@ -158,7 +158,7 @@ public class ActivityDispatcher {
 
     public static void circleShareActivity (Context context, long id, String title, String text, String imageUrl, String url) {
         try {
-            Intent it = new Intent(ACTION_SHARE);
+            Intent it = new Intent(ACTION_CIRCLE_SHARE);
             it.addCategory(Intent.CATEGORY_DEFAULT);
             it.putExtra(KEY_ID, id);
             it.putExtra(KEY_TITLE, title);

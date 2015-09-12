@@ -6,5 +6,8 @@
         android:id="@+id/footer_msg"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/size_h5"
+        android:textColor="@color/color_c2"
+        android:gravity="center"
         />
 </RelativeLayout>

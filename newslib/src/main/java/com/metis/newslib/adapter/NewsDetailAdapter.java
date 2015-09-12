@@ -12,6 +12,7 @@ import com.metis.base.widget.adapter.holder.AbsViewHolder;
 import com.metis.base.widget.adapter.holder.FooterHolder;
 import com.metis.newslib.adapter.delegate.NewsCardHeaderDelegate;
 import com.metis.newslib.adapter.delegate.NewsCommentDelegate;
+import com.metis.newslib.adapter.delegate.NewsCommentFooterDelegate;
 import com.metis.newslib.adapter.delegate.NewsDetailsImgDelegate;
 import com.metis.newslib.adapter.delegate.NewsDetailsTitleDelegate;
 import com.metis.newslib.adapter.delegate.NewsDetailsTxtDelegate;
@@ -69,12 +70,14 @@ public class NewsDetailAdapter extends DelegateAdapter {
         int i = length - 1;
         for (; i >= 0; i--) {
             AbsDelegate delegate = getDataItem(i);
-            if (delegate instanceof NewsCommentDelegate
-                    || delegate instanceof NewsRelativeDelegate
+            if (/*delegate instanceof NewsCommentDelegate
+                    || */delegate instanceof NewsRelativeDelegate
                     || delegate instanceof NewsDetailsImgDelegate
                     || delegate instanceof NewsDetailsTxtDelegate
                     || delegate instanceof NewsDetailsVdoDelegate
-                    || delegate instanceof NewsDetailsTitleDelegate) {
+                    || delegate instanceof NewsDetailsTitleDelegate
+                    || delegate instanceof NewsCommentFooterDelegate
+                    || delegate instanceof NewsCardHeaderDelegate) {
                 break;
             }
         }

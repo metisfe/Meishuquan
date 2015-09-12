@@ -123,6 +123,17 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        /*User me = AccountManager.getInstance(this).getMe();
+        if (me == null) {
+            mInputEt.setText(R.string.text_comment_must_login);
+        } else {
+            mInputEt.setText(R.string.text_comment_has_login);
+        }*/
+    }
+
+    @Override
     public boolean showAsUpEnable() {
         return true;
     }
@@ -284,6 +295,7 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                         });
                     }
                 }
+                loadNewComments(mDetails.newsId, mLastIdNew);
             }
         });
     }
@@ -339,8 +351,14 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                     NewsCommentItem item = (NewsCommentItem)data.getSerializableExtra(ActivityDispatcher.KEY_NEWS_COMMENT_ITEM);
                     NewsCommentDelegate delegate = new NewsCommentDelegate(item);
                     delegate.setDetails(mDetails);
-                    mDetailsAdapter.addNewsCommentDelegate(delegate, new NewsCardHeaderDelegate(getString(R.string.text_new_comment)));
-                    mLastIdNew = item.id;
+                    NewsCardHeaderDelegate headerDelegate = null;
+                    if (mLastIdNew == 0) {
+                        headerDelegate = new NewsCardHeaderDelegate(getString(R.string.text_new_comment));
+                    }
+                    mDetailsAdapter.addNewsCommentDelegate(delegate, headerDelegate);
+                    if (mLastIdNew == 0) {
+                        mLastIdNew = item.id;
+                    }
                 }
                 break;
             case com.metis.base.ActivityDispatcher.REQUEST_CODE_LOGIN:
@@ -356,6 +374,11 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         final int id = v.getId();
         if (id == mInputEt.getId()) {
             if (mDetails != null) {
+                User me = AccountManager.getInstance(this).getMe();
+                if (me == null) {
+                    com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(this);
+                    return;
+                }
                 ActivityDispatcher.replyActivity(NewsDetailActivity.this, mDetails, null);
             }
         } else if (id == mFavoriteIv.getId()) {

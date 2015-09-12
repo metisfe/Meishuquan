@@ -51,6 +51,7 @@ public class AccountManager extends AbsManager {
             URL_CANCEL_ATTENTION = "v1.1/Circle/CancelAttention?userId={userId}&session={session}",
             FORGET_PWD = "v1.1/UserCenter/ForgetPassword?account={account}&code={code}&newPwd={newPwd}&type={type}",
             URL_UPDATE_USER_INFO = "v1.1/UserCenter/UpdateUserInfo?param={param}&session={session}",
+            URL_UPDATE_USER_INFO_POST = "v1.1/UserCenter/UpdateUserInfoPost?session={session}",
             URL_AUTH_LOGIN = "v1.1/UserCenter/LoginByAuthorize",
             MOMENTSGROUPS = "v1.1/Circle/MyDiscussions?userid={userid}&type={type}&session={session}";//朋友圈分组信息
 
@@ -263,7 +264,8 @@ public class AccountManager extends AbsManager {
                         try {
                             returnInfo = getGson().fromJson(
                                     result,
-                                    new TypeToken<ReturnInfo<User>>(){}.getType());
+                                    new TypeToken<ReturnInfo<User>>() {
+                                    }.getType());
                         } catch (IllegalStateException e) {
                             String errorMsg = e.getMessage();
                         }
@@ -353,32 +355,53 @@ public class AccountManager extends AbsManager {
             return;
         }
         mMe.userRole = userRole;
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("userRole", userRole + "");
-        updateUserInfo(map, callback);
+        updateUserInfo(mMe, mMe.getCookie(), callback);
     }
 
-    public void updateUserInfo (Map<String, String> map, final RequestCallback callback) {
+    public void updateUserInfo (User user, String session, final RequestCallback callback) {
+        if (mMe == null) {
+            return;
+        }
+        if (mMe.userId != user.userId) {
+            return;
+        }
+        NetProxy.getInstance(getContext()).doPostRequest(URL_UPDATE_USER_INFO_POST.replace("{session}", session), user, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>(){}.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
+            }
+        });
+    }
+
+    /*public void updateUserInfo (Map<String, String> map, final RequestCallback callback) {
         if (mMe == null) {
             //TODO
             return;
         }
         JsonObject json = new JsonObject();
+        *//*StringBuilder builder = new StringBuilder("{");
+        builder.append("\"userId\":\"" + mMe.userId + "\",");*//*
         json.addProperty("userId", mMe.userId);
         Set<String> set = map.keySet();
         for (String key : set) {
             String value = map.get(key);
             //value = URLEncoder.encode(value);
-            /*if (!Patterns.WEB_URL.matcher(value).matches()) {
+            *//*if (!Patterns.WEB_URL.matcher(value).matches()) {
                 value = URLEncoder.encode(value);
-            }*/
+            }*//*
             //value = URLEncoder.encode(value);
+            //builder.append("\"" + key + "\":\"" + value + "\",");
             try {
                 json.addProperty(key, URLEncoder.encode(value, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
+        //builder.setCharAt(builder.length() - 1, '}');
+
         String request = URL_UPDATE_USER_INFO
                 .replace("{param}", json.toString())
                 .replace("{session}", mMe.getCookie());
@@ -391,7 +414,7 @@ public class AccountManager extends AbsManager {
                 }
             }
         });
-    }
+    }*/
 
     public enum RequestCodeTypeEnum {
         REGISTER(1), RESET_PWD(2);

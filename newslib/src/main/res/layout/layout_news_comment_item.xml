@@ -29,7 +29,6 @@
         android:textColor="@color/color_c2"
         android:layout_alignBaseline="@+id/comment_item_name"
         android:layout_marginLeft="@dimen/margin_middle"
-        android:text="北京"
         />
     <TextView
         android:id="@+id/comment_item_time"
@@ -55,6 +54,7 @@
         android:orientation="horizontal"
         android:layout_toLeftOf="@+id/comment_item_comment"
         android:layout_below="@+id/comment_item_content"
+        android:gravity="center"
         >
         <ImageView
             android:layout_width="wrap_content"
@@ -77,6 +77,7 @@
         android:orientation="horizontal"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/comment_item_content"
+        android:gravity="center"
         >
         <ImageView
             android:layout_width="wrap_content"

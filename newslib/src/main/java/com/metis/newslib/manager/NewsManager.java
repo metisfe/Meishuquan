@@ -13,14 +13,18 @@ import com.metis.base.utils.Log;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.metis.newslib.module.ChannelList;
 import com.metis.newslib.module.NewsCommentList;
+import com.metis.newslib.module.NewsCommentParams;
 import com.metis.newslib.module.NewsDetails;
 import com.metis.newslib.module.NewsItem;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Beak on 2015/9/1.
@@ -35,6 +39,7 @@ public class NewsManager extends AbsManager {
     private final String COMMENT_LIST_NEWSID = "v1.1/Comment/CommentList?type={type}&newsId={newsId}&lastCommentId={lastCommentId}&session={session}";//根据newsId获得评论列表
     private final String PUBLISHCOMMENT =
             "v1.1/Comment/PublishComment?userid={userid}&newsid={newsid}&content={content}&replyCid={replyCid}&blockType={blockType}&session={session}";//发表评论
+    private final String PUBLISH_COMMENT_POST = "v1.1/Comment/PublishCommentPost?session={session}";
     private final String PRIVATE = "v1.1/Comment/Favorite?userid={userid}&id={id}&type={type}&result={result}&session={session}";
 
     public static final int COMMENT_TYPE_ALL = 0, COMMENT_TYPE_HOT = 1, COMMENT_TYPE_NEW = 2;
@@ -142,15 +147,39 @@ public class NewsManager extends AbsManager {
     }
 
     //"v1.1/Comment/PublishComment?userid={userid}&newsid={newsid}&content={content}&replyCid={replyCid}&blockType={blockType}&session={session}";//发表评论
-    public void pushComment (long userId, long newsId, String content, long replyCid, String session, final RequestCallback<Integer> callback) {
-        String request = PUBLISHCOMMENT
-                .replace("{userid}", userId + "")
-                .replace("{newsid}", newsId + "")
-                .replace("{content}", URLEncoder.encode(content))
-                .replace("{replyCid}", replyCid + "")
-                .replace("{blockType}", BlockTypeEnum.TOPLINE.getVal() + "")
-                .replace("{session}", session);
+    /*public void pushComment (long userId, long newsId, String content, long replyCid, String session, final RequestCallback<Integer> callback) {
+        String request = null;
+        try {
+            request = PUBLISHCOMMENT
+                    .replace("{userid}", userId + "")
+                    .replace("{newsid}", newsId + "")
+                    .replace("{content}", URLEncoder.encode(content, "UTF-8"))
+                    .replace("{replyCid}", replyCid + "")
+                    .replace("{blockType}", BlockTypeEnum.TOPLINE.getVal() + "")
+                    .replace("{session}", session);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo<Integer> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<Integer>>(){}.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
+            }
+        });
+    }*/
+
+    public void postComment (long userId, long newsId, String content, long replyCid, String session, final RequestCallback<Integer> callback) {
+        //NewsCommentParams params = new NewsCommentParams(userId, newsId, content, replyCid, BlockTypeEnum.TOPLINE.getVal());
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userid", userId + "");
+        map.put("newsid", newsId + "");
+        map.put("content", content);
+        map.put("replyCid", replyCid + "");
+        map.put("blockType", BlockTypeEnum.TOPLINE.getVal() + "");
+        NetProxy.getInstance(getContext()).doPostRequest(PUBLISH_COMMENT_POST.replace("{session}", session), map, new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
                 ReturnInfo<Integer> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<Integer>>(){}.getType());

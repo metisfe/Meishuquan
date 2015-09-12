@@ -93,17 +93,32 @@ public class User implements Serializable, Parcelable{
     }
 
     public String getAvailableAvatar () {
-        if (!TextUtils.isEmpty(avatar)) {
+        String result = avatar;
+        if (TextUtils.isEmpty(result)) {
+            result = userAvatar;
+        }
+        if (result != null && result.startsWith("http:/") && !result.startsWith("http://")) {
+            result = result.replace("http:/", "http://");
+        }
+        if (result == null) {
+            result = "";
+        }
+        return result;
+        /*if (!TextUtils.isEmpty(avatar)) {
             return avatar;
         }
         if (!TextUtils.isEmpty(userAvatar)) {
             return userAvatar;
         }
-        return "";
+        return "";*/
     }
 
     public String getCookie() {
         return cookie;
+    }
+
+    public void setUserAvatar (String avatar) {
+        userAvatar = avatar;
     }
 
     @Override

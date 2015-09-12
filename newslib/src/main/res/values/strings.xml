@@ -17,6 +17,8 @@
     <string name="text_new_comment">最新评论</string>
     <string name="text_load_more">加载更多...</string>
     <string name="text_no_more">没有更多热门评论</string>
+    <string name="text_comment_must_login">必须登录才能进行评论</string>
+    <string name="text_comment_has_login">我来说两句...</string>
 
     <string name="hint_reply">我也来说两句...</string>
 

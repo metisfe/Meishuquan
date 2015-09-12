@@ -60,6 +60,7 @@ public class MeHeaderHolder extends AbsViewHolder<MeHeaderDelegate> {
             return;
         }
         final String avatar = me.getAvailableAvatar();
+        Log.v(TAG, "avatar=" + avatar);
         File tempFile = new File (CacheManager.getInstance(context).getMyImageCacheDir(), FileUtils.getNameFromUrl(avatar));
         if (tempFile.exists()) {
             manageProfile(context, tempFile);

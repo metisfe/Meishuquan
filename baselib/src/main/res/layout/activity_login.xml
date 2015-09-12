@@ -178,4 +178,11 @@
             />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/login_not_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="跳过"
+        />
+
 </RelativeLayout>

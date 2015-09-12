@@ -95,7 +95,7 @@ public class NewsReplyActivity extends BaseActivity {
                     Log.v(TAG, "mDetails == null");
                     return;
                 }
-                NewsManager.getInstance(NewsReplyActivity.this).pushComment(0, mDetails.newsId, content, mItem != null ? mItem.id : 0, me.getCookie(), new RequestCallback<Integer>() {
+                NewsManager.getInstance(NewsReplyActivity.this).postComment(mItem != null ? mItem.user.userId : 0, mDetails.newsId, content, mItem != null ? mItem.id : 0, me.getCookie(), new RequestCallback<Integer>() {
                     @Override
                     public void callback(ReturnInfo<Integer> returnInfo, String callbackId) {
 //                        Toast.makeText(NewsReplyActivity.this, "pushComemnt " + returnInfo.isSuccess(), Toast.LENGTH_SHORT).show();
