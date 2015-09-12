@@ -355,7 +355,9 @@ public class AccountManager extends AbsManager {
             return;
         }
         mMe.userRole = userRole;
-        updateUserInfo(mMe, mMe.getCookie(), callback);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userRole", userRole + "");
+        updateUserInfo(map, callback);
     }
 
     public void updateUserInfo (User user, String session, final RequestCallback callback) {
@@ -376,24 +378,19 @@ public class AccountManager extends AbsManager {
         });
     }
 
-    /*public void updateUserInfo (Map<String, String> map, final RequestCallback callback) {
+    private void updateUserInfo (Map<String, String> map, final RequestCallback callback) {
         if (mMe == null) {
             //TODO
             return;
         }
         JsonObject json = new JsonObject();
-        *//*StringBuilder builder = new StringBuilder("{");
-        builder.append("\"userId\":\"" + mMe.userId + "\",");*//*
         json.addProperty("userId", mMe.userId);
         Set<String> set = map.keySet();
         for (String key : set) {
             String value = map.get(key);
-            //value = URLEncoder.encode(value);
-            *//*if (!Patterns.WEB_URL.matcher(value).matches()) {
+            if (!Patterns.WEB_URL.matcher(value).matches()) {
                 value = URLEncoder.encode(value);
-            }*//*
-            //value = URLEncoder.encode(value);
-            //builder.append("\"" + key + "\":\"" + value + "\",");
+            }
             try {
                 json.addProperty(key, URLEncoder.encode(value, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
@@ -414,7 +411,7 @@ public class AccountManager extends AbsManager {
                 }
             }
         });
-    }*/
+    }
 
     public enum RequestCodeTypeEnum {
         REGISTER(1), RESET_PWD(2);

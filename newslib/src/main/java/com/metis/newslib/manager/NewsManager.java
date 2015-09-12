@@ -13,15 +13,12 @@ import com.metis.base.utils.Log;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.metis.newslib.module.ChannelList;
 import com.metis.newslib.module.NewsCommentList;
-import com.metis.newslib.module.NewsCommentParams;
 import com.metis.newslib.module.NewsDetails;
 import com.metis.newslib.module.NewsItem;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
