@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_below="@+id/item_profile_container"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         android:textColor="@android:color/black"
         android:gravity="center"
         android:layout_centerHorizontal="true"

@@ -22,7 +22,7 @@
         android:layout_toRightOf="@+id/header_profile"
         android:layout_alignTop="@+id/header_profile"
         android:layout_toLeftOf="@+id/header_support"
-        android:textSize="@dimen/size_h5"
+        android:textSize="@dimen/std_size_h5"
         android:textColor="@android:color/black"
         />
     <TextView
@@ -33,7 +33,7 @@
         android:layout_toRightOf="@+id/header_profile"
         android:layout_alignBottom="@+id/header_profile"
         android:layout_toLeftOf="@+id/header_support"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         android:textColor="@color/color_c6"
         />
     <TextView
@@ -44,7 +44,7 @@
         android:layout_toRightOf="@+id/header_profile"
         android:layout_below="@+id/header_name"
         android:layout_toLeftOf="@+id/header_support"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         android:textColor="@color/color_c6"
         />
     <ImageView

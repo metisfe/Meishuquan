@@ -169,7 +169,8 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         if (me != null) {
             session = me.getCookie();
         }
-
+        mLastIdNew = 0;
+        mLastIdHot = 0;
         NewsManager.getInstance(this).getNewsInfoById(newsId, session, new RequestCallback<NewsDetails>() {
             @Override
             public void callback(ReturnInfo<NewsDetails> returnInfo, String callbackId) {

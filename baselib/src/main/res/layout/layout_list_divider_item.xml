@@ -7,7 +7,7 @@
         android:id="@+id/divider_title"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         android:textColor="@color/color_c2"
         android:background="@color/color_c3"
         android:paddingLeft="@dimen/padding_big"

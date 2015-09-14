@@ -10,7 +10,7 @@
         android:layout_marginRight="@dimen/margin_big"
         android:layout_marginTop="@dimen/margin_middle"
         android:layout_marginBottom="@dimen/margin_middle"
-        android:textSize="@dimen/size_h4"
+        android:textSize="@dimen/std_size_h4"
         android:textColor="@color/filter_text_color"
         />
 </FrameLayout>

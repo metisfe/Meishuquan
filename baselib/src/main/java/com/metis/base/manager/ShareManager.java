@@ -117,7 +117,7 @@ public class ShareManager extends AbsManager {
                 }
             }
         });
-        mPlatform.authorize();
+        //mPlatform.authorize();
     }
 
     public void weChatMomentsShare (String title, String text, String imageUrl, String url, PlatformActionListener listener) {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="size_h1">18dp</dimen>
-    <dimen name="size_h2">16dp</dimen>
-    <dimen name="size_h3">20dp</dimen>
-    <dimen name="size_h4">15dp</dimen>
-    <dimen name="size_h5">14dp</dimen>
-    <dimen name="size_h6">12dp</dimen>
+    <dimen name="std_size_h1">18dp</dimen>
+    <dimen name="std_size_h2">16dp</dimen>
+    <dimen name="std_size_h3">20dp</dimen>
+    <dimen name="std_size_h4">15dp</dimen>
+    <dimen name="std_size_h5">14dp</dimen>
+    <dimen name="std_size_h6">12dp</dimen>
 
     <dimen name="profile_size_small">30dp</dimen>
     <dimen name="profile_size_middle">45dp</dimen>

@@ -18,7 +18,7 @@
             android:hint="@string/status_detail_card_reply"
             android:singleLine="true"
             android:gravity="center_vertical"
-            android:textSize="@dimen/size_h6"
+            android:textSize="@dimen/std_size_h6"
             android:textColorHint="@color/color_c6"
             />
         <ImageView

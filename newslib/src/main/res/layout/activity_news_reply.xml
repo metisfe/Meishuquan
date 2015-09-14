@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_marginBottom="@dimen/margin_middle"
-            android:textSize="@dimen/size_h4"
+            android:textSize="@dimen/std_size_h4"
             android:textColor="@color/color_c2"
             />
         <EditText
@@ -32,7 +32,7 @@
             android:background="@drawable/input_bg"
             android:padding="@dimen/padding_big"
             android:hint="@string/hint_reply"
-            android:textSize="@dimen/size_h5"
+            android:textSize="@dimen/std_size_h5"
             android:layout_marginBottom="@dimen/margin_middle"
             android:layout_below="@+id/news_reply_to"
             />

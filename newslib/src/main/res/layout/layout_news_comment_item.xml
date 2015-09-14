@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/size_h2"
+        android:textSize="@dimen/std_size_h2"
         android:layout_toRightOf="@+id/comment_item_profile"
         />
     <TextView
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/comment_item_name"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         android:textColor="@color/color_c2"
         android:layout_alignBaseline="@+id/comment_item_name"
         android:layout_marginLeft="@dimen/margin_middle"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/size_h5"
+        android:textSize="@dimen/std_size_h5"
         android:textColor="@color/color_c2"
         android:layout_alignBaseline="@+id/comment_item_location"
         />
@@ -55,6 +55,7 @@
         android:layout_toLeftOf="@+id/comment_item_comment"
         android:layout_below="@+id/comment_item_content"
         android:gravity="center"
+        android:layout_alignWithParentIfMissing="true"
         >
         <ImageView
             android:layout_width="wrap_content"
@@ -78,6 +79,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/comment_item_content"
         android:gravity="center"
+        android:visibility="gone"
         >
         <ImageView
             android:layout_width="wrap_content"

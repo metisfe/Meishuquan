@@ -170,7 +170,7 @@
             android:gravity="center"
             android:text="@string/title_activity_login"
             android:background="@drawable/bg_red_btn"
-            android:textSize="@dimen/size_h1"
+            android:textSize="@dimen/std_size_h1"
             android:textColor="@android:color/white"
             android:layout_marginTop="@dimen/margin_large"
             android:paddingTop="@dimen/padding_big"

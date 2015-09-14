@@ -23,7 +23,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/text_share_to"
-            android:textSize="@dimen/size_h2"
+            android:textSize="@dimen/std_size_h2"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/margin_middle"
             android:layout_marginBottom="@dimen/margin_middle"
@@ -54,7 +54,7 @@
                     android:text="@string/text_we_chat"
                     android:layout_marginTop="@dimen/margin_middle"
                     android:textColor="@color/color_c2"
-                    android:textSize="@dimen/size_h6"
+                    android:textSize="@dimen/std_size_h6"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -76,7 +76,7 @@
                     android:text="@string/text_moments"
                     android:layout_marginTop="@dimen/margin_middle"
                     android:textColor="@color/color_c2"
-                    android:textSize="@dimen/size_h6"
+                    android:textSize="@dimen/std_size_h6"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -98,7 +98,7 @@
                     android:text="@string/text_sina"
                     android:layout_marginTop="@dimen/margin_middle"
                     android:textColor="@color/color_c2"
-                    android:textSize="@dimen/size_h6"
+                    android:textSize="@dimen/std_size_h6"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -120,7 +120,7 @@
                     android:text="@string/text_qq"
                     android:layout_marginTop="@dimen/margin_middle"
                     android:textColor="@color/color_c2"
-                    android:textSize="@dimen/size_h6"
+                    android:textSize="@dimen/std_size_h6"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -142,7 +142,7 @@
                     android:text="@string/text_qzone"
                     android:layout_marginTop="@dimen/margin_middle"
                     android:textColor="@color/color_c2"
-                    android:textSize="@dimen/size_h6"
+                    android:textSize="@dimen/std_size_h6"
                     android:gravity="center"
                     />
             </LinearLayout>
@@ -164,7 +164,7 @@
                     android:text="@string/text_circel"
                     android:layout_marginTop="@dimen/margin_middle"
                     android:textColor="@color/color_c2"
-                    android:textSize="@dimen/size_h6"
+                    android:textSize="@dimen/std_size_h6"
                     android:gravity="center"
                     />
             </LinearLayout>

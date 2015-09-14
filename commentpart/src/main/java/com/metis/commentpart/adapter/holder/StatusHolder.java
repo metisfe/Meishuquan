@@ -142,6 +142,7 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
         thumbUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                User me = AccountManager.getInstance(context).getMe();
                 if (me == null) {
                     com.metis.base.ActivityDispatcher.loginActivityWhenAlreadyIn(context);
                     return;

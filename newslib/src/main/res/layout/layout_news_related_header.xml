@@ -9,7 +9,7 @@
         android:id="@+id/related_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/size_h2"
+        android:textSize="@dimen/std_size_h2"
         android:textColor="@android:color/black"
         android:gravity="left"
         android:singleLine="true"

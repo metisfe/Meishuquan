@@ -71,6 +71,9 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog (CharSequence msg, boolean cancelable) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            dismissProgressDialog();
+        }
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCancelable(cancelable);

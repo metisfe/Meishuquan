@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/comment_list_item_name"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         android:textColor="@color/color_c6"
         android:layout_alignParentRight="true"
         />
@@ -40,7 +40,7 @@
         android:id="@+id/comment_list_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/size_h5"
+        android:textSize="@dimen/std_size_h5"
         android:textColor="@android:color/black"
         android:singleLine="true"
         android:layout_alignTop="@+id/comment_list_item_profile"
@@ -52,7 +52,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         android:layout_toRightOf="@+id/comment_list_item_profile"
         android:layout_below="@+id/comment_list_item_name"
         />

@@ -6,7 +6,7 @@
         android:id="@+id/tab_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/size_h2"
+        android:textSize="@dimen/std_size_h2"
         android:layout_margin="@dimen/margin_middle"
         android:padding="@dimen/padding_middle"
         android:textColor="@android:color/white"

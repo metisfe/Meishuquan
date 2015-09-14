@@ -22,6 +22,6 @@
         android:text="@string/btn_focus"
         android:padding="@dimen/padding_middle"
         android:textColor="@color/btn_focus_text_color"
-        android:textSize="@dimen/size_h6"
+        android:textSize="@dimen/std_size_h6"
         />
 </RelativeLayout>
