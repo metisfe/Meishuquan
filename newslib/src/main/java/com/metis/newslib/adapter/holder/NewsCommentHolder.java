@@ -126,6 +126,11 @@ public class NewsCommentHolder extends AbsViewHolder<NewsCommentDelegate> {
         commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                User me = AccountManager.getInstance(context).getMe();
+                if (me == null) {
+                    ActivityDispatcher.loginActivityWhenAlreadyIn(context);
+                    return;
+                }
                 com.metis.newslib.ActivityDispatcher.replyActivity((Activity)context, newsCommentDelegate.getDetails(), item);
             }
         });
