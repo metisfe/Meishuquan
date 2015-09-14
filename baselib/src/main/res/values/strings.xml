@@ -67,6 +67,7 @@
     <string name="toast_register_error_code">验证码错误,请重新输入</string>
     <string name="toast_register_empty_pwd_confirm">请输入确认密码</string>
     <string name="toast_register_empty_pwd_cannot_confirm">确认密码不相符</string>
+    <string name="toast_register_short_pwd">密码长度必须大于6位</string>
     <string name="toast_register_agreement_not_checked">请先同意用户协议</string>
     <string name="toast_reset_pwd_success">修改密码完成,请重新登录</string>
     <string name="toast_reset_pwd_failed">修改密码失败:%1$s</string>

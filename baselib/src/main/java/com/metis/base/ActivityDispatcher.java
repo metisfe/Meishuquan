@@ -38,7 +38,13 @@ public class ActivityDispatcher {
     KEY_TEXT = "text",
     KEY_IMAGE_URL = "image_url",
     KEY_URL = "url",
-    KEY_ID = "id";
+    KEY_ID = "id",
+    KEY_REPLY_TYPE = "REPLY_TYPE",
+    KEY_REPLY_ID = "REPLY_ID",
+    TITLE = "TITLE",
+    CONTENT = "CONTENT",
+    IMAGEURL = "IMAGEURL",
+    INPUT_CONTENT = "INPUT_CONTENT";
 
     public static final int REQUEST_CODE_LOGIN = 100;
 
@@ -155,16 +161,27 @@ public class ActivityDispatcher {
         }
 
     }
+    /*KEY_REPLY_TYPE = "REPLY_TYPE",
+    KEY_REPLY_ID = "REPLY_ID",
+    TITLE = "TITLE",
+    CONTENT = "CONTENT",
+    IMAGEURL = "IMAGEURL",
+    INPUT_CONTENT = "INPUT_CONTENT";*/
 
     public static void circleShareActivity (Context context, long id, String title, String text, String imageUrl, String url) {
         try {
             Intent it = new Intent(ACTION_CIRCLE_SHARE);
             it.addCategory(Intent.CATEGORY_DEFAULT);
-            it.putExtra(KEY_ID, id);
+            it.putExtra(KEY_REPLY_ID, id);
+            it.putExtra(KEY_REPLY_TYPE, 2);
+            it.putExtra(TITLE, title);
+            it.putExtra(CONTENT, text);
+            it.putExtra(IMAGEURL, imageUrl);
+            /*it.putExtra(KEY_ID, id);
             it.putExtra(KEY_TITLE, title);
             it.putExtra(KEY_TEXT, text);
             it.putExtra(KEY_IMAGE_URL, imageUrl);
-            it.putExtra(KEY_URL, url);
+            it.putExtra(KEY_URL, url);*/
             context.startActivity(it);
         } catch (Exception e) {
             e.printStackTrace();

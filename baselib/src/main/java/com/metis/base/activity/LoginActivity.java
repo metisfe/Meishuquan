@@ -89,6 +89,7 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
         mQqView = findViewById(R.id.login_auth_qq);
 
         mLoginBtn.setOnClickListener(this);
+        mPwdFindTv.setOnClickListener(this);
         mWeChatView.setOnClickListener(this);
         mSinaView.setOnClickListener(this);
         mQqView.setOnClickListener(this);
@@ -151,18 +152,21 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
                     }
                 }
             });
+            showProgressDialog(R.string.text_please_wait, false);
         } else if (id == mPwdFindTv.getId()) {
             ActivityDispatcher.resetPwdActivity(this);
         } else if (id == mWeChatView.getId()) {
             ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, Wechat.NAME), this);
+            showProgressDialog(R.string.text_please_wait, false);
         } else if (id == mSinaView.getId()) {
             /*ActivityDispatcher.mainActivity(this);
             finish();*/
             ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, SinaWeibo.NAME), this);
+            showProgressDialog(R.string.text_please_wait, false);
         } else if (id == mQqView.getId()) {
             ShareManager.getInstance(this).loginAccess(ShareSDK.getPlatform(this, QQ.NAME), this);
+            showProgressDialog(R.string.text_please_wait, false);
         }
-        showProgressDialog(R.string.text_please_wait, false);
     }
 
     @Override

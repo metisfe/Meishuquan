@@ -90,11 +90,33 @@ public class ShareManager extends AbsManager {
         //platform.authorize();
     }
 
-    public void loginQuit (PlatformActionListener listener) {
+    public void loginQuit (final PlatformActionListener listener) {
         if (mPlatform != null && mPlatform.isValid()) {
             mPlatform.removeAccount(true);
         }
-        mPlatform.setPlatformActionListener(listener);
+        mPlatform.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                AccountManager.getInstance(getContext()).clearUserLoginInfo();
+                if (listener != null) {
+                    listener.onComplete(platform, i, hashMap);
+                }
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                if (listener != null) {
+                    listener.onError(platform, i, throwable);
+                }
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                if (listener != null) {
+                    listener.onCancel(platform, i);
+                }
+            }
+        });
         mPlatform.authorize();
     }
 

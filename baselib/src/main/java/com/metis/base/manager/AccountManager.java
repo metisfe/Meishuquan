@@ -93,6 +93,13 @@ public class AccountManager extends AbsManager {
         return info;
     }
 
+    public void clearUserLoginInfo () {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("account", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
+
     public static int getTypeId (String loginTypeStr) {
         if (Wechat.NAME.equals(loginTypeStr)) {
             return 0;

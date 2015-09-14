@@ -350,6 +350,10 @@ public class RegisterActivity extends TitleBarActivity implements View.OnClickLi
                 Toast.makeText(this, R.string.toast_register_empty_pwd_cannot_confirm, Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (pwd.length()<= 6) {
+                Toast.makeText(this, R.string.toast_register_short_pwd, Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (!mAgreeCb.isChecked()) {
                 Toast.makeText(this, R.string.toast_register_agreement_not_checked, Toast.LENGTH_SHORT).show();
                 return;
