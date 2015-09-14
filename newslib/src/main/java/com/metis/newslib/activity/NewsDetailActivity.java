@@ -242,7 +242,7 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         });
     }
 
-    private void loadHotComments (long newsId, final long lastIdHot) {
+    private void loadHotComments (long newsId, final long lastIdHot, final boolean alsoLoadNew) {
         User me = AccountManager.getInstance(this).getMe();
         String session = "";
         if (me != null) {
@@ -297,13 +297,18 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
                             @Override
                             public void onClick(View v) {
                                 if (mCommentFooterDelegate.isAccessable()) {
-                                    loadHotComments(mDetails.newsId, mLastIdHot);
+                                    loadHotComments(mDetails.newsId, mLastIdHot, false);
                                 }
                             }
                         });
                     }
                 }
-                loadNewComments(mDetails.newsId, mLastIdNew);
+
+                if (alsoLoadNew) {
+                    loadNewComments(mDetails.newsId, mLastIdNew);
+                } else {
+                    mDetailsAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -346,7 +351,7 @@ public class NewsDetailActivity extends TitleBarActivity implements View.OnClick
         mDetailsAdapter.addDataList(list);
         mDetailsAdapter.notifyDataSetChanged();
         //loadNewComments(details.newsId, 0);
-        loadHotComments(details.newsId, 0);
+        loadHotComments(details.newsId, 0, true);
     }
 
     @Override
