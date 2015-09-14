@@ -50,7 +50,7 @@ public class NewsCommentHolder extends AbsViewHolder<NewsCommentDelegate> {
         final User user = item.user;
         if (user != null) {
             DisplayManager.getInstance(context).displayProfile(user.getAvailableAvatar(), profileIv);
-            if (item.replyUser != null && item.replyUser.userId != user.userId) {
+            if (item.replyUser != null/* && item.replyUser.userId != user.userId*/) {
                 nameTv.setText(context.getString(R.string.text_reply_one_to_one, user.name, item.replyUser.name));
             } else {
                 nameTv.setText(user.name);
