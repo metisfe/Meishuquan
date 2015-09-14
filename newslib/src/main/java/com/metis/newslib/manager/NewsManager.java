@@ -99,22 +99,7 @@ public class NewsManager extends AbsManager {
                 .doGetRequest(request, new NetProxy.OnResponseListener() {
                     @Override
                     public void onResponse(String result, String requestId) {
-                        File file = new File (Environment.getExternalStorageDirectory(), "log" + File.separator + "log.txt");
-                        Log.e(TAG, "log path=" + file.getAbsolutePath());
-                        if (!file.getParentFile().exists()) {
-                            file.getParentFile().mkdirs();
-                        }
-                        try {
-                            FileWriter writer = new FileWriter(file);
-                            writer.write(result);
-                            writer.flush();
-                            writer.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (result.length() > 3100) {
-                            Log.v(TAG, "string=" + result.substring(3000, 3100));
-                        }
+
                         ReturnInfo<NewsDetails> returnInfo = getGson().fromJson(
                                 result, new TypeToken<ReturnInfo<NewsDetails>>(){}.getType());
 
