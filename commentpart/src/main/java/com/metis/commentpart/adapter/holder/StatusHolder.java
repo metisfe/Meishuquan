@@ -1,6 +1,7 @@
 package com.metis.commentpart.adapter.holder;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.metis.commentpart.module.ChannelItem;
 import com.metis.commentpart.module.Comment;
 import com.metis.commentpart.module.Status;
 import com.metis.commentpart.widget.ViewFlippable;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -116,7 +119,30 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> implements ViewF
                 }
             }
 
-            DisplayManager.getInstance(context).display(status.img.imgUrl, statusThumbIv);
+            DisplayManager.getInstance(context).display(status.img.imgUrl, statusThumbIv, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String s, View view) {
+                    if (view instanceof ImageView) {
+                        ((ImageView)view).setImageDrawable(null);
+                        view.setBackgroundColor(context.getResources().getColor(android.R.color.darker_gray));
+                    }
+                }
+
+                @Override
+                public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+                }
+
+                @Override
+                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                    view.setBackground(null);
+                }
+
+                @Override
+                public void onLoadingCancelled(String s, View view) {
+
+                }
+            });
             statusThumbIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

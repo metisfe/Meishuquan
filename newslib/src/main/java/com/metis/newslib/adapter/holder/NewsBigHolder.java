@@ -1,6 +1,7 @@
 package com.metis.newslib.adapter.holder;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.metis.newslib.ActivityDispatcher;
 import com.metis.newslib.R;
 import com.metis.newslib.adapter.delegate.NewsBigDelegate;
 import com.metis.newslib.module.NewsItem;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * Created by Beak on 2015/9/2.
@@ -34,7 +37,30 @@ public class NewsBigHolder extends AbsViewHolder<NewsBigDelegate> {
     @Override
     public void bindData(final Context context, NewsBigDelegate newsBigDelegate, RecyclerView.Adapter adapter, int position) {
         final NewsItem item = newsBigDelegate.getSource();
-        DisplayManager.getInstance(context).display(item.imgUrl, bigThumbIv);
+        DisplayManager.getInstance(context).display(item.imgUrl, bigThumbIv, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+                if (view instanceof ImageView) {
+                    ((ImageView)view).setImageDrawable(null);
+                    view.setBackgroundColor(context.getResources().getColor(android.R.color.darker_gray));
+                }
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                view.setBackground(null);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
         if (!TextUtils.isEmpty(item.title)) {
             bigTitleTv.setText(item.title.trim());
         } else {
