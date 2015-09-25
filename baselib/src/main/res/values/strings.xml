@@ -95,4 +95,5 @@
     <string name="dock_item_discovery_title">发现</string>
     <string name="dock_item_me_title">我</string>
     <string name="title_activity_share">ShareActivity</string>
+    <string name="title_activity_full_screen">FullScreenActivity</string>
 </resources>

@@ -1,14 +1,8 @@
 package com.metis.meishuquan;
 
 import android.app.Application;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
 
-import com.metis.base.manager.AccountManager;
-import com.metis.base.manager.RequestCallback;
-import com.metis.base.module.User;
-import com.metis.msnetworklib.contract.ReturnInfo;
+import com.metis.base.fragment.PlayerProperty;
 
 /**
  * Created by gaoyunfei on 15/6/30.

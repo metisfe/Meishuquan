@@ -1,9 +1,11 @@
 package com.metis.meishuquan.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.activity.BaseActivity;
+import com.metis.base.activity.debug.DebugActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.User;
@@ -19,6 +21,8 @@ import cn.sharesdk.wechat.friends.Wechat;
 
 
 public class HelloActivity extends BaseActivity {
+
+    private boolean isToDebugActivity = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,10 @@ public class HelloActivity extends BaseActivity {
                 AccountManager.getInstance(HelloActivity.this).authLogin(db.getUserId(), AccountManager.getTypeId(info.getLoginType()), new RequestCallback<User>() {
                     @Override
                     public void callback(ReturnInfo<User> returnInfo, String callbackId) {
+                        if (isToDebugActivity) {
+                            startActivity(new Intent(HelloActivity.this, DebugActivity.class));
+                            return;
+                        }
                         if (returnInfo.isSuccess()) {
                             ActivityDispatcher.mainActivity(HelloActivity.this);
                         } else {
@@ -57,6 +65,10 @@ public class HelloActivity extends BaseActivity {
     }
 
     private void delayStartActivity () {
+        if (isToDebugActivity) {
+            startActivity(new Intent(HelloActivity.this, DebugActivity.class));
+            return;
+        }
         this.getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {

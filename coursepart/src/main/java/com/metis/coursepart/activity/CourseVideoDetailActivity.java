@@ -124,7 +124,7 @@ public class CourseVideoDetailActivity extends BaseActivity implements
         }
 
         mChapterFragment.setOnCourseClickListener(this);
-
+        mViewPager.setCurrentItem(1);
     }
 
     @Override

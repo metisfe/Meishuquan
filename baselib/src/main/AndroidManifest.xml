@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.metis.base" >
 
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -46,14 +47,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!--微信分享回调 -->
+        <!-- 微信分享回调 -->
         <activity
             android:name="com.metis.meishuquan.wxapi.WXEntryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:screenOrientation="portrait" />
-        <!--微信分享回调 -->
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 微信分享回调 -->
         <!-- shareSdk Activity end -->
 
         <activity
@@ -81,7 +82,7 @@
             android:label="@string/title_activity_role_choose" >
         </activity>
         <activity
-            android:name="com.metis.base.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleTask" >
             <intent-filter>
@@ -91,12 +92,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.metis.base.activity.ShareActivity"
-            android:theme="@style/BaseTheme.Transparent"
-            android:label="@string/title_activity_share" >
+            android:name=".activity.ShareActivity"
+            android:label="@string/title_activity_share"
+            android:theme="@style/BaseTheme.Transparent" >
             <intent-filter>
-                <action android:name="com.metis.meishuquan.action.share"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.metis.meishuquan.action.share" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

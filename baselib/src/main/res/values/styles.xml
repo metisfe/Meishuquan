@@ -10,6 +10,12 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+    <style name="BaseTheme.FullScreen" parent="BaseTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="BaseTheme.FullScreen.Transparent" parent="BaseTheme.Transparent">
+        <item name="android:windowFullscreen">true</item>
+    </style>
 
     <style name="ImageChooseItemStyle">
         <item name="android:layout_width">fill_parent</item>
