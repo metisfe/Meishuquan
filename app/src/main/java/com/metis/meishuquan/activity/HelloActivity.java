@@ -22,7 +22,7 @@ import cn.sharesdk.wechat.friends.Wechat;
 
 public class HelloActivity extends BaseActivity {
 
-    private boolean isToDebugActivity = true;
+    private boolean isToDebugActivity = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

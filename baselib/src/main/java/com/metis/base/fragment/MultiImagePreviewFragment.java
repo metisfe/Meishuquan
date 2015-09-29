@@ -134,6 +134,13 @@ public class MultiImagePreviewFragment extends BaseFragment implements ViewPager
         }
     }
 
+    @Override
+    public void onImageLongClick(ImagePreviewable previewable, File cacheFile) {
+        if (mOperateListener != null) {
+            mOperateListener.onPageLongClick(mViewPager.getCurrentItem(), previewable, cacheFile);
+        }
+    }
+
     private class PreviewAdapter extends FragmentStatePagerAdapter {
 
         public PreviewAdapter(FragmentManager fm) {
@@ -160,5 +167,6 @@ public class MultiImagePreviewFragment extends BaseFragment implements ViewPager
     public static interface OnImageOperateListener {
         public void onPageChange (int position, ImagePreviewable image);
         public void onPageTab (int position, ImagePreviewable image);
+        public void onPageLongClick (int position, ImagePreviewable image, File cacheFile);
     }
 }

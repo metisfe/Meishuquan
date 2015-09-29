@@ -43,7 +43,7 @@ public class NewsDetailsImgHolder extends AbsViewHolder<NewsDetailsImgDelegate> 
         DisplayManager.getInstance(context).display(item.data.URL, imageView, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
-
+                view.setBackgroundColor(context.getResources().getColor(android.R.color.darker_gray));
             }
 
             @Override
@@ -53,6 +53,7 @@ public class NewsDetailsImgHolder extends AbsViewHolder<NewsDetailsImgDelegate> 
 
             @Override
             public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                view.setBackground(null);
                 final int width = context.getResources().getDisplayMetrics().widthPixels;
                 final int height = (int)((float)width / bitmap.getWidth() * bitmap.getHeight());
                 newsDetailsImgDelegate.setWidth(width);

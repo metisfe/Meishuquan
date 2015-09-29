@@ -27,7 +27,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 /**
  * Created by Beak on 2015/7/20.
  */
-public class SingleImagePreviewFragment extends BaseFragment implements PhotoViewAttacher.OnViewTapListener{
+public class SingleImagePreviewFragment extends BaseFragment implements PhotoViewAttacher.OnViewTapListener, View.OnLongClickListener {
 
     private PhotoView mPhotoView = null;
     private ProgressBar mProgressBar = null;
@@ -52,12 +52,14 @@ public class SingleImagePreviewFragment extends BaseFragment implements PhotoVie
 
         setImagePreviewable(mPreviewable);
         mPhotoView.setOnViewTapListener(this);
+        mPhotoView.setOnLongClickListener(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mPhotoView.setOnViewTapListener(null);
+        mPhotoView.setOnLongClickListener(null);
     }
 
     public void setOnImageTabListener (OnImageTabListener listener) {
@@ -121,7 +123,16 @@ public class SingleImagePreviewFragment extends BaseFragment implements PhotoVie
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        if (mTabListener != null) {
+            mTabListener.onImageLongClick(mPreviewable, mImageFile);
+        }
+        return false;
+    }
+
     public static interface OnImageTabListener {
         public void onImageTab (ImagePreviewable previewable);
+        public void onImageLongClick (ImagePreviewable previewable, File cacheFile);
     }
 }

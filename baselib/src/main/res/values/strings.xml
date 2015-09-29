@@ -58,6 +58,7 @@
     <string name="text_go_on">继续</string>
     <string name="text_share_to">分享到</string>
     <string name="text_count_rex">( %1$d )</string>
+    <string name="text_save_image">保存图片</string>
 
     <string name="toast_login_failed">登录失败:%1$s</string>
     <string name="toast_login_empty_account">请填写手机号</string>

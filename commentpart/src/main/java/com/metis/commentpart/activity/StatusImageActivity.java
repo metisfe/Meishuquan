@@ -70,6 +70,11 @@ public class StatusImageActivity extends TitleBarActivity {
             public void onPageTab(int position, ImagePreviewable image) {
                 finish();
             }
+
+            @Override
+            public void onPageLongClick(int position, ImagePreviewable image, File cacheFile) {
+
+            }
         });
         Parcelable[] parcelables = getIntent().getParcelableArrayExtra(ActivityDispatcher.KEY_IMAGES);
         if (parcelables != null && parcelables.length > 0) {

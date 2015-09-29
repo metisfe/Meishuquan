@@ -130,6 +130,11 @@ public class GalleryItemDetailActivity extends TitleBarActivity
         }
     }
 
+    @Override
+    public void onPageLongClick(int position, ImagePreviewable image, File cacheFile) {
+
+    }
+
     private void hideDetail () {
         TitleBar titleBar = getTitleBar();
         if (titleBar.getTranslationY() == 0) {
