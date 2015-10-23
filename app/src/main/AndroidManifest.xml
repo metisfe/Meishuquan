@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.metis.meishuquan" >
+    package="com.metis.meishuquan"
+    android:versionCode="165"
+    android:versionName="1.6.5" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -22,12 +31,22 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
             <intent-filter>
                 <action android:name="com.metis.meishuquan.action.main" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.DiscoveryExamActivity" >
+        </activity>
+        <activity android:name=".activity.ExamJoinActivity" >
+        </activity>
+        <activity android:name=".activity.ExamJoinSearchActivity"
+            android:theme="@style/BaseTheme.Transparent"
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            >
         </activity>
     </application>
 

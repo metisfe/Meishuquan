@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:minHeight="35dp"
             android:gravity="center_vertical"
-            android:textSize="@dimen/std_size_h5"
+            android:textSize="@dimen/std_size_h2"
             android:textColorHint="@color/color_c6"
             android:hint="@string/status_item_publish_comment"
             android:paddingLeft="@dimen/padding_large"

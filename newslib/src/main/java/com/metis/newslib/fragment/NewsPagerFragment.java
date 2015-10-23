@@ -73,6 +73,20 @@ public class NewsPagerFragment extends AbsPagerFragment {
         mTitle = item.channelName;
     }
 
+    @Override
+    public String getCustomTag() {
+        if (getTitle(getContext()) != null) {
+            return getTitle(getContext()).toString();
+        }
+        return null;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTakeControl(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,6 +96,7 @@ public class NewsPagerFragment extends AbsPagerFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mNewsRv = (RecyclerView)view.findViewById(R.id.news_pager_recycler_view);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mNewsRv.setLayoutManager(mLinearLayoutManager);
@@ -114,11 +129,32 @@ public class NewsPagerFragment extends AbsPagerFragment {
 
         mFooter = new Footer(Footer.STATE_SUCCESS);
         mFooterDelegate = new FooterDelegate(mFooter);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG, "onResume " + getCustomTag() + " isInThisPage=" + isInThisPage());
+        if (isInThisPage()) {
+            onPageStart();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.v(TAG, "onPause " + getCustomTag() + " isInThisPage=" + isInThisPage());
+        if (isInThisPage()) {
+            onPageEnd();
+        }
     }
 
     @Override
     public void onPagerIn() {
         super.onPagerIn();
+        Log.v(TAG, "onPageIn " + getCustomTag());
+        onPageStart();
         if (mLastNewsId == 0) {
             if (mSrl != null) {
                 mSrl.post(new Runnable() {
@@ -139,6 +175,8 @@ public class NewsPagerFragment extends AbsPagerFragment {
     public void onPagerOut() {
         super.onPagerOut();
         mScrolledPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+        Log.v(TAG, "onPageIn " + getCustomTag());
+        onPageEnd();
     }
 
     public void loadData (final long lastId) {

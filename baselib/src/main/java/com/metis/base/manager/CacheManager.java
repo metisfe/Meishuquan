@@ -51,6 +51,7 @@ public class CacheManager extends AbsManager {
 
     public File getCacheFolder (String userId, String folderName) {
         File folder = new File (mCacheRoot, userId + File.separator + folderName);
+        folder.mkdirs();
         return folder;
     }
 

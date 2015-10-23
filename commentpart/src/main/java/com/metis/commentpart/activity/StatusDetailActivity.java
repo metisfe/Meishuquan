@@ -225,7 +225,9 @@ public class StatusDetailActivity extends TitleBarActivity implements
                             CardHeaderDelegate headerDelegate = new CardHeaderDelegate(comment);
                             teacherDelegates.add(headerDelegate);
                             BaseDelegate textTDelegate = CommentFactory.makeCommentDelegate(comment);
-                            teacherDelegates.add(textTDelegate);
+                            if (textTDelegate != null) {
+                                teacherDelegates.add(textTDelegate);
+                            }
 
                             if (teacherComment.hasSubCommentList()) {
                                 List<Comment> subList = teacherComment.subCommentList;
@@ -233,7 +235,9 @@ public class StatusDetailActivity extends TitleBarActivity implements
                                 for (int k = 0; k < subLength; k++) {
                                     Comment innerComment = subList.get(k);
                                     BaseDelegate innerDelegate = CommentFactory.makeCommentDelegate(innerComment);
-                                    teacherDelegates.add(innerDelegate);
+                                    if (innerDelegate != null) {
+                                        teacherDelegates.add(innerDelegate);
+                                    }
                                 }
                             }
 
@@ -402,7 +406,7 @@ public class StatusDetailActivity extends TitleBarActivity implements
         final long useReplyUserId = replyUserId;
         final long useReplyCid = replyCid;
         final int useCommentSource = commentSource;
-        UploadManager.getInstance(this).uploadFile(file, me.getCookie(), new NetProxy.OnResponseListener() {
+        UploadManager.getInstance(this).uploadFile(file, NetProxy.TYPE_VOICE, me.getCookie(), new NetProxy.OnResponseListener() {
             @Override
             public void onResponse(String result, String requestId) {
                 ReturnInfo<List<Voice>> voiceResult = new Gson().fromJson(result, new TypeToken<ReturnInfo<List<Voice>>>() {

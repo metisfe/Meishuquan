@@ -4,12 +4,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import com.metis.base.utils.Log;
+
 import java.io.Serializable;
 
 /**
  * Created by Beak on 2015/7/9.
  */
 public class User implements Serializable, Parcelable{
+
+    private static final String TAG = User.class.getSimpleName();
 
     public static final int
             USER_ROLE_STUDENT = 1,
@@ -34,6 +38,7 @@ public class User implements Serializable, Parcelable{
     public int userRole; //1,teacher 2,student 3,studio 4,parents
     public String message;
     public String requestInfo;
+    public String province;
     public Province provinceEntity;
     public int fansNum;
     public int focusNum;
@@ -62,6 +67,7 @@ public class User implements Serializable, Parcelable{
         dest.writeInt(userRole);
         dest.writeString(message);
         dest.writeString(requestInfo);
+        dest.writeString(cookie);
     }
 
     public static final Parcelable.Creator<User> CREATOR
@@ -90,9 +96,11 @@ public class User implements Serializable, Parcelable{
         userRole = in.readInt();
         message = in.readString();
         requestInfo = in.readString();
+        cookie = in.readString();
     }
 
     public String getAvailableAvatar () {
+        Log.v(TAG, "getAvailableAvatar avatar=" + avatar + " userAvatar=" + userAvatar);
         String result = avatar;
         if (TextUtils.isEmpty(result)) {
             result = userAvatar;
@@ -119,6 +127,14 @@ public class User implements Serializable, Parcelable{
 
     public void setUserAvatar (String avatar) {
         userAvatar = avatar;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     @Override

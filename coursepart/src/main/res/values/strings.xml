@@ -4,6 +4,7 @@
     <string name="tab_gallery">图库</string>
     <string name="tab_detail">详情</string>
     <string name="tab_chapter">章节</string>
+    <string name="tab_discuss">讨论</string>
 
     <string name="gallery_tags">标签:%1$s</string>
     <string name="gallery_read_count">阅读数:%1$d</string>
@@ -31,7 +32,7 @@
     <string name="filter_free">免费</string>
     <string name="filter_charge">收费</string>
 
-    <string name="title_activity_course_video_detail">CourseVideoDetailActivity</string>
+    <string name="title_activity_course_video_detail">视频详情</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

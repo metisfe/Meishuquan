@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/area_bg"
+    >
+    <TextView
+        android:id="@+id/area_name"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:textSize="@dimen/std_size_h1"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@color/color_c2"
+        />
+    <View
+        android:id="@+id/area_check_flag"
+        android:layout_width="2dp"
+        android:layout_height="40dp"
+        android:background="@drawable/area_check_flag"
+        />
+</RelativeLayout>

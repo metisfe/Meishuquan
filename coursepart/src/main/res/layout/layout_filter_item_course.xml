@@ -6,7 +6,7 @@
         android:id="@+id/filter_item_title"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:textSize="16sp"
+        android:textSize="@dimen/std_size_h4"
         android:layout_marginLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"

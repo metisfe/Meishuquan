@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KeyValueLayout">
+        <attr name="key" format="string|reference"/>
+        <attr name="value" format="string|reference"/>
+        <attr name="editable" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="IconTextLayout">
+        <attr name="iconRes" format="reference"/>
+        <attr name="text" format="string|reference"/>
+        <attr name="canEdit" format="boolean"/>
+    </declare-styleable>
+</resources>

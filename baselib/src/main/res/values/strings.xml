@@ -59,6 +59,41 @@
     <string name="text_share_to">分享到</string>
     <string name="text_count_rex">( %1$d )</string>
     <string name="text_save_image">保存图片</string>
+    <string name="text_profile">头像</string>
+    <string name="text_nick_name">昵称</string>
+    <string name="text_gender">性别</string>
+    <string name="text_role">身份</string>
+    <string name="text_province">省份</string>
+    <string name="text_department">所在机构</string>
+    <string name="text_school">所在学校</string>
+    <string name="text_title_me">个人信息</string>
+    <string name="text_camera">拍照</string>
+    <string name="text_gallery">图库</string>
+    <string name="text_gender_male">男</string>
+    <string name="text_gender_female">女</string>
+    <string name="text_quit_login">退出登录</string>
+    <string name="text_my_collection">我的收藏</string>
+    <string name="text_my_cache">我的缓存</string>
+    <string name="text_my_subscription">我的订阅</string>
+    <string name="text_my_vip">VPI会员(%1$d天)</string>
+    <string name="text_my_feedback">意见反馈</string>
+    <string name="text_setting">设置</string>
+    <string name="text_clear_cache">清理缓存</string>
+    <string name="text_check_for_update">检测更新</string>
+    <string name="text_about_us">关于我们</string>
+    <string name="text_star_me">我要评分</string>
+    <string name="text_about_meishuquan">关于美术圈</string>
+    <string name="text_do_not_blame_me">免责声明</string>
+    <string name="text_about_current_version">当前版本%1$s</string>
+    <string name="text_clear_cache_delete_file_count">清理完成,共清理%1$d个缓存文件</string>
+    <string name="text_checking_for_update">正在检查更新...</string>
+    <string name="text_wechat_payment">微信支付</string>
+    <string name="text_ali_payment">支付宝支付</string>
+    <string name="text_follows_count">关注(%1$d)</string>
+    <string name="text_fans_count">粉丝(%1$d)</string>
+    <string name="text_share">分享</string>
+    <string name="text_open_in_out_browser">用浏览器打开</string>
+    <string name="text_cancel_subscription">取消缓存</string>
 
     <string name="toast_login_failed">登录失败:%1$s</string>
     <string name="toast_login_empty_account">请填写手机号</string>
@@ -82,11 +117,22 @@
     <string name="toast_share_success">分享成功</string>
     <string name="toast_share_failed">分享失败</string>
     <string name="toast_share_cancel">分享取消</string>
+    <string name="toast_user_name_empty">用户名不能为空</string>
+    <string name="toast_user_name_to_long">用户名长度不能超过%1$d</string>
+    <string name="toast_update_success">更新成功</string>
+    <string name="toast_update_failed">更新失败:%1$s</string>
+    <string name="toast_app_not_found_for_this_action">为发现应用可以响应此请求</string>
 
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_login">登录</string>
     <string name="title_activity_register">注册</string>
     <string name="title_activity_reset_pwd">重置密码</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="title_activity_cache">离线缓存</string>
+    <string name="title_activity_downloading">正在缓存</string>
+    <string name="title_activity_subscription">我的订阅</string>
+    <string name="title_activity_followers_list">关注列表</string>
+    <string name="title_activity_fans_list">粉丝列表</string>
 
     <string name="title_activity_role_choose">选择身份</string>
 

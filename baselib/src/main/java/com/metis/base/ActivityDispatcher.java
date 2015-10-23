@@ -7,13 +7,20 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import com.metis.base.activity.BrowserActivity;
+import com.metis.base.activity.FansActivity;
+import com.metis.base.activity.FollowActivity;
 import com.metis.base.activity.RegisterActivity;
 import com.metis.base.activity.RoleChooseActivity;
 import com.metis.base.module.User;
+import com.metis.base.utils.Log;
+import com.metis.base.utils.PatternUtils;
 import com.metis.base.widget.ImagePreviewable;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Beak on 2015/7/16.
@@ -44,14 +51,39 @@ public class ActivityDispatcher {
     TITLE = "TITLE",
     CONTENT = "CONTENT",
     IMAGEURL = "IMAGEURL",
-    INPUT_CONTENT = "INPUT_CONTENT";
+    INPUT_CONTENT = "INPUT_CONTENT",
+    KEY_CAN_GO_OUT = "key_can_go_out";
 
     public static final int REQUEST_CODE_LOGIN = 100;
+
+    public static void followsActivity (Context context, long userId) {
+        Intent it = new Intent(context, FollowActivity.class);
+        it.putExtra(KEY_USER_ID, userId);
+        context.startActivity(it);
+    }
+
+    public static void fansActivity (Context context, long userId) {
+        Intent it = new Intent(context, FansActivity.class);
+        it.putExtra(KEY_USER_ID, userId);
+        context.startActivity(it);
+    }
 
     public static void userActivity (Context context, long userId) {
         try {
             Intent it = new Intent(ACTION_USER);
             it.putExtra(KEY_USER_ID, userId);
+            it.addCategory(Intent.CATEGORY_DEFAULT);
+            context.startActivity(it);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "userActivity exception", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static void userActivity (Context context, User user) {
+        try {
+            Intent it = new Intent(ACTION_USER);
+            it.putExtra(KEY_USER, (Serializable)user);
             it.addCategory(Intent.CATEGORY_DEFAULT);
             context.startActivity(it);
         } catch (Exception e) {
@@ -159,7 +191,19 @@ public class ActivityDispatcher {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+    }
+    public static void shareActivity (Context context, String title, String text, String imageUrl, String url) {
+        try {
+            Intent it = new Intent(ACTION_SHARE);
+            it.addCategory(Intent.CATEGORY_DEFAULT);
+            it.putExtra(KEY_TITLE, title);
+            it.putExtra(KEY_TEXT, text);
+            it.putExtra(KEY_IMAGE_URL, imageUrl);
+            it.putExtra(KEY_URL, url);
+            context.startActivity(it);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     /*KEY_REPLY_TYPE = "REPLY_TYPE",
     KEY_REPLY_ID = "REPLY_ID",
@@ -185,6 +229,28 @@ public class ActivityDispatcher {
             context.startActivity(it);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void innerBrowserActivity (Context context, String url) {
+        innerBrowserActivity(context, url, false);
+    }
+
+    public static void innerBrowserActivity(Context context, String url, boolean canGoOut) {
+        Intent it = new Intent(context, BrowserActivity.class);
+        it.putExtra(KEY_URL, url);
+        it.putExtra(KEY_CAN_GO_OUT, canGoOut);
+        context.startActivity(it);
+    }
+
+    public static void outBrowserActivity (Context context, String url) {
+        try {
+            url = PatternUtils.deleteUidInfosInUrl(url);
+            Intent it = new Intent(Intent.ACTION_VIEW);
+            it.setData(Uri.parse(url));
+            context.startActivity(it);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.toast_app_not_found_for_this_action, Toast.LENGTH_SHORT).show();
         }
     }
 }

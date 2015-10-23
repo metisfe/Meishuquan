@@ -45,7 +45,7 @@
             android:singleLine="true"
             android:layout_toRightOf="@+id/item_big_author_profile"
             android:layout_toLeftOf="@+id/item_big_play_count"
-            android:textSize="15sp"
+            android:textSize="@dimen/std_size_h4"
             android:textColor="@color/colorSubTitle"
             android:layout_centerVertical="true"
             />

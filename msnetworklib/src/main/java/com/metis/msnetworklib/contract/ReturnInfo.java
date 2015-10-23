@@ -44,4 +44,13 @@ public class ReturnInfo<E> {
     public void setData(E data) {
         this.data = data;
     }
+
+    public OptionSettings getOption() {
+        return option;
+    }
+
+    public void setOption(OptionSettings option) {
+        this.option = option;
+    }
+
 }

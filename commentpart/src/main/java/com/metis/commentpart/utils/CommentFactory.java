@@ -33,6 +33,7 @@ public final class CommentFactory {
 
             case User.USER_ROLE_STUDENT:
             case User.USER_ROLE_PARENTS:
+            case User.USER_ROLE_FANS:
                 return new CardTextSDelegate(comment);
         }
         return null;

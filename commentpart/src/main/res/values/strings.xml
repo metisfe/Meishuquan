@@ -37,7 +37,7 @@
     <string name="replying_to">回复 %1$s</string>
 
     <string name="status_item_publish_comment">发表评论...</string>
-    <string name="status_item_famous_teacher_list">名师榜</string>
+    <string name="status_item_famous_teacher_list">名师榜&gt;</string>
     <string name="status_item_has_commented">已点评</string>
 
     <string name="comment_item_reply_to_whom">%1$s 回复 %2$s</string>

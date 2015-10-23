@@ -45,7 +45,7 @@ public class NewsDetailsTxtHolder extends AbsViewHolder<NewsDetailsTxtDelegate> 
         if (TextUtils.isEmpty(item.data.Content)) {
             textView.setText("");
         } else {
-            String content = item.data.Content;
+            String content = item.data.Content.trim();
             //SpannableString ss = new SpannableString(content);
             Matcher matcher = sPattern.matcher(content);
 

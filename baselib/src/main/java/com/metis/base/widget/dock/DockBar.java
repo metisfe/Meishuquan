@@ -10,6 +10,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.metis.base.R;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +45,10 @@ public class DockBar extends LinearLayout {
         this.setGravity(Gravity.CENTER);
     }
 
+    public int size () {
+        return mDockMap.size();
+    }
+
     public void addDock (final Dock dock) {
         if (!mDockMap.containsKey(dock)) {
             final DockItemView itemView = new DockItemView(this.getContext());
@@ -50,8 +56,9 @@ public class DockBar extends LinearLayout {
 
             itemView.setDock(dock);
             LinearLayout.LayoutParams params = new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.gravity = 1;
+            params.gravity = Gravity.CENTER;
             params.weight = 1;
+            itemView.setTextColor(getResources().getColorStateList(R.color.dock_item_text_color));
             this.addView(itemView, params);
 
             itemView.setOnClickListener(new OnClickListener() {

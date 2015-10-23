@@ -1,5 +1,6 @@
 package com.metis.coursepart.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.metis.base.fragment.AbsPagerFragment;
 import com.metis.base.fragment.BaseFragment;
 import com.metis.coursepart.R;
 import com.metis.coursepart.adapter.CourseAdapter;
@@ -25,7 +27,7 @@ import java.util.List;
 /**
  * Created by Beak on 2015/7/8.
  */
-public class CourseVideoChapterFragment extends BaseFragment {
+public class CourseVideoChapterFragment extends AbsPagerFragment {
 
     private static CourseVideoChapterFragment sFragment = new CourseVideoChapterFragment();
 
@@ -97,5 +99,10 @@ public class CourseVideoChapterFragment extends BaseFragment {
             mAdapter.clearDataList();
             mAdapter = null;
         }
+    }
+
+    @Override
+    public CharSequence getTitle(Context context) {
+        return context.getString(R.string.tab_chapter);
     }
 }

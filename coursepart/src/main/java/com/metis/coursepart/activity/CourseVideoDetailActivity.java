@@ -27,6 +27,7 @@ import com.metis.coursepart.adapter.CourseAdapter;
 import com.metis.coursepart.adapter.delegate.CourseDelegate;
 import com.metis.coursepart.fragment.CourseVideoChapterFragment;
 import com.metis.coursepart.fragment.CourseVideoDetailFragment;
+import com.metis.coursepart.fragment.CourseVideoDiscussFragment;
 import com.metis.coursepart.manager.CourseManager;
 import com.metis.coursepart.module.Course;
 import com.metis.coursepart.module.CourseAlbum;
@@ -48,7 +49,7 @@ public class CourseVideoDetailActivity extends BaseActivity implements
 
     private FrameLayout mPlayerContainer = null;
     private VideoWrapperFragment mPlayerFragment = null;
-    private Button mDetailBtn, mChapterBtn;
+    private Button mDetailBtn, mChapterBtn/*, mDiscussBtn*/;
     private LinearLayout mCtrlContainer = null;
     private ViewPager mViewPager = null;
 
@@ -59,8 +60,10 @@ public class CourseVideoDetailActivity extends BaseActivity implements
 
     private CourseVideoDetailFragment mDetailFragment = new CourseVideoDetailFragment();
     private CourseVideoChapterFragment mChapterFragment = new CourseVideoChapterFragment();
+    //private CourseVideoDiscussFragment mDiscussFragment = new CourseVideoDiscussFragment();
+
     private Fragment[] mFragmentArray = {
-            mDetailFragment, mChapterFragment
+            mDetailFragment, mChapterFragment/*, mDiscussFragment*/
     };
 
     private CourseDelegate mCurrentCourse = null;
@@ -77,8 +80,11 @@ public class CourseVideoDetailActivity extends BaseActivity implements
         mCtrlContainer = (LinearLayout)findViewById(R.id.video_detail_btn_container);
         mDetailBtn = (Button)findViewById(R.id.video_detail_detail_btn);
         mChapterBtn = (Button)findViewById(R.id.video_detail_chapter_btn);
+        //mDiscussBtn = (Button)findViewById(R.id.video_detail_discuss_btn);
+
         mDetailBtn.setOnClickListener(this);
         mChapterBtn.setOnClickListener(this);
+        //mDiscussBtn.setOnClickListener(this);
 
         mViewPager = (ViewPager)findViewById(R.id.video_detail_view_pager);
 
@@ -228,7 +234,9 @@ public class CourseVideoDetailActivity extends BaseActivity implements
             mViewPager.setCurrentItem(0, true);
         } else if (v.getId() == R.id.video_detail_chapter_btn) {
             mViewPager.setCurrentItem(1, true);
-        }
+        }/* else if (v.getId() == R.id.video_detail_discuss_btn) {
+            mViewPager.setCurrentItem(2, true);
+        }*/
     }
 
     @Override
@@ -242,12 +250,17 @@ public class CourseVideoDetailActivity extends BaseActivity implements
             case 0:
                 mDetailBtn.setSelected(true);
                 mChapterBtn.setSelected(false);
+                //mDiscussBtn.setSelected(false);
                 break;
             case 1:
                 mDetailBtn.setSelected(false);
                 mChapterBtn.setSelected(true);
+                //mDiscussBtn.setSelected(false);
                 break;
             case 2:
+                mDetailBtn.setSelected(false);
+                mChapterBtn.setSelected(false);
+                //mDiscussBtn.setSelected(true);
                 break;
         }
     }
@@ -301,7 +314,7 @@ public class CourseVideoDetailActivity extends BaseActivity implements
 
     @Override
     public boolean onError(BVideoView bVideoView, int what, int extra) {
-        Toast.makeText(this, R.string.course_play_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.course_play_error) + " " + what + " " + extra, Toast.LENGTH_SHORT).show();
         return false;
     }
 

@@ -10,7 +10,8 @@ import com.metis.base.widget.adapter.delegate.TypeLayoutProvider;
  */
 public enum MeDelegateType {
 
-    TYPE_ME_HEADER (ID.ID_ME_HEADER, R.layout.layout_me_profile_card);
+    TYPE_ME_HEADER (ID.ID_ME_HEADER, R.layout.layout_me_profile_card),
+    TYPE_DOWNLOADING_ITEM (ID.ID_DOWNLOADING_ITEM, R.layout.layout_downloading_item);
 
     static {
         for (MeDelegateType courseDelegateType : values()) {
@@ -35,6 +36,6 @@ public enum MeDelegateType {
     }
 
     public static class ID {
-        public static final int ID_ME_HEADER = 400;
+        public static final int ID_ME_HEADER = 400, ID_DOWNLOADING_ITEM = 404;
     }
 }

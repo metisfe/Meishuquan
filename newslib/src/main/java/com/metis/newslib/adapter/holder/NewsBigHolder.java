@@ -62,12 +62,12 @@ public class NewsBigHolder extends AbsViewHolder<NewsBigDelegate> {
             }
         });
         if (!TextUtils.isEmpty(item.title)) {
-            bigTitleTv.setText(item.title.trim());
+            bigTitleTv.setText(item.title.trim().replaceAll("\n", "").replaceAll(" ", ""));
         } else {
             bigTitleTv.setText("");
         }
         if (!TextUtils.isEmpty(item.desc)) {
-            bigContentTv.setText(item.desc.trim());
+            bigContentTv.setText(item.desc.trim().replaceAll("\n", "").replaceAll(" ", ""));
         } else {
             bigContentTv.setText("");
         }

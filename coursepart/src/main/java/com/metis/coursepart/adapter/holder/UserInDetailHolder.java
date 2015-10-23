@@ -54,8 +54,10 @@ public class UserInDetailHolder extends AbsViewHolder<UserInDetailDelegate>{
             titleTv.setText(currentCourse.subCourseName);
             subTitleTv.setText(context.getString(R.string.course_play_count_history, currentCourse.viewsCount));
         } else {
-            titleTv.setText(album.title);
-            subTitleTv.setText(context.getString(R.string.course_play_count_history, album.viewCount));
+            if (album != null) {
+                titleTv.setText(album.title);
+                subTitleTv.setText(context.getString(R.string.course_play_count_history, album.viewCount));
+            }
         }
 
         final User user = album.author != null ? album.author : album.studio;

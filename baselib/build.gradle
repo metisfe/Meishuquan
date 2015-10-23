@@ -23,10 +23,20 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.jakewharton:butterknife:5.1.1'
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':msnetworklib')
     compile files('libs/xUtils-2.6.14.jar')
     compile 'com.android.support:support-v4:22.2.0'
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile project(':photo_lib')
     compile project(':playerlib')
+    compile project(':sMSSDK')
+    compile files('libs/CCSDK.jar')
+    compile project(':imageCropLib')
+    compile files('libs/umeng-update-v2.6.0.1.jar')
+    compile files('libs/com.umeng.message.lib_v2.5.0.jar')
+    compile files('libs/alipaySDK.jar')
+    compile 'com.android.support:support-v13:22.2.0'
+    compile files('libs/libammsdk.jar')
+    compile files('libs/pgyer_sdk_2.2.2.jar')
 }

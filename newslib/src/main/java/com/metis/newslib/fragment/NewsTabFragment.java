@@ -49,7 +49,7 @@ public class NewsTabFragment extends DockFragment {
     @Override
     public DockBar.Dock getDock(Context context) {
         if (mDock == null) {
-            mDock = new DockBar.Dock(context, R.id.dock_item_id_news, android.R.drawable.btn_radio, R.string.dock_item_news_title, this);
+            mDock = new DockBar.Dock(context, R.id.dock_item_id_news, R.drawable.ic_news_sel, R.string.dock_item_news_title, this);
         }
         return mDock;
     }

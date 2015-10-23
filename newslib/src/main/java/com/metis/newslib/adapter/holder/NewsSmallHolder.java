@@ -79,6 +79,7 @@ public class NewsSmallHolder extends AbsViewHolder<NewsSmallDelegate> {
         } else {
             smallCommentTv.setText("");
         }
+
         if (item.pageViewCount > 0) {
             smallReadTv.setText(context.getString(R.string.text_news_related_read_count, item.pageViewCount));
         } else {

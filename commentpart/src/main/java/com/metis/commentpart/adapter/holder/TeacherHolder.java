@@ -52,7 +52,7 @@ public abstract class TeacherHolder<T extends TeacherDelegate> extends AbsViewHo
             builder.append(context.getString(R.string.invite_teacher_extra_info_answer, teacher.commentCount));
         }
         if (teacher.supportCount > 0) {
-            builder.append("  " + context.getString(R.string.invite_teacher_extra_info_support, teacher.supportCount));
+            builder.append("    " + context.getString(R.string.invite_teacher_extra_info_support, teacher.supportCount));
         }
         extraInfoTv.setText(builder.toString());
     }

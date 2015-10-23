@@ -56,7 +56,6 @@ public class CcPlayFragment extends Fragment implements
         mAppContext = activity.getApplicationContext();
         mProperty = PlayerProperty.getInstance(activity);
         mManager = PlayerManager.getInstance(activity);
-
     }
 
     @Override
@@ -96,6 +95,10 @@ public class CcPlayFragment extends Fragment implements
 
     public boolean isFullScreen () {
         return getActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    }
+
+    public PlayerManager getPlayerManager () {
+        return mManager;
     }
 
     @Override

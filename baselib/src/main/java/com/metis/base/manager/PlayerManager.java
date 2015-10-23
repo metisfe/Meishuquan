@@ -3,6 +3,7 @@ package com.metis.base.manager;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.Surface;
@@ -13,6 +14,8 @@ import com.bokecc.sdk.mobile.util.HttpUtil;
 import com.metis.base.fragment.PlayerProperty;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,7 +53,9 @@ public class PlayerManager extends AbsManager implements
 
     private AudioManager mAudioManager = null;
 
-    private PlayerCallback mPlayerCallback = null;
+    //private PlayerCallback mPlayerCallback = null;
+
+    private List<PlayerCallback> mCallbackList = new ArrayList<PlayerCallback>();
 
     private AudioManager.OnAudioFocusChangeListener mAudioListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
@@ -88,8 +93,24 @@ public class PlayerManager extends AbsManager implements
         }
 
         mPlayer.prepareAsync();
-        if (mPlayerCallback != null) {
-            mPlayerCallback.onPlayerStarted();
+        doMuchPlayerStarted();
+    }
+
+    public void startRemotePlayWithUrl (String url) {
+        ensurePlayer();
+        try {
+            Log.v(TAG, TAG + " startRemotePlayWithUrl path=" + url);
+            //mPlayer.setDataSource(path);
+            mPlayer.setDataSource(getContext(), Uri.parse(url));
+            mPlayer.prepareAsync();
+            doMuchPlayerStarted();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            stopPlay();
+            release();
+            startRemotePlayWithUrl(url);
         }
     }
 
@@ -100,9 +121,7 @@ public class PlayerManager extends AbsManager implements
             //mPlayer.setDataSource(path);
             mPlayer.setDRMVideoPath(path, mAppContext);
             mPlayer.prepareAsync();
-            if (mPlayerCallback != null) {
-                mPlayerCallback.onPlayerStarted();
-            }
+            doMuchPlayerStarted();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,9 +150,7 @@ public class PlayerManager extends AbsManager implements
         }
         mPlayer.stop();
         isStarted = false;
-        if (mPlayerCallback != null) {
-            mPlayerCallback.onPlayerStopped();
-        }
+        doMuchPlayerStopped();
     }
 
     public void pausePlay () {
@@ -141,9 +158,7 @@ public class PlayerManager extends AbsManager implements
             mPlayer.pause();
             keepScreenOn(false);
             releaseAudioFocus();
-            if (mPlayerCallback != null) {
-                mPlayerCallback.onPlayerPaused();
-            }
+            doMuchPlayerPaused();
         }
     }
 
@@ -153,9 +168,7 @@ public class PlayerManager extends AbsManager implements
             mPlayer.start();
             keepScreenOn(true);
             requestAudioFocus();
-            if (mPlayerCallback != null) {
-                mPlayerCallback.onPlayerResumed();
-            }
+            doMuchPlayerResumed();
         }
     }
 
@@ -166,6 +179,7 @@ public class PlayerManager extends AbsManager implements
             mPlayer = null;
             mSurface = null;
             releaseAudioFocus();
+            mCallbackList.clear();
         }
     }
 
@@ -206,13 +220,15 @@ public class PlayerManager extends AbsManager implements
         return isStarted;
     }
 
+    public boolean isPlaying () {
+        return mPlayer != null && mPlayer.isPlaying();
+    }
+
     @Override
     public void onCompletion(MediaPlayer mp) {
         Log.v(TAG, TAG + " onCompletion");
         keepScreenOn(false);
-        if (mPlayerCallback != null) {
-            mPlayerCallback.onPlayerCompleted();
-        }
+        doMuchPlayerCompleted();
     }
 
     @Override
@@ -237,13 +253,73 @@ public class PlayerManager extends AbsManager implements
         Log.v(TAG, TAG + " height=" + height + " width=" + width);
         keepScreenOn(true);
 
-        if (mPlayerCallback != null) {
-            mPlayerCallback.onPlayerPrepared(width, height);
+        doMuchPlayerPrepared(width, height);
+    }
+
+    /*public void setPlayerCallback (PlayerCallback callback) {
+        mPlayerCallback = callback;
+    }*/
+
+    public void registerPlayerCallback (PlayerCallback callback) {
+        if (mCallbackList.contains(callback)) {
+            return;
+        }
+        mCallbackList.add(callback);
+    }
+
+    public void unregisterPlayerCallback (PlayerCallback callback) {
+        if (!mCallbackList.contains(callback)) {
+            return;
+        }
+        mCallbackList.remove(callback);
+    }
+
+    private void doMuchPlayerPrepared (int width, int height) {
+        final int length = mCallbackList.size();
+        for (int i = 0; i < length; i++) {
+            PlayerCallback callback = mCallbackList.get(i);
+            callback.onPlayerPrepared(width, height);
         }
     }
 
-    public void setPlayerCallback (PlayerCallback callback) {
-        mPlayerCallback = callback;
+    private void doMuchPlayerStarted () {
+        final int length = mCallbackList.size();
+        for (int i = 0; i < length; i++) {
+            PlayerCallback callback = mCallbackList.get(i);
+            callback.onPlayerStarted();
+        }
+    }
+
+    private void doMuchPlayerPaused () {
+        final int length = mCallbackList.size();
+        for (int i = 0; i < length; i++) {
+            PlayerCallback callback = mCallbackList.get(i);
+            callback.onPlayerPaused();
+        }
+    }
+
+    private void doMuchPlayerResumed () {
+        final int length = mCallbackList.size();
+        for (int i = 0; i < length; i++) {
+            PlayerCallback callback = mCallbackList.get(i);
+            callback.onPlayerResumed();
+        }
+    }
+
+    private void doMuchPlayerStopped () {
+        final int length = mCallbackList.size();
+        for (int i = 0; i < length; i++) {
+            PlayerCallback callback = mCallbackList.get(i);
+            callback.onPlayerStopped();
+        }
+    }
+
+    private void doMuchPlayerCompleted () {
+        final int length = mCallbackList.size();
+        for (int i = 0; i < length; i++) {
+            PlayerCallback callback = mCallbackList.get(i);
+            callback.onPlayerCompleted();
+        }
     }
 
     public interface PlayerCallback {

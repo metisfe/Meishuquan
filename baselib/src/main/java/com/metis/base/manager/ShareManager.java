@@ -94,29 +94,31 @@ public class ShareManager extends AbsManager {
         if (mPlatform != null && mPlatform.isValid()) {
             mPlatform.removeAccount(true);
         }
-        mPlatform.setPlatformActionListener(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                AccountManager.getInstance(getContext()).clearUserLoginInfo();
-                if (listener != null) {
-                    listener.onComplete(platform, i, hashMap);
+        if (mPlatform != null) {
+            mPlatform.setPlatformActionListener(new PlatformActionListener() {
+                @Override
+                public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                    AccountManager.getInstance(getContext()).clearUserLoginInfo();
+                    if (listener != null) {
+                        listener.onComplete(platform, i, hashMap);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-                if (listener != null) {
-                    listener.onError(platform, i, throwable);
+                @Override
+                public void onError(Platform platform, int i, Throwable throwable) {
+                    if (listener != null) {
+                        listener.onError(platform, i, throwable);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancel(Platform platform, int i) {
-                if (listener != null) {
-                    listener.onCancel(platform, i);
+                @Override
+                public void onCancel(Platform platform, int i) {
+                    if (listener != null) {
+                        listener.onCancel(platform, i);
+                    }
                 }
-            }
-        });
+            });
+        }
         //mPlatform.authorize();
     }
 

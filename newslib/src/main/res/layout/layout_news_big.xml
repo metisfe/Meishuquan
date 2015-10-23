@@ -29,11 +29,11 @@
             android:id="@+id/news_big_content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color_c2"
             android:textSize="@dimen/std_size_h6"
             android:layout_marginTop="@dimen/margin_middle"
             android:ellipsize="end"
-            android:maxLines="3"
+            android:maxLines="2"
             />
     </LinearLayout>
 

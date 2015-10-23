@@ -8,8 +8,11 @@ android {
         applicationId "com.metis.meishuquan"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 165
+        versionName "1.6.5"
+
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -25,4 +28,5 @@ dependencies {
     compile project(':baselib')
     compile project(':coursepart')
     compile project(':commentpart')
+    compile project(':newslib')
 }

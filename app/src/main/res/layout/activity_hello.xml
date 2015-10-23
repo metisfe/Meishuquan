@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".HelloActivity">
     <ImageView
+        android:id="@+id/hello_to_debug"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:src="@drawable/hello"

@@ -2,6 +2,8 @@ package com.metis.meishuquan.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.activity.BaseActivity;
@@ -11,6 +13,7 @@ import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.User;
 import com.metis.meishuquan.R;
 import com.metis.msnetworklib.contract.ReturnInfo;
+import com.umeng.update.UmengUpdateAgent;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformDb;
@@ -24,10 +27,22 @@ public class HelloActivity extends BaseActivity {
 
     private boolean isToDebugActivity = false;
 
+    private ImageView mDebugIv = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hello);
+
+        mDebugIv = (ImageView)findViewById(R.id.hello_to_debug);
+        mDebugIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isToDebugActivity) {
+                    delayStartActivity();
+                }
+            }
+        });
 
         final AccountManager.LoginInfo info = AccountManager.getInstance(this).readUserLoginInfo();
 

@@ -41,7 +41,7 @@ public class DebugActivity extends AppCompatActivity implements View.OnClickList
         mFullScreen = (Button)findViewById(R.id.debug_full_screen);
         mFullScreen.setOnClickListener(this);
 
-        PlayerManager.getInstance(this).setPlayerCallback(this);
+        PlayerManager.getInstance(this).registerPlayerCallback(this);
         mCcPlayerFragment.setOnFullScreenCallback(this);
     }
 
@@ -65,6 +65,7 @@ public class DebugActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        PlayerManager.getInstance(this).unregisterPlayerCallback(this);
     }
 
     @Override

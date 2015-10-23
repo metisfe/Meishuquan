@@ -49,6 +49,23 @@
             android:textColor="@color/video_tab_text_color"
             android:textSize="16sp"
             />
+        <!--<View
+            android:layout_width="1px"
+            android:layout_height="fill_parent"
+            android:background="@android:color/black"
+            android:layout_marginTop="@dimen/std_margin_vertical"
+            android:layout_marginBottom="@dimen/std_margin_vertical"
+            />
+        <Button
+            android:id="@+id/video_detail_discuss_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_discuss"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:textColor="@color/video_tab_text_color"
+            android:textSize="16sp"
+            />-->
     </LinearLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/video_detail_view_pager"

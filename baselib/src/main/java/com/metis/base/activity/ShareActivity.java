@@ -84,6 +84,10 @@ public class ShareActivity extends BaseActivity implements View.OnClickListener 
         mShareMomentsBtn = findViewById(R.id.share_moments);
         mCircelBtn = findViewById(R.id.share_circel);
 
+        if (mId == -1) {
+            mCircelBtn.setVisibility(View.GONE);
+        }
+
         mWeChatBtn.setOnClickListener(this);
         mQqBtn.setOnClickListener(this);
         mQzoneBtn.setOnClickListener(this);

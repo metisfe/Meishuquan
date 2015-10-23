@@ -20,6 +20,7 @@
         android:ellipsize="end"
         android:textColor="@android:color/black"
         android:textSize="@dimen/std_size_h5"
+        android:paddingTop="1px"
         />
     <TextView
         android:id="@+id/news_small_comment_count"
@@ -28,6 +29,8 @@
         android:textSize="@dimen/std_size_h6"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:paddingBottom="1px"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/news_small_read_count"
@@ -37,6 +40,8 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/news_small_comment_count"
         android:layout_marginRight="@dimen/margin_middle"
+        android:paddingBottom="1px"
+        android:layout_alignWithParentIfMissing="true"
         />
     <TextView
         android:id="@+id/news_small_source"
@@ -49,5 +54,7 @@
         android:textSize="@dimen/std_size_h6"
         android:ellipsize="end"
         android:singleLine="true"
+        android:paddingBottom="1px"
+        android:layout_alignWithParentIfMissing="true"
         />
 </RelativeLayout>

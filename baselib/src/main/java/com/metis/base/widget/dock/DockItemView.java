@@ -1,6 +1,7 @@
 package com.metis.base.widget.dock;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -42,5 +43,9 @@ public class DockItemView extends RelativeLayout {
         mDock = dock;
         mDockItemIv.setImageDrawable(dock.icon);
         mDockItemTv.setText(dock.title);
+    }
+
+    public void setTextColor (ColorStateList list) {
+        mDockItemTv.setTextColor(list);
     }
 }

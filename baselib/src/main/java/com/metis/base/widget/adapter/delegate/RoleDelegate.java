@@ -38,4 +38,13 @@ public enum RoleDelegate {
     public int getNameId() {
         return nameId;
     }
+
+    public static int getNameIdByRoleId (int roleId) {
+        for (RoleDelegate delegate : values()) {
+            if (delegate.roleId == roleId) {
+                return delegate.nameId;
+            }
+        }
+        return STUDENT.nameId;
+    }
 }

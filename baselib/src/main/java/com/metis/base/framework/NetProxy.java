@@ -2,10 +2,14 @@ package com.metis.base.framework;
 
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
+import android.text.TextUtils;
 import android.util.Pair;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.metis.base.Debug;
 import com.metis.base.utils.Log;
+import com.metis.msnetworklib.contract.OptionSettings;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.microsoft.windowsazure.mobileservices.AndroidHttpClientFactory;
 import com.microsoft.windowsazure.mobileservices.ApiOperationCallback;
@@ -71,8 +75,18 @@ public class NetProxy {
                     Log.e(TAG, "response_get(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
-                final String responseString = serviceFilterResponse.getContent();
+                String responseString = serviceFilterResponse.getContent();
                 Log.v(TAG, "response_get(" + requestUUID + ")=" + responseString);
+                if (TextUtils.isEmpty(responseString)) {
+                    OptionSettings optionSettings = new OptionSettings();
+                    optionSettings.errorCode = "-10086";
+                    optionSettings.message = "no data received from server";
+                    optionSettings.status = "-10086";
+                    ReturnInfo info = new ReturnInfo();
+                    info.setOption(optionSettings);
+                    responseString = new Gson().toJson(info);
+                    Log.v(TAG, "response_get(" + requestUUID + ") after handling empty responseString=" + responseString);
+                }
                 if (listener != null) {
                     listener.onResponse(responseString, requestUUID);
                 }
@@ -107,8 +121,19 @@ public class NetProxy {
                     Log.e(TAG, "response_post(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
-                final String responseString = serviceFilterResponse.getContent();
+                String responseString = serviceFilterResponse.getContent();
                 Log.v(TAG, "response_post(" + requestUUID + ")=" + responseString);
+                if (TextUtils.isEmpty(responseString)) {
+                    OptionSettings optionSettings = new OptionSettings();
+                    optionSettings.errorCode = "-10086";
+                    optionSettings.message = "no data received from server";
+                    optionSettings.status = "-10086";
+                    ReturnInfo info = new ReturnInfo();
+                    info.setOption(optionSettings);
+                    responseString = new Gson().toJson(info);
+
+                    Log.v(TAG, "response_post(" + requestUUID + ") after handling empty responseString=" + responseString);
+                }
                 if (listener != null) {
                     listener.onResponse(responseString, requestUUID);
                 }
@@ -128,8 +153,19 @@ public class NetProxy {
                     Log.e(TAG, "response_post(" + requestUUID + ")=serviceFilterResponse is null");
                     return;
                 }
-                final String responseString = serviceFilterResponse.getContent();
+                String responseString = serviceFilterResponse.getContent();
                 Log.v(TAG, "response_post(" + requestUUID + ")=" + responseString);
+                if (TextUtils.isEmpty(responseString)) {
+                    OptionSettings optionSettings = new OptionSettings();
+                    optionSettings.errorCode = "-10086";
+                    optionSettings.message = "no data received from server";
+                    optionSettings.status = "-10086";
+                    ReturnInfo info = new ReturnInfo();
+                    info.setOption(optionSettings);
+                    responseString = new Gson().toJson(info);
+
+                    Log.v(TAG, "response_post(" + requestUUID + ") after handling empty responseString=" + responseString);
+                }
                 if (listener != null) {
                     listener.onResponse(responseString, requestUUID);
                 }

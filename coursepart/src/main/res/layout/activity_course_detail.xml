@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.metis.coursepart.activity.CourseDetailActivity">
+    <FrameLayout
+        android:id="@+id/course_detail_video_container"
+        android:layout_width="fill_parent"
+        android:layout_height="180dp">
+        <fragment
+            android:id="@+id/course_detail_video_fragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:name="com.metis.base.fragment.CcPlayFragment"
+            />
+        <com.metis.base.widget.VideoMaskView
+            android:id="@+id/course_detail_video_controller"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+    </FrameLayout>
+    <com.metis.base.widget.ViewPagerTabGroup
+        android:id="@+id/course_detail_view_pager_tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/course_detail_video_container"
+        android:background="@android:color/white"
+        />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/course_detail_view_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/course_detail_view_pager_tabs"
+        />
+
+</RelativeLayout>

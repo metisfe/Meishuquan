@@ -111,4 +111,11 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         super.onViewDetachedFromWindow(holder);
         holder.onViewDetachedFromWindow();
     }
+
+    public boolean endWith (BaseDelegate delegate) {
+        if (mDataList == null || mDataList.isEmpty()) {
+            return false;
+        }
+        return mDataList.get(mDataList.size() - 1).equals(delegate);
+    }
 }

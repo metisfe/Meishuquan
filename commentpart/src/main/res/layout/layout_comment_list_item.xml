@@ -52,7 +52,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/std_size_h6"
+        android:textSize="@dimen/std_size_h5"
         android:layout_toRightOf="@+id/comment_list_item_profile"
         android:layout_below="@+id/comment_list_item_name"
         />

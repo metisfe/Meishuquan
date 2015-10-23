@@ -2,7 +2,10 @@ package com.metis.base.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Patterns;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -20,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
@@ -66,6 +71,20 @@ public class AccountManager extends AbsManager {
     private AccountManager(Context context) {
         super(context);
         ShareSDK.initSDK(context);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("me", mMe);
+        /*List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        final int length = fragments.size();
+        for (int i = 0; i < length; i++) {
+            FragmentUtils.removeFragment(getSupportFragmentManager(), fragments.get(i));
+        }
+        mCurrentFragment = null;*/
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        mMe = (User)savedInstanceState.getSerializable("me");
     }
 
     public User getMe () {
@@ -171,6 +190,17 @@ public class AccountManager extends AbsManager {
                 }
             }
         });
+    }
+
+    public void logout () {
+        mMe = null;
+        ShareManager.getInstance(getContext()).loginQuit(null);
+        final int length = mUserChangeListenerList.size();
+        if (length > 0) {
+            for (int i = 0; i < length; i++) {
+                mUserChangeListenerList.get(i).onUserLogout();
+            }
+        }
     }
 
     /**
@@ -408,11 +438,25 @@ public class AccountManager extends AbsManager {
         params.put("param", json.toString());
         NetProxy.getInstance(getContext()).doPostRequest(URL_UPDATE_USER_INFO_POST.replace("{session}", mMe.getCookie()), params, new NetProxy.OnResponseListener() {
             @Override
-            public void onResponse(String result, String requestId) {
+            public void onResponse(String result, final String requestId) {
                 ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>() {
                 }.getType());
                 if (callback != null) {
                     callback.callback(returnInfo, requestId);
+                }
+                final int length = mUserChangeListenerList.size();
+                if (length > 0) {
+                    UserManager.getInstance(getContext()).getUserInfo(mMe.userId, new RequestCallback<User>() {
+                        @Override
+                        public void callback(ReturnInfo<User> returnInfo, String callbackId) {
+                            if (returnInfo.isSuccess()) {
+                                mMe = returnInfo.getData();
+                                for (int i = 0 ;i < length; i++) {
+                                    mUserChangeListenerList.get(i).onUserInfoChanged(mMe);
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -482,6 +526,8 @@ public class AccountManager extends AbsManager {
 
     public static interface OnUserChangeListener {
         public void onUserChanged (User user, boolean onLine);
+        public void onUserInfoChanged (User user);
+        public void onUserLogout();
     }
 
     public class LoginInfo {

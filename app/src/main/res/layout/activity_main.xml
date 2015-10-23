@@ -14,5 +14,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/color_c6"
+        android:layout_alignTop="@+id/main_dock_bar"
         />
 </RelativeLayout>

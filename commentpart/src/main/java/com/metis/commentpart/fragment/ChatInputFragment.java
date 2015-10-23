@@ -269,6 +269,16 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
         checkUser();
     }
 
+    @Override
+    public void onUserInfoChanged(User user) {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
     public interface Controller {
         /**
          *

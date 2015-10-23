@@ -74,13 +74,31 @@ public class UploadManager extends AbsManager {
         });
     }
 
-    public void uploadFile (File file, String session, NetProxy.OnResponseListener listener) {
-        List<File> fileList = new ArrayList<File>();
-        fileList.add(file);
-        uploadFile(fileList, session, listener);
+    public void uploadImage (File file, String session, final RequestCallback<List<Thumbnail>> callback) {
+        uploadFile(file, NetProxy.TYPE_IMAGE, session, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo<List<Thumbnail>> returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo<List<Thumbnail>>>(){}.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
+            }
+        });
     }
 
-    public void uploadFile (List<File> fileList, String session, NetProxy.OnResponseListener listener) {
+    /**
+     * @param file
+     * @param type NetProxy.TYPE_IMAGE, TYPE_VOICE, TYPE_AMR;
+     * @param session
+     * @param listener
+     */
+    public void uploadFile (File file, int type, String session, NetProxy.OnResponseListener listener) {
+        List<File> fileList = new ArrayList<File>();
+        fileList.add(file);
+        uploadFile(fileList, type, session, listener);
+    }
+
+    public void uploadFile (List<File> fileList, int type, String session, NetProxy.OnResponseListener listener) {
         final int length = fileList.size();
         byte[][] totalData = new byte[length][];
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -103,7 +121,7 @@ public class UploadManager extends AbsManager {
                 e.printStackTrace();
             }
         }
-        NetProxy.getInstance(getContext()).upload(NetProxy.TYPE_VOICE, totalData, session, listener);
+        NetProxy.getInstance(getContext()).upload(type, totalData, session, listener);
 
     }
 

@@ -2,6 +2,7 @@ package com.metis.base.utils;
 
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
+import android.os.AsyncTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -119,4 +120,11 @@ public class FileUtils {
             return bmp;
         }
     }
+
+    public static void saveBitmap (Bitmap bitmap, String path, SavingTask.Callback callback) {
+        SavingTask task = new SavingTask();
+        task.setCallback(callback);
+        task.execute(new SavingTask.BitmapSave(bitmap, path));
+    }
+
 }

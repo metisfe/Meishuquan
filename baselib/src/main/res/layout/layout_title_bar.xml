@@ -35,6 +35,8 @@
         android:layout_toRightOf="@+id/title_bar_left_btn"
         android:layout_toLeftOf="@+id/title_bar_right_btn"
         android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/padding_middle"
+        android:paddingRight="@dimen/padding_middle"
         >
         <TextView
             android:id="@+id/title_bar_center_text"

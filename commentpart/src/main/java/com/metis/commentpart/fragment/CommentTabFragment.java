@@ -62,7 +62,7 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     @Override
     public DockBar.Dock getDock(Context context) {
         if (mDock == null) {
-            mDock = new DockBar.Dock(context, R.id.dock_item_id_comments, android.R.drawable.btn_star, R.string.dock_item_comment_title, this);
+            mDock = new DockBar.Dock(context, R.id.dock_item_id_comments, R.drawable.ic_comment_sel, R.string.dock_item_comment_title, this);
         }
         return mDock;
     }
@@ -264,5 +264,15 @@ public class CommentTabFragment extends DockFragment implements SwipeRefreshLayo
     @Override
     public void onUserChanged(User user, boolean onLine) {
         checkUser(user);
+    }
+
+    @Override
+    public void onUserInfoChanged(User user) {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
     }
 }

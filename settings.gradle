@@ -1,2 +1,2 @@
-include ':app', ':baselib', ':msnetworklib', ':coursepart', ':photo_lib', ':playerlib', ':commentpart', ':newslib'
+include ':app', ':baselib', ':msnetworklib', ':coursepart', ':photo_lib', ':playerlib', ':commentpart', ':newslib', ':imageCropLib'
 include ':sMSSDK'

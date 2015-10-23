@@ -5,4 +5,14 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="text_exam">模拟联考</string>
+    <string name="text_join_exam">院校报考</string>
+    <string name="text_exam_notify">通知</string>
+    <string name="text_exam_join">报名</string>
+    <string name="text_exam_get_score">查分</string>
+    <string name="text_exam_high_scores">高分卷</string>
+
+    <string name="hint_exam_join_search">这里可以搜索...</string>
+    <string name="hint_exam_join_search_input">请输入搜索内容...</string>
+
 </resources>
