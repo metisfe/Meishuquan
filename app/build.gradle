@@ -8,8 +8,8 @@ android {
         applicationId "com.metis.meishuquan"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 165
-        versionName "1.6.5"
+        versionCode 167
+        versionName "1.6.7"
 
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true

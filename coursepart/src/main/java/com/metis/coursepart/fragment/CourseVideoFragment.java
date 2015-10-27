@@ -91,6 +91,12 @@ public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLay
         /* else {
             parseCourseList(mCourseList);
         }*/
+        mVideoSrl.post(new Runnable() {
+            @Override
+            public void run() {
+                mVideoSrl.setRefreshing(true);
+            }
+        });
         loadData();
         List<CourseAlbum> topCourse = mCacheManager.readUserDataAtDatabase(CourseAlbum.class, "topCourse.db");
         List<CourseAlbum> newestCourse = mCacheManager.readUserDataAtDatabase(CourseAlbum.class, "newestCourse.db");
@@ -102,12 +108,7 @@ public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLay
         cacheCourseList.hottestCourse = hottestCourse;
         cacheCourseList.recommendCourse = recommendCourse;
         parseCourseList(cacheCourseList);
-        mVideoSrl.post(new Runnable() {
-            @Override
-            public void run() {
-                mVideoSrl.setRefreshing(true);
-            }
-        });
+
     }
 
     private void loadData () {
@@ -118,6 +119,9 @@ public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLay
                 if (!isAlive()) {
                     return;
                 }
+                if (mVideoSrl.isRefreshing()) {
+                    mVideoSrl.setRefreshing(false);
+                }
                 if (returnInfo.isSuccess()) {
                     mCourseList = returnInfo.getData();
 
@@ -126,9 +130,6 @@ public class CourseVideoFragment extends BaseFragment implements SwipeRefreshLay
                     mCacheManager.saveAllUserDataAtDatabase(mCourseList.hottestCourse, "hottestCourse.db", CourseAlbum.class, true);
                     mCacheManager.saveAllUserDataAtDatabase(mCourseList.recommendCourse, "recommendCourse.db", CourseAlbum.class, true);
                     parseCourseList(mCourseList);
-                }
-                if (mVideoSrl.isRefreshing()) {
-                    mVideoSrl.setRefreshing(false);
                 }
             }
         });

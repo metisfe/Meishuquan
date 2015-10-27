@@ -1,6 +1,5 @@
 package com.metis.base.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.metis.base.R;

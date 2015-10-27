@@ -33,10 +33,11 @@
         >
         <ImageView
             android:id="@+id/video_mask_play_or_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentLeft="true"
             android:src="@drawable/ic_play_pause_sel"
+            android:layout_centerVertical="true"
             />
         <TextView
             android:id="@+id/video_mask_current_position"
@@ -66,13 +67,16 @@
             android:textColor="@android:color/white"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:layout_toLeftOf="@+id/video_mask_video_switch"
+            android:layout_toLeftOf="@+id/video_mask_video_fullscreen_switch"
             />
         <ImageView
-            android:id="@+id/video_mask_video_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/video_mask_video_fullscreen_switch"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
+            android:src="@drawable/ic_fullscreen_sel"
+            android:padding="@dimen/padding_middle"
+            android:layout_centerVertical="true"
             />
     </RelativeLayout>
 </RelativeLayout>

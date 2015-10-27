@@ -51,12 +51,18 @@ public class CcPlayFragment extends Fragment implements
     private OnFullScreenCallback mFullScreenCallback = null;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mAppContext = context.getApplicationContext();
+        mProperty = PlayerProperty.getInstance(context);
+        mManager = PlayerManager.getInstance(context);
+    }
+
+    /*@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mAppContext = activity.getApplicationContext();
-        mProperty = PlayerProperty.getInstance(activity);
-        mManager = PlayerManager.getInstance(activity);
-    }
+
+    }*/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

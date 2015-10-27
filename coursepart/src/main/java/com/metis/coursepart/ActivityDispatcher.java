@@ -1,9 +1,7 @@
 package com.metis.coursepart;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.metis.base.utils.Log;
 import com.metis.base.widget.ImagePreviewable;
@@ -12,9 +10,6 @@ import com.metis.coursepart.activity.CourseVideoDetailActivity;
 import com.metis.coursepart.activity.FilterActivity;
 import com.metis.coursepart.activity.GalleryItemDetailActivity;
 import com.metis.coursepart.module.CourseAlbum;
-import com.metis.coursepart.module.GalleryItem;
-
-import java.util.List;
 
 /**
  * Created by Beak on 2015/7/10.

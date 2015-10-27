@@ -106,6 +106,9 @@ public class HomePageFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
+        if (mUser != null) {
+            setUser(mUser);
+        }
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).registerOnBackPressListener(this);
         }
@@ -130,6 +133,9 @@ public class HomePageFragment extends BaseFragment
         }
         User me = AccountManager.getInstance(getActivity()).getMe();
         isEditable = me != null && me.equals(user);
+        if (isEditable) {
+            user = me;
+        }
 
         mProfileIv = new ImageView(getActivity());
         Resources resources = getActivity().getResources();
@@ -138,6 +144,7 @@ public class HomePageFragment extends BaseFragment
         mProfileIv.setLayoutParams(params);
         mProfileLayout.addValueView(mProfileIv);
         mProfileLayout.setEditable(isEditable);
+        Log.v(TAG, "setUser getAvailableAvatar " + user.getAvailableAvatar());
         DisplayManager.getInstance(getActivity()).displayProfile(
                 user.getAvailableAvatar(),
                 mProfileIv);
@@ -209,7 +216,7 @@ public class HomePageFragment extends BaseFragment
                         mNickNameLayout.setValue(mNickNameEt.getText());
                         mNickNameLayout.setEditable(isEditable);
                         Map<String, String> map = new HashMap<String, String>();
-                        map.put("userName", newName.toString());
+                        map.put("name", newName.toString());
                         AccountManager.getInstance(getActivity()).updateUserInfoPost(map, new RequestCallback() {
                             @Override
                             public void callback(ReturnInfo returnInfo, String callbackId) {
@@ -337,7 +344,7 @@ public class HomePageFragment extends BaseFragment
         Log.v(TAG, "onActivityResultReceived requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-                String outPath = CacheManager.getInstance(getActivity()).getMyImageCacheDir().getAbsolutePath() + File.separator + "cropped.jpg";
+                String outPath = CacheManager.getInstance(getActivity()).getMyImageCacheDir().getAbsolutePath() + File.separator + System.currentTimeMillis() + ".jpg";
                 mCroppedFile = new File(outPath);
                 Uri dataUri = data.getData();
                 if (!mCroppedFile.getParentFile().exists()) {
@@ -383,8 +390,15 @@ public class HomePageFragment extends BaseFragment
         } else if (requestCode == Crop.REQUEST_CROP) {
             if (resultCode == Activity.RESULT_OK) {
                 if (mProfileIv != null) {
-                    Uri uri = Crop.getOutput(data);
-                    DisplayManager.getInstance(getActivity()).displayProfile(uri.toString(), mProfileIv);
+                    final Uri uri = Crop.getOutput(data);
+                    Log.v(TAG, "onActivityResultReceived REQUEST_CROP uri=" + uri);
+                    mProfileIv.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            DisplayManager.getInstance(getActivity()).displayProfile(uri.toString(), mProfileIv);
+                        }
+                    }, 1000);
+
                     final AccountManager accountManager = AccountManager.getInstance(getActivity());
                     UploadManager.getInstance(getActivity()).uploadImage(mCroppedFile, accountManager.getCookies(), new RequestCallback<List<Thumbnail>>() {
                         @Override

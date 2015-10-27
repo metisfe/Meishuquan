@@ -2,6 +2,7 @@ package com.metis.coursepart.activity;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -27,7 +28,6 @@ import com.metis.coursepart.adapter.CourseAdapter;
 import com.metis.coursepart.adapter.delegate.CourseDelegate;
 import com.metis.coursepart.fragment.CourseVideoChapterFragment;
 import com.metis.coursepart.fragment.CourseVideoDetailFragment;
-import com.metis.coursepart.fragment.CourseVideoDiscussFragment;
 import com.metis.coursepart.manager.CourseManager;
 import com.metis.coursepart.module.Course;
 import com.metis.coursepart.module.CourseAlbum;
@@ -38,6 +38,7 @@ import com.metis.playerlib.PlayerFragment;
 import com.metis.playerlib.VideoFragment;
 import com.metis.playerlib.VideoWrapperFragment;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -49,7 +50,7 @@ public class CourseVideoDetailActivity extends BaseActivity implements
 
     private FrameLayout mPlayerContainer = null;
     private VideoWrapperFragment mPlayerFragment = null;
-    private Button mDetailBtn, mChapterBtn/*, mDiscussBtn*/;
+    private Button mDetailBtn, mChapterBtn;
     private LinearLayout mCtrlContainer = null;
     private ViewPager mViewPager = null;
 
@@ -60,10 +61,8 @@ public class CourseVideoDetailActivity extends BaseActivity implements
 
     private CourseVideoDetailFragment mDetailFragment = new CourseVideoDetailFragment();
     private CourseVideoChapterFragment mChapterFragment = new CourseVideoChapterFragment();
-    //private CourseVideoDiscussFragment mDiscussFragment = new CourseVideoDiscussFragment();
-
     private Fragment[] mFragmentArray = {
-            mDetailFragment, mChapterFragment/*, mDiscussFragment*/
+            mDetailFragment, mChapterFragment
     };
 
     private CourseDelegate mCurrentCourse = null;
@@ -80,11 +79,8 @@ public class CourseVideoDetailActivity extends BaseActivity implements
         mCtrlContainer = (LinearLayout)findViewById(R.id.video_detail_btn_container);
         mDetailBtn = (Button)findViewById(R.id.video_detail_detail_btn);
         mChapterBtn = (Button)findViewById(R.id.video_detail_chapter_btn);
-        //mDiscussBtn = (Button)findViewById(R.id.video_detail_discuss_btn);
-
         mDetailBtn.setOnClickListener(this);
         mChapterBtn.setOnClickListener(this);
-        //mDiscussBtn.setOnClickListener(this);
 
         mViewPager = (ViewPager)findViewById(R.id.video_detail_view_pager);
 
@@ -131,6 +127,7 @@ public class CourseVideoDetailActivity extends BaseActivity implements
 
         mChapterFragment.setOnCourseClickListener(this);
         mViewPager.setCurrentItem(1);
+
     }
 
     @Override
@@ -160,7 +157,6 @@ public class CourseVideoDetailActivity extends BaseActivity implements
                 mPlayerFragment.setSource(course.videoUrl);
                 mPlayerFragment.startPlay();
             }
-
 
             //TODO perform new video playing
             if (mCurrentCourse != null) {
@@ -234,9 +230,7 @@ public class CourseVideoDetailActivity extends BaseActivity implements
             mViewPager.setCurrentItem(0, true);
         } else if (v.getId() == R.id.video_detail_chapter_btn) {
             mViewPager.setCurrentItem(1, true);
-        }/* else if (v.getId() == R.id.video_detail_discuss_btn) {
-            mViewPager.setCurrentItem(2, true);
-        }*/
+        }
     }
 
     @Override
@@ -250,17 +244,12 @@ public class CourseVideoDetailActivity extends BaseActivity implements
             case 0:
                 mDetailBtn.setSelected(true);
                 mChapterBtn.setSelected(false);
-                //mDiscussBtn.setSelected(false);
                 break;
             case 1:
                 mDetailBtn.setSelected(false);
                 mChapterBtn.setSelected(true);
-                //mDiscussBtn.setSelected(false);
                 break;
             case 2:
-                mDetailBtn.setSelected(false);
-                mChapterBtn.setSelected(false);
-                //mDiscussBtn.setSelected(true);
                 break;
         }
     }

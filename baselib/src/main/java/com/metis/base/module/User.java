@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.metis.base.utils.Log;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 
 /**
  * Created by Beak on 2015/7/9.
@@ -26,8 +27,8 @@ public class User implements Serializable, Parcelable{
     public long userId;
     public String name;
     public String remarkName;
-    private String avatar;
-    private String userAvatar;
+    public String avatar;
+    public String userAvatar;
     private String gender;
     public String grade;
     public int identity;
@@ -143,5 +144,29 @@ public class User implements Serializable, Parcelable{
             return false;
         }
         return userId == ((User) o).userId;
+    }
+
+    public void mergeFrom (User user) {
+        if (user == null) {
+            return;
+        }
+        if (this.userId != user.userId) {
+            return;
+        }
+        Field[] fields = getClass().getFields();
+        final int length = fields.length;
+        for (int i = 0; i < length; i++) {
+            Field field = fields[i];
+            try {
+                Object value = field.get(user);
+                if (value != null) {
+                    Log.v(TAG, "mergeFrom key=" + field.getName() + " value=" + value);
+                    field.set(this, value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
     }
 }

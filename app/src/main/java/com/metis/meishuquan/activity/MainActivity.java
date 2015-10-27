@@ -119,6 +119,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+        AccountManager.getInstance(this).commitUser();
         unregisterOnBackPressListener(this);
     }
 

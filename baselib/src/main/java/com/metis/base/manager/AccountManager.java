@@ -12,8 +12,18 @@ import com.google.gson.reflect.TypeToken;
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.framework.NetProxy;
 import com.metis.base.module.User;
+import com.metis.base.utils.Log;
+import com.metis.msnetworklib.contract.OptionSettings;
 import com.metis.msnetworklib.contract.ReturnInfo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
@@ -37,6 +47,8 @@ import cn.smssdk.SMSSDK;
  */
 public class AccountManager extends AbsManager {
 
+    private static final String TAG = AccountManager.class.getSimpleName();
+
     private static AccountManager sManager = null;
 
     public synchronized static AccountManager getInstance (Context context) {
@@ -58,6 +70,7 @@ public class AccountManager extends AbsManager {
             URL_UPDATE_USER_INFO = "v1.1/UserCenter/UpdateUserInfo?param={param}&session={session}",
             URL_UPDATE_USER_INFO_POST = "v1.1/UserCenter/UpdateUserInfoPost?session={session}",
             URL_AUTH_LOGIN = "v1.1/UserCenter/LoginByAuthorize",
+            CHECK_LOGIN_STATE = "v1.1/Default/Start?session=",//校验账号状态
             MOMENTSGROUPS = "v1.1/Circle/MyDiscussions?userid={userid}&type={type}&session={session}";//朋友圈分组信息
 
     private static final String SMS_KEY = "9f2e7cad8207", SMS_SECRET = "0dec3be14cc54f4f8efd468a1b4397a7";
@@ -65,12 +78,53 @@ public class AccountManager extends AbsManager {
     private boolean isSmsSdkInit = false;
 
     private User mMe = null;
-
     private List<OnUserChangeListener> mUserChangeListenerList = new ArrayList<OnUserChangeListener>();
+
+    private File mMeFile = null;
 
     private AccountManager(Context context) {
         super(context);
         ShareSDK.initSDK(context);
+        mMeFile = new File(getContext().getExternalCacheDir(), "me");
+        readMe();
+    }
+
+    private void readMe () {
+        try {
+            FileInputStream fis = new FileInputStream(mMeFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            mMe = (User)ois.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void commitUser () {
+        if (mMe == null) {
+            return;
+        }
+
+        try {
+            FileOutputStream fos = new FileOutputStream(mMeFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(mMe);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearUser () {
+        if (mMeFile.exists()) {
+            mMeFile.delete();
+        }
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -157,6 +211,29 @@ public class AccountManager extends AbsManager {
         SMSSDK.unregisterEventHandler(handler);
     }
 
+    public void checkLoginState (final RequestCallback callback) {
+        if (mMe == null) {
+            ReturnInfo returnInfo = new ReturnInfo();
+            OptionSettings optionSettings = new OptionSettings();
+            optionSettings.status = "-10086";
+            optionSettings.message = "mMe is null";
+            optionSettings.errorCode = "-10086";
+            returnInfo.setOption(optionSettings);
+            callback.callback(returnInfo, "");
+            return;
+        }
+        String request = CHECK_LOGIN_STATE + mMe.getCookie();
+        NetProxy.getInstance(getContext()).doGetRequest(request, new NetProxy.OnResponseListener() {
+            @Override
+            public void onResponse(String result, String requestId) {
+                ReturnInfo returnInfo = getGson().fromJson(result, new TypeToken<ReturnInfo>(){}.getType());
+                if (callback != null) {
+                    callback.callback(returnInfo, requestId);
+                }
+            }
+        });
+    }
+
     public String login (String account, String pwd, final RequestCallback<User> callback) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("account", account);
@@ -195,6 +272,8 @@ public class AccountManager extends AbsManager {
     public void logout () {
         mMe = null;
         ShareManager.getInstance(getContext()).loginQuit(null);
+        clearUserLoginInfo();
+        clearUser();
         final int length = mUserChangeListenerList.size();
         if (length > 0) {
             for (int i = 0; i < length; i++) {
@@ -450,7 +529,7 @@ public class AccountManager extends AbsManager {
                         @Override
                         public void callback(ReturnInfo<User> returnInfo, String callbackId) {
                             if (returnInfo.isSuccess()) {
-                                mMe = returnInfo.getData();
+                                mMe.mergeFrom(returnInfo.getData());
                                 for (int i = 0 ;i < length; i++) {
                                     mUserChangeListenerList.get(i).onUserInfoChanged(mMe);
                                 }

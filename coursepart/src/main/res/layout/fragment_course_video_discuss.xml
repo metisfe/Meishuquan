@@ -2,5 +2,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/discussion_recycler_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/discussion_control_container"
+        />
+    <RelativeLayout
+        android:id="@+id/discussion_control_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        >
+        <ImageView
+            android:id="@+id/discussion_control_share"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_share_nor"
+            android:layout_margin="@dimen/margin_big"
+            />
+        <ImageView
+            android:id="@+id/discussion_control_subscript"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toLeftOf="@+id/discussion_control_share"
+            android:src="@drawable/ic_subscription_sel"
+            android:layout_margin="@dimen/margin_big"
+            />
+        <ImageView
+            android:id="@+id/discussion_control_download"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toLeftOf="@+id/discussion_control_subscript"
+            android:src="@drawable/ic_download_nor"
+            android:layout_margin="@dimen/margin_big"
+            />
+        <TextView
+            android:id="@+id/discussion_control_input"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/text_say_something"
+            android:layout_toLeftOf="@+id/discussion_control_download"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_big"
+            android:paddingRight="@dimen/padding_big"
+            />
+    </RelativeLayout>
 </RelativeLayout>

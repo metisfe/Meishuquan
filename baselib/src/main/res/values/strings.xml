@@ -94,6 +94,7 @@
     <string name="text_share">分享</string>
     <string name="text_open_in_out_browser">用浏览器打开</string>
     <string name="text_cancel_subscription">取消缓存</string>
+    <string name="text_say_something">我来说两句...</string>
 
     <string name="toast_login_failed">登录失败:%1$s</string>
     <string name="toast_login_empty_account">请填写手机号</string>

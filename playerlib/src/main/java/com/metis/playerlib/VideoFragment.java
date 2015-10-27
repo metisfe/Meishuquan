@@ -168,6 +168,7 @@ public class VideoFragment extends Fragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mBvv.stopPlayback();
         getActivity().unregisterReceiver(mNoisyReceiver);
     }
 
@@ -177,7 +178,8 @@ public class VideoFragment extends Fragment implements
     }
 
     private void initBVideoView () {
-        mBvv.setAKSK("lxKtIjyHewUpBcUawwolofKr", "9fUZnbBO9mijcnriif6aFrElAaponPEg");
+        mBvv.setAKSK("1065606a45a645c29cd5efc094e6700d", "80b41ccba5044d6288d7ba209455545e");
+        //mBvv.setAKSK("lxKtIjyHewUpBcUawwolofKr", "9fUZnbBO9mijcnriif6aFrElAaponPEg");
         mBvv.setOnCompletionListener(this);
         mBvv.setOnErrorListener(this);
         mBvv.setOnPlayingBufferCacheListener(this);

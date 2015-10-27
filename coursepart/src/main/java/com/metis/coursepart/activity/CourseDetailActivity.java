@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.FrameLayout;
 
+import com.metis.base.activity.BaseActivity;
 import com.metis.base.activity.TitleBarActivity;
 import com.metis.base.fragment.AbsPagerFragment;
 import com.metis.base.fragment.CcPlayFragment;
@@ -29,7 +30,7 @@ import com.metis.msnetworklib.contract.ReturnInfo;
 
 import java.util.List;
 
-public class CourseDetailActivity extends TitleBarActivity implements CourseAdapter.OnCourseClickListener {
+public class CourseDetailActivity extends BaseActivity implements CourseAdapter.OnCourseClickListener {
 
     private FrameLayout mVideoLayout = null;
     private CcPlayFragment mCcFragment = null;
@@ -49,6 +50,7 @@ public class CourseDetailActivity extends TitleBarActivity implements CourseAdap
     };
 
     private CourseAlbum mAlbum = null;
+    private List<Course> mCourseList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,32 +83,49 @@ public class CourseDetailActivity extends TitleBarActivity implements CourseAdap
                 if (returnInfo.isSuccess()) {
                     CourseSubList subList = returnInfo.getData();
                     if (subList != null) {
-                        List<Course> courseList = subList.courseSubList;
-                        if (courseList.size() > 0) {
+                        mCourseList = subList.courseSubList;
+                        if (mCourseList.size() > 0) {
                             mChapterFragment.setSubCourseList(subList.courseSubList);
-                            mDetailFragment.setCurrentCourse(courseList.get(0));
+                            mDetailFragment.setCurrentCourse(mCourseList.get(0));
                         }
                     }
                 }
             }
         });
         mCcFragment.getPlayerManager().registerPlayerCallback(mMaskView);
+        mMaskView.setOnButtonListener(new VideoMaskView.OnButtonListener() {
+            @Override
+            public void onBackBtnPressed(@VideoMaskView.State int state) {
+                if (mCcFragment.isFullScreen()) {
+                    mCcFragment.setFullScreen(false);
+                } else {
+                    finish();
+                }
+            }
+
+            @Override
+            public void onPlayOrPauseBtnPressed(@VideoMaskView.State int state) {
+                if (state == VideoMaskView.STATE_PAUSED) {
+                    mCcFragment.getPlayerManager().resumePlay();
+                } else if (state != VideoMaskView.STATE_STARTED) {
+                    mCcFragment.getPlayerManager().startRemotePlayWithUrl(mCourseList.get(0).videoUrl);
+                } else {
+                    mCcFragment.getPlayerManager().pausePlay();
+                }
+
+            }
+
+            @Override
+            public void onFullScreenPressed(@VideoMaskView.State int state) {
+                mCcFragment.setFullScreen(!mCcFragment.isFullScreen());
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mCcFragment.getPlayerManager().unregisterPlayerCallback(mMaskView);
-    }
-
-    @Override
-    public boolean showAsUpEnable() {
-        return true;
-    }
-
-    @Override
-    public CharSequence getTitleCenter() {
-        return getString(R.string.title_activity_course_video_detail);
     }
 
     @Override

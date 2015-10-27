@@ -11,6 +11,7 @@ import com.metis.base.activity.debug.DebugActivity;
 import com.metis.base.manager.AccountManager;
 import com.metis.base.manager.RequestCallback;
 import com.metis.base.module.User;
+import com.metis.base.utils.Log;
 import com.metis.meishuquan.R;
 import com.metis.msnetworklib.contract.ReturnInfo;
 import com.umeng.update.UmengUpdateAgent;
@@ -24,6 +25,8 @@ import cn.sharesdk.wechat.friends.Wechat;
 
 
 public class HelloActivity extends BaseActivity {
+
+    private static final String TAG = HelloActivity.class.getSimpleName();
 
     private boolean isToDebugActivity = false;
 
@@ -43,6 +46,20 @@ public class HelloActivity extends BaseActivity {
                 }
             }
         });
+        Log.v(TAG, "has me ? " + (AccountManager.getInstance(this).getMe() != null));
+        if (AccountManager.getInstance(this).getMe() != null) {
+            AccountManager.getInstance(this).checkLoginState(new RequestCallback() {
+                @Override
+                public void callback(ReturnInfo returnInfo, String callbackId) {
+                    if (returnInfo.isSuccess()) {
+                        ActivityDispatcher.mainActivity(HelloActivity.this);
+                    } else {
+                        ActivityDispatcher.loginActivity(HelloActivity.this);
+                    }
+                }
+            });
+            return;
+        }
 
         final AccountManager.LoginInfo info = AccountManager.getInstance(this).readUserLoginInfo();
 
