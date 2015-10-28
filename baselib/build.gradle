@@ -29,7 +29,6 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile project(':photo_lib')
-    compile project(':playerlib')
     compile project(':sMSSDK')
     compile files('libs/CCSDK.jar')
     compile project(':imageCropLib')

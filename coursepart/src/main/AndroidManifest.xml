@@ -22,7 +22,10 @@
             android:label="@string/title_activity_filter"
             android:theme="@style/BaseTheme" >
         </activity>
-        <activity android:name=".activity.CourseDetailActivity" >
+        <activity android:name=".activity.CourseDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/BaseTheme"
+            >
         </activity>
     </application>
 

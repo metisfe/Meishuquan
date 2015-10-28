@@ -16,6 +16,7 @@ import com.metis.coursepart.module.Course;
  */
 public class CourseHolder extends AbsViewHolder<CourseDelegate> {
 
+    public ImageView mIconIv = null;
     public TextView mTitleTv = null;
     public TextView mDurationTv = null;
     public ImageView mDownloadBtn = null;

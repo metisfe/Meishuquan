@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.metis.base.activity.BrowserActivity;
 import com.metis.base.activity.FansActivity;
 import com.metis.base.activity.FollowActivity;
+import com.metis.base.activity.PlayerActivity;
 import com.metis.base.activity.RegisterActivity;
 import com.metis.base.activity.RoleChooseActivity;
 import com.metis.base.module.User;
@@ -252,5 +253,11 @@ public class ActivityDispatcher {
         } catch (Exception e) {
             Toast.makeText(context, R.string.toast_app_not_found_for_this_action, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void playVideo (Context context, String url) {
+        Intent it = new Intent(context, PlayerActivity.class);
+        it.putExtra(KEY_URL, url);
+        context.startActivity(it);
     }
 }

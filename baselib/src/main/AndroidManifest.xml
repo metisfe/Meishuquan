@@ -323,6 +323,11 @@
         </activity>
         <activity android:name=".activity.SubscriptionDetailsActivity" >
         </activity>
+        <activity android:name=".activity.PlayerActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/BaseTheme.FullScreen"
+            >
+        </activity>
     </application>
 
 </manifest>

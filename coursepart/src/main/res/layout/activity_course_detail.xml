@@ -12,12 +12,7 @@
             android:id="@+id/course_detail_video_fragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:name="com.metis.base.fragment.CcPlayFragment"
-            />
-        <com.metis.base.widget.VideoMaskView
-            android:id="@+id/course_detail_video_controller"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:name="com.metis.coursepart.fragment.CcWrapperFragment"
             />
     </FrameLayout>
     <com.metis.base.widget.ViewPagerTabGroup

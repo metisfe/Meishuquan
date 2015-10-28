@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.ImagePreviewable;
 import com.metis.coursepart.activity.CourseDetailActivity;
-import com.metis.coursepart.activity.CourseVideoDetailActivity;
 import com.metis.coursepart.activity.FilterActivity;
 import com.metis.coursepart.activity.GalleryItemDetailActivity;
 import com.metis.coursepart.module.CourseAlbum;
@@ -31,8 +30,8 @@ public class ActivityDispatcher {
             KEY_STATE_FILTER_ID = "state_filter_id";
 
     public static void videoDetailActivity (Context context, CourseAlbum album) {
-        //Intent it = new Intent(context, CourseDetailActivity.class);
-        Intent it = new Intent(context, CourseVideoDetailActivity.class);
+        Intent it = new Intent(context, CourseDetailActivity.class);
+        //Intent it = new Intent(context, CourseVideoDetailActivity.class);
         it.putExtra(KEY_COURSE_ALBUM, album);
         context.startActivity(it);
     }
