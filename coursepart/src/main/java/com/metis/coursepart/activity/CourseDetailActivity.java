@@ -45,7 +45,7 @@ public class CourseDetailActivity extends BaseActivity implements CourseAdapter.
     private Course mCurrentCourse = null;
 
     private AbsPagerFragment[] mFragmentArray = {
-            mChapterFragment, mDetailFragment, mDiscussFragment
+            mChapterFragment, mDetailFragment/*, mDiscussFragment*/
     };
 
     private CourseAlbum mAlbum = null;

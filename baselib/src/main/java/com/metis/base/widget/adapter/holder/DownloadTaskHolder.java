@@ -32,7 +32,7 @@ public class DownloadTaskHolder extends AbsViewHolder<DownloadTaskDelegate> {
     public void bindData(Context context, DownloadTaskDelegate downloadTaskDelegate, RecyclerView.Adapter adapter, int position) {
         DownloadTaskImpl task = downloadTaskDelegate.getSource();
         mTitleTv.setText(task.getName());
-        //mSpeedTv.setText();
+        mPb.setProgress(downloadTaskDelegate.getSource().getProgress());
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity implements
         ButterKnife.inject(this);
 
         //UmengUpdateAgent.silentUpdate(this);
-        UmengUpdateAgent.setUpdateOnlyWifi(true);
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.update(this);
 
         PushAgent mPushAgent = PushAgent.getInstance(this);

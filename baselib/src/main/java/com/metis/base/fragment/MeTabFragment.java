@@ -48,6 +48,7 @@ public class MeTabFragment extends DockFragment implements AccountManager.OnUser
     private TextView mNameTv = null;
     private TextView mFollowsTv = null, mFansTv = null;
     private IconTextView mCollectionItv, mCacheItv, mSubscriptionItv, mVipItv, mFeedbackItv, mSettingItv;
+    private View mErrorTv = null;
 
     private HomePageFragment mHomePageFragment = null;
 
@@ -73,6 +74,8 @@ public class MeTabFragment extends DockFragment implements AccountManager.OnUser
         mTitleBar = (TitleBar)view.findViewById(R.id.me_title_bar);
         mTitleBar.setTitleCenter(R.string.text_title_me);
 
+        mErrorTv = view.findViewById(R.id.me_home_page_error_tip);
+
         mProfileLayout = (RelativeLayout)view.findViewById(R.id.me_profile_container);
         mProfileIv = (ImageView)view.findViewById(R.id.me_profile);
         mNameTv = (TextView)view.findViewById(R.id.me_name);
@@ -91,12 +94,22 @@ public class MeTabFragment extends DockFragment implements AccountManager.OnUser
         mHomePageFragment = (HomePageFragment)getChildFragmentManager().findFragmentById(R.id.me_home_page_fragment);
         mHomePageFragment.setUser(AccountManager.getInstance(getActivity()).getMe());
         AccountManager.getInstance(getActivity()).registerOnUserChangeListener(this);
+
+        final User me = AccountManager.getInstance(getContext()).getMe();
+        if (me == null) {
+            ActivityDispatcher.loginActivityWhenAlreadyIn(getContext());
+            return;
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         final User me = AccountManager.getInstance(getContext()).getMe();
+        if (me == null) {
+            mErrorTv.setVisibility(View.VISIBLE);
+            return;
+        }
         setMe(me);
     }
 

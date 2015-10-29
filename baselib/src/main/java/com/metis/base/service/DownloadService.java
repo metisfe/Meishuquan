@@ -68,11 +68,15 @@ public class DownloadService extends Service {
 
     public void setDownloadListener(DownloadListener mDownloadListener) {
         this.mDownloadListener = mDownloadListener;
+        if (mDownloader != null) {
+            mDownloader.setDownloadListener(mDownloadListener);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mDownloadListener = null;
+        mDownloader.setDownloadListener(null);
     }
 }

@@ -10,8 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 public class DownloadTaskImpl {
 
         private String id, groupId, sourceUrl, targetPath, name, description;
-        private @State int state;
-        private float prgoress;
+        private @State int state = Downloader.WAIT;
+        private int progress;
         private long position, length;
 
         @IntDef({Downloader.WAIT, Downloader.DOWNLOAD, Downloader.PAUSING, Downloader.PAUSE, Downloader.FINISH})
@@ -74,12 +74,12 @@ public class DownloadTaskImpl {
             this.state = state;
         }
 
-        public float getPrgoress() {
-            return prgoress;
+        public int getProgress() {
+            return progress;
         }
 
-        public void setPrgoress(float prgoress) {
-            this.prgoress = prgoress;
+        public void setProgress(int progress) {
+            this.progress = progress;
         }
 
         public long getPosition() {

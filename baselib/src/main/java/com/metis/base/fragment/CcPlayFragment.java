@@ -85,6 +85,8 @@ public class CcPlayFragment extends Fragment implements
 
     private int mBufferingPercent = 0;
 
+    private boolean onPausedFirst = false;
+
     private AudioManager.OnAudioFocusChangeListener mAudioListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int focusChange) {
@@ -155,8 +157,12 @@ public class CcPlayFragment extends Fragment implements
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
+        if (!onPausedFirst) {
+            onPausedFirst = true;
+            return;
+        }
         pausePlay();
     }
 

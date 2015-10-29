@@ -130,7 +130,7 @@ public class VideoMaskView extends RelativeLayout implements CcPlayFragment.Play
                 if (isControlShowing) {
                     hideTopBottom();
                 } else {
-                    showTopBottom();
+                    showTopBottom(true);
                 }
             }
         });
@@ -181,7 +181,7 @@ public class VideoMaskView extends RelativeLayout implements CcPlayFragment.Play
     public void onPlayerPaused() {
         mState = STATE_PAUSED;
         mPlayPauseIv.setSelected(mState == STATE_STARTED);
-        delayHide();
+        showTopBottom();
     }
 
     @Override
@@ -249,6 +249,10 @@ public class VideoMaskView extends RelativeLayout implements CcPlayFragment.Play
     }
 
     private void showTopBottom () {
+        showTopBottom(false);
+    }
+
+    private void showTopBottom (final boolean autoHide) {
         if (isControlShowing) {
             return;
         }
@@ -264,7 +268,9 @@ public class VideoMaskView extends RelativeLayout implements CcPlayFragment.Play
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                delayHide();
+                if (autoHide) {
+                    delayHide();
+                }
             }
 
             @Override

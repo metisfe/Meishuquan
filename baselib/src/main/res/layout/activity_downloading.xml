@@ -7,17 +7,25 @@
     <RelativeLayout
         android:id="@+id/downloading_control"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_big"
+        android:background="@android:color/white"
+        >
         <ImageView
             android:id="@+id/downloading_icon_flag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_play_circle_outline_red"
+            android:layout_centerVertical="true"
             />
         <TextView
             android:id="@+id/downloading_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/downloading_icon_flag"
+            android:text="@string/text_start_all"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_big"
             />
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView

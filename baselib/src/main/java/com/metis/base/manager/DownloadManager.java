@@ -13,6 +13,7 @@ import com.bokecc.sdk.mobile.download.Downloader;
 import com.bokecc.sdk.mobile.exception.DreamwinException;
 import com.metis.base.module.DownloadTaskImpl;
 import com.metis.base.service.DownloadService;
+import com.metis.base.utils.Log;
 
 import java.io.File;
 import java.lang.annotation.Retention;
@@ -24,6 +25,8 @@ import java.util.List;
  * Created by Beak on 2015/10/22.
  */
 public class DownloadManager extends AbsManager implements DownloadListener {
+
+    private static final String TAG = DownloadManager.class.getSimpleName();
 
     // 配置API KEY
     public final static String API_KEY = "iKardUvkyz2uSNkXoNo6l4pGJKPmIER8";
@@ -53,7 +56,9 @@ public class DownloadManager extends AbsManager implements DownloadListener {
             DownloadService.DownloadBinder binder = (DownloadService.DownloadBinder)service;
             mService = binder.getService();
             DownloadTaskImpl task = getNextWaitingTask();
+            Log.v(TAG, "onServiceConnected " + task);
             if (task != null) {
+                mService.setDownloadListener(DownloadManager.this);
                 mService.download(task, CacheManager.getInstance(getContext()).getMyVideoCacheDir().getAbsolutePath() + File.separator + task.getId());
             }
         }
@@ -77,11 +82,12 @@ public class DownloadManager extends AbsManager implements DownloadListener {
             return;
         }
         mDownloadTaskPool.put(task.getId(), task);
-        /*if (mService == null) {
+        if (mService == null) {
             getContext().bindService(new Intent(getContext(), DownloadService.class), mConnection, Context.BIND_AUTO_CREATE);
         } else {
+            mService.setDownloadListener(this);
             mService.download(task, task.getTargetPath());
-        }*/
+        }
         if (!mDownloadListenerList.isEmpty()) {
             final int length = mDownloadListenerList.size();
             for (int i = 0; i < length; i++) {
@@ -115,6 +121,7 @@ public class DownloadManager extends AbsManager implements DownloadListener {
     }
 
     public DownloadTaskImpl getNextWaitingTask () {
+        Log.v(TAG, "getNextWaitingTask " + mDownloadTaskPool.isEmpty());
         if (mDownloadTaskPool.isEmpty()) {
             return null;
         }
@@ -143,7 +150,7 @@ public class DownloadManager extends AbsManager implements DownloadListener {
 
     @Override
     public void handleProcess(long l, long l1, String s) {
-
+        Log.v(TAG, "handleProcess " + l + " " + l1 + " " + s + " callback.size=" + mDownloadListenerList.size());
         if (mDownloadListenerList.isEmpty()) {
             return;
         }
