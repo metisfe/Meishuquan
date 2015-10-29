@@ -41,8 +41,6 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
     private TextView mPwdFindTv = null;
     private View mWeChatView, mSinaView, mQqView;
 
-    private Button mNotNowBtn = null;
-
     private boolean isAlreadyIn = false;
 
     /*private RequestCallback<User> mAuthLoginCallback = new RequestCallback<User>() {
@@ -70,14 +68,23 @@ public class LoginActivity extends TitleBarActivity implements PlatformActionLis
             }
         });
 
-        mNotNowBtn = (Button)findViewById(R.id.login_not_now);
+        getTitleBar().setTitleLeft(R.string.text_access_without_login);
+        getTitleBar().setOnLeftBtnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityDispatcher.mainActivity(LoginActivity.this);
+                finish();
+            }
+        });
+
+        /*mNotNowBtn = (Button)findViewById(R.id.login_not_now);
         mNotNowBtn.setVisibility(NetProperty.TESTING ? View.VISIBLE : View.GONE);
         mNotNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ActivityDispatcher.mainActivity(LoginActivity.this);
             }
-        });
+        });*/
 
         mLoginBtn = (TextView)findViewById(R.id.login_btn);
         mAccountEt = (EditText)findViewById(R.id.login_account);

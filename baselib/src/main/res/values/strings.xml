@@ -98,7 +98,8 @@
     <string name="text_start_all">全部开始</string>
     <string name="text_stop_all">全部暂停</string>
     <string name="text_edit_mode">编辑</string>
-    <string name="text_access_user_info_error">获取用户资料失败</string>
+    <string name="text_access_user_info_error">获取用户资料失败,点击进行登录</string>
+    <string name="text_access_without_login">跳过</string>
 
     <string name="toast_login_failed">登录失败:%1$s</string>
     <string name="toast_login_empty_account">请填写手机号</string>

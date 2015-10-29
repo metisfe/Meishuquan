@@ -108,8 +108,16 @@ public class MeTabFragment extends DockFragment implements AccountManager.OnUser
         final User me = AccountManager.getInstance(getContext()).getMe();
         if (me == null) {
             mErrorTv.setVisibility(View.VISIBLE);
+            mErrorTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityDispatcher.loginActivityWhenAlreadyIn(getContext());
+                }
+            });
             return;
         }
+        mErrorTv.setVisibility(View.GONE);
+        mErrorTv.setOnClickListener(null);
         setMe(me);
     }
 
