@@ -104,7 +104,7 @@ public class ChatInputFragment extends BaseFragment implements View.OnClickListe
 
     private void checkUser () {
         User me = AccountManager.getInstance(getActivity()).getMe();
-        if (me == null || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_PARENTS) {
+        if (me == null || me.userRole == User.USER_ROLE_STUDENT || me.userRole == User.USER_ROLE_PARENTS || me.userRole == User.USER_ROLE_FANS) {
             mVoiceIv.setVisibility(View.GONE);
             mSendIv.setVisibility(View.VISIBLE);
         } else if (me != null) {
