@@ -109,6 +109,7 @@ public class VideoMaskView extends RelativeLayout implements CcPlayFragment.Play
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                removeCallbacks(mHideRunnable);
                 if (mBtnListener != null) {
                     mBtnListener.onSeekStart(seekBar);
                 }
@@ -116,6 +117,7 @@ public class VideoMaskView extends RelativeLayout implements CcPlayFragment.Play
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                delayHide();
                 if (mBtnListener != null) {
                     mBtnListener.onSeekStop(seekBar);
                 }

@@ -2,6 +2,7 @@ package com.metis.base.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.SeekBar;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
@@ -23,6 +24,38 @@ public class PlayerActivity extends BaseActivity {
         mPlayFragment = (CcPlayFragment)getSupportFragmentManager().findFragmentById(R.id.player_fragment);
         mMaskView = (VideoMaskView)findViewById(R.id.player_video_mask);
         mMaskView.fullScreenEnable(false);
+        mMaskView.setOnButtonListener(new VideoMaskView.OnButtonListener() {
+            @Override
+            public void onBackBtnPressed(@VideoMaskView.State int state) {
+                PlayerActivity.this.onBackPressed();
+            }
+
+            @Override
+            public void onPlayOrPauseBtnPressed(@VideoMaskView.State int state) {
+                if (state == VideoMaskView.STATE_PAUSED) {
+                    mPlayFragment.resumePlay();
+                } else {
+                    mPlayFragment.pausePlay();
+                }
+
+            }
+
+            @Override
+            public void onFullScreenPressed(@VideoMaskView.State int state) {
+
+            }
+
+            @Override
+            public void onSeekStart(SeekBar seekBar) {
+                mPlayFragment.setSeeking(true);
+            }
+
+            @Override
+            public void onSeekStop(SeekBar seekBar) {
+                mPlayFragment.seekTo(mPlayFragment.getDuration() / 100 * seekBar.getProgress());
+                mPlayFragment.setSeeking(false);
+            }
+        });
 
         mPlayFragment.registerPlayerCallback(mMaskView);
 
