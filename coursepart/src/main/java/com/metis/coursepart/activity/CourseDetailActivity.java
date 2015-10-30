@@ -59,6 +59,7 @@ public class CourseDetailActivity extends BaseActivity implements CourseAdapter.
         setContentView(R.layout.activity_course_detail);
 
         mAlbum = (CourseAlbum)getIntent().getSerializableExtra(ActivityDispatcher.KEY_COURSE_ALBUM);
+        mDetailFragment.setCourseAlbum(mAlbum);
 
         mVideoLayout = (FrameLayout)findViewById(R.id.course_detail_video_container);
         mWrapperFragment = (CcWrapperFragment)getSupportFragmentManager().findFragmentById(R.id.course_detail_video_fragment);
@@ -87,9 +88,21 @@ public class CourseDetailActivity extends BaseActivity implements CourseAdapter.
                     if (subList != null) {
                         mCourseList = subList.courseSubList;
                         if (mCourseList.size() > 0) {
+                            Course firstCourse = mCourseList.get(0);
                             mChapterFragment.setSubCourseList(subList.courseSubList);
-                            mDetailFragment.setCurrentCourse(mCourseList.get(0));
-                            mWrapperFragment.setCourse(mCourseList.get(0));
+                            //mDetailFragment.setCurrentCourse(firstCourse);
+                            mWrapperFragment.setCourse(firstCourse);
+                            CourseManager.getInstance(CourseDetailActivity.this).getSubCourseDetail(firstCourse.subCourseId, new RequestCallback<Course>() {
+                                @Override
+                                public void callback(ReturnInfo<Course> returnInfo, String callbackId) {
+                                    if (returnInfo.isSuccess()) {
+                                        mDetailFragment.setCurrentCourse(returnInfo.getData());
+                                    }
+                                }
+                            });
+                        }
+                        if (subList.relatedCourse != null && !subList.relatedCourse.isEmpty()) {
+                            mDetailFragment.setRelatedCourses(subList.relatedCourse);
                         }
                     }
                 }
@@ -151,12 +164,21 @@ public class CourseDetailActivity extends BaseActivity implements CourseAdapter.
     @Override
     public void onCourseClick(CourseDelegate delegate) {
         Course course = delegate.getSource();
+
         if (mCurrentCourse != null && mCurrentCourse.equals(course)) {
             mWrapperFragment.resumePlay();
         } else {
             mWrapperFragment.playCourse(course);
-            mDetailFragment.setCurrentCourse(course);
+            //mDetailFragment.setCurrentCourse(course);
             mCurrentCourse = course;
+            CourseManager.getInstance(CourseDetailActivity.this).getSubCourseDetail(course.subCourseId, new RequestCallback<Course>() {
+                @Override
+                public void callback(ReturnInfo<Course> returnInfo, String callbackId) {
+                    if (returnInfo.isSuccess()) {
+                        mDetailFragment.setCurrentCourse(returnInfo.getData());
+                    }
+                }
+            });
         }
 
     }

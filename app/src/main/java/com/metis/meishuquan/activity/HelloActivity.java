@@ -56,6 +56,7 @@ public class HelloActivity extends BaseActivity {
                     } else {
                         ActivityDispatcher.loginActivity(HelloActivity.this);
                     }
+                    finish();
                 }
             });
             return;
