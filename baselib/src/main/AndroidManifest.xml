@@ -147,10 +147,10 @@
                 <action android:name="org.android.agoo.client.ElectionReceiverService" />
             </intent-filter>
         </service>
-        <!--自定义消息处理-->
-        <service android:name=".push.PushMessageService"
-            android:process=":push"
-            ></service>
+        <!-- 自定义消息处理 -->
+        <service
+            android:name=".push.PushMessageService"
+            android:process=":push" />
 
         <!-- v2.4.1添加的Service，Umeng的消息接收后的处理服务 -->
         <service

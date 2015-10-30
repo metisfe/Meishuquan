@@ -28,4 +28,5 @@ public class SystemUtils {
         InputMethodManager manager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.toggleSoftInput(0, 0);
     }
+
 }

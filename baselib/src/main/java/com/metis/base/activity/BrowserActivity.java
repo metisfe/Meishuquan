@@ -2,23 +2,32 @@ package com.metis.base.activity;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.metis.base.ActivityDispatcher;
 import com.metis.base.R;
+import com.metis.base.utils.Log;
 import com.metis.base.utils.PatternUtils;
+
+import im.delight.android.webview.AdvancedWebView;
 
 public class BrowserActivity extends TitleBarActivity {
 
+    private static final String TAG = BrowserActivity.class.getSimpleName();
+
     private WebChromeClient mChromeClient = null;
-    private WebView mBrowserWv = null;
+    private AdvancedWebView mBrowserWv = null;
 
     private String mUrl = null;
     private String mTitle = null;
@@ -29,7 +38,33 @@ public class BrowserActivity extends TitleBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
-        mBrowserWv = (WebView)findViewById(R.id.browser_web_view);
+        mBrowserWv = (AdvancedWebView)findViewById(R.id.browser_web_view);
+        /*mBrowserWv.setListener(this, new AdvancedWebView.Listener() {
+            @Override
+            public void onPageStarted(String s, Bitmap bitmap) {
+
+            }
+
+            @Override
+            public void onPageFinished(String s) {
+
+            }
+
+            @Override
+            public void onPageError(int i, String s, String s1) {
+
+            }
+
+            @Override
+            public void onDownloadRequested(String s, String s1, String s2, String s3, long l) {
+
+            }
+
+            @Override
+            public void onExternalPageRequest(String s) {
+
+            }
+        });*/
         mChromeClient = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
@@ -38,6 +73,33 @@ public class BrowserActivity extends TitleBarActivity {
                 mTitle = title;
             }
 
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                Log.v(TAG, "chromeClient onJsAlert");
+                return super.onJsAlert(view, url, message, result);
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                Toast.makeText(BrowserActivity.this, "onShowFileChooser", Toast.LENGTH_SHORT).show();
+                Log.v(TAG, "chromeClient onShowFileChooser ");
+                return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+            }
+
+            public void openFileChooser(ValueCallback<Uri> uploadMsg, String AcceptType, String capture) {
+                this.openFileChooser(uploadMsg);
+                Log.v(TAG, "openFileChooser");
+            }
+
+            @SuppressWarnings("unused")
+            public void openFileChooser(ValueCallback<Uri> uploadMsg, String AcceptType) {
+                this.openFileChooser(uploadMsg);
+                Log.v(TAG, "openFileChooser");
+            }
+
+            public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+                Log.v(TAG, "openFileChooser");
+            }
         };
         mBrowserWv.setWebChromeClient(mChromeClient);
         mBrowserWv.setWebViewClient(new WebViewClient() {

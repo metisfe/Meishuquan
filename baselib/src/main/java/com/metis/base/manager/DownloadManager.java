@@ -4,41 +4,29 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
+import android.os.Message;
 import android.support.v4.util.ArrayMap;
+import android.widget.Toast;
 
-import com.bokecc.sdk.mobile.download.DownloadListener;
 import com.bokecc.sdk.mobile.download.Downloader;
 import com.bokecc.sdk.mobile.exception.DreamwinException;
 import com.metis.base.module.DownloadTaskImpl;
 import com.metis.base.service.DownloadService;
-import com.metis.base.utils.Log;
 
-import java.io.File;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Beak on 2015/10/22.
+ * Created by Beak on 2015/10/29.
  */
-public class DownloadManager extends AbsManager implements DownloadListener {
+public class DownloadManager extends AbsManager implements DownloadService.OnDownloadListener {
 
-    private static final String TAG = DownloadManager.class.getSimpleName();
-
-    // 配置API KEY
-    public final static String API_KEY = "iKardUvkyz2uSNkXoNo6l4pGJKPmIER8";
-
-    // 配置帐户ID
-    public final static String USERID = "6E7D1C1E1C09DB4D";
-
-    //private List<DownloadTaskImpl> mDownloadTaskPool = new ArrayList<DownloadTaskImpl>();
-
-    private ArrayMap<String, DownloadTaskImpl> mDownloadTaskPool = new ArrayMap<>();
-
-    private List<OnDownloadListener> mDownloadListenerList = new ArrayList<OnDownloadListener>();
+    private static final int WHAT_PROGRESS = 1, WHAT_STATUS = 2, WHAT_EXCEPTION = 3, WHAT_CANCEL = 4;
+    private static final String KEY_ID = "id", KEY_CURRENT = "current", KEY_TOTAL = "total", KEY_PERCENT = "percent", KEY_SPEED = "speed";
 
     private static DownloadManager sManager = null;
 
@@ -53,81 +41,133 @@ public class DownloadManager extends AbsManager implements DownloadListener {
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            DownloadService.DownloadBinder binder = (DownloadService.DownloadBinder)service;
-            mService = binder.getService();
-            DownloadTaskImpl task = getNextWaitingTask();
-            Log.v(TAG, "onServiceConnected " + task);
-            if (task != null) {
-                mService.setDownloadListener(DownloadManager.this);
-                mService.download(task, CacheManager.getInstance(getContext()).getMyVideoCacheDir().getAbsolutePath() + File.separator + task.getId());
+            if (service instanceof DownloadService.DownloadBinder) {
+                mService = ((DownloadService.DownloadBinder) service).getService();
+                mService.setOnDownloadListener(DownloadManager.this);
+                Toast.makeText(getContext(), "serviceConnected", Toast.LENGTH_SHORT).show();
+                startTask(getWaitingTask());
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            mService = null;
+
         }
     };
 
+    private ArrayMap<String, DownloadTaskImpl> mTaskQueue = new ArrayMap<>();
+
+    private List<OnDownloadCallback> mDownloadCallbackList = new ArrayList<>();
+    private List<OnTaskQueueChangeCallback> mQueueCallbackList = new ArrayList<>();
+
+    private static class IncomingHandler extends Handler {
+        private final WeakReference<DownloadManager> mService;
+
+        IncomingHandler(DownloadManager service) {
+            mService = new WeakReference<DownloadManager>(service);
+        }
+        @Override
+        public void handleMessage(Message msg)
+        {
+            DownloadManager service = mService.get();
+            if (service != null) {
+                service.handleMessage(msg);
+            }
+        }
+    }
+
+    private IncomingHandler mHandler = null;
+
+    private long mLastUpdateTime = 0;
+    private long mLastCurrent = 0;
+    private Bundle mUpdateBundle = new Bundle();
+
     private DownloadManager(Context context) {
         super(context);
+        mHandler = new IncomingHandler(this);
     }
 
-    public ArrayMap<String, DownloadTaskImpl> getDownloadingList () {
-        return mDownloadTaskPool;
+    public boolean isInDownloadingQueue (String id) {
+        return mTaskQueue.containsKey(id);
     }
 
-    public void putTask (DownloadTaskImpl task) {
-        if (mDownloadTaskPool.containsKey(task)) {
+    public void addTask (DownloadTaskImpl task) {
+        if (isInDownloadingQueue(task.getId())) {
             return;
         }
-        mDownloadTaskPool.put(task.getId(), task);
-        if (mService == null) {
-            getContext().bindService(new Intent(getContext(), DownloadService.class), mConnection, Context.BIND_AUTO_CREATE);
-        } else {
-            mService.setDownloadListener(this);
-            mService.download(task, task.getTargetPath());
-        }
-        if (!mDownloadListenerList.isEmpty()) {
-            final int length = mDownloadListenerList.size();
+        mTaskQueue.put(task.getId(), task);
+        if (!mQueueCallbackList.isEmpty()) {
+            final int length = mQueueCallbackList.size();
             for (int i = 0; i < length; i++) {
-                mDownloadListenerList.get(i).onNewTaskAdded(task);
+                mQueueCallbackList.get(i).onTaskAdd(task);
+            }
+        }
+        if (hasWaitingTask()) {
+            if (mService == null) {
+                getContext().bindService(new Intent(getContext(), DownloadService.class), mConnection, Context.BIND_AUTO_CREATE);
+            } else {
+                startTask(getWaitingTask());
+                //mService.download();
             }
         }
     }
 
-    public DownloadTaskImpl getTask (String taskId) {
-        if (mDownloadTaskPool.isEmpty()) {
-            return null;
+    public DownloadTaskImpl removeTask (String id) {
+        DownloadTaskImpl task = mTaskQueue.remove(id);
+        performRemoveCallback(task);
+        return task;
+    }
+
+    public void pauseTask (DownloadTaskImpl task) {
+
+    }
+
+    public void pauseTask (String id) {
+        if (mService != null) {
+            mService.pause(id);
         }
-        final int length = mDownloadTaskPool.size();
-        for (int i = 0; i < length; i++) {
-            DownloadTaskImpl task = mDownloadTaskPool.get(i);
-            if (task.getId().equals(taskId)) {
-                return task;
-            }
-        }
-        return null;
     }
 
     public void removeTask (DownloadTaskImpl task) {
-        if (mDownloadTaskPool.containsKey(task.getId())) {
-            mDownloadTaskPool.remove(task);
+        mTaskQueue.remove(task.getId());
+        performRemoveCallback(task);
+    }
+
+    private void performRemoveCallback (DownloadTaskImpl task) {
+        final int length = mQueueCallbackList.size();
+        for (int i = 0; i < length; i++) {
+            mQueueCallbackList.get(i).onTaskRemove(task);
         }
     }
 
-    public void removeTask (String taskId) {
-        removeTask(getTask(taskId));
+    private void startTask (DownloadTaskImpl task) {
+        if (task == null) {
+            return;
+        }
+        mService.download(task);
     }
 
-    public DownloadTaskImpl getNextWaitingTask () {
-        Log.v(TAG, "getNextWaitingTask " + mDownloadTaskPool.isEmpty());
-        if (mDownloadTaskPool.isEmpty()) {
+    public boolean hasWaitingTask () {
+        final int size = mTaskQueue.size();
+        if (size == 0) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            DownloadTaskImpl task = mTaskQueue.valueAt(i);
+            if (task.getState() == Downloader.WAIT) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public DownloadTaskImpl getWaitingTask () {
+        final int length = mTaskQueue.size();
+        if (length == 0) {
             return null;
         }
-        final int length = mDownloadTaskPool.size();
         for (int i = 0; i < length; i++) {
-            DownloadTaskImpl task = mDownloadTaskPool.valueAt(i);
+            DownloadTaskImpl task = mTaskQueue.valueAt(i);
             if (task.getState() == Downloader.WAIT) {
                 return task;
             }
@@ -135,51 +175,174 @@ public class DownloadManager extends AbsManager implements DownloadListener {
         return null;
     }
 
-    public void registerOnDownloadListener (OnDownloadListener listener) {
-        if (mDownloadListenerList.contains(listener)) {
+    public DownloadTaskImpl getTaskById (String id) {
+        if (mTaskQueue.containsKey(id)) {
+            return mTaskQueue.get(id);
+        }
+        return null;
+    }
+
+    private void handleMessage (Message msg) {
+        String id = null;
+        switch (msg.what) {
+            case WHAT_PROGRESS:
+                Bundle bundle = msg.getData();
+                id = bundle.getString(KEY_ID);
+                long current = bundle.getLong(KEY_CURRENT);
+                long total = bundle.getLong(KEY_TOTAL);
+                int percent = bundle.getInt(KEY_PERCENT);
+                int speed = bundle.getInt(KEY_SPEED);
+                DownloadTaskImpl task = getTaskById(id);
+                if (task != null) {
+                    task.setPosition(current);
+                    task.setLength(total);
+                    task.setProgress(percent);
+                    task.setSpeed(speed);
+                }
+                if (!mDownloadCallbackList.isEmpty()) {
+                    final int length = mDownloadCallbackList.size();
+                    for (int i = 0; i < length; i++) {
+                        mDownloadCallbackList.get(i).onTaskProgress(id, current, total, percent);
+                    }
+                }
+                break;
+            case WHAT_STATUS:
+                int state = msg.arg1;
+                id = (String)msg.obj;
+                switch (state) {
+                    case Downloader.FINISH:
+                        removeTask(id);
+                        break;
+                }
+                if (!mDownloadCallbackList.isEmpty()) {
+                    final int length = mDownloadCallbackList.size();
+                    for (int i = 0; i < length; i++) {
+                        OnDownloadCallback callback = mDownloadCallbackList.get(i);
+                        if (state == Downloader.DOWNLOAD) {
+                            callback.onTaskStart(id);
+                        } else if (state == Downloader.FINISH) {
+                            callback.onTaskFinish(id);
+                        } else if (state == Downloader.PAUSE) {
+                            callback.onTaskPause(id);
+                        } else if (state == Downloader.PAUSING) {
+                            callback.onTaskPausing(id);
+                        } else if (state == Downloader.WAIT) {
+                            callback.onTaskWait(id);
+                        }
+                    }
+                }
+                break;
+            case WHAT_CANCEL:
+                break;
+            case WHAT_EXCEPTION:
+                break;
+        }
+    }
+
+    @Override
+    public void onProgressUpdate(String id, long current, long total, int percent) {
+        long now = System.currentTimeMillis();
+        long delay = now - mLastUpdateTime;
+        //limit the update duration
+        if (delay > 1000) {
+            Message msg = mHandler.obtainMessage();
+            msg.what = WHAT_PROGRESS;
+            mUpdateBundle.putString(KEY_ID, id);
+            mUpdateBundle.putLong(KEY_CURRENT, current);
+            mUpdateBundle.putLong(KEY_TOTAL, total);
+            mUpdateBundle.putInt(KEY_PERCENT, percent);
+            int speed = (int)((current - mLastCurrent) / delay * 1000);
+            mUpdateBundle.putInt(KEY_SPEED, speed);
+            msg.setData(mUpdateBundle);
+            mHandler.sendMessage(msg);
+            mLastUpdateTime = now;
+            mLastCurrent = current;
+        }
+
+    }
+
+    @Override
+    public void onStateChanged(String id, int state) {
+        Message msg = mHandler.obtainMessage();
+        msg.what = WHAT_STATUS;
+        msg.arg1 = state;
+        msg.obj = id;
+        mHandler.sendMessage(msg);
+    }
+
+    @Override
+    public void onCancel(String id) {
+        if (!mDownloadCallbackList.isEmpty()) {
+            final int length = mDownloadCallbackList.size();
+            for (int i = 0; i < length; i++) {
+                mDownloadCallbackList.get(i).onTaskCancel(id);
+            }
+        }
+    }
+
+    @Override
+    public void onException(DreamwinException e, int a) {
+        if (!mDownloadCallbackList.isEmpty()) {
+            final int length = mDownloadCallbackList.size();
+            for (int i = 0; i < length; i++) {
+                mDownloadCallbackList.get(i).onTaskFailed();
+            }
+        }
+    }
+
+    public void registerOnDownloadCallback (OnDownloadCallback callback) {
+        if (callback == null) {
             return;
         }
-        mDownloadListenerList.add(listener);
-    }
-
-    public void unregisterOnDownloadListener (OnDownloadListener listener) {
-        if (mDownloadListenerList.contains(listener)) {
-            mDownloadListenerList.remove(listener);
-        }
-    }
-
-    @Override
-    public void handleProcess(long l, long l1, String s) {
-        Log.v(TAG, "handleProcess " + l + " " + l1 + " " + s + " callback.size=" + mDownloadListenerList.size());
-        if (mDownloadListenerList.isEmpty()) {
+        if (mDownloadCallbackList.contains(callback)) {
             return;
         }
-        DownloadTaskImpl task = getTask(s);
-        final int length = mDownloadListenerList.size();
-        for (int i = 0; i < length; i++) {
-            mDownloadListenerList.get(i).onTaskProgressChanged(task);
+        mDownloadCallbackList.add(callback);
+    }
+
+    public void unregisterOnDownloadCallback (OnDownloadCallback callback) {
+        if (callback == null) {
+            return;
         }
+        if (!mDownloadCallbackList.contains(callback)) {
+            return;
+        }
+        mDownloadCallbackList.remove(callback);
     }
 
-    @Override
-    public void handleException(DreamwinException e, int i) {
-
+    public void registerOnTaskQueueChangeCallback (OnTaskQueueChangeCallback callback) {
+        if (callback == null) {
+            return;
+        }
+        if (mQueueCallbackList.contains(callback)) {
+            return;
+        }
+        mQueueCallbackList.add(callback);
     }
 
-    @Override
-    public void handleStatus(String s, int i) {
-
+    public void unregisterOnTaskQueueChangeCallback (OnTaskQueueChangeCallback callback) {
+        if (callback == null) {
+            return;
+        }
+        if (!mQueueCallbackList.contains(callback)) {
+            return;
+        }
+        mQueueCallbackList.remove(callback);
     }
 
-    @Override
-    public void handleCancel(String s) {
-
+    public interface OnTaskQueueChangeCallback {
+        public void onTaskAdd (DownloadTaskImpl task);
+        public void onTaskRemove (DownloadTaskImpl task);
     }
 
-    public static interface OnDownloadListener {
-        public void onNewTaskAdded (DownloadTaskImpl task);
-        public void onTaskStateChanged (DownloadTaskImpl task);
-        public void onTaskProgressChanged (DownloadTaskImpl task);
+    public interface OnDownloadCallback {
+        public void onTaskWait (String id);
+        public void onTaskStart (String id);
+        public void onTaskPausing (String id);
+        public void onTaskPause(String id);
+        public void onTaskProgress (String id, long current, long total, int percent);
+        public void onTaskFinish (String id);
+        public void onTaskFailed ();
+        public void onTaskCancel (String id);
     }
-
 }

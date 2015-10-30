@@ -8,13 +8,16 @@ import android.widget.Button;
 
 import com.bokecc.sdk.mobile.download.Downloader;
 import com.metis.base.R;
+import com.metis.base.manager.CacheManager;
 import com.metis.base.manager.DownloadManager;
 import com.metis.base.module.DownloadTaskImpl;
 import com.metis.base.utils.Log;
 import com.metis.base.widget.adapter.DownloadingAdapter;
 import com.metis.base.widget.adapter.delegate.DownloadTaskDelegate;
 
-public class DownloadingActivity extends TitleBarActivity implements DownloadManager.OnDownloadListener{
+import java.io.File;
+
+public class DownloadingActivity extends TitleBarActivity {
 
     private static final String TAG = DownloadingActivity.class.getSimpleName();
 
@@ -28,21 +31,81 @@ public class DownloadingActivity extends TitleBarActivity implements DownloadMan
 
     private boolean isInEditMode = false;
 
+    private DownloadManager.OnTaskQueueChangeCallback mQueueCallback = new DownloadManager.OnTaskQueueChangeCallback() {
+        @Override
+        public void onTaskAdd(DownloadTaskImpl task) {
+            mDownloadingAdapter.addDataItem(new DownloadTaskDelegate(task));
+            mDownloadingAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onTaskRemove(DownloadTaskImpl task) {
+            mDownloadingAdapter.removeTaskItem(task.getId());
+        }
+    };
+    private DownloadManager.OnDownloadCallback mDownloadCallback = new DownloadManager.OnDownloadCallback() {
+        @Override
+        public void onTaskWait(String id) {
+
+        }
+
+        @Override
+        public void onTaskStart(String id) {
+
+        }
+
+        @Override
+        public void onTaskPausing(String id) {
+
+        }
+
+        @Override
+        public void onTaskPause(String id) {
+
+        }
+
+        @Override
+        public void onTaskProgress(String id, long current, long total, int percent) {
+            mDownloadingAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onTaskFinish(String id) {
+
+        }
+
+        @Override
+        public void onTaskFailed() {
+
+        }
+
+        @Override
+        public void onTaskCancel(String id) {
+
+        }
+    };
+    private DownloadManager mDownloadManager = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_downloading);
 
+        mDownloadManager = DownloadManager.getInstance(this);
+        mDownloadManager.registerOnDownloadCallback(mDownloadCallback);
+        mDownloadManager.registerOnTaskQueueChangeCallback(mQueueCallback);
+
         mAddBtn = (Button)findViewById(R.id.downloading_add_task);
         mAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                File file = new File(CacheManager.getInstance(DownloadingActivity.this).getMyVideoCacheDir(), "1");
+                Log.v(TAG, "download to " + file.getAbsolutePath());
                 DownloadTaskImpl task = new DownloadTaskImpl();
-                task.setId("2C4349EB23345F859C33DC5901307461");
-                task.setName("一个视频而已");
                 task.setState(Downloader.WAIT);
-                task.setProgress(mProgress += 5);
-                DownloadManager.getInstance(DownloadingActivity.this).putTask(task);
+                task.setTargetPath(file.getAbsolutePath());
+                task.setId("2C4349EB23345F859C33DC5901307461");
+                mDownloadManager.addTask(task);
             }
         });
 
@@ -52,8 +115,6 @@ public class DownloadingActivity extends TitleBarActivity implements DownloadMan
         mDownloadingAdapter = new DownloadingAdapter(this);
 
         mDownloadingRv.setAdapter(mDownloadingAdapter);
-
-        DownloadManager.getInstance(this).registerOnDownloadListener(this);
 
         getTitleBar().setTitleRight(R.string.text_edit_mode);
         getTitleBar().setOnRightBtnClickListener(new View.OnClickListener() {
@@ -72,7 +133,8 @@ public class DownloadingActivity extends TitleBarActivity implements DownloadMan
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DownloadManager.getInstance(this).unregisterOnDownloadListener(this);
+        mDownloadManager.unregisterOnDownloadCallback(mDownloadCallback);
+        mDownloadManager.unregisterOnTaskQueueChangeCallback(mQueueCallback);
     }
 
     @Override
@@ -80,19 +142,4 @@ public class DownloadingActivity extends TitleBarActivity implements DownloadMan
         return true;
     }
 
-    @Override
-    public void onNewTaskAdded(DownloadTaskImpl task) {
-        mDownloadingAdapter.addDataItem(new DownloadTaskDelegate(task));
-        mDownloadingAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onTaskStateChanged(DownloadTaskImpl task) {
-
-    }
-
-    @Override
-    public void onTaskProgressChanged(DownloadTaskImpl task) {
-        Log.v(TAG, "task onTaskProgressChanged=" + task.getProgress());
-    }
 }

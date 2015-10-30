@@ -38,4 +38,5 @@ dependencies {
     compile 'com.android.support:support-v13:22.2.0'
     compile files('libs/libammsdk.jar')
     compile files('libs/pgyer_sdk_2.2.2.jar')
+    compile files('libs/Android-AdvancedWebView.jar')
 }
